@@ -1,5 +1,6 @@
 git_update.sh
 git_acces_token
+GitRepoPrepare
 /lib/
 /arm-linux/
 /i386-win32/
