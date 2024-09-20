@@ -1,7 +1,7 @@
 object frmTTF2Vector: TfrmTTF2Vector
-  Left = 661
+  Left = 1158
   Height = 721
-  Top = 145
+  Top = 217
   Width = 929
   Caption = 'TTF2Vector'
   ClientHeight = 721
@@ -1207,6 +1207,7 @@ object frmTTF2Vector: TfrmTTF2Vector
       RubberPenColor = clBlue
       ControlPointsColor = clBlack
       BackGroundColor = clBlack
+      OnPaint = CADViewport2D1Paint
       CADCmp2D = CADCmp2D1
     end
     object Panel1: TPanel
