@@ -1,0 +1,14 @@
+:TITLE StellaSOFT objects
+:BASE STOBJECTS.hlp
+1 StellaSOFT objects
+2 StellaSOFT=StellaSOFT@STOBJECTS.hlp>Main
+2 About StellaSOFT objects=StObjects_About@STOBJECTS.hlp>Main
+2 Objects
+3 T2DPoint=IDH_T2DPoint@STOBJECTS.hlp>Main
+3 THRTimer=IDH_THRTimer@STOBJECTS.hlp>Main
+3 TUndoRedo=IDH_TUndoRedo@STOBJECTS.hlp>Main
+2 Events and Rocedures
+3 TUndoRedoChangeEvent=IDH_TUndoRedoChangeEvent_100099@STOBJECTS.hlp>Main
+3 TUndoRedoProcedure=IDH_TUndoRedoProcedure_100102@STOBJECTS.hlp>Main
+3 TUndoSaveEvent=IDH_TUndoSaveEvent_100100@STOBJECTS.hlp>Main
+3 TUndoSaveProcedure=IDH_TUndoSaveProcedure_100101@STOBJECTS.hlp>Main

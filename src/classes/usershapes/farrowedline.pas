@@ -1,0 +1,50 @@
+unit fArrowedLine;
+
+{$mode delphi}
+
+interface
+
+uses
+  Classes, SysUtils,
+  CADSys4,
+  CS4BaseTypes,
+  CS4Shapes;
+
+type
+
+  TArrowedLine2D = class(TLine2D)
+    protected
+      procedure DrawArrows(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer; P0, P1: TPoint2D; AArrowLength, AArrowAngle: TRealType);
+    public
+      procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
+
+  end;
+
+implementation
+
+procedure TArrowedLine2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
+begin
+  inherited Draw(VT, Cnv, ClipRect2D, DrawMode);
+  DrawArrows(VT, Cnv, ClipRect2D, DrawMode, Points.Points[0], Points.Points[1], 40, 30);
+end;
+
+procedure TArrowedLine2D.DrawArrows(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer; P0, P1: TPoint2D; AArrowLength,  AArrowAngle: TRealType);
+var a, b, c, TmpAngle: TRealType;  TmpPoint2D: TPoint2D;
+begin
+  TmpAngle := DegToRad(90 - AArrowAngle);
+  c := AArrowLength;
+  a := c * cos(TmpAngle);
+  b := c * sin(TmpAngle);
+
+  TmpPoint2D.W := 1.0;
+  TmpPoint2D.X := P1.X - a;
+  TmpPoint2D.Y := P1.Y - b;
+
+  DrawLine2D(Cnv, P0, TmpPoint2D, ClipRect2D, VT);
+end;
+
+initialization
+  CADSysRegisterClass(220, TArrowedLine2D);
+
+end.
+

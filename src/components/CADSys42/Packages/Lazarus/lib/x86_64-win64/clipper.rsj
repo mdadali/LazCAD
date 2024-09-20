@@ -1,0 +1,9 @@
+{"version":1,"strings":[
+{"hash":203825700,"name":"clipper.rsmissingrightbound","sourcebytes":[73,110,115,101,114,116,76,111,99,97,108,77,105,110,105,109,97,73,110,116,111,65,69,76,58,32,109,105,115,115,105,110,103,32,114,105,103,104,116,98,111,117,110,100],"value":"InsertLocalMinimaIntoAEL: missing rightbound"},
+{"hash":122975714,"name":"clipper.rsdomaxima","sourcebytes":[68,111,77,97,120,105,109,97,32,101,114,114,111,114],"value":"DoMaxima error"},
+{"hash":150105058,"name":"clipper.rsupdateedgeintoael","sourcebytes":[85,112,100,97,116,101,69,100,103,101,73,110,116,111,65,69,76,32,101,114,114,111,114],"value":"UpdateEdgeIntoAEL error"},
+{"hash":6963762,"name":"clipper.rshorizontal","sourcebytes":[80,114,111,99,101,115,115,72,111,114,105,122,111,110,116,97,108,32,101,114,114,111,114],"value":"ProcessHorizontal error"},
+{"hash":25677459,"name":"clipper.rsinvalidint","sourcebytes":[67,111,111,114,100,105,110,97,116,101,32,101,120,99,101,101,100,115,32,114,97,110,103,101,32,98,111,117,110,100,115],"value":"Coordinate exceeds range bounds"},
+{"hash":204434418,"name":"clipper.rsjoinerror","sourcebytes":[74,111,105,110,32,79,117,116,112,117,116,32,112,111,108,121,103,111,110,115,32,101,114,114,111,114],"value":"Join Output polygons error"},
+{"hash":94432786,"name":"clipper.rsholelinkerror","sourcebytes":[72,111,108,101,76,105,110,107,97,103,101,32,101,114,114,111,114],"value":"HoleLinkage error"}
+]}

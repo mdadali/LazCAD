@@ -1,0 +1,128 @@
+unit CS4UserShapes;
+
+{$mode delphi}
+
+interface
+
+uses
+  Classes, SysUtils,
+  CS4BaseTypes,
+  CS4Tasks,
+  CS4Shapes,
+  CADSys4;
+
+
+type
+
+  {: This class defines a 2D Circle.
+
+     The Circle is defined by the two corner of the box that
+     contains it.
+  }
+  TCircle2D_CPR = class(TCurve2D)
+  private
+    procedure GetCircleParams(var CX, CY, RX, RY: TRealType);
+  protected
+    function PopulateCurvePoints(N: Word): TRect2D; override;
+  public
+    {: This constructor creates a new Circle.
+
+       Parameters:
+
+       <LI=<I=ID> is the object identifier.>
+       <LI=<I=P1> and <I=P2> are the corner points of the frame
+        that contains the Circle.>
+    }
+    constructor Create(ID: LongInt; const P1, P2: TPoint2D);
+    procedure Assign(const Obj: TGraphicObject); override;
+  end;
+
+
+implementation
+
+// =====================================================================
+// TCircle2D
+// =====================================================================
+
+procedure TCircle2D.GetCircleParams(var CX, CY, RX, RY: TRealType);
+var
+  P1, P0, P2: TPoint2D;
+  xLength, yLength: TRealType;
+begin
+  P0 := CartesianPoint2D(Points[0]);
+  P1 := CartesianPoint2D(Points[1]);
+
+  xLength :=  P1.X - P0.X;
+  yLength :=  P1.Y - P0.Y;
+  P1.Y:= P1.Y + (xLength - yLength);
+
+  RX := Abs(P1.X - P0.X) / 2.0 ;
+  RY := Abs(P1.Y - P0.Y) / 2.0;
+  CX := (P1.X + P0.X) / 2.0;
+  CY := (P1.Y + P0.Y) / 2.0;
+
+ // P2 := Point2D(CX, CY);
+end;
+
+function TCircle2D.PopulateCurvePoints(N: Word): TRect2D;
+var
+  Cont: Integer;
+  Delta, CurrAngle, CX, RX, CY, RY: TRealType;
+begin
+  if CurvePrecision = 0 then
+   begin
+     Result := Rect2D(0, 0, 0, 0);
+     Exit;
+   end;
+
+  inherited PopulateCurvePoints(CurvePrecision + 1);
+
+  GetCircleParams(CX, CY, RX, RY);
+
+  Delta := TWOPI / CurvePrecision;
+  ProfilePoints.Add(Point2D(CX + RX, CY));
+  CurrAngle := Delta;
+  for Cont := 1 to CurvePrecision - 1 do
+   begin
+     ProfilePoints.Add(Point2D(CX + RX * Cos(CurrAngle), CY - RY * Sin(CurrAngle)));
+     CurrAngle := CurrAngle + Delta
+   end;
+  ProfilePoints.Add(Point2D(CX + RX, CY));
+  Result := TransformBoundingBox2D(Points.Extension, ModelTransform);
+end;
+
+constructor TCircle2D.Create(ID: LongInt; const P1, P2: TPoint2D);
+var P3: TPoint2D;
+begin
+  inherited Create(ID, 2, 50);
+  Points.DisableEvents := True;
+  try
+    Points.Add(P1);
+    Points.Add(P2);
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+
+end;
+
+procedure TCircle2D.Assign(const Obj: TGraphicObject);
+begin
+  if (Obj = Self) then
+   Exit;
+  inherited Assign(Obj);
+  if (Obj is TCircle2D) or (Obj is TFrame2D) or (Obj is TArc2D) then
+   begin
+     Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
+     Points.GrowingEnabled := False;
+   end;
+end;
+
+initialization
+  //CADSysInitClassRegister;
+
+  CADSysRegisterClass(200, TCircle2D);
+finalization
+end.
+

@@ -1,0 +1,116 @@
+unit fcomponentcircle;
+
+{$IFNDEF VER150}
+{$MODE Delphi}
+{$ENDIF}
+
+interface
+
+uses
+  Classes, SysUtils, dialogs,
+  CADSys4,
+  CS4BaseTypes,
+  CS4Shapes,
+  fBaseComponent;
+  fcircle2D_cpr;
+
+type
+
+TCADSysCircle2D_CPR = class(TCADSysBaseComponent2D) //class(tpersistent)
+
+  private
+    fCircle2D_CPR: TCircle2D_CPR;
+    function   GetCircle2D_CPR: TCircle2D_CPR;
+    procedure  SetCircle2D_CPR(ACircle2D_CPR: TCircle2D_CPR);
+
+    function   GetRadius: TRealType;
+    procedure  SetRadius(ARadius: TRealType);
+    function   GetDirection: TArcDirection;
+    procedure  SetDirection(D: TArcDirection);
+    function   GetCurvePrecision: word;
+    procedure  SetCurvePrecision(APrecision: word);
+
+  public
+    constructor Create;
+    property Circle2D_CPR: TCircle2D_CPR read GetCircle2D_CPR write SetCircle2D_CPR;
+
+  published
+    property Radius:      TRealType   read GetRadius         write SetRadius;
+    property Direction:   TArcDirection        read GetDirection      write SetDirection;
+    property CurvePrecision: word  read  GetCurvePrecision write SetCurvePrecision;
+
+
+    //property Visible;
+end;
+
+
+implementation
+
+function   TCADSysCircle2D_CPR.GetRadius: TRealType;
+begin
+  result := fCircle2D_CPR.Radius;
+end;
+
+procedure  TCADSysCircle2D_CPR.SetRadius(ARadius: TRealType);
+var hPoint2D: TPoint2D;  alpha: TRealType;  i: integer;
+begin
+  alpha := AngleFromPoints2D (self.fCircle2D_CPR.Points[0], self.fCircle2D_CPR.Points[1] );
+
+  hPoint2D.x := fCircle2D_CPR.Points[0].x + ARadius*cos(alpha);
+  hPoint2D.y := fCircle2D_CPR.Points[0].y + ARadius*sin(alpha);
+
+  i := 1;
+  PVectPoints2D(TPrimitive2D(fCircle2D_CPR).Points.PointsReference)^[i].X := hPoint2D.x;
+  PVectPoints2D(TPrimitive2D(fCircle2D_CPR).Points.PointsReference)^[i].y := hPoint2D.y;
+
+  self.fCircle2D_CPR.UpdateExtension(nil);
+end;
+
+function   TCADSysCircle2D_CPR.GetDirection: TArcDirection;
+begin
+  result := fCircle2D_CPR.Direction;
+end;
+
+procedure  TCADSysCircle2D_CPR.SetDirection(D: TArcDirection);
+begin
+  if (D <> fCircle2D_CPR.Direction) then
+  begin
+    fCircle2D_CPR.Direction := D;
+    //fCircle2D_CPR.OwnerCAD.RefreshViewports;
+    fCircle2D_CPR.UpdateExtension(nil);
+  end;
+end;
+
+function   TCADSysCircle2D_CPR.GetCurvePrecision: word;
+begin
+  result := fCircle2D_CPR.CurvePrecision;
+end;
+
+procedure  TCADSysCircle2D_CPR.SetCurvePrecision(APrecision: word);
+begin
+  fCircle2D_CPR.CurvePrecision := APrecision;
+end;
+
+constructor TCADSysCircle2D_CPR.create;
+begin
+  inherited create;
+  self.fPrimitive2D := fCircle2D_CPR;
+end;
+
+
+function TCADSysCircle2D_CPR.GetCircle2D_CPR: TCircle2D_CPR;
+begin
+  result := fCircle2D_CPR;
+  //result := TCircle2D_CPR(fPrimitive2D);
+end;
+
+procedure TCADSysCircle2D_CPR.SetCircle2D_CPR(ACircle2D_CPR: TCircle2D_CPR);
+begin
+  fCircle2D_CPR := ACircle2D_CPR;
+  self.fPrimitive2D := fCircle2D_CPR;
+  //SetLayerIDX(self.LayerIndex);
+end;
+
+
+end.
+

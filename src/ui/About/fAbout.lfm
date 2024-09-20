@@ -1,0 +1,402 @@
+object frmAbout: TfrmAbout
+  Left = 599
+  Height = 629
+  Top = 164
+  Width = 498
+  BorderStyle = bsDialog
+  Caption = 'LazCAD'
+  ClientHeight = 629
+  ClientWidth = 498
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = 12
+  Font.Name = 'Tahoma'
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '3.4.0.0'
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 629
+    Top = 0
+    Width = 498
+    ActivePage = TabSheet1
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'LazCAD'
+      ClientHeight = 592
+      ClientWidth = 492
+      object lbVersion: TLabel
+        Left = 120
+        Height = 23
+        Top = 184
+        Width = 76
+        Alignment = taCenter
+        Caption = 'Version    '
+        FocusControl = btnClose
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Left = 104
+        Height = 17
+        Top = 392
+        Width = 247
+        Caption = 'Copyright (c)  2024, Lazarus/FPC Community'
+        Font.Color = clWindowText
+        Font.Height = 12
+        Font.Name = 'Tahoma'
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Left = 173
+        Height = 18
+        Top = 416
+        Width = 107
+        Caption = 'All Right Reserved'
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 138
+        Height = 18
+        Top = 479
+        Width = 38
+        Caption = 'EMail :'
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 152
+        Height = 18
+        Top = 512
+        Width = 55
+        Caption = 'Based on'
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label6: TLabel
+        Cursor = crHandPoint
+        Left = 240
+        Height = 18
+        Hint = 'Copyright (c) Piero Valagussa'#13#10'         Allright Reserved'
+        Top = 512
+        Width = 62
+        Caption = 'CADSys4.2'
+        Font.Color = clBlue
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+      end
+      object btnClose: TButton
+        Left = 176
+        Height = 32
+        Top = 552
+        Width = 104
+        Caption = 'Close'
+        TabOrder = 0
+        OnClick = btnCloseClick
+      end
+      object GifAnim1: TGifAnim
+        Left = 160
+        Height = 128
+        Top = 24
+        Width = 256
+        FileName = 'D:\daten\mustafa\entwicklung\lazarus\LazCAD_MDI\src\images\fpc_running_logo.gif'
+      end
+      object Label4: TLabel
+        Left = 192
+        Height = 28
+        Top = 152
+        Width = 75
+        Caption = 'LazCAD'
+        Font.Color = clBlack
+        Font.Height = -20
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label7: TLabel
+        Left = 192
+        Height = 17
+        Top = 480
+        Width = 129
+        Caption = 'mdadali@hackcad.com'
+        Font.Color = clWindowText
+        Font.Height = 12
+        Font.Name = 'Tahoma'
+        ParentColor = False
+        ParentFont = False
+      end
+      object lbPgmVersion: TLabel
+        Left = 221
+        Height = 17
+        Top = 190
+        Width = 77
+        Caption = 'lbPgmVersion'
+      end
+      object Label8: TLabel
+        Left = 120
+        Height = 23
+        Top = 216
+        Width = 63
+        Caption = 'Lazarus'
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lbLazarus: TLabel
+        Left = 221
+        Height = 17
+        Top = 222
+        Width = 54
+        Caption = 'lbLazarus'
+      end
+      object Label9: TLabel
+        Left = 120
+        Height = 23
+        Top = 320
+        Width = 68
+        Caption = 'OS-Infos'
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lbOSInfo: TLabel
+        Left = 221
+        Height = 17
+        Top = 320
+        Width = 48
+        Caption = 'lbOSInfo'
+      end
+      object Label10: TLabel
+        Left = 120
+        Height = 23
+        Top = 280
+        Width = 80
+        Caption = 'Widgetset'
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lbWidgetSet: TLabel
+        Left = 221
+        Height = 17
+        Top = 286
+        Width = 67
+        Caption = 'lbWidgetSet'
+      end
+      object Label11: TLabel
+        Left = 120
+        Height = 23
+        Top = 248
+        Width = 29
+        Caption = 'FPC'
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lbFPCVersion: TLabel
+        Left = 221
+        Height = 17
+        Top = 254
+        Width = 73
+        Caption = 'lbFPCVersion'
+      end
+      object Label12: TLabel
+        Left = 138
+        Height = 17
+        Top = 456
+        Width = 58
+        Caption = 'Developer'
+      end
+      object lbDeveloper: TLabel
+        Left = 224
+        Height = 17
+        Top = 456
+        Width = 68
+        Caption = 'lbDeveloper'
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'License'
+      ClientHeight = 592
+      ClientWidth = 492
+      object Memo2: TMemo
+        Left = 0
+        Height = 592
+        Top = 0
+        Width = 492
+        Align = alClient
+        Color = clSilver
+        Lines.Strings = (
+          'Very Important Note:'
+          'As you have seen my English is far from a perfect English. I''m sorry for that.'
+          'I''m studing to improve it, but if I need to wait before post this component,'
+          'it will be never posted. So be patient and don''t flame me.'
+          'GOOD LUCK.'
+          'PIERO VALAGUSSA.'
+          ''
+          ''
+          'CAD system for Delphi 1.0 - 1.0 release'
+          ''
+          'This document describe the use of a hierarchy of components created to aid'
+          'the construction of 2D drawing programs in Delphi 1.x. The system is composed of 2 components and five libraries that enable Delphi to :'
+          '- draw lines, polylines, polygons, rectangles, arcs, ellipses, on a 2D plane'
+          ' using real coordinates ;'
+          '- apply all 2D affine transformation to this objects;'
+          '- apply visual transformation to view all or a part of the 2D plane on the '#9
+          ' screen;'
+          '- easy manage of set of objects (blocks);'
+          '- the ability to pick the object interactively on the screen.'
+          ''
+          'The system is composed by the following units:'
+          '…….'
+          ''
+          'License'
+          '-----------'
+          'CADSys 4, Copyright © 2001 by Piero Valagussa <pivalag@tin.it>.  '
+          'All rights reserved.'
+          ''
+          'You are grant to use the CADSys library (LIBRARY) in your programs '
+          'for either commercial or non commercial uses, provided that the '
+          'following conditions are met:'
+          ''
+          '1. All copies of the programs you create must bear this copyright (in'
+          '   a dialog box or somewhere else):'
+          ''
+          '   CADSys 4, Copyright © 2001 by Piero Valagussa <pivalag@tin.it>.  '
+          '   All rights reserved.   '
+          ''
+          '2. You may not remove or alter any Piero Valagussa copyright. trademark, '
+          '   or other proprietary rights notice contained in any portion of '
+          '   Piero Valagussa libraries, source code, redistributables or other '
+          '   files that bear such a notice.'
+          '3. You will remain solely responsible to anyone receiving your programs '
+          '   for support, service,  upgrades, or technical or other assistance, '
+          '   and such recipients will have no right to contact  Piero Valagussa '
+          '   for such services or assistance.'
+          '4. You will indemnify and hold Piero Valagussa, its related companies, '
+          '   and its suppliers harmless from and against any claims or liabilities '
+          '   arising out of the use, reproduction, or  distribution of your programs.'
+          '5. All Piero Valagussa libraries, source code and other files remain '
+          '   Piero Valagussa''s exclusive property.'
+          '6. If you use the LIBRARY to create another graphics library, you'
+          '   have to use this license for it.'
+          ''
+          'By using the library you accept that requirements and the following.'
+          ''
+          'LIMITED WARRANTY'
+          '----------------'
+          ''
+          'NO WARRANTY IS PROVIDED TO ANYONE FOR THIS SOFTWARE/COMPONENT/LIBRARY. '
+          'THIS SOFTWARE/COMPONENT/LIBRARY (INCLUDING INSTRUCTION FOR USE) ARE PROVIDES '
+          '"AS IS" WITHOUT WARRANTY OF ANY KIND.'
+          ''
+          'The entire and  exclusive liability and remedy for breach of this limited warranty '
+          'shall not include or extend to any claim for or right to recover any damages, including '
+          'but not limited to, loss of profit, data, or use of the software/component/library or '
+          'special, incidental or consequential damages, or other similar claims, even if Piero '
+          'Valagussa has been specifically advised of the possibility of such damages. In no event '
+          'will Piero Valagussa''s liability for any damages to you or any other person ever exceed '
+          'the lower of the list price or the actual price paid for the package or the licence to '
+          'use the software/component/library, regardless of the form of the claim.'
+          ''
+          'PIERO VALAGUSSA SPECIFICALLY DISCLAIMS ALL OTHER WARRANTIES, REPRESENTATIONS, OR '
+          'CONDITIONS, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, ANY IMPLIED WARRANTY OR '
+          'CONDITION OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. ALL OTHER IMPLIED '
+          'TERMS ARE EXCLUDED.'
+          ''
+          'Specifically, Piero Valagussa makes no representation or warranty that the software/'
+          'component/library or documentation are "error free." or meet any user''s particular '
+          'standards, requirements, or needs.'
+          ''
+          'Piero Valagussa is not responsible for, and does not make any representation, warranty, '
+          'or condition concerning product, media, software/component/library, or documentation not '
+          'manufactured or supplied by Piero Valagussa, such as third parties'' programs which are '
+          'designed using Piero Valagussa software/component/library or which include '
+          'Piero Valagussa programs or files. '
+          ''
+          'GENERAL PROVISIONS'
+          '------------------'
+          ''
+          'This statement may only be modified in writing signed by you and an authorised officer '
+          'of Piero Valagussa. If any provision of this statement is found void or unenforceable, '
+          'the remainder will remain valid and enforceable according to its terms. If any remedy '
+          'provided is determined to have failed of its essential purpose, all limitations of '
+          'liability and exclusions of damages set forth in the limited warranty shall remain in '
+          'effect.'
+          ''
+          'This statement shall be construed, interpreted and governed by the laws of the Italian '
+          'State. This statement gives you specific legal rights: you may have others which vary '
+          'from state to state and from country to country. (UK STATUTORY RIGHTS ARE NOT AFFECTED '
+          'OR PREJUDICED AS TO SOFTWARE/COMPONENT/LIBRARY ACQUIRED OTHER THAN IN THE COURSE OF A '
+          'BUSINESS.) Piero Valagussa reserves all rights not specifically granted in this '
+          'statement.'
+          ''
+          ''
+          ''
+          'Thank you Piero!'
+        )
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 0
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Components'
+      ClientHeight = 592
+      ClientWidth = 492
+      object Memo1: TMemo
+        Left = 0
+        Height = 592
+        Top = 0
+        Width = 492
+        Align = alClient
+        Lines.Strings = (
+          'Components:'
+          '--------------------'
+          ''
+          '--CADSys4.2'
+          '--BGRA Controls'
+          '--GifAnim'
+          '--SpkToolbar'
+          '--LainzControls'
+          '--Industrial'
+          '--StellaSOFT Undo/Redo Engine'
+        )
+        ReadOnly = True
+        TabOrder = 0
+      end
+    end
+  end
+end

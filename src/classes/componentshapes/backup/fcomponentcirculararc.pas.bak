@@ -1,0 +1,184 @@
+unit fcomponentcirculararc;
+
+{$IFNDEF VER150}
+{$MODE Delphi}
+{$ENDIF}
+
+interface
+
+uses
+  Classes, SysUtils, dialogs,
+  CADSys4,
+  CS4BaseTypes,
+  CS4Shapes,
+  fBaseComponent,
+  fCIArc_CSE;
+
+type
+
+  TCADSysCiArc2D_CSE = class(TCADSysBaseComponent2D) //class(tpersistent)
+  private
+    fCIArc2D_CSE: TCIArc2D_CSE;
+    function   GetCIArc2D_CSE: TCIArc2D_CSE;
+    procedure  SetCIArc2D_CSE(ACIArc2D_CSE: TCIArc2D_CSE);
+
+    {function   GetStartPointX: TRealType;
+    function   GetStartPointY: TRealType;
+    function   GetEndPointX: TRealType;
+    function   GetEndPointY: TRealType;
+
+    procedure  SetStartPointX(AValue: TRealType);
+    procedure  SetStartPointY(AValue: TRealType);
+    procedure  SetEndPointX(AValue: TRealType);
+    procedure  SetEndPointY(AValue: TRealType);}
+
+    function   GetRadius: TRealType;
+    //procedure  SetRadius(ARadius: TRealType);
+    function   GetDirection: TArcDirection;
+    procedure  SetDirection(D: TArcDirection);
+    function   GetCurvePrecision: word;
+    procedure  SetCurvePrecision(APrecision: word);
+
+  public
+    constructor Create;
+    property CiArc2D_CPR: TCIArc2D_CSE read GetCIArc2D_CSE write SetCIArc2D_CSE;
+
+  published
+    //property Radius:      TRealType   read GetRadius         write SetRadius;
+    property Direction:   TArcDirection        read GetDirection      write SetDirection;
+
+    {property StartPointX: TRealType   read GetStartPointX    write SetStartPointX;
+    property StartPointY: TRealType   read GetStartPointY    write SetStartPointY;
+    property EndPointX:   TRealType   read GetEndPointX      write SetEndPointX;
+    property EndPointY:   TRealType   read GetEndPointY      write SetEndPointY; }
+    property CurvePrecision: word  read  GetCurvePrecision write SetCurvePrecision;
+
+
+    //property Visible;
+end;
+
+
+implementation
+
+function   TCADSysCiArc2D_CSE.GetRadius: TRealType;
+begin
+  //result := fCIArc2D_CSE.Radius;
+end;
+
+{procedure  TCADSysCiArc2D_CSE.SetRadius(ARadius: TRealType);
+var hPoint2D: TPoint2D;
+begin
+  hPoint2D.X := fCIArc2D_CSE.Points.Points[0].X + ARadius;
+  hPoint2D.Y := fCIArc2D_CSE.Points.Points[1].Y;
+  hPoint2D.W := fCIArc2D_CSE.Points.Points[1].W;
+  fCIArc2D_CSE.Points.Delete(1);
+  fCIArc2D_CSE.Points.Insert(1, hPoint2D);
+end;}
+
+function   TCADSysCiArc2D_CSE.GetDirection: TArcDirection;
+begin
+  result := fCIArc2D_CSE.Direction;
+end;
+
+procedure  TCADSysCiArc2D_CSE.SetDirection(D: TArcDirection);
+begin
+  if (D <> fCIArc2D_CSE.Direction) then
+  begin
+    fCIArc2D_CSE.Direction := D;
+    //fCIArc2D_CSE.OwnerCAD.RefreshViewports;
+  end;
+end;
+
+function   TCADSysCiArc2D_CSE.GetCurvePrecision: word;
+begin
+  result := fCIArc2D_CSE.CurvePrecision;
+end;
+
+procedure  TCADSysCiArc2D_CSE.SetCurvePrecision(APrecision: word);
+begin
+  fCIArc2D_CSE.CurvePrecision := APrecision;
+end;
+
+constructor TCADSysCiArc2D_CSE.create;
+begin
+  inherited create;
+  self.fPrimitive2D := fCIArc2D_CSE;
+end;
+
+
+function TCADSysCiArc2D_CSE.GetCIArc2D_CSE: TCIArc2D_CSE;
+begin
+  result := fCIArc2D_CSE;
+  //result := TCIArc2D_CSE(fPrimitive2D);
+end;
+
+procedure TCADSysCiArc2D_CSE.SetCIArc2D_CSE(ACIArc2D_CSE: TCIArc2D_CSE);
+begin
+  fCIArc2D_CSE := ACIArc2D_CSE;
+  self.fPrimitive2D := fCiArc2D_CSE;
+  //SetLayerIDX(self.LayerIndex);
+end;
+
+{function TCADSysCiArc2D_CSE.GetStartPointX: TRealType;
+begin
+  result := TPrimitive2D(fCIArc2D_CSE).Points[1].X;
+end;
+
+function TCADSysCiArc2D_CSE.GetStartPointY: TRealType;
+begin
+  result := TPrimitive2D(fCIArc2D_CSE).Points[1].Y;
+end;
+
+function TCADSysCiArc2D_CSE.GetEndPointX: TRealType;
+begin
+  result := TPrimitive2D(fCIArc2D_CSE).Points[2].X;
+end;
+
+function TCADSysCiArc2D_CSE.GetEndPointY: TRealType;
+begin
+  result := TPrimitive2D(fCIArc2D_CSE).Points[2].Y;
+end;
+
+procedure  TCADSysCiArc2D_CSE.SetStartPointX(AValue: TRealType);
+var hPoint2D: TPoint2D;
+begin
+  hPoint2D.X := AValue;
+  hPoint2D.Y := fCIArc2D_CSE.Points.Points[1].Y;
+  hPoint2D.W := fCIArc2D_CSE.Points.Points[1].W;
+  fCIArc2D_CSE.Points.Delete(1);
+  fCIArc2D_CSE.Points.Insert(1, hPoint2D);
+end;
+
+procedure  TCADSysCiArc2D_CSE.SetStartPointY(AValue: TRealType);
+var hPoint2D: TPoint2D;
+begin
+  hPoint2D.Y := AValue;
+  hPoint2D.W := fCIArc2D_CSE.Points.Points[1].W;
+  hPoint2D.X := fCIArc2D_CSE.Points.Points[1].X;
+  fCIArc2D_CSE.Points.Delete(1);
+  fCIArc2D_CSE.Points.Insert(1, hPoint2D);
+
+end;
+
+procedure  TCADSysCiArc2D_CSE.SetEndPointX(AValue: TRealType);
+var hPoint2D: TPoint2D;
+begin
+  hPoint2D.X := AValue;
+  hPoint2D.Y := fCIArc2D_CSE.Points.Points[2].Y;
+  hPoint2D.W := fCIArc2D_CSE.Points.Points[2].W;
+  fCIArc2D_CSE.Points.Delete(2);
+  fCIArc2D_CSE.Points.Insert(2, hPoint2D);
+end;
+
+procedure  TCADSysCiArc2D_CSE.SetEndPointY(AValue: TRealType);
+var hPoint2D: TPoint2D;
+begin
+  hPoint2D.Y := AValue;
+  hPoint2D.W := fCIArc2D_CSE.Points.Points[2].W;
+  hPoint2D.X := fCIArc2D_CSE.Points.Points[2].X;
+  fCIArc2D_CSE.Points.Delete(2);
+  fCIArc2D_CSE.Points.Insert(2, hPoint2D);
+end; }
+
+
+end.

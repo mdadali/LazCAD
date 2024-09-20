@@ -1,0 +1,90 @@
+object Form1: TForm1
+  Left = 356
+  Height = 413
+  Top = 149
+  Width = 576
+  Caption = 'Form1'
+  ClientHeight = 413
+  ClientWidth = 576
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -14
+  Font.Name = 'MS Sans Serif'
+  OnCreate = FormCreate
+  LCLVersion = '2.2.6.0'
+  object CSViewport: TCADViewport2D
+    Left = 5
+    Height = 375
+    Top = 5
+    Width = 449
+    RubberPenColor = clBlue
+    ControlPointsColor = clBlack
+    BackGroundColor = clBlack
+    GridColor = clSilver
+    GridDeltaX = 10
+    GridDeltaY = 10
+    ShowGrid = True
+    OnPaint = CSViewportPaint
+    CADCmp2D = CSCAD
+    OnMouseMove2D = CSViewportMouseMove2D
+  end
+  object Button1: TButton
+    Left = 463
+    Height = 31
+    Top = 10
+    Width = 92
+    Caption = 'Drawing test'
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 463
+    Height = 31
+    Top = 49
+    Width = 92
+    Caption = 'Layers test'
+    OnClick = Button2Click
+    TabOrder = 2
+  end
+  object Button3: TButton
+    Left = 463
+    Height = 30
+    Top = 84
+    Width = 92
+    Caption = 'List test'
+    OnClick = Button3Click
+    TabOrder = 3
+  end
+  object Button4: TButton
+    Left = 463
+    Height = 31
+    Top = 118
+    Width = 92
+    Caption = 'Blocks Test'
+    OnClick = Button4Click
+    TabOrder = 4
+  end
+  object Button5: TButton
+    Left = 462
+    Height = 31
+    Top = 206
+    Width = 92
+    Caption = 'Streams demo'
+    OnClick = Button5Click
+    TabOrder = 5
+  end
+  object Button6: TButton
+    Left = 463
+    Height = 31
+    Top = 167
+    Width = 92
+    Caption = 'Shapes test'
+    OnClick = Button6Click
+    TabOrder = 6
+  end
+  object CSCAD: TCADCmp2D
+    DefaultLayersColor = clWhite
+    Left = 8
+    Top = 8
+  end
+end

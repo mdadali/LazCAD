@@ -1,0 +1,57 @@
+object dmPython: TdmPython
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  OldCreateOrder = False
+  Height = 425
+  HorizontalOffset = 574
+  VerticalOffset = 126
+  Width = 692
+  object PythonEngine1: TPythonEngine
+    AutoLoad = False
+    DllName = 'python312.dll'
+    APIVersion = 1013
+    RegVersion = '3.12'
+    FatalAbort = False
+    UseLastKnownVersion = False
+    InitScript.Strings = (
+      'import CADSys4'
+    )
+    IO = PythonGUIInputOutput1
+    PyFlags = [pfDebug]
+    OnAfterInit = PythonEngine1AfterInit
+    Left = 88
+    Top = 64
+  end
+  object pmCADSys4: TPythonModule
+    Engine = PythonEngine1
+    OnInitialization = pmCADSys4Initialization
+    ModuleName = 'CADSys4'
+    Errors = <>
+    Left = 90
+    Top = 152
+  end
+  object PythonGUIInputOutput1: TPythonGUIInputOutput
+    UnicodeIO = True
+    RawOutput = False
+    Left = 272
+    Top = 64
+  end
+  object PDVarDXFFileName: TPythonDelphiVar
+    Engine = PythonEngine1
+    Module = '__main__'
+    VarName = 'dxffilename'
+    Left = 272
+    Top = 152
+  end
+  object IdTCPServer1: TIdTCPServer
+    Bindings = <    
+      item
+        IP = '127.0.0.1'
+        Port = 40000
+      end>
+    DefaultPort = 0
+    OnExecute = IdTCPServer1Execute
+    Left = 90
+    Top = 256
+  end
+end

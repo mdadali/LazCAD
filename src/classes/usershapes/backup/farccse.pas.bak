@@ -1,0 +1,103 @@
+unit fArcCSE;
+
+{$mode delphi}
+
+interface
+
+uses
+  Classes, SysUtils, Math,
+  CS4BaseTypes,
+  CS4Tasks,
+  CS4Shapes,
+  CADSys4;
+
+type
+
+  TArcCSE2D = class(TCurve2D)
+  private
+    procedure GetArcCSEParams(var CX, CY, R: TRealType);
+  protected
+    function PopulateCurvePoints(N: Word): TRect2D; override;
+  public
+    {: This constructor creates a new ArcCSE.
+       Parameters:
+       P1 = Centrum pont
+       P2 = Radius end point
+    }
+    constructor Create(ID: LongInt; const CP, SP, EP: TPoint2D);
+    procedure Assign(const Obj: TGraphicObject); override;
+  end;
+
+
+implementation
+
+// =====================================================================
+// TArcCSE2D
+// =====================================================================
+
+procedure TArcCSE2D.GetArcCSEParams(var CX, CY, R: TRealType);
+var
+  P1, P0: TPoint2D;
+begin
+  P0:= CartesianPoint2D(Points[0]);
+  P1 := CartesianPoint2D(Points[1]);
+  R := SQRT(SQR(P1.X - P0.X)+SQR(P1.Y - P0.Y)) ;
+  CX := P0.X;
+  CY := P0.Y;
+end;
+
+function TArcCSE2D.PopulateCurvePoints(N: Word): TRect2D;
+var
+  Cont: Integer;
+  Delta, CurrAngle, CX, CY, R: TRealType;
+begin
+  if CurvePrecision = 0 then
+   begin
+     Result := Rect2D(0, 0, 0, 0);
+     Exit;
+   end;
+
+  inherited PopulateCurvePoints(CurvePrecision + 1);
+
+  GetArcCSEParams(CX, CY, R);
+  Delta := TWOPI / CurvePrecision;
+  ProfilePoints.Add(Point2D(CX +R , CY));
+  CurrAngle := Delta;
+  for Cont := 1 to CurvePrecision  do
+   begin
+     ProfilePoints.Add(Point2D(CX + R * Cos(CurrAngle), CY - R * Sin(CurrAngle)));
+     CurrAngle := CurrAngle + Delta
+   end;
+  Result := TransformBoundingBox2D(Points.Extension, ModelTransform);
+end;
+
+constructor TArcCSE2D.Create(ID: LongInt; const CP, SP, EP: TPoint2D);
+begin
+  inherited Create(ID, 2, 50);
+  Points.DisableEvents := True;
+  try
+    Points.Add(CP);
+    Points.Add(SP);
+    Points.Add(EP);
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+end;
+
+procedure TArcCSE2D.Assign(const Obj: TGraphicObject);
+begin
+  if (Obj = Self) then
+   Exit;
+  inherited Assign(Obj);
+  if (Obj is TArcCSE2D) or (Obj is TFrame2D) then
+   begin
+     Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
+     Points.GrowingEnabled := False;
+   end;
+end;
+
+
+end.
+

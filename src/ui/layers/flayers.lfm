@@ -1,0 +1,168 @@
+object frmLayers: TfrmLayers
+  Left = 562
+  Height = 472
+  Top = 146
+  Width = 301
+  Caption = 'Layers'
+  ClientHeight = 472
+  ClientWidth = 301
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  LCLVersion = '2.2.6.0'
+  object Label1: TLabel
+    Left = 10
+    Height = 16
+    Top = 5
+    Width = 34
+    Caption = 'Layers'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 10
+    Height = 16
+    Top = 195
+    Width = 30
+    Caption = 'Name'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 10
+    Height = 16
+    Top = 248
+    Width = 50
+    Caption = 'Pen color'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 162
+    Height = 16
+    Top = 248
+    Width = 42
+    Caption = 'Pen size'
+    ParentColor = False
+  end
+  object Label5: TLabel
+    Left = 12
+    Height = 16
+    Top = 368
+    Width = 60
+    Caption = 'Active layer'
+    ParentColor = False
+  end
+  object Label6: TLabel
+    Left = 12
+    Height = 16
+    Top = 308
+    Width = 61
+    Caption = 'Brush color'
+    ParentColor = False
+  end
+  object listBoxLayersList: TListBox
+    Left = 10
+    Height = 166
+    Top = 20
+    Width = 236
+    ExtendedSelect = False
+    ItemHeight = 0
+    OnClick = listBoxLayersListClick
+    TabOrder = 0
+    TopIndex = -1
+  end
+  object TransparentChk: TCheckBox
+    Left = 162
+    Height = 21
+    Top = 293
+    Width = 86
+    Caption = 'Transparent'
+    TabOrder = 1
+  end
+  object OKBtn: TBitBtn
+    Left = 184
+    Height = 25
+    Top = 384
+    Width = 76
+    Caption = 'OK'
+    Default = True
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      0400000000000001000000000000000000001000000010000000000000000000
+      80000080000000808000800000008000800080800000C0C0C000808080000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
+      555555555555555555555555555555555555555555FF5555555555555A055555
+      55555555588FF55555555555AAA05555555555558888F55555555555AAA05555
+      555555558888FF555555555AAAAA05555555555888888F55555555AAAAAA0555
+      5555558888888FF5555558AA05AAA05555555888858888F555558A05555AA055
+      55558885555888FF55555555555AAA05555555555558888F555555555555AA05
+      555555555555888FF555555555555AA05555555555555888FF5555555555558A
+      05555555555555888FF5555555555558A05555555555555888FF555555555555
+      5AA0555555555555588855555555555555555555555555555555
+    }
+    ModalResult = 1
+    NumGlyphs = 2
+    OnClick = OKBtnClick
+    TabOrder = 2
+  end
+  object NameEdt: TEdit
+    Left = 10
+    Height = 28
+    Top = 210
+    Width = 236
+    TabOrder = 3
+    Text = 'NameEdt'
+  end
+  object PenSizeEdt: TSpinEdit
+    Left = 162
+    Height = 26
+    Top = 263
+    Width = 86
+    MaxValue = 10
+    MinValue = 1
+    TabOrder = 4
+    Value = 1
+  end
+  object ActiveLayerCBox: TComboBox
+    Left = 12
+    Height = 32
+    Top = 383
+    Width = 164
+    ItemHeight = 0
+    Style = csDropDownList
+    TabOrder = 6
+  end
+  object ActiveChk: TCheckBox
+    Left = 162
+    Height = 21
+    Top = 313
+    Width = 55
+    Caption = 'Active'
+    TabOrder = 5
+  end
+  object VisibleChk: TCheckBox
+    Left = 162
+    Height = 21
+    Top = 333
+    Width = 58
+    Caption = 'Visible'
+    TabOrder = 7
+  end
+  object PenColorButton: TColorButton
+    Left = 14
+    Height = 25
+    Top = 268
+    Width = 75
+    BorderWidth = 2
+    ButtonColorSize = 16
+    ButtonColor = clBlack
+  end
+  object BrushColorButton: TColorButton
+    Left = 14
+    Height = 25
+    Top = 330
+    Width = 75
+    BorderWidth = 2
+    ButtonColorSize = 16
+    ButtonColor = clBlack
+  end
+end
