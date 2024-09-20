@@ -3,7 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="Debug_Linux32_gtk2">
+    <BuildModes Active="Debug_Linux64_gtk2">
       <Item Name="Debug_Win32_gtk2">
         <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="gtk2"/>
@@ -252,8 +252,9 @@
       <Unit>
         <Filename Value="LazCAD.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="9"/>
-        <CursorPos X="6" Y="27"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="22"/>
+        <CursorPos Y="56"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -480,7 +481,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="44"/>
         <CursorPos X="29" Y="74"/>
-        <UsageCount Value="197"/>
+        <UsageCount Value="198"/>
       </Unit>
       <Unit>
         <Filename Value="buildin\import\cImportGCODE2.pas"/>
@@ -488,7 +489,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="488"/>
         <CursorPos X="37" Y="492"/>
-        <UsageCount Value="142"/>
+        <UsageCount Value="143"/>
       </Unit>
       <Unit>
         <Filename Value="buildin\import\cImportEssi.pas"/>
@@ -496,7 +497,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="536"/>
         <CursorPos X="8" Y="561"/>
-        <UsageCount Value="142"/>
+        <UsageCount Value="143"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\camh.pas"/>
@@ -504,7 +505,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="37"/>
         <CursorPos X="65" Y="53"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="142"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcontainer.pas"/>
@@ -512,7 +513,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos Y="20"/>
-        <UsageCount Value="71"/>
+        <UsageCount Value="72"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\contours.pas"/>
@@ -520,14 +521,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="88"/>
         <CursorPos X="41" Y="112"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="62"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fobjectposition.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
         <CursorPos X="13" Y="21"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -536,7 +537,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="15" Y="52"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="36"/>
       </Unit>
       <Unit>
         <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
@@ -544,11 +545,10 @@
         <ComponentName Value="frmTTF2Vector"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="306"/>
         <CursorPos X="3" Y="313"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -839,7 +839,7 @@
         <UsageCount Value="11"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="28">
+    <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
         <Caret Line="435" Column="34" TopLine="130"/>
@@ -955,6 +955,10 @@
       <Position>
         <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
         <Caret Line="317" Column="20" TopLine="306"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
+        <Caret Line="313" Column="3" TopLine="306"/>
       </Position>
     </JumpHistory>
     <RunParams>
