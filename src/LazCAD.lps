@@ -3,7 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="Debug_Linux64_gtk2">
+    <BuildModes Active="Debug_Linux32_gtk2">
       <Item Name="Debug_Win32_gtk2">
         <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="gtk2"/>
@@ -253,7 +253,7 @@
         <Filename Value="LazCAD.lpr"/>
         <IsPartOfProject Value="True"/>
         <TopLine Value="9"/>
-        <CursorPos X="32" Y="27"/>
+        <CursorPos X="6" Y="27"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -366,7 +366,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
         <TopLine Value="17"/>
-        <CursorPos X="32" Y="31"/>
+        <CursorPos X="31" Y="31"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -387,7 +387,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="9"/>
-        <CursorPos X="48" Y="16"/>
+        <CursorPos Y="16"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -526,7 +526,7 @@
         <Filename Value="classes\componentshapes\fobjectposition.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <CursorPos X="59" Y="21"/>
+        <CursorPos X="13" Y="21"/>
         <UsageCount Value="48"/>
         <Loaded Value="True"/>
       </Unit>
@@ -710,7 +710,7 @@
         <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
         <EditorIndex Value="6"/>
         <TopLine Value="222"/>
-        <CursorPos X="56" Y="227"/>
+        <CursorPos X="30" Y="227"/>
         <UsageCount Value="79"/>
         <Loaded Value="True"/>
       </Unit>
@@ -736,7 +736,6 @@
         <TopLine Value="1444"/>
         <CursorPos X="7" Y="1468"/>
         <UsageCount Value="41"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\DynaApp\Win32\debug\DynaApp\data\menus\StdMenu_ger.xml"/>
@@ -765,13 +764,12 @@
         <TopLine Value="86"/>
         <CursorPos Y="106"/>
         <UsageCount Value="32"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
         <EditorIndex Value="7"/>
         <TopLine Value="9081"/>
-        <CursorPos X="40" Y="9094"/>
+        <CursorPos X="6" Y="9094"/>
         <UsageCount Value="61"/>
         <Loaded Value="True"/>
       </Unit>
