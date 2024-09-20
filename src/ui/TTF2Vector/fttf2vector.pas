@@ -2,6 +2,7 @@ unit fTTF2Vector;
 
 {$mode objfpc}{$H+}
 
+
 interface
 
 uses
@@ -76,6 +77,7 @@ type
     ShellTreeView1: TShellTreeView;
     procedure acAboutExecute(Sender: TObject);
     procedure acExitExecute(Sender: TObject);
+
     procedure acExportToCADExecute(Sender: TObject);
     procedure acFileSaveAsExecute(Sender: TObject);
     procedure acZoomExtentionsExecute(Sender: TObject);
@@ -118,15 +120,19 @@ const
      OriginY = 0;
      SymbolH = 300;
 
-
 var
-  //frmTTF2Vector: TfrmTTF2Vector;
+
   FirstVertex: boolean;
 
+  {$IFNDEF TTF2VECTOR_EMBEDDED}
+  frmTTF2Vector: TfrmTTF2Vector;
+  {$ENDIF}
 
 implementation
 
+{$IFDEF TTF2VECTOR_EMBEDDED}
 uses fMain;
+{$ENDIF}
 
 {$R *.lfm}
 
@@ -134,6 +140,13 @@ uses fMain;
 
 procedure TfrmTTF2Vector.FormCreate(Sender: TObject);
 begin
+  {$IFDEF TTF2VECTOR_EMBEDDED}
+    acAbout.Visible        := false;
+    acExportToCAD.Visible  := true;
+  {$ELSE}
+    acAbout.Visible       := true;
+    acExportToCAD.Visible := false;
+  {$ENDIF}
   FTTFFont := TFreeTypeFont.create;
   FTTFFont.Hinted:=false;
   {$IFDEF LINUX}
@@ -430,7 +443,9 @@ end;
 
 procedure TfrmTTF2Vector.acExportToCADExecute(Sender: TObject);
 begin
-  frmMAin.ImportFromCADCmp(CADCmp2D1);
+  {$IFDEF TTF2VECTOR_EMBEDDED}
+  frmMain.ImportFromCADCmp(CADCmp2D1);
+  {$ENDIF}
 end;
 
 procedure TfrmTTF2Vector.acAboutExecute(Sender: TObject);

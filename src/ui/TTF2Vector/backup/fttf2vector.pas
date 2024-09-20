@@ -2,6 +2,7 @@ unit fTTF2Vector;
 
 {$mode objfpc}{$H+}
 
+
 interface
 
 uses
@@ -119,7 +120,6 @@ const
      OriginY = 0;
      SymbolH = 300;
 
-
 var
 
   FirstVertex: boolean;
@@ -141,8 +141,8 @@ uses fMain;
 procedure TfrmTTF2Vector.FormCreate(Sender: TObject);
 begin
   {$IFDEF TTF2VECTOR_EMBEDDED}
-    acAbout.Visible       := false;
-    acExportToCADVisible  := true;
+    acAbout.Visible        := false;
+    acExportToCAD.Visible  := true;
   {$ELSE}
     acAbout.Visible       := true;
     acExportToCAD.Visible := false;
@@ -449,14 +449,10 @@ begin
 end;
 
 procedure TfrmTTF2Vector.acAboutExecute(Sender: TObject);
-{$IFNDEF TTF2VECTOR_EMBEDDED}
 var frmAbout: TfrmAbout;
-{$ENDIF}
 begin
-  {$IFNDEF TTF2VECTOR_EMBEDDED}
   frmAbout := TfrmAbout.Create(self);
   frmAbout.ShowModal;
-  {$ENDIF}
 end;
 
 end.

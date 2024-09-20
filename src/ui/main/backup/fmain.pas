@@ -26,7 +26,7 @@ uses
   fLayers,
   fSimulation,
   fDrawing,
-  fTTF2Vector;
+  fttf2vector;
 
 type
 

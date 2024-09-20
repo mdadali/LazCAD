@@ -3,7 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="Debug_Linux32_gtk2">
+    <BuildModes Active="Debug_Arm_Linux32_gtk2">
       <Item Name="Debug_Win32_gtk2">
         <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="gtk2"/>
@@ -60,6 +60,12 @@
             </Debugging>
             <LinkSmart Value="True"/>
           </Linking>
+          <Other>
+            <CustomOptions Value="-dTTF2VECTOR_EMBEDDED"/>
+            <OtherDefines Count="1">
+              <Define0 Value="TTF2VECTOR_EMBEDDED"/>
+            </OtherDefines>
+          </Other>
         </CompilerOptions>
       </Item>
       <Item Name="Debug_Linux32_gtk2">
@@ -252,8 +258,7 @@
       <Unit>
         <Filename Value="LazCAD.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="9"/>
-        <CursorPos X="6" Y="27"/>
+        <CursorPos Y="5"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -265,11 +270,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fMain"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="3240"/>
-        <CursorPos X="36" Y="3259"/>
+        <TopLine Value="12"/>
+        <CursorPos X="11" Y="26"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\drawing\fdrawing.pas"/>
@@ -278,7 +282,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="fDrawing"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="703"/>
         <CursorPos X="3" Y="705"/>
         <UsageCount Value="200"/>
@@ -297,11 +301,10 @@
         <Filename Value="classes\componentshapes\figuresascomponents.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FiguresAsComponents"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="42"/>
-        <CursorPos X="46" Y="50"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="41"/>
+        <CursorPos X="60" Y="51"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentArc.pas"/>
@@ -364,7 +367,7 @@
       <Unit>
         <Filename Value="classes\componentshapes\fComponentLine.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="17"/>
         <CursorPos X="31" Y="31"/>
         <UsageCount Value="200"/>
@@ -386,7 +389,7 @@
         <ComponentName Value="frmAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="8"/>
         <CursorPos Y="16"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -480,7 +483,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="44"/>
         <CursorPos X="29" Y="74"/>
-        <UsageCount Value="197"/>
+        <UsageCount Value="199"/>
       </Unit>
       <Unit>
         <Filename Value="buildin\import\cImportGCODE2.pas"/>
@@ -488,7 +491,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="488"/>
         <CursorPos X="37" Y="492"/>
-        <UsageCount Value="142"/>
+        <UsageCount Value="144"/>
       </Unit>
       <Unit>
         <Filename Value="buildin\import\cImportEssi.pas"/>
@@ -496,7 +499,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="536"/>
         <CursorPos X="8" Y="561"/>
-        <UsageCount Value="142"/>
+        <UsageCount Value="144"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\camh.pas"/>
@@ -504,7 +507,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="37"/>
         <CursorPos X="65" Y="53"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="143"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcontainer.pas"/>
@@ -512,7 +515,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos Y="20"/>
-        <UsageCount Value="71"/>
+        <UsageCount Value="73"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\contours.pas"/>
@@ -520,14 +523,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="88"/>
         <CursorPos X="41" Y="112"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="63"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fobjectposition.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <CursorPos X="13" Y="21"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="50"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -536,19 +539,20 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="15" Y="52"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="37"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
+        <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmTTF2Vector"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="fTTF2Vector"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="306"/>
-        <CursorPos X="3" Y="313"/>
-        <UsageCount Value="29"/>
+        <TopLine Value="374"/>
+        <CursorPos X="3" Y="376"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -708,10 +712,10 @@
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="222"/>
         <CursorPos X="30" Y="227"/>
-        <UsageCount Value="79"/>
+        <UsageCount Value="80"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -724,10 +728,10 @@
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="4049"/>
         <CursorPos X="38" Y="4067"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -767,10 +771,10 @@
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="9081"/>
         <CursorPos X="6" Y="9094"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="62"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -838,47 +842,27 @@
         <CursorPos X="53" Y="866"/>
         <UsageCount Value="11"/>
       </Unit>
+      <Unit>
+        <Filename Value="ui\TTF2Vector\fTTF2Vector..lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\TTF2Vector\fttf2vector..lfm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="63" Y="49"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="28">
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="435" Column="34" TopLine="130"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="154" Column="26" TopLine="136"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="969" Column="56" TopLine="950"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="47" Column="28" TopLine="33"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="428" Column="64" TopLine="395"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="128" Column="12" TopLine="109"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="427" Column="45" TopLine="409"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="109" TopLine="95"/>
-      </Position>
+    <OtherDefines Count="1">
+      <Define0 Value="TTF2VECTOR_EMBEDDED"/>
+    </OtherDefines>
+    <JumpHistory HistoryIndex="13">
       <Position>
         <Filename Value="ui\main\fmain.pas"/>
         <Caret Line="3238" Column="6" TopLine="3235"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="151" TopLine="134"/>
       </Position>
       <Position>
         <Filename Value="ui\main\fmain.pas"/>
@@ -897,64 +881,40 @@
         <Caret Line="3242" Column="29" TopLine="3235"/>
       </Position>
       <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="150" TopLine="150"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="151" TopLine="151"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="150" TopLine="150"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="151" TopLine="151"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="152" TopLine="152"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="153" TopLine="153"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="154" TopLine="154"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="155" TopLine="155"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="154" TopLine="154"/>
-      </Position>
-      <Position>
         <Filename Value="ui\drawing\fdrawing.pas"/>
         <Caret Line="422" Column="47" TopLine="415"/>
       </Position>
       <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="156" TopLine="156"/>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="3259" Column="36" TopLine="3240"/>
       </Position>
       <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="368" Column="23" TopLine="364"/>
+        <Filename Value="LazCAD.lpr"/>
+        <Caret Line="22" Column="3"/>
       </Position>
       <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="257" Column="26" TopLine="232"/>
+        <Filename Value="LazCAD.lpr"/>
+        <Caret Line="12" Column="79"/>
       </Position>
       <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="368" Column="3" TopLine="365"/>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="29" Column="16" TopLine="11"/>
       </Position>
       <Position>
-        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
-        <Caret Line="317" Column="20" TopLine="306"/>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="26" Column="53" TopLine="12"/>
+      </Position>
+      <Position>
+        <Filename Value="LazCAD.lpr"/>
+        <Caret Line="22" Column="3"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
+        <Caret Line="134" Column="70" TopLine="127"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
+        <Caret Line="4" TopLine="130"/>
       </Position>
     </JumpHistory>
     <RunParams>
