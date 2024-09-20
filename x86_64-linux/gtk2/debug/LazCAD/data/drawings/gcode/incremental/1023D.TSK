@@ -1,0 +1,33 @@
+ ' Conversion of PI / EPI program : 1023D.PGM
+ '  
+ ' Made with Version 1.1 WB 01.01.1999 
+ '  
+ ' Generated on  Freitag, Februar 6, 2015, at 01:34:40
+ '  
+ ' **** Input configuration ****   
+ '   
+ ' Old Input(PI/EPI)    New Input Warpdrive 
+ '   
+ '     input 1      =       IN 2  
+ '     input 2      =       IN 8   
+ '     input 3      =       IN 3 (  CW limit) 
+ '     input 4      =       IN 4 ( CCW limit ) 
+ '   
+ '   
+ ' Warpdrive Inputs      Inputs (PI / EPI)  
+ '   
+ '  IN1             =       Home Limit  
+ '  IN2             =       IN1    
+ '  IN3 ( CW limit) =       IN3 ( CW limit)
+ '  IN4 (CCW limit) =       IN4 ( CCW Limit)
+ '  IN5 (Run)       =       Cycle Start 
+ '  IN6 (Clear)     =       Clear   
+ '  IN7 (Feedhold)  =       Feedhold      
+ '  IN8             =       IN2       
+ '     
+INTEGER  Herhaal
+  
+WNDGS = 1
+ACCEL = 0
+DECEL = 0
+LO

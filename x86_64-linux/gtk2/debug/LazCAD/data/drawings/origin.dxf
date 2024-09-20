@@ -1,0 +1,248 @@
+  0
+SECTION
+  2
+HEADER
+  9
+$ANGDIR
+ 70
+     0
+  9
+$EXTMAX
+ 10
+200.000000
+ 20
+150.000000
+ 30
+0.000000
+  9
+$EXTMIN
+ 10
+155.000000
+ 20
+5.000000
+ 30
+0.000000
+  9
+$CECOLOR
+ 62
+   256
+  9
+$CELTYPE
+  6
+BYLAYER
+  0
+ENDSEC
+  0
+SECTION
+  2
+TABLES
+  0
+TABLE
+  2
+LTYPE
+ 70
+     1
+  0
+LTYPE
+  2
+CONTINUOUS
+ 70
+    64
+  3
+Solid line
+ 72
+    65
+ 73
+     0
+ 40
+0.000000
+  0
+ENDTAB
+  0
+TABLE
+  2
+LAYER
+ 70
+   257
+  0
+LAYER
+  2
+0
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+0
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Layer 1
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Layer 2
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Layer 3
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Layer 4
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Layer 5
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Layer 6
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Layer 7
+ 70
+    64
+ 62
+     5
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+InnerContourCW
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+InnerContourCCW
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+OuterContourCW
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+OuterContourCCW
+ 70
+    64
+ 62
+     7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Jumps
+ 70
+    64
+ 62
+     5
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+Template
+ 70
+    64
+ 62
+     3
+  6
+CONTINUOUS
+  0
+ENDTAB
+  0
+ENDSEC
+  0
+SECTION
+  2
+BLOCKS
+  0
+ENDSEC
+  0
+SECTION
+  2
+ENTITIES
+  0
+ELLIPSE
+  8
+OuterContourCW
+ 10
+177.500000
+ 20
+77.500000
+ 40
+22.500000
+ 41
+72.500000
+ 42
+0.000000
+  0
+ENDSEC
+  0
+EOF

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <PathDelim Value="\"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <Title Value="LazCAD"/>
+      <Scaled Value="True"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <AutoIncrementBuild Value="True"/>
+      <BuildNr Value="62"/>
+      <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
+      <StringTable ProductName="LazCAD"/>
+    </VersionInfo>
+    <BuildModes>
+      <Item Name="Debug_Win64_win" Default="True"/>
+      <SharedMatrixOptions Count="4">
+        <Item1 ID="820756939067" Type="IDEMacro" MacroName="LCLWidgetType" Value="win32"/>
+        <Item2 ID="579898267453" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item3 ID="945776926389" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
+        <Item4 ID="887260432645" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
+      </SharedMatrixOptions>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+    </RunParams>
+    <RequiredPackages>
+      <Item>
+        <PackageName Value="LainzControls"/>
+      </Item>
+      <Item>
+        <PackageName Value="industrial"/>
+      </Item>
+      <Item>
+        <PackageName Value="SynEdit"/>
+      </Item>
+      <Item>
+        <PackageName Value="bgracontrols"/>
+      </Item>
+      <Item>
+        <PackageName Value="SpkToolbarPackage"/>
+      </Item>
+      <Item>
+        <PackageName Value="python4lazarus_package"/>
+      </Item>
+      <Item>
+        <PackageName Value="indylaz"/>
+      </Item>
+      <Item>
+        <PackageName Value="pkg_gifanim"/>
+      </Item>
+      <Item>
+        <PackageName Value="RunTimeTypeInfoControls"/>
+      </Item>
+      <Item>
+        <PackageName Value="cadsys"/>
+      </Item>
+      <Item>
+        <PackageName Value="LCL"/>
+      </Item>
+    </RequiredPackages>
+    <Units>
+      <Unit>
+        <Filename Value="LazCAD.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\main\fmain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="fMain"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Drawing"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="fDrawing"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\figuresascomponents.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FiguresAsComponents"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fComponentArc.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fcomponentrect.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="fComponentRect"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fComponentFrame.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fcomponentbspline.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="fComponentBSpline"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fcomponentpolygon.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="fComponentPolygon"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fComponentPLine.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fComponentLine.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\splash\fSplash.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSplash"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\About\fAbout.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmAbout"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\library_blocks\flibraryblocks.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmLibraryBlocks"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="fLibraryBlocks"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fcomponentcirculararc.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fcomponentcircle.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="common\applicationh.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="common\CADDocument.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\layers\flayers.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmLayers"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="fLayers"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\simulation\fsimulation.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSimulation"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="fSimulation"/>
+      </Unit>
+      <Unit>
+        <Filename Value="libs\clipper4.8.4\Delphi\clipper.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="libs\clipper4.8.4\Delphi\fCADSys4ClipperInterface.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fcomponentgraphicobj.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="fComponentGraphicObj"/>
+      </Unit>
+      <Unit>
+        <Filename Value="buildin\import\cImportGCODE2.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="buildin\import\cImportEssi.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="CAM\camh.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fcomponentcontainer.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="CAM\contours.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\fobjectposition.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="libs\StellaUndoRedo\UndoRedo.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmTTF2Vector"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="ui\main;ui\drawing;classes\componentshapes;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector"/>
+      <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <TargetCPU Value="x86_64"/>
+      <TargetOS Value="win64"/>
+    </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf3"/>
+      </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions>
+      <Item>
+        <Name Value="EAbort"/>
+      </Item>
+      <Item>
+        <Name Value="ECodetoolError"/>
+      </Item>
+      <Item>
+        <Name Value="EFOpenError"/>
+      </Item>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

@@ -1,0 +1,77 @@
+CNCFile=T:\Brennschneidprogramme\Sato\DIN\10050.DIN
+[INCH]
+Inch_MM=0
+[Date]
+Current day=9/10/2009
+Productions day=9/10/2009
+Productions time=7:32:34 AM
+rProductions day=40066.0
+rProductions time=0.31429
+Version=$1C$88$15$16$0A$95$14$16$1C &/ 9/10/2009
+[PartsOnSheetRecord]
+NrOfParts=2
+NrOfRows=0
+NrOfColumns=0
+NrOfSheets=1
+PartsOnSheet=2
+PartsOnLastSheet=0
+ClearanceRow=15.000
+ClearanceColumns=10.000
+PartStartPosX=0.000
+PartStartPosY=0.000
+SaveAreaH=5.000
+SaveAreaV=5.000
+HowToCutRowCol=2
+HowToCutRow=0
+HowToCut=0
+maxKorf=5.000
+userKorf=0.1
+MRegion_Flag=0
+MRegion_Number=0
+NrOfSheets=1
+MehrFachBrennerWenigerTeileAlsBrenner_Flag=0
+MehrFachBrennerWenigerTeileAlsBrenner_AnzahlTeile=2
+[]
+[MetalSheetRecord]
+SheetThickness=1.000
+SheetMaterial=ST37
+SheetWidth=0.000
+SheetHeight=0.000
+SheetAngle=0.000
+SheetStartPosX=0.000
+SheetStartPosY=0.000
+SheetCuttingOffset=0.0000
+SheetSpeed=900.000
+SheetCuttingOffsetInlineConturFlag=0
+SheetCuttingOffsetInlineContur=0.0000
+SheetNumber=1
+[]
+[MachineParameters]
+PositionTerminal=1
+XYAxisExchanged=0
+MaxSeed=0
+MaxWidth=3000.000
+MaxHeight=1500.000
+RasterFlag=0
+StartRasterX=0.000
+StartRasterY=0.000
+RasterOffsetX=200.000
+RasterOffsetY=200.000
+RasterFile=
+RasterPointSize=1
+RasterPen=1
+PenMachineOut=3
+ThicknessMachineOut=1
+FillPenMachineOut=4
+PenMachineIn=3
+ThicknessMachineIn=1
+FillPenMachineIn=9
+MaxNumberTorch=1
+UsesNumberTorch=1
+TorchDistance=
+NoSheetDefine=1
+SheetWidthMin=340.0
+SheetHeightMin=695.0
+SheetWidthMax=345.0
+SheetHeightMax=700.0
+[]

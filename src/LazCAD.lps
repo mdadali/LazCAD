@@ -547,7 +547,7 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="306"/>
-        <CursorPos Y="313"/>
+        <CursorPos X="51" Y="318"/>
         <UsageCount Value="29"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -570,7 +570,7 @@
         <UsageCount Value="63"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\LazCAD\src\ui\main\fmainlinux.pas"/>
+        <Filename Value="ui\main\fmainlinux.pas"/>
         <HasResources Value="True"/>
         <UnitName Value="fmainLinux"/>
         <EditorIndex Value="-1"/>
@@ -713,7 +713,6 @@
         <CursorPos X="56" Y="227"/>
         <UsageCount Value="79"/>
         <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="D:\home\maurog\Programme\Lazarus_2.2.6\lazarus\lcl\lcltype.pp"/>
@@ -730,7 +729,6 @@
         <CursorPos X="38" Y="4067"/>
         <UsageCount Value="53"/>
         <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4DXFModule.pas"/>
@@ -776,7 +774,6 @@
         <CursorPos X="40" Y="9094"/>
         <UsageCount Value="61"/>
         <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="D:\home\maurog\Programme\Lazarus_2.2.6\fpcsrc\rtl\objpas\math.pp"/>
@@ -794,21 +791,21 @@
         <UsageCount Value="22"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\..\..\..\..\..\..\home\maurog\Programme\Lazarus_399\config_lazarus\onlinepackagemanager\packages\zeosdbo\src\dbc\ZDbcDbLibUtils.pas"/>
+        <Filename Value="..\..\..\Lazarus_399\config_lazarus\onlinepackagemanager\packages\zeosdbo\src\dbc\ZDbcDbLibUtils.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="47"/>
         <CursorPos X="45" Y="64"/>
         <UsageCount Value="6"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\..\..\..\..\..\..\..\home\maurog\Programme\Lazarus\stabile\fpcsrc\rtl\objpas\sysutils\filutilh.inc"/>
+        <Filename Value="..\..\..\Lazarus\stabile\fpcsrc\rtl\objpas\sysutils\filutilh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="54"/>
         <CursorPos X="20" Y="70"/>
         <UsageCount Value="7"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\..\..\..\..\..\..\..\home\maurog\Programme\Lazarus\stabile\fpcsrc\rtl\objpas\sysutils\osutilsh.inc"/>
+        <Filename Value="..\..\..\Lazarus\stabile\fpcsrc\rtl\objpas\sysutils\osutilsh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="37" Y="9"/>
@@ -829,14 +826,14 @@
         <UsageCount Value="10"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\..\..\..\..\..\..\..\home\maurog\Programme\Lazarus\stabile\fpcsrc\rtl\objpas\classes\classesh.inc"/>
+        <Filename Value="..\..\..\Lazarus\stabile\fpcsrc\rtl\objpas\classes\classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1877"/>
         <CursorPos X="3" Y="1889"/>
         <UsageCount Value="16"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\..\..\..\..\..\..\..\home\maurog\Programme\Lazarus\stabile\lazarus\components\ideintf\objectinspector.pp"/>
+        <Filename Value="..\..\..\Lazarus\stabile\lazarus\components\ideintf\objectinspector.pp"/>
         <UnitName Value="ObjectInspector"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="861"/>
