@@ -18,6 +18,7 @@ uses
 
 type
 
+
 tOptions = (Opt1, Opt2, Opt3);
 tOptionsFlags = set of tOptions;
 

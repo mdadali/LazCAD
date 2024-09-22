@@ -5,10 +5,11 @@ unit fMain;
 interface
 
 uses
-  LCLType, Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, RTTIGrids, StdCtrls, ShellCtrls, ActnList, Buttons, Menus, ExtDlgs,
-  SpkToolbar, spkt_Tab, spkt_Pane, spkt_Buttons, spkt_Appearance,
-  spkt_Checkboxes, BCButtonFocus, Interfaces,   PropEdits, ObjectInspector,
+  LCLType, Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs,
+  ComCtrls, ExtCtrls, RTTIGrids, StdCtrls, ShellCtrls, ActnList, Buttons, Menus,
+  ExtDlgs, SpkToolbar, spkt_Tab, spkt_Pane, spkt_Buttons, spkt_Appearance,
+  spkt_Checkboxes, BCButtonFocus, AbUnzper, Interfaces, PropEdits,
+  ObjectInspector,
 
   CADSys4,
   CS4BaseTypes,
@@ -961,7 +962,6 @@ type
     procedure OpenDXFFile(AFileName: string);
     procedure LoadDXFFile(AFileName: string; ACADCmp: TCADCmp2D);
     procedure OpenESSIFile(AFileName: string);
-    procedure OpenDinFile(AFileName: string);
   public
     procedure SetupInspector(AControl: TPersistent);
     procedure UpdateUserInterface;
@@ -1006,6 +1006,7 @@ begin
       result := TDrawing(APage.Components[i]);
       exit;
     end;
+  //AbUnZipper1.str
 end;
 
 function TfrmMain.CreateNewDrawing: TTabSheet;
@@ -1345,7 +1346,8 @@ begin
   TIPropertyGrid1.TIObject := nil;
   TIPropertyGrid1.Repaint;
 
-  hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+  if FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
+    hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
 
   case PageControl1.PageCount of
     0: exit;
@@ -1547,7 +1549,7 @@ begin
   TmpH := StrToFloat(TmpStr);
   if not InputQuery('Add Text', 'String', TmpStr) then
    Exit;
-  TmpText := TJustifiedVectText2D.Create(-1, CADSysFindFontByIndex(2), Rect2D(0, 0, 0, 0), TmpH, TmpStr);
+  TmpText := TJustifiedVectText2D.Create(-1, CADSysFindFontByIndex(0), Rect2D(0, 0, 0, 0), TmpH, TmpStr);
   //if Left1.Checked then
    //TmpText.HorizontalJust := jhLeft
   //else if Right1.Checked then
@@ -2031,6 +2033,7 @@ begin
     TmpPar1.OnObjectSelected := @OnSelectObj;
     hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar1);
   end;
+  hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
 end;
 
 procedure TfrmMain.acAlignLeftExecute(Sender: TObject);
@@ -2338,6 +2341,38 @@ begin
     ComponentDrawing.Drawing := hDrawing;
     SetupInspector(ComponentDrawing);
 
+    if  FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
+    begin
+      hDrawing.LoadBlockLibraryFromFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+    end else
+    begin
+      if  FileExists(applicationh.fDefaultBlockLibrary) then
+      begin
+        hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
+        hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
+        MessageDlg('The DrawingLibrary file could not be found.' + #13#10 +
+                   'The default library file  has been used instead.' + #13#10 +
+                   'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
+
+      end else
+      MessageDlg('Neither the Drawing.BlocksLibraryFile nor the default BlocksLibrary file ' +
+                   ' could be found.' + #13#10 +
+                 'Please check the file paths in the LazCAD.ini file.', mtError, [mbOK], 0);
+    end;
+
+    if not FileExists(hDrawing.CADCmp2D.CurrentFontFile) then
+      if FileExists(applicationh.fCurrentFontFile) then
+      begin
+        hDrawing.CADCmp2D.CurrentFontFile := applicationh.fCurrentFontFile;
+        {MessageDlg('The DrawingFontFile file could not be found.' + #13#10 +
+                   'The DefaultFontFile   has been used instead.' + #13#10 +
+                   'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
+        }
+      end else;
+        {MessageDlg('Neither the DrawingFontFile nor the DefaultFontFile ' +
+                   ' could be found.' + #13#10 +
+                   'Please check the file paths in the LazCAD.ini file.', mtError, [mbOK], 0);
+        }
     if PageControl1.PageCount = 1 then
       EnableControls;
     hDrawing.UndoRedo.UndoSave;
@@ -2410,34 +2445,6 @@ begin
   end;
 end;
 
-procedure TfrmMain.OpenDinFile(AFileName: string);
-var TabSheet: TTabSheet; hDrawing: TDrawing;  ImportGCODE: TImportGCode2;  TmpFilter: string;
-begin
-  try
-    TabSheet := CreateNewDrawing;
-    fActivePage := TabSheet;
-    TabSheet.Caption := ExtractFileName(AFileName);
-    hDrawing := GetDrawingFromPage(TabSheet);
-
-    ImportGCODE := TImportGCode2.create(hDrawing.CADCmp2D, hDrawing.CADViewport2D, ProgressBarMain);
-    ImportGCODE.LoadFromFile(AFileName);
-    //ImportGCODE.ImportMoves := false;
-    ImportGCODE.Import;
-
-    acSettingsUnLockTemplateLayer.Visible := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil;
-    hDrawing.FileName := AFileName;
-    hDrawing.CADViewport2D.ZoomToExtension;
-    ComponentDrawing.Drawing := hDrawing;
-    SetupInspector(ComponentDrawing);
-
-    if PageControl1.PageCount = 1 then
-      EnableControls;
-    hDrawing.UndoRedo.UndoSave;
-  finally
-    ImportGCODE.Free;
-  end;
-end;
-
 procedure TfrmMain.acFileOpenExecute(Sender: TObject);
 var hExt: string;
 begin
@@ -2450,8 +2457,7 @@ begin
     hExt := ExtractFileExt(OpenCADFileDialog.FileName);
     if      LowerCase(hExt) = '.cs4' then OpenCS4File(OpenCADFileDialog.FileName)
     else if LowerCase(hExt) = '.dxf' then OpenDXFFile(OpenCADFileDialog.FileName)
-    else if LowerCase(hExt) = '.dat' then OpenESSIFile(OpenCADFileDialog.FileName)
-    else if LowerCase(hExt) = '.din' then OpenDINFile(OpenCADFileDialog.FileName);
+    else if LowerCase(hExt) = '.dat' then OpenESSIFile(OpenCADFileDialog.FileName);
     //ProgressBarMain.Visible := false;
 
     Application.ProcessMessages;
@@ -2471,14 +2477,30 @@ begin
   TabSheet.Caption := TabSheet.Name;
   hDrawing := GetDrawingFromPage(TabSheet);
 
+  if  FileExists(applicationh.fDefaultBlockLibrary) then
+  begin
+    hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
+    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
+  end else
+    MessageDlg('The default block library ' + applicationh.fDefaultBlockLibrary + ' does not exist.' + #13#10 +
+           'Please change it or disable it' + #13#10 +
+           'via the Settings/BlockLibrary menu.', mtWarning, [mbOK], 0);
+
   if LowerCase(applicationh.fUseTemplates) = 'yes' then
   begin
-    applicationh.ReadIniFile;
-    if   LowerCase(ExtractFileExt(fStdTemplate)) = '.dxf' then
-      LoadDXFFile(applicationh.fStdTemplate, hDrawing.CADCmp2D)
-    else
-      hDrawing.CADCmp2D.LoadFromFile(applicationh.fStdTemplate);
+    if FileExists(fStdTemplate) then
+    begin
+      applicationh.ReadIniFile;
+      if   LowerCase(ExtractFileExt(fStdTemplate)) = '.dxf' then
+        LoadDXFFile(applicationh.fStdTemplate, hDrawing.CADCmp2D)
+      else
+        hDrawing.CADCmp2D.LoadFromFile(applicationh.fStdTemplate);
+    end else
+    MessageDlg('The default template file ' + fStdTemplate + ' does not exist.' + #13#10 +
+               'Please change it or disable it' + #13#10 +
+               'via the Settings/Template menu.', mtWarning, [mbOK], 0);
   end;
+
   acSettingsUnLockTemplateLayer.Visible := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil;
 
   hDrawing.CADViewport2D.ZoomToExtension;
@@ -2499,7 +2521,8 @@ end;
 procedure SaveCS4File(var ADrawing: TDrawing;  AFileName: string);
 begin
   ADrawing.SaveToFile(AFileName);
-  ADrawing.SaveBlockLibraryToFile(ADrawing.CADCmp2D.CurrentBlockLibrary);
+  if FileExists(ADrawing.CADCmp2D.CurrentBlockLibrary) then
+    ADrawing.SaveBlockLibraryToFile(ADrawing.CADCmp2D.CurrentBlockLibrary);
   ADrawing.FileName := AFileName;
     //fActivePage.Caption := ExtractFileName(SaveCADSys4Dialog.FileName);
   ADrawing.Changed := false;
@@ -2520,11 +2543,10 @@ end;
 
 procedure SaveESSIFile(var ADrawing: TDrawing;  AFileName: string);
 begin
-  ADrawing.SaveToFile(AFileName);
-  ADrawing.SaveBlockLibraryToFile(ADrawing.CADCmp2D.CurrentBlockLibrary);
+  {ADrawing.SaveToFile(AFileName);
   ADrawing.FileName := AFileName;
-    //fActivePage.Caption := ExtractFileName(SaveCADSys4Dialog.FileName);
-  ADrawing.Changed := false;
+  fActivePage.Caption := ExtractFileName(SaveCADSys4Dialog.FileName);
+  }
 end;
 
 
@@ -2540,8 +2562,10 @@ begin
   else  begin
     SaveCADFileDialog.InitialDir := applicationh.GetAppDrawingsPath;
     if SaveCADFileDialog.Execute then
-      hFileName := SaveCADFileDialog.FileName
-    else
+    begin
+      hFileName := SaveCADFileDialog.FileName;
+      hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+    end else
       exit;
   end;
 
@@ -3367,24 +3391,17 @@ begin
 
   {$IFDEF WINDOWS}
     ShellTreeView1.Root := ExtractFilePath(Application.ExeName) + '\data';
-
-    CADSysRegisterFontFromFile(0, ExtractFilePath(Application.ExeName) + 'data\fonts\monotxt.fnt');
-    CADSysRegisterFontFromFile(1, ExtractFilePath(Application.ExeName) + 'data\fonts\romanc.fnt');
-    CADSysRegisterFontFromFile(2, ExtractFilePath(Application.ExeName) + 'data\fonts\tms.fnt');
-    CADSysRegisterFontFromFile(3, ExtractFilePath(Application.ExeName) + 'data\fonts\verdana.fnt');
-    //CADSysRegisterFontFromFile(4, ExtractFilePath(Application.ExeName) + 'data\fonts\times.lcf');
   {$ENDIF}
-
   {$IFDEF LINUX}
     ShellTreeView1.Root := ExtractFilePath(Application.ExeName) + '/data';
-
-    CADSysRegisterFontFromFile(0, ExtractFilePath(Application.ExeName) + 'data/fonts/monotxt.fnt');
-    CADSysRegisterFontFromFile(1, ExtractFilePath(Application.ExeName) + 'data/fonts/romanc.fnt');
-    CADSysRegisterFontFromFile(2, ExtractFilePath(Application.ExeName) + 'data/fonts/tms.fnt');
-    CADSysRegisterFontFromFile(3, ExtractFilePath(Application.ExeName) + 'data/fonts/verdana.fnt');
-    //CADSysRegisterFontFromFile(4, ExtractFilePath(Application.ExeName) + 'data/fonts/times.lcf');
   {$ENDIF}
 
+  CADSysRegisterFontFromFile(0, GetAppFontsFNTPath + 'verdana.fnt');
+  CADSysRegisterFontFromFile(1, GetAppFontsFNTPath + 'monotxt.fnt');
+  CADSysRegisterFontFromFile(2, GetAppFontsFNTPath + 'romanc.fnt');
+  CADSysRegisterFontFromFile(3, GetAppFontsFNTPath + 'tms.fnt');
+
+  DisableControls;
   ComponentDrawing := TComponentDrawing.Create;
   acFileNewExecute(nil);
 end;

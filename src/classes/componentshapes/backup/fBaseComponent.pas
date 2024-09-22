@@ -18,6 +18,7 @@ uses
 
 type
 
+
 tOptions = (Opt1, Opt2, Opt3);
 tOptionsFlags = set of tOptions;
 
@@ -109,7 +110,7 @@ TCADSysBaseComponent2D = class(TPersistent)
     function  GetObjectPosition2D: TObjectPosition2D;
     procedure SetObjectPosition2D(AObjectPosition2D: TObjectPosition2D);
   protected
-     fPrimitive2D: TPrimitive2D;
+     fPrimitive2D: TClosedPrimitive2D; //TPrimitive2D;
 
      property   Direction: TArcDirection read GetDirection write SetDirection;
 
@@ -157,7 +158,7 @@ TCADSysBaseComponent2D = class(TPersistent)
     property ObjectLength: TRealType read GetOLength;
     property ObjectArea: TRealType read GetArea;
     //property Angle: TRealType  read GetAngle write SetAngle;
-    property  ObjectPosition2D: TObjectPosition2D read fObjectPosition2D write fObjectPosition2D; //read GetObjectPosition2D write SetObjectPosition2D;
+    property  ObjectPosition2D: TObjectPosition2D read GetObjectPosition2D write SetObjectPosition2D;
 end;
 
 

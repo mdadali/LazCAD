@@ -18,21 +18,15 @@ uses
 
 type
 
-  TViewport = class
-  end;
+
 
   { TDrawing }
 
    TDrawing = class;
 
-   TMyPoint = class
-     x,
-     y: integer;
-   end;
 
   TComponentDrawing = class(TPersistent)
   private
-    fPoint: TMyPoint;
     fDrawing: TDrawing;
     fEnableDragDrop: boolean;
     function  GetFileName: string;
@@ -108,13 +102,10 @@ type
     property YSnap: TRealType            read  GetYSnap            write SetYSnap;
     //CADCmp
     property DefaultLayersColor: TColor  read   GetDefaultLayersColor write SetDefaultLayersColor;
-    property CurrentBlockLibrary: string read   GetCurrentBlockLibrary; //  write SetCurrentBlockLibrary;
+    property CurrentBlockLibrary: string read   GetCurrentBlockLibrary  write SetCurrentBlockLibrary;
     property ShowDirection: boolean  read GetShowDirection write SetShowDirection;
     property PolarTracking: boolean read GetPolarTracking write SetPolarTracking;
     property PolarTrackingValue: TRealType read GetPolarTrackingValue write SetPolarTrackingValue;
-
-
-    property MyPoint: TMyPoint read fPoint write fPoint;
   end;
 
   TDrawing = class(TFrame)
@@ -441,6 +432,7 @@ end;
 procedure TComponentDrawing.SetCurrentBlockLibrary(AValue: string);
 begin
   fDrawing.CADCmp2D.CurrentBlockLibrary := AValue;
+  fDrawing.LoadBlockLibraryFromFile(AValue);
 end;
 
 function  TComponentDrawing.GetShowDirection: boolean;
@@ -788,9 +780,6 @@ begin
 
   fFileName := '';
   fChanged  := false;
-  CADCmp2D.CurrentBlockLibrary := applicationh.fCurrentBlockLibrary;
-  LoadBlockLibraryFromFile(CADCmp2D.CurrentBlockLibrary);
-  CADCmp2D.CurrentFontFile     := applicationh.fCurrentFontFile;
 
   UndoRedo := TUndoRedo.Create;     // Create an UndoRedo object instance
   UndoRedo.UndoInit;                // Initialize the UndoRedo streams
@@ -852,7 +841,6 @@ function  TDrawing.SaveBlockLibraryToFile(AFileName: string): boolean;
 var TmpStr: TFileStream;
 begin
   result := false;
-  if CADCmp2D.SourceBlocksCount = 0 then Exit;
   TmpStr := TFileStream.Create(AFileName, fmCreate);
   try
     CADCmp2D.SaveLibrary(TmpStr);

@@ -8,7 +8,8 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   CADSys4,
   CS4Tasks,
-  fDrawing;
+  fDrawing,
+  applicationh;
 
 type
 
@@ -30,14 +31,15 @@ type
     lboxBlocks: TListBox;
     OpenBlockLibraryDialog: TOpenDialog;
     procedure btnAddBlockToCADClick(Sender: TObject);
+    procedure btnDeleteBlockClick(Sender: TObject);
     procedure btnNewLibraryClick(Sender: TObject);
+    procedure btnRenameBlockClick(Sender: TObject);
     procedure btnSetCurrentBlockLibraryClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure lboxBlocksSelectionChange(Sender: TObject; User: boolean);
   private
     fDrawing: TDrawing;
-    procedure LibraryBlocksFromDrawing;
-    procedure ReadBlocks;
+    procedure RefreshListBox;
     procedure PreviewBlock(AIndex: integer);
   public
     constructor create(AOwner: TComponent; ADrawing: TDrawing) ;
@@ -52,6 +54,46 @@ uses fMain;
 
 {$R *.lfm}
 
+constructor TfrmLibraryBlocks.create(AOwner: TComponent;  ADrawing: TDrawing);
+var TmpStm: TFileStream;
+begin
+  inherited create(AOwner);
+  fDrawing := ADrawing;
+  edtCurrentBlockLibrary.Text := ExtractFileName(fDrawing.CADCmp2D.CurrentBlockLibrary);
+
+  RefreshListBox;
+  if lboxBlocks.Items.Count > 0 then
+    PreviewBlock(lboxBlocks.ItemIndex);
+
+  OpenBlockLibraryDialog.InitialDir := GetAppBlockLibrarysPath;
+  OpenBlockLibraryDialog.Filter := '*.blk';
+end;
+
+procedure TfrmLibraryBlocks.RefreshListBox;
+var TmpIter: TGraphicObjIterator; hSourceBlock: TSourceBlock2D;
+    hStr: string;
+begin
+  lboxBlocks.Items.Clear;
+  lboxBlocks.Repaint;
+  TmpIter := fDrawing.CADCmp2D.SourceBlocksIterator;
+  try
+    hSourceBlock := TmpIter.First as TSourceBlock2D;
+    while hSourceBlock <> nil do
+    begin
+      hStr := BlockNameToString(hSourceBlock.Name);
+      lboxBlocks.Items.Add(hStr);
+      hSourceBlock := TmpIter.Next as TSourceBlock2D;
+    end;
+  finally
+    TmpIter.Free;
+  end;
+  if lboxBlocks.Items.Count > 0 then
+  begin
+    lboxBlocks.Selected[0] := true;
+    PreviewBlock(lboxBlocks.ItemIndex);
+  end;
+end;
+
 procedure TfrmLibraryBlocks.btnSetCurrentBlockLibraryClick(Sender: TObject);
 begin
   if OpenBlockLibraryDialog.Execute then
@@ -60,13 +102,15 @@ begin
     fDrawing.CADCmp2D.CurrentBlockLibrary := OpenBlockLibraryDialog.FileName;
     edtCurrentBlockLibrary.Text := OpenBlockLibraryDialog.FileName;
     frmMain.TIPropertyGrid1.Repaint;
-    ReadBlocks;
+    RefreshListBox;
+    if lboxBlocks.Items.Count > 0 then
+      PreviewBlock(lboxBlocks.ItemIndex);  //0
   end;
 end;
 
-procedure TfrmLibraryBlocks.FormClose(Sender: TObject;
-  var CloseAction: TCloseAction);
+procedure TfrmLibraryBlocks.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  fDrawing.SaveBlockLibraryToFile(fDrawing.CADCmp2D.CurrentBlockLibrary);
   CloseAction := caFree;
 end;
 
@@ -83,120 +127,94 @@ begin
   end;
 end;
 
-procedure TfrmLibraryBlocks.btnNewLibraryClick(Sender: TObject);
-var Strm: TFileStream;  TmpStr: string;
+procedure TfrmLibraryBlocks.btnDeleteBlockClick(Sender: TObject);
+var TmpStr, TmpStr2: String; SrcBlk: TSourceBlock2D;   idx: integer;
 begin
-  if not InputQuery('Add block', 'Name', TmpStr) then
-  Strm := TFileStream.Create(TmpStr, fmCreate or fmOpenWrite);
+  if lboxBlocks.Items.Count = 0 then exit;
+  if MessageDlg('Are you sure you want to delete the LibraryBlock?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+    exit;
+  idx    :=  lboxBlocks.ItemIndex;
+  TmpStr := lboxBlocks.Items[idx];
+  SrcBlk := fDrawing.CADCmp2D.FindSourceBlock(StringToBlockName(TmpStr));
   try
-    fDrawing.CADCmp2D.SaveLibrary(Strm);
-    fDrawing.CADCmp2D.CurrentBlockLibrary := TmpStr;
-    fDrawing.LoadBlockLibraryFromFile(TmpStr);
-    edtCurrentBlockLibrary.Text := TmpStr;
-    ReadBlocks;
-    frmMain.TIPropertyGrid1.Repaint;
+    if SrcBlk <> nil then
+      fDrawing.CADCmp2D.DeleteSourceBlock(SrcBlk.Name);
   finally
-    Strm.Free;
+    fDrawing.SaveBlockLibraryToFile(fDrawing.CADCmp2D.CurrentBlockLibrary);
+    RefreshListBox;
+    if lboxBlocks.Items.Count > 0 then
+      PreviewBlock(lboxBlocks.ItemIndex)
+    else begin
+      CADCmp2D1.DeleteAllObjects;
+      CADCmp2D1.Viewports[0].ZoomToExtension;
+    end;
+  end;
+end;
+
+procedure TfrmLibraryBlocks.btnNewLibraryClick(Sender: TObject);
+var TmpStr: string;
+begin
+  if not InputQuery('New Library', 'Name', TmpStr) then exit;
+
+  TmpStr := GetAppBlockLibrarysPath + TmpStr;
+
+  if FileExists(TmpStr) then
+    if MessageDlg('Library ' + TmpStr + ' already exists! Overwrite?', mtWarning, [mbYes, mbCancel], 0) = mrCancel then
+      exit;
+  try
+    fDrawing.SaveBlockLibraryToFile(TmpStr);
+    //fDrawing.CADCmp2D.CurrentBlockLibrary := TmpStr;
+    //fDrawing.LoadBlockLibraryFromFile(TmpStr);
+    //edtCurrentBlockLibrary.Text := TmpStr;
+    //RefreshListBox;
+    //PreviewBlock(lboxBlocks.ItemIndex);
+  finally
   end;
 end;
 
 procedure TfrmLibraryBlocks.lboxBlocksSelectionChange(Sender: TObject; User: boolean);
 begin
-  //if lboxBlocks.ItemIndex >  then
-  PreviewBlock(lboxBlocks.ItemIndex);
+  if lboxBlocks.ItemIndex > -1 then
+    if fDrawing.CADCmp2D.FindSourceBlock(lboxBlocks.Items[lboxBlocks.ItemIndex]) <> nil then
+      PreviewBlock(lboxBlocks.ItemIndex);
 end;
 
-procedure TfrmLibraryBlocks.LibraryBlocksFromDrawing;
-var hSourceBlock: TSourceBlock2D; hStr: string; TmpIter: TGraphicObjIterator;
+procedure TfrmLibraryBlocks.btnRenameBlockClick(Sender: TObject);
+var TmpStr, TmpStr2: String; SrcBlk: TSourceBlock2D;   idx: integer;
 begin
-  TmpIter := fDrawing.CADCmp2D.SourceBlocksIterator;
-  hSourceBlock := TmpIter.First as TSourceBlock2D;
-  try
-    while hSourceBlock <> nil do
-    begin
-      hStr := BlockNameToString(hSourceBlock.Name);
-      CADCmp2D1.AddSourceBlock(hSourceBlock);
-      hSourceBlock := TmpIter.Next as TSourceBlock2D;
-    end;
-  finally
-    TmpIter.Free;
-  end;
-end;
-
-constructor TfrmLibraryBlocks.create(AOwner: TComponent;  ADrawing: TDrawing);
-var TmpStm: TFileStream;
-begin
-  inherited create(AOwner);
-  fDrawing := ADrawing;
-  edtCurrentBlockLibrary.Text := fDrawing.CADCmp2D.CurrentBlockLibrary;
-  CADCmp2D1.DeleteLibrarySourceBlocks;
-
-  //LibraryBlocksFromDrawing;
-
-  try
-    TmpStm := TFileStream.Create(fDrawing.CADCmp2D.CurrentBlockLibrary, fmOpenRead);
-    CADCmp2D1.LoadLibrary(TmpStm);
-  finally
-    TmpStm.Free;
-  end;
-
-  ReadBlocks;
-  {$IFDEF WINDOWS}
-    OpenBlockLibraryDialog.InitialDir := ExtractFilePath(Application.ExeName) + '\data\blocklibs';
-  {$ELSE}
-    OpenBlockLibraryDialog.InitialDir := ExtractFilePath(Application.ExeName) + '/data/blocklibs';
-  {$ENDIF}
-  OpenBlockLibraryDialog.Filter := '*.blk';
-end;
-
-procedure TfrmLibraryBlocks.ReadBlocks;
-var TmpIter: TGraphicObjIterator; hSourceBlock: TSourceBlock2D;
-    hStr: string;
-begin
-  lboxBlocks.Items.Clear;
-  lboxBlocks.Repaint;
-  //TmpIter := CADCmp2D1.SourceBlocksIterator;
-  TmpIter := CADCmp2D1.SourceBlocksIterator;
-  try
-    hSourceBlock := TmpIter.First as TSourceBlock2D;
-    while hSourceBlock <> nil do
-    begin
-      //if SrcName = Result.Name then
-      //Exit;
-      hStr := BlockNameToString(hSourceBlock.Name);
-      lboxBlocks.Items.Add(hStr);
-      hSourceBlock := TmpIter.Next as TSourceBlock2D;
-    end;
-  finally
-    TmpIter.Free;
-  end;
-  if lboxBlocks.Items.Count > 0 then
+  if lboxBlocks.ItemIndex = -1 then Exit;
+  if not InputQuery('Rename SourceBlock', 'New name', TmpStr2) then
+    exit;
+  idx :=  lboxBlocks.ItemIndex;
+  TmpStr := lboxBlocks.Items[idx];
+  SrcBlk := fDrawing.CADCmp2D.FindSourceBlock(StringToBlockName(TmpStr));
+  if SrcBlk <> nil then
   begin
-    lboxBlocks.Selected[0] := true;
+    //Change SourceBlockName in Library
+    SrcBlk.Name := TmpStr2;
+    lboxBlocks.Items[idx] := TmpStr2;
+    fDrawing.SaveBlockLibraryToFile(fDrawing.CADCmp2D.CurrentBlockLibrary);
+    //Change SourceBlock in Preview-Window
     PreviewBlock(lboxBlocks.ItemIndex);
   end;
-  //Raise ECADListObjNotFound.Create(Format('TCADCmp2D.FindSourceBlock: Source block %s not found', [SrcName]));
+  lboxBlocks.ItemIndex := idx;
 end;
 
 procedure TfrmLibraryBlocks.PreviewBlock(AIndex: integer);
-var hSourceBlock: TSourceBlock2D;
+var hSourceBlock, TmpSourceBlk: TSourceBlock2D;
 begin
-  {hSourceBlock := CADCmp2D1.FindSourceBlock(lboxBlocks.Items[AIndex]);
   CADCmp2D1.DeleteAllObjects;
-  CADCmp2D1.RefreshViewports;
-  CADCmp2D1.Viewports[0].ZoomToExtension;
-  CADCmp2D1.AddBlock(-1, lboxBlocks.Items[AIndex]);
-  CADCmp2D1.RefreshViewports;
-  CADCmp2D1.Viewports[0].ZoomToExtension; }
+  CADCmp2D1.DeleteSavedSourceBlocks;
+  CADCmp2D1.DeleteLibrarySourceBlocks;
 
-  hSourceBlock := CADCmp2D1.FindSourceBlock(lboxBlocks.Items[AIndex]);
-  CADCmp2D1.DeleteAllObjects;
-  CADCmp2D1.RefreshViewports;
-  CADCmp2D1.Viewports[0].ZoomToExtension;
-  CADCmp2D1.AddBlock(-1, lboxBlocks.Items[AIndex]);
-  CADCmp2D1.RefreshViewports;
+  hSourceBlock := fDrawing.CADCmp2D.FindSourceBlock(lboxBlocks.Items[AIndex]);
+  TmpSourceBlk := TSourceBlock2D.Create(-1, hSourceBlock.Name, [nil]);
+  TmpSourceBlk.Assign(hSourceBlock);
+  CADCmp2D1.AddObject(-1, TmpSourceBlk);
+
   CADCmp2D1.Viewports[0].ZoomToExtension;
 end;
+
 
 end.
 

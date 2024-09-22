@@ -13,11 +13,14 @@
         <DpiAware Value="True"/>
       </XPManifest>
       <Icon Value="0"/>
+      <Resources Count="1">
+        <Resource_0 FileName="resources/data.zip" Type="RCDATA" ResourceName="DATA"/>
+      </Resources>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="70"/>
+      <BuildNr Value="73"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -38,6 +41,9 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="Abbrevia"/>
+      </Item>
       <Item>
         <PackageName Value="LainzControls"/>
       </Item>
@@ -278,6 +284,12 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
+      </Item>
+      <Item>
+        <Name Value="ECADSysException"/>
+      </Item>
+      <Item>
+        <Name Value="ECADSourceBlockIsReferenced"/>
       </Item>
     </Exceptions>
   </Debugging>

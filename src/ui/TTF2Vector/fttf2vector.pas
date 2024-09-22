@@ -151,12 +151,12 @@ begin
   FTTFFont.Hinted:=false;
   {$IFDEF LINUX}
     ShellTreeView1.Root := '/';
-    ShellTreeView1.Path := ExtractFilePath(Application.ExeName) + 'data/fonts/truetype/dejavu/';
-    FTTFFont.Name:= ExtractFilePath(Application.ExeName) + 'data/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf';
+    ShellTreeView1.Path := ExtractFilePath(Application.ExeName) + 'data/fonts/ttf/dejavu/';
+    FTTFFont.Name:= ExtractFilePath(Application.ExeName) + 'data/fonts/ttf/dejavu/DejaVuSansMono-Bold.ttf';
   {$ENDIF}
   {$IFDEF WINDOWS}
-    ShellTreeView1.Path := ExtractFilePath(Application.ExeName) + 'data\fonts\truetype\dejavu\';
-    FTTFFont.Name:= ExtractFilePath(Application.ExeName) + 'data\fonts\truetype\dejavu\DejaVuSansMono-Bold.ttf';
+    ShellTreeView1.Path := ExtractFilePath(Application.ExeName) + 'data\fonts\ttf\dejavu\';
+    FTTFFont.Name:= ExtractFilePath(Application.ExeName) + 'data\fonts\ttf\dejavu\DejaVuSansMono-Bold.ttf';
   {$ENDIF}
 
   cboxHinted.Checked := FTTFFont.Hinted;

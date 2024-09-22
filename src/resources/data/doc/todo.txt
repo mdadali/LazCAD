@@ -1,0 +1,54 @@
+library bugs
+
+polygon direction
+polygon arrow
+
+arc-reverse
+
+dxf-import text
+
+richtung-startcorner
+
+
+migrare
+bulgarri platz 12
+17.04.
+13:30
+herr iber. 4.stock.
+
+Ortopädie
+Garnisonstraße 1
+4020 Linz, Austria
+24.04
+12:30
+
+/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf
+
+ende april
+den herrn kasis noch einmal anrufen.
+
+
+hoffmann.
+dienstag 10 uhr
+straßerau 3.
+4020 linz.
+herr rauch.
+Herr Stefan Rauch
++43 732 652065
+karriere.linz@hofmann-personal.at
+
+
+
+Merhaba Muhammed Ali Bey,
+
+
+
+Evet, ZCAD'yi indirip inceledim. FPC/Lazarus Forumlarindan da sürekli faydalaniyorum (Almanca Forumda (https://www.lazarusforum.de) kullanici ismim 'maurog').
+Su an aktuel projeyi CADSys4 kütüphanesiyle (acik kaynak kodlu ve nesnel (OOP), temiz ve berrak bir kütüphane) yaziyorum.
+Hali hazirda sivanmamis bir inssaat gibi (her projenin gectigi bir asama, biliyorsunuz).
+Bir kac hafta icinde toparlar internette kulanima sunarim insallah.
+
+Size ve Hz. Mevlana'nin diyarina selamlar, saygilar.
+Mustafa.
+
+

@@ -45,51 +45,17 @@ implementation
 
 {$R *.lfm}
 
-{function TfrmSplash.VerInfo: string;
-var
-  FileName: string;
-  VI: TVerInfo;
-  FFI: TVSFixedFileInfo;
-  TransIdx: Integer;
-  Trans: string;
-  StrIdx: Integer;
-  StrName: string;
-begin
-  // Choose file name
-  FileName := Application.ExeName;
-
-  // Create version info object
-  VI := TVerInfo.Create(FileName);
-  try
-    //Display(FileName);
-    if VI.HasVerInfo then
-    begin
-      // Get fixed file info and display subset of fields
-      FFI := VI.FixedFileInfo;
-      //ShowMessage(Format('FFI: Product Version: %d.%d.%d.%d',
-        //result := (Format('%d.%d.%d.%d',
-        //[HiWord(FFI.dwProductVersionMS), LoWord(FFI.dwProductVersionMS),
-        //HiWord(FFI.dwProductVersionLS), LoWord(FFI.dwFileVersionLS)]));
-      result :=(Format('%d.%d.%d.%d',
-        [HiWord(FFI.dwFileVersionMS), LoWord(FFI.dwFileVersionMS),
-        HiWord(FFI.dwFileVersionLS), LoWord(FFI.dwFileVersionLS)]));
-    end
-    else
-      result := '';
-      // File contains no version info
-      //Display('*** No version information ***');
-  finally
-    VI.Free;
-  end;
-
-end;}
 
 procedure TfrmSplash.FormCreate(Sender: TObject);
-
 begin
-  GifAnim1.FileName := applicationh.fGifAnimFile;
-  GifAnim1.Animate := true;
-  //lbVersion.Caption := lbVersion.Caption + VerInfo;
+  if FileExists(applicationh.fGifAnimFile) then
+  begin
+    GifAnim1.FileName := applicationh.fGifAnimFile;
+    GifAnim1.Animate := true;
+  end else
+    MessageDlg('The GIF animation file ' + applicationh.fGifAnimFile + ' does not exist.' + #13#10 +
+             'Please change it in the LazCAD.ini file.' + #13#10 +
+             'Ensure the path is correct.', mtWarning, [mbOK], 0);
 end;
 
 end.

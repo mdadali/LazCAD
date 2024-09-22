@@ -2,10 +2,15 @@ unit applicationh;
 
 {$mode delphi}{$H+}
 
+
 interface
 
 uses Forms, SysUtils, Classes, Dialogs, IniFiles, messages,
-     CommonUtils;
+     LResources, AbUnzper,   AbZBrows, AbArcTyp, AbZipTyp,
+     CommonUtils,
+     CADSys4,
+     CS4Shapes,
+     CS4BaseTypes;
 
 const
       APP_TITLE = 'LazCAD';
@@ -32,7 +37,7 @@ const
 var
   fGifAnimFile,
 
-  fCurrentBlockLibrary,
+  fDefaultBlockLibrary,
   fCurrentFontFile,
 
   fPythonDLLPath,
@@ -89,6 +94,8 @@ function GetAppDataPath: string;
 function GetAppSystemPath: string;
 function GetAppApplicationsPath: string;
 function GetAppFontsPath: string;
+function GetAppFontsFNTPath: string;
+function GetAppFontsTTFPath: string;
 function GetAppTemplatesPath: string;
 function GetAppLanguagesPath: string;
 function GetAppPlugInsPath: string;
@@ -97,20 +104,59 @@ function GetAppBlockLibrarysPath: string;
 
 function GetAppProjectsPath: string;
 
-//End-LiteCAD
 
 implementation
 
-procedure ReadIniFile;
+procedure ExtractDataDirectory;
+var
+  DataStream: TResourceStream;
+  MemoryStream: TMemoryStream;
+  AbUnZipper: TAbUnZipper;
 begin
-  fIniFileName := ChangeFileExt(Application.ExeName, '.ini');
-  fIniFile := TIniFile.Create(fIniFileName);
-  try
-    fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'no');
-    fCurrentBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'CurrentBlockLibrary',  'library.blk');
-    fCurrentFontFile     := GetAppImagesPath + fIniFile.ReadString('CAD', 'CurrentFontFile', 'fpc_running_logo.gif');
+  AbUnZipper := TAbUnZipper.Create(nil);
+  if not DirectoryExists(GetAppDataPath) then
+  begin
+    DataStream := TResourceStream.Create(HInstance, 'DATA', RT_RCDATA);
+    MemoryStream := TMemoryStream.Create;
+    try
+      // Lade die ZIP-Datei aus der Resource in den Speicher
+      MemoryStream.LoadFromStream(DataStream);
+      MemoryStream.Position := 0;
 
+      // Entpacke den Inhalt der ZIP-Datei in das Zielverzeichnis
+      AbUnZipper.Stream := MemoryStream;
+      AbUnZipper.ExtractOptions := [eoCreateDirs, eoRestorePath]; // Verzeichnisse erstellen
+      AbUnZipper.BaseDirectory := GetAppPath;  // Zielverzeichnis festlegen
+      AbUnZipper.ExtractFiles('*.*');              // Alle Dateien entpacken
+    finally
+      MemoryStream.Free;
+      DataStream.Free;
+      AbUnZipper.Free;
+    end;
+  end;
+end;
+
+function FirstRun: boolean;
+begin
+  result := not FileExists(GetAppDataPath);
+end;
+
+procedure ReadIniFile;
+var hFileName, hFontFile: string;
+begin
+  if FirstRun then
+    ExtractDataDirectory;
+
+  fIniFileName := ChangeFileExt(Application.ExeName, '.ini');
+  fIniFile     := TIniFile.Create(fIniFileName);
+
+  try
+    fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
+    fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'origin.cs4');
     fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
+    fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'essi_blocks.blk');
+    fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('CAD', 'CurrentFontFile', 'none');
+
     fPythonDLLPath       := fIniFile.ReadString('Python', 'DllPath', '');
     fPythonDLLName       := fIniFile.ReadString('Python', 'DllName', '');
 
@@ -122,12 +168,8 @@ begin
     fLastFileName        := fIniFile.ReadString('OnAppStart',  'LastFileName', '');
     fLeftPanelVisible    := fIniFile.ReadBool('OnAppStart',    'LeftPanelVisible', false);
     fTraceON             := fIniFile.ReadString('Admin',  'TraceON', '1');
-    fTraceFileName       := fIniFile.ReadString('Admin',  'TraceFileName', GetAppSystemPath + 'TraceFile.txt');
+    fTraceFileName       := fIniFile.ReadString('Admin',  'TraceFileName', GetAppSystemPath + '');
     fLanguage            := fIniFile.ReadString('UserInterface',  'Language', 'default');
-
-    fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application',  'DefaultTemplate', 'origin.cs4');
-
-
   finally
     fIniFile.Free;
     fIniFile := nil;
@@ -147,7 +189,7 @@ begin
     fIniFile.WriteString('Application', 'DefaultTemplate', ExtractFileName(fStdTemplate));
     fIniFile.WriteString('UserInterface', 'GifAnimFile', ExtractFileName(fGifAnimFile));
 
-    fIniFile.WriteString('CAD', 'CurrentBlockLibrary', ExtractFileName(fCurrentBlockLibrary));
+    fIniFile.WriteString('CAD', 'DefaultBlockLibrary', ExtractFileName(fDefaultBlockLibrary));
     fIniFile.WriteString('CAD', 'CurrentFontFile', ExtractFileName(fCurrentFontFile));
 
     fIniFile.WriteBool('Admin', 'LoginPromt', fLoginPrompt);
@@ -155,7 +197,6 @@ begin
     fIniFile.WriteString('Admin', 'TraceFileName',  ExtractFileName(fTraceFileName));
     fIniFile.WriteString('Admin', 'TraceON', fTraceON);
     fIniFile.WriteString('UserInterface', 'Language', fLanguage);
-
   finally
     fIniFile.Free;
     fIniFile := nil;
@@ -224,6 +265,24 @@ begin
     result      := GetAppDataPath + 'fonts\';
   {$ELSE}
     result := GetAppDataPath + 'fonts/';
+  {$ENDIF}
+end;
+
+function GetAppFontsFNTPath: string;
+begin
+  {$IFDEF WINDOWS}
+    result := GetAppFontsPath + 'fnt\';
+  {$ELSE}
+    result := GetAppFontsPath + 'fnt/';
+  {$ENDIF}
+end;
+
+function GetAppFontsTTFPath: string;
+begin
+  {$IFDEF WINDOWS}
+    result := GetAppFontsPath + 'ttf\';
+  {$ELSE}
+    result := GetAppFontsPath + 'ttf/';
   {$ENDIF}
 end;
 
