@@ -7,6 +7,7 @@ interface
 
 uses Forms, SysUtils, Classes, Dialogs, IniFiles, messages,
      LResources, AbUnzper,   AbZBrows, AbArcTyp, AbZipTyp,
+     {$IFDEF WINDOWS} windows, {$ENDIF}
      CommonUtils,
      CADSys4,
      CS4Shapes,

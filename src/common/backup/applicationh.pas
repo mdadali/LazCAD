@@ -151,7 +151,7 @@ begin
   fIniFile     := TIniFile.Create(fIniFileName);
 
   try
-    fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'no');
+    fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
     fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'origin.cs4');
     fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
     fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'essi_blocks.blk');
