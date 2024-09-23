@@ -7,15 +7,16 @@ interface
 
 uses Forms, SysUtils, Classes, Dialogs, IniFiles, messages,
      LResources, AbUnzper,   AbZBrows, AbArcTyp, AbZipTyp,
+     {$IFDEF WINDOWS} windows, {$ENDIF}
      CommonUtils,
      CADSys4,
      CS4Shapes,
      CS4BaseTypes;
 
 const
-      APP_TITLE = 'LazCAD';
 
-      TEMP_FILENAME = 'tmp.lcd';
+
+
 {$IFDEF WINDOWS}
         //Messages
       WM_FROM_MDICHILD             = WM_USER + 1000;
@@ -48,7 +49,7 @@ var
   fLoginPrompt: boolean;
   fOnStartFileState: integer;
   fLastFileName: string;
-  hWMain: integer;   //frmMain.Handle;
+
   fFakeMDIChildCount: integer = 0;
 
   fTraceFileName: string;
@@ -74,7 +75,6 @@ var
   fAllExtentions:  string;
 
 procedure ReadIniFile;
-procedure ReadStdTemplateFromIniFile;
 procedure WriteIniFile;
 
 function GetAppExeName: string;
@@ -101,7 +101,6 @@ function GetAppLanguagesPath: string;
 function GetAppPlugInsPath: string;
 function GetAppImagesPath: string;
 function GetAppBlockLibrarysPath: string;
-
 function GetAppProjectsPath: string;
 
 
@@ -142,7 +141,6 @@ begin
 end;
 
 procedure ReadIniFile;
-var hFileName, hFontFile: string;
 begin
   if FirstRun then
     ExtractDataDirectory;
@@ -176,9 +174,6 @@ begin
   end;
 end;
 
-procedure ReadStdTemplateFromIniFile;
-begin
-end;
 
 procedure WriteIniFile;
 begin

@@ -69,8 +69,15 @@ end;
 
 procedure TfrmAbout.FormCreate(Sender: TObject);
 begin
-  GifAnim1.FileName := applicationh.fGifAnimFile;
-  GifAnim1.Animate := true;
+  if FileExists(applicationh.fGifAnimFile) then
+  begin
+    GifAnim1.FileName := applicationh.fGifAnimFile;
+    GifAnim1.Animate := true;
+  end else
+  MessageDlg('The GIF animation file ' + applicationh.fGifAnimFile + ' does not exist.' + #13#10 +
+           'Please change it in the LazCAD.ini file.' + #13#10 +
+           'Ensure the path is correct.', mtWarning, [mbOK], 0);
+
   lbPgmVersion.Caption := GetProgramVersion;
   lbLazarus.Caption    := GetLazarusVersion;
   lbOSInfo.Caption     := GetOSInfo;

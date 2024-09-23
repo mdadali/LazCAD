@@ -1,7 +1,7 @@
 object frmLibraryBlocks: TfrmLibraryBlocks
-  Left = 717
+  Left = 809
   Height = 457
-  Top = 135
+  Top = 124
   Width = 694
   Caption = 'Library Blocks'
   ClientHeight = 457

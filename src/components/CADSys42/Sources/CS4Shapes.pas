@@ -387,6 +387,9 @@ type
     property ObjectLength: TRealType read GetLength;
   end;
 
+  TDirectionalPrimitive2D = class(TPrimitive2D)
+  end;
+
   {: This class defines a 2D line segment.
 
      The entity has two <I=control points> that are the extremes of

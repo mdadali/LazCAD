@@ -59,7 +59,7 @@ var TmpStm: TFileStream;
 begin
   inherited create(AOwner);
   fDrawing := ADrawing;
-  edtCurrentBlockLibrary.Text := fDrawing.CADCmp2D.CurrentBlockLibrary;
+  edtCurrentBlockLibrary.Text := ExtractFileName(fDrawing.CADCmp2D.CurrentBlockLibrary);
 
   RefreshListBox;
   if lboxBlocks.Items.Count > 0 then

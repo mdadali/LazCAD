@@ -110,7 +110,7 @@ TCADSysBaseComponent2D = class(TPersistent)
     function  GetObjectPosition2D: TObjectPosition2D;
     procedure SetObjectPosition2D(AObjectPosition2D: TObjectPosition2D);
   protected
-     fPrimitive2D: TClosedPrimitive2D; //TPrimitive2D;
+     fPrimitive2D: TClosedPrimitive2D;  //TPrimitive2D;
 
      property   Direction: TArcDirection read GetDirection write SetDirection;
 

@@ -11,6 +11,7 @@ object frmAbout: TfrmAbout
   Font.Color = clWindowText
   Font.Height = 12
   Font.Name = 'Tahoma'
+  Font.Style = [fsStrikeOut]
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow

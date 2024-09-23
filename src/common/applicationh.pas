@@ -14,9 +14,9 @@ uses Forms, SysUtils, Classes, Dialogs, IniFiles, messages,
      CS4BaseTypes;
 
 const
-      APP_TITLE = 'LazCAD';
 
-      TEMP_FILENAME = 'tmp.lcd';
+
+
 {$IFDEF WINDOWS}
         //Messages
       WM_FROM_MDICHILD             = WM_USER + 1000;
@@ -49,7 +49,7 @@ var
   fLoginPrompt: boolean;
   fOnStartFileState: integer;
   fLastFileName: string;
-  hWMain: integer;   //frmMain.Handle;
+
   fFakeMDIChildCount: integer = 0;
 
   fTraceFileName: string;
@@ -75,7 +75,6 @@ var
   fAllExtentions:  string;
 
 procedure ReadIniFile;
-procedure ReadStdTemplateFromIniFile;
 procedure WriteIniFile;
 
 function GetAppExeName: string;
@@ -102,7 +101,6 @@ function GetAppLanguagesPath: string;
 function GetAppPlugInsPath: string;
 function GetAppImagesPath: string;
 function GetAppBlockLibrarysPath: string;
-
 function GetAppProjectsPath: string;
 
 
@@ -120,15 +118,15 @@ begin
     DataStream := TResourceStream.Create(HInstance, 'DATA', RT_RCDATA);
     MemoryStream := TMemoryStream.Create;
     try
-      // Lade die ZIP-Datei aus der Resource in den Speicher
+      // Load the ZIP file from the resource into memory
       MemoryStream.LoadFromStream(DataStream);
       MemoryStream.Position := 0;
 
-      // Entpacke den Inhalt der ZIP-Datei in das Zielverzeichnis
+      // Extract the contents of the ZIP file to the target directory.
       AbUnZipper.Stream := MemoryStream;
-      AbUnZipper.ExtractOptions := [eoCreateDirs, eoRestorePath]; // Verzeichnisse erstellen
-      AbUnZipper.BaseDirectory := GetAppPath;  // Zielverzeichnis festlegen
-      AbUnZipper.ExtractFiles('*.*');              // Alle Dateien entpacken
+      AbUnZipper.ExtractOptions := [eoCreateDirs, eoRestorePath]; // Create directories
+      AbUnZipper.BaseDirectory := GetAppPath;
+      AbUnZipper.ExtractFiles('*.*');
     finally
       MemoryStream.Free;
       DataStream.Free;
@@ -143,7 +141,6 @@ begin
 end;
 
 procedure ReadIniFile;
-var hFileName, hFontFile: string;
 begin
   if FirstRun then
     ExtractDataDirectory;
@@ -155,7 +152,7 @@ begin
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
     fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'origin.cs4');
     fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
-    fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'essi_blocks.blk');
+    fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'cnc_blocks.blk');
     fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('CAD', 'CurrentFontFile', 'none');
 
     fPythonDLLPath       := fIniFile.ReadString('Python', 'DllPath', '');
@@ -177,9 +174,6 @@ begin
   end;
 end;
 
-procedure ReadStdTemplateFromIniFile;
-begin
-end;
 
 procedure WriteIniFile;
 begin
