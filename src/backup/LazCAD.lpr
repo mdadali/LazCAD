@@ -17,7 +17,7 @@ uses
   fcomponentcircle, fLibraryBlocks, fLayers, applicationh, CADDocument, camh,
   cImportGCODE2, cImportEssi, fSimulation, fTTF2Vector,
   fCADSys4ClipperInterface, fComponentGraphicObj, fComponentContainer, contours,
-  UndoRedo, fobjectposition;
+  fSetKerfType, UndoRedo, fobjectposition;
 
 {$R *.res}
 

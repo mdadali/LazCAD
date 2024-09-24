@@ -17,7 +17,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="63"/>
+      <BuildNr Value="62"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -38,9 +38,6 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
-      <Item>
-        <PackageName Value="Abbrevia"/>
-      </Item>
       <Item>
         <PackageName Value="LainzControls"/>
       </Item>
@@ -236,11 +233,11 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
+        <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmTTF2Vector"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="fTTF2Vector"/>
       </Unit>
     </Units>
   </ProjectOptions>

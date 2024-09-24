@@ -44,7 +44,8 @@ Interface
 uses SysUtils, Classes, Graphics, Dialogs, Types, LCLType,
      CADSys4, CS4BaseTypes, CS4Shapes,
      clipper,
-     CADSys4ClipperInterface;
+     CADSys4ClipperInterface,
+     fSetKerftype;
 
 
 //added
@@ -190,6 +191,13 @@ public
   constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
 end;
 //End-Clipper
+
+//CAM
+TCAD2DSetKerftypes = class(TCADState)
+public
+  constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
+end;
+
 
 //end-added
 
@@ -3392,13 +3400,14 @@ begin
     TmpLine2D.PenStyle   := AOutline2D.PenStyle;
     TmpLine2D.PenWidth   := AOutline2D.PenWidth;
     TmpLine2D.ArrowStyle := AOutline2D.ArrowStyle;
-    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
     TmpLine2D.ReserveInt2:= AOutline2D.ReserveInt2;
     TmpLine2D.ReserveStr1:= AOutline2D.ReserveStr1;
     TmpLine2D.ReserveStr2:= AOutline2D.ReserveStr2;
     }
     TmpLine2D.Transform(AOutline2D.ModelTransform);
     TCADCmp2D(AOutline2D.OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
+    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
+    TmpLine2D.LayerName  := AOutline2D.LayerName;
   end;
   if  (AOutline2D is TPolygon2D) then
   begin
@@ -3416,6 +3425,9 @@ begin
     }
     TmpLine2D.Transform(AOutline2D.ModelTransform);
     TCADCmp2D(AOutline2D.OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
+    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
+    TmpLine2D.LayerName  := AOutline2D.LayerName;
+
   end;
   AOutline2D.EndUseProfilePoints;
 end;
@@ -4532,6 +4544,38 @@ begin
   Param := nil;
   NextState := CADPrg.DefaultState;
 end;
+
+
+//CAM
+
+constructor TCAD2DSetKerftypes.Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass);
+var TmpIter: TExclusiveGraphicObjIterator;
+begin
+  inherited;
+
+  if Param is TCAD2DSelectObjectsParam then
+   with TCAD2DSelectObjectsParam(Param) do
+    begin
+      TmpIter := SelectedObjects.GetExclusiveIterator;
+      try
+        TmpIter.First;
+        while TmpIter.Current <> nil do
+         begin
+           TPrimitive2D(TmpIter).ReserveInt1 := 0;
+           TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.DeleteObject(TmpIter.Current.ID);
+           TmpIter.Next;
+         end;
+      finally
+        TmpIter.Free;
+      end;
+      TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.RepaintViewports;
+    end;
+  Param.Free;
+  Param := nil;
+  NextState := CADPrg.DefaultState;
+end;
+
+
 
 initialization
 

@@ -44,7 +44,8 @@ Interface
 uses SysUtils, Classes, Graphics, Dialogs, Types, LCLType,
      CADSys4, CS4BaseTypes, CS4Shapes,
      clipper,
-     CADSys4ClipperInterface;
+     CADSys4ClipperInterface,
+     fSetKerftype;
 
 
 //added
@@ -190,6 +191,13 @@ public
   constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
 end;
 //End-Clipper
+
+//CAM
+TCAD2DSetKerftypes = class(TCADState)
+public
+  constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
+end;
+
 
 //end-added
 
@@ -4536,6 +4544,37 @@ begin
   Param := nil;
   NextState := CADPrg.DefaultState;
 end;
+
+
+//CAM
+constructor TCAD2DSetKerftypes.Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass);
+var TmpIter: TExclusiveGraphicObjIterator;
+begin
+  inherited;
+
+  if Param is TCAD2DSelectObjectsParam then
+   with TCAD2DSelectObjectsParam(Param) do
+    begin
+      TmpIter := SelectedObjects.GetExclusiveIterator;
+      try
+        TmpIter.First;
+        while TmpIter.Current <> nil do
+         begin
+           TPrimitive2D(TmpIter).ReserveInt1 := 0;
+           TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.DeleteObject(TmpIter.Current.ID);
+           TmpIter.Next;
+         end;
+      finally
+        TmpIter.Free;
+      end;
+      TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.RepaintViewports;
+    end;
+  Param.Free;
+  Param := nil;
+  NextState := CADPrg.DefaultState;
+end;
+
+
 
 initialization
 
