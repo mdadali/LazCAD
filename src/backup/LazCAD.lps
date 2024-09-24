@@ -258,8 +258,8 @@
       <Unit>
         <Filename Value="LazCAD.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="9"/>
-        <CursorPos X="6" Y="27"/>
+        <TopLine Value="7"/>
+        <CursorPos X="28" Y="20"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -729,7 +729,7 @@
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
         <EditorIndex Value="11"/>
         <TopLine Value="4049"/>
-        <CursorPos X="38" Y="4067"/>
+        <CursorPos X="14" Y="4067"/>
         <UsageCount Value="53"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -852,8 +852,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fTTF2Vector"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="118"/>
-        <CursorPos Y="132"/>
+        <TopLine Value="109"/>
+        <CursorPos X="24" Y="127"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
@@ -861,7 +861,7 @@
     <OtherDefines Count="1">
       <Define0 Value="TTF2VECTOR_EMBEDDED"/>
     </OtherDefines>
-    <JumpHistory HistoryIndex="8">
+    <JumpHistory HistoryIndex="9">
       <Position>
         <Filename Value="ui\main\fmain.pas"/>
         <Caret Line="969" Column="56" TopLine="950"/>
@@ -892,7 +892,11 @@
       </Position>
       <Position>
         <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
-        <Caret Line="132" TopLine="118"/>
+        <Caret Line="127" Column="24" TopLine="109"/>
+      </Position>
+      <Position>
+        <Filename Value="common\applicationh.pas"/>
+        <Caret Line="13" Column="21"/>
       </Position>
       <Position>
         <Filename Value="common\applicationh.pas"/>

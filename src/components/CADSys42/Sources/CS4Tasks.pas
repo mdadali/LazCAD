@@ -198,7 +198,6 @@ public
   constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
 end;
 
-
 //end-added
 
 type

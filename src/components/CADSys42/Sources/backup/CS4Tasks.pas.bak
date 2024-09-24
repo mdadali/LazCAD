@@ -4547,7 +4547,6 @@ end;
 
 
 //CAM
-
 constructor TCAD2DSetKerftypes.Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass);
 var TmpIter: TExclusiveGraphicObjIterator;
 begin
