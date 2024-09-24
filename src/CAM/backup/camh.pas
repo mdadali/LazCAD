@@ -47,7 +47,7 @@ type
 
   TCAMSide       = (csNone, csInside, csOutside);
 
-  TKerfType      =  (None, InnerConturCW, InnerConturCCW, OuterContourCW, OuterContourCCW);
+  TKerfType      =  (None, InnerContourCW, InnerContourCCW, OuterContourCW, OuterContourCCW);
 
   TCNCCommand    = (ccNone, ccPgmStart, ccPgmStop, ccPgmEnd, ccRapidMoveON, ccRapidMoveOFF, ccToolDown, ccToolUp,
                     ccKerfInsideRight, ccKerfInsideLeft, ccKerfOutsideRight, ccKerfOutsideLeft, ccKerfOFF,

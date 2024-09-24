@@ -13,14 +13,11 @@
         <DpiAware Value="True"/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="1">
-        <Resource_0 FileName="resources/data.zip" Type="RCDATA" ResourceName="DATA"/>
-      </Resources>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="76"/>
+      <BuildNr Value="63"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -242,7 +239,6 @@
         <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmTTF2Vector"/>
-        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fTTF2Vector"/>
       </Unit>
@@ -252,7 +248,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)"/>
+      <Filename Value="..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -284,12 +280,6 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
-      </Item>
-      <Item>
-        <Name Value="ECADSysException"/>
-      </Item>
-      <Item>
-        <Name Value="ECADSourceBlockIsReferenced"/>
       </Item>
     </Exceptions>
   </Debugging>

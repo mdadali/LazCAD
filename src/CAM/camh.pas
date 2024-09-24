@@ -22,14 +22,14 @@ CAM_SIDE_OUTER      = 1;
 
 CAD_LAYER_0                     = '0';
 CAM_LAYER_KERF_OFF              = 'KerfOFF';
-CAM_LAYER_INNER_CONTOUR_CW      = 'Innercontour-Clockwise';
-CAM_LAYER_INNER_CONTOUR_CCW     = 'Innercontour-Counterclockwise';
+CAM_LAYER_INNER_CONTOUR_CW      = 'Innercontour-CW';
+CAM_LAYER_INNER_CONTOUR_CCW     = 'Innercontour-CCW';
 
-CAM_LAYER_OUTER_CONTOUR_CW      = 'Outercontour-Clockwise';
-CAM_LAYER_OUTER_CONTOUR_CCW     = 'Outercontour-Counterclockwise';
+CAM_LAYER_OUTER_CONTOUR_CW      = 'Outercontour-CW';
+CAM_LAYER_OUTER_CONTOUR_CCW     = 'Outercontour-CCW';
 
 CAM_LAYER_MOVE                  = 'Move';
-CAM_LAYER_RAPIDMOVE             = 'RapidMove';
+CAM_LAYER_JUMPS                 = 'Jumps';
 
 X_VALUE = 1;
 Y_VALUE = 2;

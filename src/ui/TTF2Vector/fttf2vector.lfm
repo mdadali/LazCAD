@@ -1,7 +1,7 @@
 object frmTTF2Vector: TfrmTTF2Vector
-  Left = 638
+  Left = 544
   Height = 721
-  Top = 145
+  Top = 116
   Width = 929
   Caption = 'TTF2Vector'
   ClientHeight = 721
@@ -14,7 +14,7 @@ object frmTTF2Vector: TfrmTTF2Vector
   object Memo1: TMemo
     Left = 0
     Height = 104
-    Top = 304
+    Top = 336
     Width = 929
     Align = alTop
     Lines.Strings = (
@@ -28,22 +28,22 @@ object frmTTF2Vector: TfrmTTF2Vector
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 105
+    Height = 137
     Top = 199
     Width = 929
     Align = alTop
-    ClientHeight = 103
+    ClientHeight = 135
     ClientWidth = 927
     TabOrder = 2
     object GroupBox3: TGroupBox
       Left = 0
-      Height = 103
+      Height = 135
       Top = 0
-      Width = 472
+      Width = 368
       Align = alLeft
       Caption = 'Font Propertys'
-      ClientHeight = 83
-      ClientWidth = 470
+      ClientHeight = 115
+      ClientWidth = 366
       TabOrder = 0
       object cboxHinted: TCheckBox
         Left = 14
@@ -93,14 +93,14 @@ object frmTTF2Vector: TfrmTTF2Vector
       end
     end
     object grboxCAD: TGroupBox
-      Left = 472
-      Height = 103
+      Left = 368
+      Height = 135
       Top = 0
-      Width = 455
+      Width = 559
       Align = alClient
       Caption = 'CAD'
-      ClientHeight = 83
-      ClientWidth = 453
+      ClientHeight = 115
+      ClientWidth = 557
       TabOrder = 1
       object Label1: TLabel
         Left = 8
@@ -1190,16 +1190,16 @@ object frmTTF2Vector: TfrmTTF2Vector
   end
   object pnlBottom: TPanel
     Left = 0
-    Height = 313
-    Top = 408
+    Height = 281
+    Top = 440
     Width = 929
     Align = alClient
-    ClientHeight = 313
+    ClientHeight = 281
     ClientWidth = 929
     TabOrder = 4
     object CADViewport2D1: TCADViewport2D
       Left = 61
-      Height = 249
+      Height = 217
       Top = 1
       Width = 867
       Align = alClient
@@ -1212,7 +1212,7 @@ object frmTTF2Vector: TfrmTTF2Vector
     object Panel1: TPanel
       Left = 1
       Height = 62
-      Top = 250
+      Top = 218
       Width = 927
       Align = alBottom
       ClientHeight = 62
@@ -1242,7 +1242,7 @@ object frmTTF2Vector: TfrmTTF2Vector
     end
     object rulerLeft: TRuler
       Left = 1
-      Height = 249
+      Height = 217
       Top = 1
       Width = 60
       Align = alLeft

@@ -155,21 +155,11 @@ procedure TfrmLibraryBlocks.btnNewLibraryClick(Sender: TObject);
 var TmpStr: string;
 begin
   if not InputQuery('New Library', 'Name', TmpStr) then exit;
-
   TmpStr := GetAppBlockLibrarysPath + TmpStr;
-
   if FileExists(TmpStr) then
     if MessageDlg('Library ' + TmpStr + ' already exists! Overwrite?', mtWarning, [mbYes, mbCancel], 0) = mrCancel then
       exit;
-  try
-    fDrawing.SaveBlockLibraryToFile(TmpStr);
-    //fDrawing.CADCmp2D.CurrentBlockLibrary := TmpStr;
-    //fDrawing.LoadBlockLibraryFromFile(TmpStr);
-    //edtCurrentBlockLibrary.Text := TmpStr;
-    //RefreshListBox;
-    //PreviewBlock(lboxBlocks.ItemIndex);
-  finally
-  end;
+  fDrawing.SaveBlockLibraryToFile(TmpStr);
 end;
 
 procedure TfrmLibraryBlocks.lboxBlocksSelectionChange(Sender: TObject; User: boolean);
@@ -183,6 +173,7 @@ procedure TfrmLibraryBlocks.btnRenameBlockClick(Sender: TObject);
 var TmpStr, TmpStr2: String; SrcBlk: TSourceBlock2D;   idx: integer;
 begin
   if lboxBlocks.ItemIndex = -1 then Exit;
+  TmpStr2 := lboxBlocks.Items[lboxBlocks.ItemIndex];
   if not InputQuery('Rename SourceBlock', 'New name', TmpStr2) then
     exit;
   idx :=  lboxBlocks.ItemIndex;

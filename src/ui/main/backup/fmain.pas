@@ -2406,6 +2406,14 @@ begin
   then  hDrawing.CADCmp2D.BackgroundColor :=  clWhite
   else  hDrawing.CADCmp2D.BackgroundColor :=  clBlack;
 
+  if  FileExists(applicationh.fDefaultBlockLibrary) then
+  begin
+    hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
+    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
+  end else
+    MessageDlg('The DefaultLibrary file could not be found.' + #13#10 +
+               'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
+
   hDrawing.CADViewport2D.ZoomToExtension;
 
   ComponentDrawing.Drawing := hDrawing;
@@ -2430,6 +2438,13 @@ begin
     ImportEssi.ImportMoves := false;
     ImportEssi.Import;
 
+    if  FileExists(applicationh.fDefaultBlockLibrary) then
+    begin
+      hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
+      hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
+    end else
+      MessageDlg('The DefaultLibrary file could not be found.' + #13#10 +
+                 'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
 
     acSettingsUnLockTemplateLayer.Visible := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil;
     hDrawing.FileName := AFileName;

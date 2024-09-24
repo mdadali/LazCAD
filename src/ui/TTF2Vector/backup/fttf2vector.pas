@@ -14,6 +14,7 @@ uses
   CS4BaseTypes,
   CS4Tasks,
   CS4DXFModule,
+  camh,
 
   fAbout;
 
@@ -100,12 +101,13 @@ type
       Change: TItemChange);
   private
     FTTFFont:TFreeTypeFont;
-    TmpPolygon2D: TPolygon2D;
+    TmpPolygon2D:  TPolygon2D;
+    TmpPolyline2D: TPolyline2D;
     procedure AddPolygonVertex(x, y, x2, y2: TRealType);
-    procedure DrawGlyph(AGlyph: TFreeTypeGlyph; APosX, APosY: TRealType);
+    procedure DrawGlyphAsPolygon(AGlyph: TFreeTypeGlyph; APosX, APosY: TRealType);
     procedure DrawGlyphs;
 
-    function GetFontPath: string;
+    function  GetFontPath: string;
     procedure SetShowDirection(AValue: boolean);
 
     procedure SaveDXFFile(AFileName: string);
@@ -140,6 +142,7 @@ uses fMain;
 
 procedure TfrmTTF2Vector.FormCreate(Sender: TObject);
 begin
+  TmpPolygon2D  := nil;
   {$IFDEF TTF2VECTOR_EMBEDDED}
     acAbout.Visible        := false;
     acExportToCAD.Visible  := true;
@@ -152,7 +155,7 @@ begin
   {$IFDEF LINUX}
     ShellTreeView1.Root := '/';
     ShellTreeView1.Path := ExtractFilePath(Application.ExeName) + 'data/fonts/ttf/dejavu/';
-    FTTFFont.Name:= ExtractFilePath(Application.ExeName) + 'data/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf';
+    FTTFFont.Name:= ExtractFilePath(Application.ExeName) + 'data/fonts/ttf/dejavu/DejaVuSansMono-Bold.ttf';
   {$ENDIF}
   {$IFDEF WINDOWS}
     ShellTreeView1.Path := ExtractFilePath(Application.ExeName) + 'data\fonts\ttf\dejavu\';
@@ -261,7 +264,7 @@ begin
           xPos := xPos + (Glyph.Bounds.Width * 64) + 100
         else
           xPos := xPos + 300;
-        DrawGlyph(Glyph, xPos, -yPos);  //-yPos = Reverse - Lines.
+        DrawGlyphAsPolygon(Glyph, xPos, -yPos);  //-yPos = Reverse - Lines.
       end;
     end;
   end;
@@ -270,7 +273,7 @@ begin
   //CADViewport2D1.Repaint;
 end;
 
-procedure TfrmTTF2Vector.DrawGlyph(AGlyph: TFreeTypeGlyph; APosX, APosY: TRealType);
+procedure TfrmTTF2Vector.DrawGlyphAsPolygon(AGlyph: TFreeTypeGlyph; APosX, APosY: TRealType);
 var CharIndex, i, j, cends,lastoncurve: Integer; Glyph:TFreeTypeGlyph; _glyph:PGlyph;
     x,y,x1,y1,scx,scy, k:TrealType; startcountur:boolean;
 begin
@@ -293,6 +296,8 @@ begin
       startcountur:=false;
       TmpPolygon2D := TPolygon2D.Create(-1, []);
       CADCmp2D1.AddObject(-1, TmpPolygon2D);
+      TmpPolygon2D.ReserveInt1 := ord(OuterContourCW);
+      //TmpPolygon2D.LayerName   := CAM_LAYER_OUTER_CONTOUR_CW;
       FirstVertex := true;
     end else
     begin

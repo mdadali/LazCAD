@@ -8710,7 +8710,6 @@ end;
 function  TGraphicObject.GetLayerName: TLayerName;
 var TmpLayer: TLayer;
 begin
-  if OwnerCAD = nil then exit;
   TmpLayer := OwnerCAD.Layers[fLayerIndex];
   if  TmpLayer <> nil then
     result := TmpLayer.Name

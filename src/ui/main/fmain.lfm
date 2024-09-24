@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 782
+  Left = 956
   Height = 760
-  Top = 155
+  Top = 590
   Width = 1600
   Caption = 'LazCAD [Main]'
   ClientHeight = 760

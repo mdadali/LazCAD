@@ -3392,14 +3392,13 @@ begin
     TmpLine2D.PenStyle   := AOutline2D.PenStyle;
     TmpLine2D.PenWidth   := AOutline2D.PenWidth;
     TmpLine2D.ArrowStyle := AOutline2D.ArrowStyle;
+    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
     TmpLine2D.ReserveInt2:= AOutline2D.ReserveInt2;
     TmpLine2D.ReserveStr1:= AOutline2D.ReserveStr1;
     TmpLine2D.ReserveStr2:= AOutline2D.ReserveStr2;
     }
     TmpLine2D.Transform(AOutline2D.ModelTransform);
     TCADCmp2D(AOutline2D.OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
-    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
-    TmpLine2D.LayerName  := AOutline2D.LayerName;
   end;
   if  (AOutline2D is TPolygon2D) then
   begin
@@ -3417,9 +3416,6 @@ begin
     }
     TmpLine2D.Transform(AOutline2D.ModelTransform);
     TCADCmp2D(AOutline2D.OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
-    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
-    TmpLine2D.LayerName  := AOutline2D.LayerName;
-
   end;
   AOutline2D.EndUseProfilePoints;
 end;

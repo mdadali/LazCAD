@@ -387,8 +387,7 @@ type
     property ObjectLength: TRealType read GetLength;
   end;
 
-  TClosedPrimitive2D = class(TPrimitive2D)
-
+  TDirectionalPrimitive2D = class(TPrimitive2D)
   end;
 
   {: This class defines a 2D line segment.
