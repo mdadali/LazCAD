@@ -10,14 +10,14 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  runtimetypeinfocontrols, crt, Forms, pkg_gifanim, indylaz, abbrevia, fSplash,
-  fAbout, FiguresAsComponents, fBaseComponent, fComponentArc, fComponentBSpline,
+  runtimetypeinfocontrols, crt, Forms, pkg_gifanim, indylaz, fSplash, fAbout,
+  FiguresAsComponents, fBaseComponent, fComponentArc, fComponentBSpline,
   fComponentEllipse, fComponentFrame, fComponentLine, fComponentPLine,
   fComponentPolygon, fComponentRect, fcomponentcirculararc, fMain, fDrawing,
   fcomponentcircle, fLibraryBlocks, fLayers, applicationh, CADDocument, camh,
   cImportGCODE2, cImportEssi, fSimulation, fTTF2Vector,
   fCADSys4ClipperInterface, fComponentGraphicObj, fComponentContainer, contours,
-  fSetKerfType, UndoRedo, fobjectposition;
+  UndoRedo, fobjectposition;
 
 {$R *.res}
 
