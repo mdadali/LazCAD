@@ -15,7 +15,7 @@ uses
   fComponentEllipse, fComponentFrame, fComponentLine, fComponentPLine,
   fComponentPolygon, fComponentRect, fcomponentcirculararc, fMain, fDrawing,
   fcomponentcircle, fLibraryBlocks, fLayers, applicationh, CADDocument, camh,
-  cImportGCODE2, cImportEssi, fSimulation, fTTF2Vector,
+  cImportEssi, fSimulation, fTTF2Vector,
   fCADSys4ClipperInterface, fComponentGraphicObj, fComponentContainer, contours,
   UndoRedo, fobjectposition;
 
@@ -29,7 +29,7 @@ begin
   Application.Scaled:=True;
   Application.Initialize;
 
-  frmSplash := TfrmSplash.Create(nil);
+  {frmSplash := TfrmSplash.Create(nil);
   frmSplash.Position := poScreenCenter;
   frmSplash.ProgressBar1.Min := 0;
   frmSplash.ProgressBar1.Max := 99999; //399999;
@@ -37,9 +37,9 @@ begin
   frmSplash.ProgressBar1.Position := 0;
   frmSplash.Show;
   frmSplash.Update;
-
+  }
   Application.CreateForm(TfrmMain, frmMain);
-  frmSplash.ProgressBar1.StepIt;
+  {frmSplash.ProgressBar1.StepIt;
   Delay(500);
   Application.ProcessMessages;
 
@@ -50,8 +50,8 @@ begin
     //Delay(10);
   end;
 
-  frmSplash.Hide;
+  frmSplash.Hide; }
   Application.Run;
-  frmSplash.Free;
+  //frmSplash.Free;
 end.
 

@@ -14,22 +14,7 @@ uses Forms, SysUtils, Classes, Dialogs, IniFiles, messages,
      CS4BaseTypes;
 
 const
-
-
-
-{$IFDEF WINDOWS}
-        //Messages
-      WM_FROM_MDICHILD             = WM_USER + 1000;
-      WMP_MDICHILD_FIRST_CREATED    = 0;
-      WMP_LAST_MDICHILD_CLOSED     = 1;
-      WMP_MDICHILD_ACTIVATED       = 3;
-      WMP_MDICHILD_DEACTIVATED     = 4;
-      
-      WMP_SCRIPER_CLOSED           = 5;
-      WMP_TEXTEDIT_CLOSED          = 6;
-{$ENDIF}
-
-      CAD_LAYER_TEMPLATE           = 'Template';
+      CAD_LAYER_TEMPLATE          = 'Template';
 
       CAD_ONSTART_FILE_STATE_NONE = 0;
       CAD_ONSTART_FILE_STATE_LAST = 1;

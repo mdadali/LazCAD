@@ -150,7 +150,7 @@ begin
 
   try
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
-    fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'origin.cs4');
+    fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'cnc.cs4');
     fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
     fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'cnc_blocks.blk');
     fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('CAD', 'CurrentFontFile', 'none');

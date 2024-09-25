@@ -982,6 +982,31 @@ implementation
 
 { TfrmMain }
 
+type
+  EFileNotFound = class(Exception);
+
+
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+begin
+  fMDICount := 1;
+
+  acSettingsUseTemplates.Checked   :=  (LowerCase(applicationh.fUseTemplates) = 'yes');
+  ShellTreeView1.Root := GetAppDataPath;
+
+  try
+    CADSysRegisterFontFromFile(0, GetAppFontsFNTPath + 'verdana.fnt');
+    CADSysRegisterFontFromFile(1, GetAppFontsFNTPath + 'monotxt.fnt');
+    CADSysRegisterFontFromFile(2, GetAppFontsFNTPath + 'romanc.fnt');
+    CADSysRegisterFontFromFile(3, GetAppFontsFNTPath + 'tms.fnt');
+    DisableControls;
+    ComponentDrawing := TComponentDrawing.Create;
+    acFileNewExecute(nil);
+  except
+    EnableControls;
+  end;
+end;
+
 procedure TfrmMain.OnSelectObj(Sender: TCAD2DSelectObjectsParam; Obj: TObject2D; CtrlPt: Integer; Added: Boolean);
 var hDrawing: TDrawing;
 begin
@@ -3394,29 +3419,6 @@ begin
       exit;
     end;
   ComponentDrawing.Free;
-end;
-
-procedure TfrmMain.FormCreate(Sender: TObject);
-begin
-  fMDICount := 1;
-
-  acSettingsUseTemplates.Checked   :=  (LowerCase(applicationh.fUseTemplates) = 'yes');
-
-  {$IFDEF WINDOWS}
-    ShellTreeView1.Root := ExtractFilePath(Application.ExeName) + '\data';
-  {$ENDIF}
-  {$IFDEF LINUX}
-    ShellTreeView1.Root := ExtractFilePath(Application.ExeName) + '/data';
-  {$ENDIF}
-
-  CADSysRegisterFontFromFile(0, GetAppFontsFNTPath + 'verdana.fnt');
-  CADSysRegisterFontFromFile(1, GetAppFontsFNTPath + 'monotxt.fnt');
-  CADSysRegisterFontFromFile(2, GetAppFontsFNTPath + 'romanc.fnt');
-  CADSysRegisterFontFromFile(3, GetAppFontsFNTPath + 'tms.fnt');
-
-  DisableControls;
-  ComponentDrawing := TComponentDrawing.Create;
-  acFileNewExecute(nil);
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);

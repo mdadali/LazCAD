@@ -469,7 +469,7 @@ begin
   //SnapOption := 0;
   fChanged := true;
   fMain.frmMain.acCMDAccept.Checked := true;
-  UndoRedo.UndoSave;
+  //UndoRedo.UndoSave;
 end;
 
 procedure TDrawing.CADPrg2DIdle(Sender: TObject);
