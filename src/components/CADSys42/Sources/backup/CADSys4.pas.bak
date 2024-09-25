@@ -8710,6 +8710,7 @@ end;
 function  TGraphicObject.GetLayerName: TLayerName;
 var TmpLayer: TLayer;
 begin
+  if OwnerCAD = nil then exit;
   TmpLayer := OwnerCAD.Layers[fLayerIndex];
   if  TmpLayer <> nil then
     result := TmpLayer.Name
@@ -12463,15 +12464,14 @@ begin
 end;
 
 function TCADCmp2D.FindSourceBlock(const SrcName: TSourceBlockName): TSourceBlock2D;
-var
-  TmpIter: TGraphicObjIterator;
+var TmpIter: TGraphicObjIterator;
 begin
   TmpIter := SourceBlocksIterator;
   try
     Result := TmpIter.First as TSourceBlock2D;
     while Result <> nil do
      begin
-       if SrcName = Result.Name then
+       if LowerCase(BlockNameToString(SrcName)) = LowerCase(BlockNameToString(Result.Name)) then
         Exit;
        Result := TmpIter.Next as TSourceBlock2D;
      end;

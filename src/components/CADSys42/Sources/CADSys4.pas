@@ -12464,15 +12464,14 @@ begin
 end;
 
 function TCADCmp2D.FindSourceBlock(const SrcName: TSourceBlockName): TSourceBlock2D;
-var
-  TmpIter: TGraphicObjIterator;
+var TmpIter: TGraphicObjIterator;
 begin
   TmpIter := SourceBlocksIterator;
   try
     Result := TmpIter.First as TSourceBlock2D;
     while Result <> nil do
      begin
-       if SrcName = Result.Name then
+       if LowerCase(SrcName) = LowerCase(Result.Name) then
         Exit;
        Result := TmpIter.Next as TSourceBlock2D;
      end;

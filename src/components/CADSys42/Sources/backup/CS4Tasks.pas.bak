@@ -198,7 +198,6 @@ public
   constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
 end;
 
-
 //end-added
 
 type
@@ -3213,7 +3212,7 @@ end;
 
 constructor TCAD2DCreateSourceBlock.Create(const ACADPrg: TCADPrg; const AStateParam: TCADPrgParam; var NextState: TCADStateClass);
 var
-  TmpStr, TmpStr2: string;
+  TmpStr1: string;  TmpStr2: TSourceBlockname;
   TmpIter: TExclusiveGraphicObjIterator;
   TmpBlk: TSourceBlock2D;
 begin
@@ -3221,8 +3220,8 @@ begin
   if Param is TCAD2DSelectObjectsParam then
    with TCAD2DSelectObjectsParam(Param), TCADCmp2D(CADPrg.Viewport.CADCmp) do
     begin
-      TmpStr := 'New Sourceblock';
-      if not InputQuery('Define block', 'Name', TmpStr) then
+      TmpStr1 := 'New Sourceblock';
+      if not InputQuery('Define block', 'Name', TmpStr1) then
        begin
          NextState := CADPrg.DefaultState;
          Param.Free;
@@ -3230,17 +3229,15 @@ begin
          exit;
        end;
 
-       TmpBlk := TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.FindSourceBlock(TmpStr);
+       TmpBlk := TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.FindSourceBlock(TmpStr1);
        if  (TmpBlk <> nil) then
-         TmpStr2 := TmpBlk.Name;
-         if LowerCase(StringToBlockName(TmpStr2)) = LowerCase(StringToBlockName(TmpStr)) then
-         begin
-           MessageDlg('Sorceblock ' + TmpStr + ' exists!' , mtError, [mbCancel], 0);
-           NextState := CADPrg.DefaultState;
-           Param.Free;
-           Param := nil;
-           exit;
-         end;
+       begin
+         MessageDlg('Sorceblock ' + TmpStr1 + ' exists!' , mtError, [mbCancel], 0);
+         NextState := CADPrg.DefaultState;
+         Param.Free;
+         Param := nil;
+         exit;
+       end;
 
       TmpIter := SelectedObjects.GetExclusiveIterator;
       try
@@ -3250,7 +3247,7 @@ begin
            RemoveObject(Tmpiter.Current.ID);
            TmpIter.Next;
          end;
-        TmpBlk := BlockObjects(StringToBlockName(TmpStr), TmpIter);
+        TmpBlk := BlockObjects(StringToBlockName(TmpStr1), TmpIter);
         if Assigned(TmpBlk) then
          TmpBlk.IsLibraryBlock := True;
       finally
@@ -4551,7 +4548,6 @@ constructor TCAD2DSetKerftypes.Create(const ACADPrg: TCADPrg; const StateParam: 
 var TmpIter: TExclusiveGraphicObjIterator;
 begin
   inherited;
-
   if Param is TCAD2DSelectObjectsParam then
    with TCAD2DSelectObjectsParam(Param) do
     begin

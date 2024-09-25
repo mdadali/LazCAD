@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 884
+  Left = 421
   Height = 800
-  Top = 294
+  Top = 55
   Width = 1600
   Caption = 'LazCAD [Main]'
   ClientHeight = 800
@@ -10748,11 +10748,11 @@ object frmMain: TfrmMain
     TabOrder = 9
     object pnlDraw: TPanel
       Left = 1
-      Height = 567
+      Height = 490
       Top = 42
       Width = 30
       Align = alTop
-      ClientHeight = 567
+      ClientHeight = 490
       ClientWidth = 30
       ParentColor = False
       TabOrder = 0
@@ -11818,7 +11818,7 @@ object frmMain: TfrmMain
       object BCButtonFocus60: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 566
+        Top = 489
         Width = 28
         Action = acBlocksInsert
         Align = alTop
@@ -11923,7 +11923,7 @@ object frmMain: TfrmMain
       object BCButtonFocus61: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 566
+        Top = 489
         Width = 28
         Action = acBlocksCreate
         Align = alTop
@@ -12028,7 +12028,7 @@ object frmMain: TfrmMain
       object BCButtonFocus62: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 540
+        Top = 489
         Width = 28
         Action = acBlocks
         Align = alTop
@@ -12238,7 +12238,7 @@ object frmMain: TfrmMain
       object BCButtonFocus64: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 512
+        Top = 489
         Width = 28
         Action = acDrawTangentLine
         Align = alTop
