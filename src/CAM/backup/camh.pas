@@ -22,26 +22,41 @@ CAM_SIDE_OUTER      = 1;
 
 CAD_LAYER_0                     = '0';
 CAM_LAYER_KERF_OFF              = 'KerfOFF';
-CAM_LAYER_INNER_CONTOUR_CW      = 'Innercontour-Clockwise';
-CAM_LAYER_INNER_CONTOUR_CCW     = 'Innercontour-Counterclockwise';
+CAM_LAYER_INNER_CONTOUR_CW      = 'Innercontour-CW';
+CAM_LAYER_INNER_CONTOUR_CCW     = 'Innercontour-CCW';
 
-CAM_LAYER_OUTER_CONTOUR_CW      = 'Outercontour-Clockwise';
-CAM_LAYER_OUTER_CONTOUR_CCW     = 'Outercontour-Counterclockwise';
+CAM_LAYER_OUTER_CONTOUR_CW      = 'Outercontour-CW';
+CAM_LAYER_OUTER_CONTOUR_CCW     = 'Outercontour-CCW';
 
 CAM_LAYER_MOVE                  = 'Move';
-CAM_LAYER_RAPIDMOVE             = 'RapidMove';
+CAM_LAYER_JUMPS                 = 'Jumps';
 
 X_VALUE = 1;
 Y_VALUE = 2;
 I_VALUE = 3;
 J_VALUE = 4;
 
-
+INVALID_FLOAT_VALUE = -99999999.9;
 COORDS_SEPARATOR  = ' ';
 
-type
-  TString = string[255];
 
+      CAM_LAYER_STR_INNER_CONTOUR_CW  = 'InnerContourCW';
+      CAM_LAYER_STR_INNER_CONTOUR_CCW = 'InnerContourCCW';
+      CAM_LAYER_STR_OUTER_CONTOUR_CW  = 'OuterContourCW';
+      CAM_LAYER_STR_OUTER_CONTOUR_CCW = 'OuterContourCCW';
+      CAM_LAYER_STR_JUMPS             = 'Jumps';
+      LAYER_STR_TEMPLATE              = 'Template';
+
+      CAM_LAYER_ID_INNER_CONTOUR_CW  = 250;
+      CAM_LAYER_ID_INNER_CONTOUR_CCW = 251;
+      CAM_LAYER_ID_OUTER_CONTOUR_CW  = 252;
+      CAM_LAYER_ID_OUTER_CONTOUR_CCW = 253;
+      CAM_LAYER_ID_JUMPS             = 254;
+      LAYER_ID_TEMPLATE              = 255;
+//end added.
+
+type
+  TString = string[256];
   TPgmType = (ptAbsolute, ptIncremental);
 
 

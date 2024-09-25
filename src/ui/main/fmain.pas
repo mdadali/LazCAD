@@ -18,7 +18,6 @@ uses
 
   CS4DXFModule,
   cImportEssi,
-  cImportGCODE2,
 
   applicationh,
   FiguresAsComponents,
@@ -27,7 +26,8 @@ uses
   fLayers,
   fSimulation,
   fDrawing,
-  fttf2vector;
+  fttf2vector,
+  camh;
 
 type
 

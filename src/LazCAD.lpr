@@ -15,7 +15,7 @@ uses
   fComponentEllipse, fComponentFrame, fComponentLine, fComponentPLine,
   fComponentPolygon, fComponentRect, fcomponentcirculararc, fMain, fDrawing,
   fcomponentcircle, fLibraryBlocks, fLayers, applicationh, CADDocument, camh,
-  cImportGCODE2, cImportEssi, fSimulation, fTTF2Vector,
+  cImportEssi, fSimulation, fTTF2Vector,
   fCADSys4ClipperInterface, fComponentGraphicObj, fComponentContainer, contours,
   UndoRedo, fobjectposition;
 

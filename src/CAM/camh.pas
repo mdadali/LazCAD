@@ -36,12 +36,27 @@ Y_VALUE = 2;
 I_VALUE = 3;
 J_VALUE = 4;
 
-
+INVALID_FLOAT_VALUE = -99999999.9;
 COORDS_SEPARATOR  = ' ';
+
+
+      CAM_LAYER_STR_INNER_CONTOUR_CW  = 'InnerContourCW';
+      CAM_LAYER_STR_INNER_CONTOUR_CCW = 'InnerContourCCW';
+      CAM_LAYER_STR_OUTER_CONTOUR_CW  = 'OuterContourCW';
+      CAM_LAYER_STR_OUTER_CONTOUR_CCW = 'OuterContourCCW';
+      CAM_LAYER_STR_JUMPS             = 'Jumps';
+      LAYER_STR_TEMPLATE              = 'Template';
+
+      CAM_LAYER_ID_INNER_CONTOUR_CW  = 250;
+      CAM_LAYER_ID_INNER_CONTOUR_CCW = 251;
+      CAM_LAYER_ID_OUTER_CONTOUR_CW  = 252;
+      CAM_LAYER_ID_OUTER_CONTOUR_CCW = 253;
+      CAM_LAYER_ID_JUMPS             = 254;
+      LAYER_ID_TEMPLATE              = 255;
+//end added.
 
 type
   TString = string[255];
-
   TPgmType = (ptAbsolute, ptIncremental);
 
 

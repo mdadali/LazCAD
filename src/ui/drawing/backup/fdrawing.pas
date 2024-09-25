@@ -7,10 +7,9 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, Dialogs, Graphics, ComCtrls,
   Menus, Types,
-
   UndoRedo,
-
   applicationh,
+  camh,
   CADSys4,
   CS4Shapes,
   CS4BaseTypes,

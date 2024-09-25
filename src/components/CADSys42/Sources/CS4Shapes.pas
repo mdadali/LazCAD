@@ -1939,8 +1939,6 @@ begin
     result := TransformPoint2D(Points[0], ModelTransform)
   else  if (self is TOutline2D) then
     result := TransformPoint2D(TOutline2D(self).ProfilePoints[0], ModelTransform)
-  else
-    result := Point2D(INVALID_FLOAT_VALUE, INVALID_FLOAT_VALUE);
 end;
 
 function TPrimitive2D.GetEndPoint: TPoint2D;
@@ -1949,8 +1947,6 @@ begin
     result := TransformPoint2D(Points[1], ModelTransform)
   else  if (self is TOutline2D) then
     result := TransformPoint2D(TOutline2D(self).ProfilePoints[TOutline2D(self).ProfilePoints.Count - 1], ModelTransform)
-  else
-    result := Point2D(INVALID_FLOAT_VALUE, INVALID_FLOAT_VALUE);
 end;
 
 function TPrimitive2D.GetStartPointX: TRealType;

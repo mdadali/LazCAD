@@ -1786,6 +1786,8 @@ begin
       fPoints.OnChange := UpdateExtension;
     end;
     fShowDirection := (Obj as TPrimitive2D).fShowDirection;  //added
+    ReserveInt1 := (Obj as TPrimitive2D).ReserveInt1;
+    LayerName   := (Obj as TPrimitive2D).LayerName;
     fPoints.Clear;
   end;
 end;

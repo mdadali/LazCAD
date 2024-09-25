@@ -211,10 +211,6 @@
         <UnitName Value="fComponentGraphicObj"/>
       </Unit>
       <Unit>
-        <Filename Value="buildin\import\cImportGCODE2.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="buildin\import\cImportEssi.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
