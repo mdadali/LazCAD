@@ -3,7 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="Debug_Linux64_gtk2">
+    <BuildModes Active="Debug_Win32_gtk2">
       <Item Name="Debug_Win32_gtk2">
         <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="gtk2"/>
@@ -253,7 +253,7 @@
         <Item5 Mode="Debug_Linux64_qt5" Option="887260432645"/>
       </SessionEnabledMatrixOptions>
     </BuildModes>
-    <ManyBuildModesSelection Value="Debug_Win64_win,Debug_Linux64_gtk2"/>
+    <ManyBuildModesSelection Value="Debug_Win64_win,Debug_Win32_gtk2,Debug_Linux64_gtk2,Debug_Win32_win,Debug_Arm_Linux32_gtk2"/>
     <Units>
       <Unit>
         <Filename Value="LazCAD.lpr"/>
@@ -270,9 +270,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fMain"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="2430"/>
-        <CursorPos X="37" Y="2436"/>
+        <TopLine Value="3398"/>
+        <CursorPos X="66" Y="3402"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -427,7 +428,6 @@
       <Unit>
         <Filename Value="common\applicationh.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="146"/>
         <CursorPos X="49" Y="162"/>
@@ -857,10 +857,7 @@
         <UsageCount Value="11"/>
       </Unit>
     </Units>
-    <OtherDefines Count="1">
-      <Define0 Value="TTF2VECTOR_EMBEDDED"/>
-    </OtherDefines>
-    <JumpHistory HistoryIndex="28">
+    <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
         <Caret Line="3236" Column="46" TopLine="3218"/>
@@ -976,6 +973,10 @@
       <Position>
         <Filename Value="ui\drawing\fdrawing.pas"/>
         <Caret Line="713" Column="120" TopLine="702"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="2436" Column="37" TopLine="2430"/>
       </Position>
     </JumpHistory>
     <RunParams>

@@ -3400,8 +3400,6 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   fMDICount := 1;
 
-  PageControl1.TabHeight := PageControl1.TabHeight - 10;
-
   acSettingsUseTemplates.Checked   :=  (LowerCase(applicationh.fUseTemplates) = 'yes');
 
   {$IFDEF WINDOWS}
