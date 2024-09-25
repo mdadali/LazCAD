@@ -1343,7 +1343,9 @@ begin
   TIPropertyGrid1.Repaint;
 
   if FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
-    hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+    hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary)
+  else
+    hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
 
   case PageControl1.PageCount of
     0: exit;
@@ -2029,7 +2031,7 @@ begin
     TmpPar1.OnObjectSelected := @OnSelectObj;
     hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar1);
   end;
-  hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+  //hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
 end;
 
 procedure TfrmMain.acAlignLeftExecute(Sender: TObject);

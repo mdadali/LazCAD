@@ -1343,7 +1343,9 @@ begin
   TIPropertyGrid1.Repaint;
 
   if FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
-    hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+    hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary)
+  else
+    hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
 
   case PageControl1.PageCount of
     0: exit;
