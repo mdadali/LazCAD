@@ -118,15 +118,15 @@ begin
     DataStream := TResourceStream.Create(HInstance, 'DATA', RT_RCDATA);
     MemoryStream := TMemoryStream.Create;
     try
-      // Lade die ZIP-Datei aus der Resource in den Speicher
+      // Load the ZIP file from the resource into memory
       MemoryStream.LoadFromStream(DataStream);
       MemoryStream.Position := 0;
 
-      // Entpacke den Inhalt der ZIP-Datei in das Zielverzeichnis
+      // Extract the contents of the ZIP file to the target directory.
       AbUnZipper.Stream := MemoryStream;
-      AbUnZipper.ExtractOptions := [eoCreateDirs, eoRestorePath]; // Verzeichnisse erstellen
-      AbUnZipper.BaseDirectory := GetAppPath;  // Zielverzeichnis festlegen
-      AbUnZipper.ExtractFiles('*.*');              // Alle Dateien entpacken
+      AbUnZipper.ExtractOptions := [eoCreateDirs, eoRestorePath]; // Create directories
+      AbUnZipper.BaseDirectory := GetAppPath;
+      AbUnZipper.ExtractFiles('*.*');
     finally
       MemoryStream.Free;
       DataStream.Free;
@@ -152,7 +152,7 @@ begin
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
     fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'origin.cs4');
     fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
-    fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'essi_blocks.blk');
+    fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'cnc_blocks.blk');
     fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('CAD', 'CurrentFontFile', 'none');
 
     fPythonDLLPath       := fIniFile.ReadString('Python', 'DllPath', '');

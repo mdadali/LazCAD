@@ -284,7 +284,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="fDrawing"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
         <TopLine Value="696"/>
         <CursorPos X="3" Y="698"/>
@@ -428,8 +427,10 @@
       <Unit>
         <Filename Value="common\applicationh.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <CursorPos X="18" Y="9"/>
+        <TopLine Value="146"/>
+        <CursorPos X="109" Y="153"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
       </Unit>
@@ -859,7 +860,7 @@
     <OtherDefines Count="1">
       <Define0 Value="TTF2VECTOR_EMBEDDED"/>
     </OtherDefines>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="28">
       <Position>
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
         <Caret Line="3236" Column="46" TopLine="3218"/>
@@ -915,10 +916,6 @@
       <Position>
         <Filename Value="ui\main\fmain.pas"/>
         <Caret Line="3401" Column="56" TopLine="3388"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="2494" Column="41" TopLine="2501"/>
       </Position>
       <Position>
         <Filename Value="ui\main\fmain.pas"/>

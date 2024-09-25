@@ -270,10 +270,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <TopLine Value="2430"/>
-        <CursorPos X="31" Y="2435"/>
+        <CursorPos X="56" Y="2436"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -285,11 +284,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="fDrawing"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
-        <TopLine Value="702"/>
-        <CursorPos X="120" Y="713"/>
+        <TopLine Value="696"/>
+        <CursorPos X="3" Y="698"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
@@ -861,10 +862,6 @@
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
-        <Caret Line="3223" Column="14" TopLine="3208"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
         <Caret Line="3236" Column="46" TopLine="3218"/>
       </Position>
       <Position>
@@ -978,6 +975,10 @@
       <Position>
         <Filename Value="ui\main\fmain.pas"/>
         <Caret Line="2305" Column="17" TopLine="2276"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="713" Column="120" TopLine="702"/>
       </Position>
     </JumpHistory>
     <RunParams>
