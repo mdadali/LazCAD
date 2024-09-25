@@ -939,7 +939,7 @@ type
 
     procedure OnViewportMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
-    procedure CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: Single; X, Y: Integer);
+    procedure CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
     procedure CADViewport2D1MouseUp2D(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
 
@@ -1086,7 +1086,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: Single; X, Y: Integer);
+procedure TfrmMain.CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
 var TmpPt: TPoint2D; TmpObj: TObject2D; TmpN: Integer; hDrawing: TDrawing; TmpSnapOpt: integer;
 begin
   hDrawing := GetDrawingFromPage(fActivePage);

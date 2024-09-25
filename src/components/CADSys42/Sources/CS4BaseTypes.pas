@@ -23,7 +23,7 @@ type
      <LI=in the <I=adCounterClockwise> mode the arc segment is
       drawed counter clockwise>.
   }
-  TArcDirection = (Clockwise, CounterClockwise);
+  TArcDirection = (adClockwise, adCounterClockwise);
 
   TSelectionMode = (smSingle, smArea, smExtendet);  //added
 

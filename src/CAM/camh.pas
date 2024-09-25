@@ -132,7 +132,7 @@ implementation
 function  CAM_GetFigureDirection(AhEntity: integer): TArcDirection;
 var hRes: TArcDirection;  hLayerName: string;
 begin
-  result := CounterClockwise;
+  result := adCounterClockwise;
 end;
 
 procedure CAM_AddCamLayers(ADocument: integer);

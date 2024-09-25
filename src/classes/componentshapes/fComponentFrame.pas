@@ -41,9 +41,9 @@ TCADSysFrame2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     property Direction;
     property StartCorner: TFrameStartCorner read  GetStartCorner write SetStartCorner;
     property Chamfered: boolean read GetChamfered write SetChamfered;
-    property Chamfer: TrealType read GetChamfer write SetChamfer default 10.0;
-    property Width: TrealType read GetWidth write SetWidth;
-    property Height: TrealType read GetHeight write SetHeight;
+    property Chamfer: TRealType read GetChamfer write SetChamfer;
+    property Width: TRealType read GetWidth write SetWidth;
+    property Height: TRealType read GetHeight write SetHeight;
 
     //property BrushColor;
     //property BrushStyle;

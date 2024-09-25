@@ -3212,7 +3212,7 @@ end;
 
 constructor TCAD2DCreateSourceBlock.Create(const ACADPrg: TCADPrg; const AStateParam: TCADPrgParam; var NextState: TCADStateClass);
 var
-  TmpStr1: string;  TmpStr2: TSourceBlockname;
+  TmpStr1: string;
   TmpIter: TExclusiveGraphicObjIterator;
   TmpBlk: TSourceBlock2D;
 begin
@@ -3599,10 +3599,10 @@ var i: integer; TmpPointsSet2D:  TPointsSet2D; TmpPoint2D: TPoint2D;
 begin
   if AOutLine2D is TBSpline2D then
   begin
-    if AOutLine2D.Direction = Clockwise then
-      AOutLine2D.Direction := CounterClockwise
+    if AOutLine2D.Direction = adClockwise then
+      AOutLine2D.Direction := adCounterClockwise
     else
-      AOutLine2D.Direction := Clockwise;
+      AOutLine2D.Direction := adClockwise;
     exit;
   end;
 
@@ -3636,50 +3636,50 @@ end;
 
 procedure ReverseEllipticalArc2D(var AArcD: TEllipticalArc2D);
 begin
-  if AArcD.Direction  = CounterClockwise then
-    AArcD.Direction := Clockwise
+  if AArcD.Direction  = adCounterClockwise then
+    AArcD.Direction := adClockwise
   else
-    AArcD.Direction := CounterClockwise;
+    AArcD.Direction := adCounterClockwise;
 end;
 
 procedure ReverseCircularArc2D(var AArcD: TCircularArc2D);
 begin
-  if AArcD.Direction  = CounterClockwise then
-    AArcD.Direction := Clockwise
+  if AArcD.Direction  = adCounterClockwise then
+    AArcD.Direction := adClockwise
   else
-    AArcD.Direction := CounterClockwise;
+    AArcD.Direction := adCounterClockwise;
 end;
 
 procedure  ReverseEllipse2D(Ellipse2D: TEllipse2D);
 begin
-  if Ellipse2D.Direction  = Clockwise then
-    Ellipse2D.Direction  := CounterClockwise
+  if Ellipse2D.Direction  = adClockwise then
+    Ellipse2D.Direction  := adCounterClockwise
   else
-    Ellipse2D.Direction  := Clockwise;
+    Ellipse2D.Direction  := adClockwise;
 end;
 
 procedure  ReverseCircle2D(Circle2D: TCircle2D);
 begin
-  if Circle2D.Direction  = Clockwise then
-    Circle2D.Direction  := CounterClockwise
+  if Circle2D.Direction  = adClockwise then
+    Circle2D.Direction  := adCounterClockwise
   else
-    Circle2D.Direction  := Clockwise;
+    Circle2D.Direction  := adClockwise;
 end;
 
 procedure ReverseFrame2D(var AFrame2D: TFrame2D);
 begin
-  if AFrame2D.Direction  = CounterClockwise then
-    AFrame2D.Direction := Clockwise
+  if AFrame2D.Direction  = adCounterClockwise then
+    AFrame2D.Direction := adClockwise
   else
-    AFrame2D.Direction := CounterClockwise;
+    AFrame2D.Direction := adCounterClockwise;
 end;
 
 procedure InverseFrame2D(var AFrame2D: TFrame2D);
 begin
-  if AFrame2D.Direction  = CounterClockwise then
-    AFrame2D.Direction := Clockwise
+  if AFrame2D.Direction  = adCounterClockwise then
+    AFrame2D.Direction := adClockwise
   else
-    AFrame2D.Direction := CounterClockwise;
+    AFrame2D.Direction := adCounterClockwise;
 end;
 
 procedure Reverse(APrimitive2D: TPrimitive2D);
@@ -3715,10 +3715,10 @@ begin
   TmpEA := AArcD.StartAngle;
   AArcD.EndAngle   := TmpEA;
   AArcD.StartAngle := TmpSA;
-  if AArcD.Direction  = CounterClockwise then
-    AArcD.Direction := Clockwise
+  if AArcD.Direction  = adCounterClockwise then
+    AArcD.Direction := adClockwise
   else
-    AArcD.Direction := CounterClockwise;
+    AArcD.Direction := adCounterClockwise;
 end;
 
 procedure InverseCircularArc2D(AArcD: TCircularArc2D);

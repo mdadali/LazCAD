@@ -479,6 +479,7 @@ begin
   LastPosY := D.Y;
 end;
 
+
 procedure TImportEssi.DrawArc(AX1, AY1, AX2, AY2, AStartAngle, AEndAngle: single; ADirection: string);
 var Arc2D: TEllipticalArc2D;
 begin

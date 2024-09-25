@@ -1329,7 +1329,7 @@ var
   TmpPnt, TmpPnt1: TPoint2D;
   InsPnt: TPoint2D;
   AllPnt: TPoint2D;
-  TmpAngle: TRealType;
+  TmpAngle: Single;
 begin
   with FDXFWrite, Text do
    begin

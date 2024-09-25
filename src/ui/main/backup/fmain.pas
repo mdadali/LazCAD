@@ -18,7 +18,6 @@ uses
 
   CS4DXFModule,
   cImportEssi,
-  cImportGCODE2,
 
   applicationh,
   FiguresAsComponents,
@@ -940,7 +939,7 @@ type
 
     procedure OnViewportMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
-    procedure CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: Single; X, Y: Integer);
+    procedure CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
     procedure CADViewport2D1MouseUp2D(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
 

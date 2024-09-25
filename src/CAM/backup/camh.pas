@@ -56,7 +56,7 @@ COORDS_SEPARATOR  = ' ';
 //end added.
 
 type
-  TString = string[256];
+  TString = string[255];
   TPgmType = (ptAbsolute, ptIncremental);
 
 

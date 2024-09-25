@@ -122,6 +122,7 @@ end;
 procedure TCADSysFrame2D.SetWidth(AValue: TrealType);
 begin
   TFrame2D(self.fPrimitive2D).Width := AValue;
+  self.fPrimitive2D.UpdateExtension(nil);
 end;
 
 function  TCADSysFrame2D.GetHeight: TrealType;
@@ -132,6 +133,7 @@ end;
 procedure TCADSysFrame2D.SetHeight(AValue: TrealType);
 begin
   TFrame2D(self.fPrimitive2D).Height := AValue;
+  self.fPrimitive2D.UpdateExtension(nil);
 end;
 
 end.

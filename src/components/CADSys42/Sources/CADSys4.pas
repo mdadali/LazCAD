@@ -7935,7 +7935,7 @@ begin
 end;
 
 //added ChatGPT
-function OffsetPolygon2D(APointsSet2D: TPointsSet2D; AOffset: Single): TPointsSet2D;
+function OffsetPolygon2D(APointsSet2D: TPointsSet2D; AOffset: TRealType): TPointsSet2D;
 var
   OriginalPoints: array of TPoint2D;
   OffsetPoints: TPointsSet2D;
@@ -8012,9 +8012,9 @@ begin
     crossProductSum := crossProductSum + CrossProduct(APointsSet[i], APointsSet[i + 1], APointsSet[i + 2]);
   crossProductSum := crossProductSum + CrossProduct(APointsSet[n - 1], APointsSet[0], APointsSet[1]); // Verbinde den letzten Punkt mit dem ersten Punkt
   if crossProductSum > 0 then
-    result := Counterclockwise // Gegen den Uhrzeigersinn
+    result := adCounterclockwise // Gegen den Uhrzeigersinn
   else if crossProductSum < 0 then
-    result := Clockwise // Im Uhrzeigersinn
+    result := adClockwise // Im Uhrzeigersinn
   else
     //result := 'Undefined'; // Die Punkte liegen auf einer Linie
 end;

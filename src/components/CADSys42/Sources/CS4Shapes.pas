@@ -377,7 +377,7 @@ type
     property EndPoint: TPoint2D   read    GetEndPoint;
 
     property Angle: TRealType  read GetAngle write SetAngle;
-    property Direction: TArcDirection read FDirection write SetArcDirection default Clockwise;
+    property Direction: TArcDirection read FDirection write SetArcDirection default adClockwise;
     property ShowDirection: boolean read fShowDirection write fShowDirection;
     property Area: TRealType read GetArea;
 
@@ -689,7 +689,7 @@ type
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     property StartCorner: TFrameStartCorner read  fStartCorner write fStartCorner;
     property Chamfered: boolean read fChamfered write fChamfered;
-    property Chamfer: TrealType read fChamfer write fChamfer default 10.0;
+    property Chamfer: TRealType read fChamfer write fChamfer;
     property Width: TRealType read GetWidth write SetWidth;
     property Height: TRealType read GetHeight write SetHeight;
   end;
@@ -2557,11 +2557,11 @@ begin
   P0 := CartesianPoint2D(Points[2]);
   P1 := CartesianPoint2D(Points[3]);
   case FDirection of
-   Clockwise: begin
+   adClockwise: begin
      SA := ArcTan2(CY - P0.Y, P0.X - CX);
      EA := ArcTan2(CY - P1.Y, P1.X - CX);
    end;
-   CounterClockwise: begin
+   adCounterClockwise: begin
      SA := ArcTan2(P0.Y - CY, P0.X - CX);
      EA := ArcTan2(P1.Y - CY, P1.X - CX);
    end;
@@ -2614,7 +2614,7 @@ begin
   // Create the vector of curve points
   inherited PopulateCurvePoints(NPts + 1);
    // Populate the vector of curve points
-  if fDirection = Clockwise then
+  if fDirection = adClockwise then
   begin
     CurrAngle := fStartAngle;
     for Cont := 0 to NPts - 1 do
@@ -2646,7 +2646,7 @@ begin
     Points.Add(P2);
     Points.Add(Point2D(0, 0));
     Points.Add(Point2D(0, 0));
-    fDirection := CounterClockwise;
+    fDirection := adCounterClockwise;
     StartAngle := SA;
     EndAngle := EA;
     Points.GrowingEnabled := False;
@@ -2733,7 +2733,7 @@ begin
   CY := P0.Y;
   R  := PointDistance2D(P0, P1);
 
-  if FDirection = CounterClockwise then
+  if FDirection = adCounterClockwise then
   begin
     SA := ArcTan2(P1.Y - CY, P1.X - CX);
     EA := ArcTan2(P2.Y - CY, P2.X - CX);
@@ -2804,7 +2804,7 @@ begin
     Delta := (TWOPI - FStartAngle + FEndAngle) / (NPts - 1);
   // Crea il vettore curvilineo.
   // Popola il vettore curvilineo.
-  if FDirection = Clockwise then
+  if FDirection = adClockwise then
   begin
     ArcAngle    := FEndAngle - FStartAngle;
     FEndAngle   := FEndAngle   + ArcAngle;
@@ -2814,7 +2814,7 @@ begin
   for Cont := 1 to NPts do
   begin
     ProfilePoints.Add(Point2D(CX + R * Cos(CurrAngle), CY + R * Sin(CurrAngle)));
-    if FDirection = CounterClockwise then
+    if FDirection = adCounterClockwise then
       CurrAngle := CurrAngle + Delta
     else
       CurrAngle := CurrAngle - Delta;
@@ -2889,7 +2889,7 @@ begin
     FStartAngle := SA;
     FEndAngle := EA;
     fRadius := R;
-    FDirection := CounterClockwise;
+    FDirection := adCounterClockwise;
     Points.GrowingEnabled := False;
   finally
     Points.DisableEvents := False;
@@ -2983,7 +2983,7 @@ begin
   R  := SQRT(SQR(P1.X - P0.X) + SQR(P1.Y - P0.Y)) ;
   CX := P0.X;
   CY := P0.Y;
-  if FDirection = CounterClockwise then
+  if FDirection = adCounterClockwise then
     //SA := AngleFromPoints2D(P0, P1)
     SA := ArcTan2(P1.Y - CY, P1.X - CX)
   else
@@ -3025,7 +3025,7 @@ begin
   CurrAngle := fStartAngle;
   for Cont := 1 to CurvePrecision  do
   begin
-    if fDirection = Clockwise then
+    if fDirection = adClockwise then
     begin
       ProfilePoints.Add(Point2D(CX + R * Cos(CurrAngle), CY - R * Sin(CurrAngle)));
       CurrAngle := CurrAngle + Delta
@@ -3049,7 +3049,7 @@ begin
     P2 := P1; P2.X := P2.X + R;
     Points.Add(P2);
     fStartAngle := 0;
-    fDirection := CounterClockwise;
+    fDirection := adCounterClockwise;
     Points.GrowingEnabled := False;
   finally
     Points.DisableEvents := False;
@@ -3116,7 +3116,7 @@ begin
    end;
 
   inherited PopulateCurvePoints(CurvePrecision + 1);
-  if FDirection = CounterClockwise then
+  if FDirection = adCounterClockwise then
   begin
     case fStartCorner of
       fsLeftTop: begin
@@ -3423,7 +3423,7 @@ begin
   end;
   ProfilePoints.Add(Point2D(CX + RX, CY));
 
-  if self.Direction = CounterClockwise then
+  if self.Direction = adCounterClockwise then
   begin
     TmpPointsSet2D := TPointsSet2D.Create(self.ProfilePoints.Count);
     try
@@ -3568,7 +3568,7 @@ begin
   if Points.Count < FOrder then
   begin
     inherited PopulateCurvePoints(Points.Count);
-    if FDirection =  Clockwise then
+    if FDirection =  adClockwise then
       ProfilePoints.Copy(Points, 0, Points.Count - 1)
     else
       for cont := Points.Count - 1 downto 0  do
@@ -3576,7 +3576,7 @@ begin
   end else
   begin
     inherited PopulateCurvePoints(CurvePrecision + 1);
-    if FDirection =  Clockwise  then
+    if FDirection =  adClockwise  then
     begin
       for Cont := 0 to CurvePrecision - 1 do
         ProfilePoints.Add(BSpline2D(Cont / CurvePrecision * (Points.Count - 2),
