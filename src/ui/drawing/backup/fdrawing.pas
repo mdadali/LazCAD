@@ -116,17 +116,18 @@ type
     MenuItem2: TMenuItem;
     mnuInverse: TMenuItem;
     mnuModifyReverse: TMenuItem;
+    pnlLeft: TPanel;
     popupModify: TPopupMenu;
+    RulerLeft: TRuler;
     Separator2: TMenuItem;
     pmnuSetPoint: TMenuItem;
     pmnuCancel: TMenuItem;
     pmnuAccept: TMenuItem;
     PageControl1: TPageControl;
-    Panel3: TPanel;
-    Panel4: TPanel;
+    pnlBottom: TPanel;
+    pnlCorner: TPanel;
     popupDrawing: TPopupMenu;
     popupSpaces: TPopupMenu;
-    RulerLeft: TRuler;
     RulerBottom: TRuler;
     Separator1: TMenuItem;
     tsModel: TTabSheet;
@@ -841,7 +842,6 @@ function  TDrawing.SaveBlockLibraryToFile(AFileName: string): boolean;
 var TmpStr: TFileStream;
 begin
   result := false;
-  //if CADCmp2D.SourceBlocksCount = 0 then Exit;
   TmpStr := TFileStream.Create(AFileName, fmCreate);
   try
     CADCmp2D.SaveLibrary(TmpStr);

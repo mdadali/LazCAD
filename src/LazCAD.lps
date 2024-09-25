@@ -275,6 +275,7 @@
         <CursorPos X="3" Y="17"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\drawing\fdrawing.pas"/>
@@ -544,6 +545,18 @@
         <UsageCount Value="35"/>
       </Unit>
       <Unit>
+        <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmTTF2Vector"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="fTTF2Vector"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="109"/>
+        <CursorPos X="24" Y="127"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
         <Filename Value="ui\TTF2Vector\fTTF2Vector.pas"/>
         <ComponentName Value="frmTTF2Vector"/>
         <HasResources Value="True"/>
@@ -552,7 +565,6 @@
         <TopLine Value="306"/>
         <CursorPos X="16" Y="310"/>
         <UsageCount Value="29"/>
-        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CADSys4.pas"/>
@@ -844,18 +856,6 @@
         <TopLine Value="861"/>
         <CursorPos X="53" Y="866"/>
         <UsageCount Value="11"/>
-      </Unit>
-      <Unit>
-        <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmTTF2Vector"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="fTTF2Vector"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="109"/>
-        <CursorPos X="24" Y="127"/>
-        <UsageCount Value="20"/>
-        <Loaded Value="True"/>
       </Unit>
     </Units>
     <OtherDefines Count="1">
