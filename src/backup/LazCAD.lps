@@ -3,7 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="Debug_Linux64_gtk2">
+    <BuildModes Active="Debug_Win64_win">
       <Item Name="Debug_Win32_gtk2">
         <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="gtk2"/>
@@ -38,7 +38,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="..\$(TargetCPU)-$(TargetOS)\gtk2\debug\LazCAD\LazCAD"/>
+            <Filename Value="..\$(TargetCPU)-$(TargetOS)\gtk2\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -253,7 +253,7 @@
         <Item5 Mode="Debug_Linux64_qt5" Option="887260432645"/>
       </SessionEnabledMatrixOptions>
     </BuildModes>
-    <ManyBuildModesSelection Value="Debug_Win64_win,Debug_Win32_gtk2,Debug_Linux64_gtk2,Debug_Win32_win,Debug_Arm_Linux32_gtk2"/>
+    <ManyBuildModesSelection Value="Debug_Win64_win,Debug_Linux64_gtk2"/>
     <Units>
       <Unit>
         <Filename Value="LazCAD.lpr"/>
@@ -272,7 +272,7 @@
         <UnitName Value="fMain"/>
         <EditorIndex Value="4"/>
         <TopLine Value="2430"/>
-        <CursorPos X="56" Y="2436"/>
+        <CursorPos X="37" Y="2436"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -284,7 +284,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="fDrawing"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
         <TopLine Value="696"/>
         <CursorPos X="3" Y="698"/>
@@ -428,8 +427,10 @@
       <Unit>
         <Filename Value="common\applicationh.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <CursorPos X="18" Y="9"/>
+        <TopLine Value="146"/>
+        <CursorPos X="109" Y="153"/>
         <UsageCount Value="202"/>
         <Loaded Value="True"/>
       </Unit>
@@ -859,7 +860,7 @@
     <OtherDefines Count="1">
       <Define0 Value="TTF2VECTOR_EMBEDDED"/>
     </OtherDefines>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="28">
       <Position>
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
         <Caret Line="3236" Column="46" TopLine="3218"/>
@@ -915,10 +916,6 @@
       <Position>
         <Filename Value="ui\main\fmain.pas"/>
         <Caret Line="3401" Column="56" TopLine="3388"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="2494" Column="41" TopLine="2501"/>
       </Position>
       <Position>
         <Filename Value="ui\main\fmain.pas"/>

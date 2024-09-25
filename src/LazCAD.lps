@@ -38,7 +38,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="..\$(TargetCPU)-$(TargetOS)\gtk2\debug\LazCAD\LazCAD"/>
+            <Filename Value="..\$(TargetCPU)-$(TargetOS)\gtk2\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -253,7 +253,7 @@
         <Item5 Mode="Debug_Linux64_qt5" Option="887260432645"/>
       </SessionEnabledMatrixOptions>
     </BuildModes>
-    <ManyBuildModesSelection Value="Debug_Win64_win,Debug_Win32_gtk2,Debug_Linux64_gtk2,Debug_Win32_win,Debug_Arm_Linux32_gtk2"/>
+    <ManyBuildModesSelection Value="Debug_Win64_win,Debug_Linux64_gtk2"/>
     <Units>
       <Unit>
         <Filename Value="LazCAD.lpr"/>
@@ -272,7 +272,7 @@
         <UnitName Value="fMain"/>
         <EditorIndex Value="4"/>
         <TopLine Value="2430"/>
-        <CursorPos X="56" Y="2436"/>
+        <CursorPos X="37" Y="2436"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>

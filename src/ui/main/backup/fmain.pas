@@ -2031,7 +2031,7 @@ begin
     TmpPar1.OnObjectSelected := @OnSelectObj;
     hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar1);
   end;
-  hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+  //hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
 end;
 
 procedure TfrmMain.acAlignLeftExecute(Sender: TObject);
