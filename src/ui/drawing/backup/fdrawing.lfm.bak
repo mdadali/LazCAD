@@ -78,7 +78,6 @@ object Drawing: TDrawing
         GridSubX = 10
         GridSubY = 10
         ControlPointsWidth = 10
-        OnPaint = CADViewport2DPaint
         CADCmp2D = CADCmp2D
         OnMouseMove2D = CADViewport2DMouseMove2D
       end
@@ -182,6 +181,7 @@ object Drawing: TDrawing
     YSnap = 10
     CursorColor = clRed
     ShowCursorCross = True
+    OnExitState = CADPrg2DExitState
     OnEndOperation = CADPrg2DEndOperation
     OnStopOperation = CADPrg2DStopOperation
     OnStartOperation = CADPrg2DStartOperation

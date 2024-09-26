@@ -136,6 +136,7 @@ type
     procedure CADPrg2DDescriptionChanged(Sender: TObject);
     procedure CADPrg2DEndOperation(Sender: TObject;
       const Operation: TCADStateClass; const Param: TCADPrgParam);
+    procedure CADPrg2DExitState(Sender: TObject; const State: TCADState);
     procedure CADPrg2DIdle(Sender: TObject);
     procedure CADPrg2DMouseMoveFilter(Sender: TCADPrg2D;
       CurrentState: TCADState; var WPt: TPoint2D; X, Y: Integer);
@@ -470,6 +471,11 @@ begin
   fChanged := true;
   fMain.frmMain.acCMDAccept.Checked := true;
   //UndoRedo.UndoSave;
+end;
+
+procedure TDrawing.CADPrg2DExitState(Sender: TObject; const State: TCADState);
+begin
+
 end;
 
 procedure TDrawing.CADPrg2DIdle(Sender: TObject);

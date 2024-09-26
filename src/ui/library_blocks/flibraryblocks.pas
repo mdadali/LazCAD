@@ -140,11 +140,14 @@ begin
   if MessageDlg('Are you sure you want to delete the LibraryBlock?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
     exit;
   idx    :=  lboxBlocks.ItemIndex;
-  TmpStr := lboxBlocks.Items[idx];
-  SrcBlk := fDrawing.CADCmp2D.FindSourceBlock(StringToBlockName(TmpStr));
+  TmpStr :=  lboxBlocks.Items[idx];
+  SrcBlk :=  fDrawing.CADCmp2D.FindSourceBlock(StringToBlockName(TmpStr));
   try
     if SrcBlk <> nil then
+    begin
       fDrawing.CADCmp2D.DeleteSourceBlock(SrcBlk.Name);
+      lboxBlocks.Items.Delete(lboxBlocks.ItemIndex);
+    end;
   finally
     fDrawing.SaveBlockLibraryToFile(fDrawing.CADCmp2D.CurrentBlockLibrary);
     RefreshListBox;

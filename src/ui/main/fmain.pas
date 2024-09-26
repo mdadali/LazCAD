@@ -1367,10 +1367,9 @@ begin
   TIPropertyGrid1.TIObject := nil;
   TIPropertyGrid1.Repaint;
 
-  if FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
-    hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary)
-  else
-    hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
+  //if not FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
+    //hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
+  hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
 
   case PageControl1.PageCount of
     0: exit;
@@ -1396,6 +1395,13 @@ begin
     end;
   end;
   PageControl1.Refresh;
+end;
+
+procedure TfrmMain.acFileCloseExecute(Sender: TObject);
+begin
+  if PageControl1.PageCount > 0 then
+    if CheckSave(fActivePage) then
+      CloseCADFile(fActivePage);
 end;
 
 procedure TfrmMain.acExitProgramExecute(Sender: TObject);
@@ -2306,13 +2312,6 @@ begin
         TmpEllipse2D, 0, True));
     end;
   end;
-end;
-
-procedure TfrmMain.acFileCloseExecute(Sender: TObject);
-begin
-  if PageControl1.PageCount > 0 then
-    if CheckSave(fActivePage) then
-      CloseCADFile(fActivePage);
 end;
 
 procedure TfrmMain.acFileExitExecute(Sender: TObject);
@@ -3482,6 +3481,21 @@ begin
       acSettingsUnLockTemplateLayer.Checked  := false;
     end;
   end;
+
+  //Wenn mehre Drawingfiles gleiche Blockliblary nutzen, syncronisieren.
+  //Sonst würde aktulle Drawing, änderungen and Blocklibrary, die vorige Drawing vorgenommen hat, überschrieben!
+  // If multiple drawing files use the same block library, synchronize them.
+// Otherwise, changes made to the block library by the current drawing will overwrite changes made by a previous drawing!
+
+  if FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
+    hDrawing.LoadBlockLibraryFromFile(hDrawing.CADCmp2D.CurrentBlockLibrary)
+  else if FileExists(applicationh.fDefaultBlockLibrary) then
+    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
+  else
+    MessageDlg('Neither the Drawing.BlocksLibraryFile nor the default BlocksLibrary file ' +
+               ' could be found.' + #13#10 +
+               'Please check the file paths in the LazCAD.ini file.', mtError, [mbOK], 0);
+
   ComponentDrawing.Drawing := hDrawing;
   SetupInspector(ComponentDrawing);
   UpdateUserInterface;

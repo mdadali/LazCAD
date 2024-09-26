@@ -7935,7 +7935,7 @@ begin
 end;
 
 //added ChatGPT
-function OffsetPolygon2D(APointsSet2D: TPointsSet2D; AOffset: Single): TPointsSet2D;
+function OffsetPolygon2D(APointsSet2D: TPointsSet2D; AOffset: TRealType): TPointsSet2D;
 var
   OriginalPoints: array of TPoint2D;
   OffsetPoints: TPointsSet2D;

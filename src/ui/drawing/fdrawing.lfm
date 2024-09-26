@@ -181,6 +181,7 @@ object Drawing: TDrawing
     YSnap = 10
     CursorColor = clRed
     ShowCursorCross = True
+    OnExitState = CADPrg2DExitState
     OnEndOperation = CADPrg2DEndOperation
     OnStopOperation = CADPrg2DStopOperation
     OnStartOperation = CADPrg2DStartOperation

@@ -31,6 +31,7 @@ type
     lboxBlocks: TListBox;
     OpenBlockLibraryDialog: TOpenDialog;
     procedure btnAddBlockToCADClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
     procedure btnDeleteBlockClick(Sender: TObject);
     procedure btnNewLibraryClick(Sender: TObject);
     procedure btnRenameBlockClick(Sender: TObject);
@@ -125,6 +126,11 @@ begin
     fDrawing.CADPrg2D.StartOperation(TCAD2DPositionObject,
        TCAD2DPositionObjectParam.Create(nil, TBlock2D.Create(-1, SrcBlk)));
   end;
+end;
+
+procedure TfrmLibraryBlocks.btnCloseClick(Sender: TObject);
+begin
+  Close;
 end;
 
 procedure TfrmLibraryBlocks.btnDeleteBlockClick(Sender: TObject);

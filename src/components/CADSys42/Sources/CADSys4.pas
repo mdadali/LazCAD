@@ -9914,6 +9914,7 @@ end;
 procedure TCADCmp.SaveToStream(const Stream: TStream);
 var TmpByte: Byte;  TmpColor: string[20];  TmpBool: boolean;
     TmpReal: TRealType;  TmpSelectionMode: TSelectionMode; TmpWord: word;
+    TmpBlockLibrary: string[255];
 begin
   with Stream do
    begin
@@ -9973,12 +9974,16 @@ begin
 
     TmpSelectionMode :=  fSelectionMode;
     Write(TmpSelectionMode, SizeOf(TmpSelectionMode));
+
+    TmpBlockLibrary := CurrentBlockLibrary;
+    Write(TmpBlockLibrary, SizeOf(TmpBlockLibrary));
    end;
 end;
 
 procedure TCADCmp.LoadFromStream(const Stream: TStream);
 var TmpColor: string[20];  TmpBool: boolean;  TmpReal: TRealType;
     TmpSelectionMode: TSelectionMode;  TmpWord: word;
+    TmpBlockLibrary: string[255];
 begin
   { Delete all objects. }
   DeleteAllObjects;
@@ -10027,6 +10032,9 @@ begin
 
   Stream.Read(TmpSelectionMode, SizeOf(TmpSelectionMode));
   fSelectionMode := TmpSelectionMode;
+
+  Stream.Read(TmpBlockLibrary, SizeOf(TmpBlockLibrary));
+  CurrentBlockLibrary := TmpBlockLibrary;
 end;
 
 procedure TCADCmp.MergeFromStream(const Stream: TStream);
