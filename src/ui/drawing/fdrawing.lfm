@@ -6,8 +6,8 @@ object Drawing: TDrawing
   ClientHeight = 464
   ClientWidth = 862
   TabOrder = 0
-  DesignLeft = 473
-  DesignTop = 126
+  DesignLeft = 357
+  DesignTop = 131
   object PageControl1: TPageControl
     Left = 0
     Height = 464
@@ -78,6 +78,7 @@ object Drawing: TDrawing
         GridSubX = 10
         GridSubY = 10
         ControlPointsWidth = 10
+        OnPaint = CADViewport2DPaint
         CADCmp2D = CADCmp2D
         OnMouseMove2D = CADViewport2DMouseMove2D
       end
@@ -171,7 +172,6 @@ object Drawing: TDrawing
     PolarTracking = False
     PolarTrackingValue = 45
     SelectionMode = smArea
-    CurrentBlockLibrary = 'none'
     ShowDirection = False
     Left = 188
     Top = 131

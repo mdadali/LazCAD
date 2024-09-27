@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 663
+  Left = 913
   Height = 800
-  Top = 340
+  Top = 230
   Width = 1600
   Caption = 'LazCAD [Main]'
   ClientHeight = 800
@@ -21,6 +21,7 @@ object frmMain: TfrmMain
     ScrollOpposite = True
     TabOrder = 0
     OnChange = PageControl1Change
+    OnChanging = PageControl1Changing
     OnCloseTabClicked = PageControl1CloseTabClicked
     Options = [nboShowCloseButtons, nboShowAddTabButton]
   end

@@ -60,7 +60,7 @@ var TmpStm: TFileStream;
 begin
   inherited create(AOwner);
   fDrawing := ADrawing;
-  edtCurrentBlockLibrary.Text := ExtractFileName(fDrawing.CADCmp2D.CurrentBlockLibrary);
+  edtCurrentBlockLibrary.Text := ExtractFileName(applicationh.fDefaultBlockLibrary);
 
   RefreshListBox;
   if lboxBlocks.Items.Count > 0 then
@@ -100,7 +100,7 @@ begin
   if OpenBlockLibraryDialog.Execute then
   begin
     fDrawing.LoadBlockLibraryFromFile(OpenBlockLibraryDialog.FileName);
-    fDrawing.CADCmp2D.CurrentBlockLibrary := OpenBlockLibraryDialog.FileName;
+    applicationh.fDefaultBlockLibrary := OpenBlockLibraryDialog.FileName;
     edtCurrentBlockLibrary.Text := OpenBlockLibraryDialog.FileName;
     frmMain.TIPropertyGrid1.Repaint;
     RefreshListBox;
@@ -111,7 +111,7 @@ end;
 
 procedure TfrmLibraryBlocks.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  fDrawing.SaveBlockLibraryToFile(fDrawing.CADCmp2D.CurrentBlockLibrary);
+  fDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
   CloseAction := caFree;
 end;
 
@@ -124,7 +124,7 @@ begin
   if SrcBlk <> nil then
   begin
     fDrawing.CADPrg2D.StartOperation(TCAD2DPositionObject,
-       TCAD2DPositionObjectParam.Create(nil, TBlock2D.Create(-1, SrcBlk)));
+      TCAD2DPositionObjectParam.Create(nil, TBlock2D.Create(-1, SrcBlk)));
   end;
 end;
 
@@ -140,13 +140,16 @@ begin
   if MessageDlg('Are you sure you want to delete the LibraryBlock?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
     exit;
   idx    :=  lboxBlocks.ItemIndex;
-  TmpStr := lboxBlocks.Items[idx];
-  SrcBlk := fDrawing.CADCmp2D.FindSourceBlock(StringToBlockName(TmpStr));
+  TmpStr :=  lboxBlocks.Items[idx];
+  SrcBlk :=  fDrawing.CADCmp2D.FindSourceBlock(StringToBlockName(TmpStr));
   try
     if SrcBlk <> nil then
+    begin
       fDrawing.CADCmp2D.DeleteSourceBlock(SrcBlk.Name);
+      lboxBlocks.Items.Delete(lboxBlocks.ItemIndex);
+    end;
   finally
-    fDrawing.SaveBlockLibraryToFile(fDrawing.CADCmp2D.CurrentBlockLibrary);
+    fDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
     RefreshListBox;
     if lboxBlocks.Items.Count > 0 then
       PreviewBlock(lboxBlocks.ItemIndex)
@@ -190,7 +193,7 @@ begin
     //Change SourceBlockName in Library
     SrcBlk.Name := TmpStr2;
     lboxBlocks.Items[idx] := TmpStr2;
-    fDrawing.SaveBlockLibraryToFile(fDrawing.CADCmp2D.CurrentBlockLibrary);
+    fDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
     //Change SourceBlock in Preview-Window
     PreviewBlock(lboxBlocks.ItemIndex);
   end;

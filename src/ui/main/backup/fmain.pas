@@ -919,6 +919,7 @@ type
     procedure mnuOffice2007SilverClick(Sender: TObject);
     procedure mnuOffice2007SilverTurquoiseClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
+    procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure PageControl1CloseTabClicked(Sender: TObject);
     procedure TIPropertyGrid1Click(Sender: TObject);
     procedure TIPropertyGrid1Modified(Sender: TObject);
@@ -1004,6 +1005,7 @@ begin
     acFileNewExecute(nil);
   except
     EnableControls;
+    raise;
   end;
 end;
 
@@ -1027,7 +1029,6 @@ begin
       result := TDrawing(APage.Components[i]);
       exit;
     end;
-  //AbUnZipper1.str
 end;
 
 function TfrmMain.CreateNewDrawing: TTabSheet;
@@ -1367,9 +1368,7 @@ begin
   TIPropertyGrid1.TIObject := nil;
   TIPropertyGrid1.Repaint;
 
-  //if not FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
-    //hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
-  hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+  //hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
 
   case PageControl1.PageCount of
     0: exit;
@@ -2046,7 +2045,7 @@ end;
 procedure TfrmMain.acBlocksCreateExecute(Sender: TObject);
 var hDrawing: TDrawing;
     TmpPar1: TCAD2DSelectObjectsParam;
-    TmpPar2: TCAD2DSelectObjectsInAreaParam;
+    TmpPar2: TCAD2DSelectObjectsInAreaParam;   hResult: boolean;
 begin
   hDrawing := GetDrawingFromPage(fActivePage);
   if hDrawing = nil then exit;
@@ -2055,14 +2054,15 @@ begin
   begin
     TmpPar2 := TCAD2DSelectObjectsInAreaParam.Create(gmAllInside, TCAD2DCreateSourceBlock);
     TmpPar2.OnObjectSelected := @OnSelectObj;
-    hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjectsInArea, TmpPar2);
+    hResult := hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjectsInArea, TmpPar2);
   end else
   begin
     TmpPar1 := TCAD2DSelectObjectsParam.Create(5, TCAD2DCreateSourceBlock);
     TmpPar1.OnObjectSelected := @OnSelectObj;
-    hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar1);
+    hResult := hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar1);
   end;
-  //hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+  if hResult then
+    hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
 end;
 
 procedure TfrmMain.acAlignLeftExecute(Sender: TObject);
@@ -2363,38 +2363,13 @@ begin
     ComponentDrawing.Drawing := hDrawing;
     SetupInspector(ComponentDrawing);
 
-    if  FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
-    begin
-      hDrawing.LoadBlockLibraryFromFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
-    end else
-    begin
-      if  FileExists(applicationh.fDefaultBlockLibrary) then
-      begin
-        hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
-        hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
-        MessageDlg('The DrawingLibrary file could not be found.' + #13#10 +
-                   'The default library file  has been used instead.' + #13#10 +
-                   'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
-
-      end else
-      MessageDlg('Neither the Drawing.BlocksLibraryFile nor the default BlocksLibrary file ' +
+    if  FileExists(applicationh.fDefaultBlockLibrary) then
+      hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
+    else
+      MessageDlg('The default BlocksLibrary file ' +
                    ' could be found.' + #13#10 +
                  'Please check the file paths in the LazCAD.ini file.', mtError, [mbOK], 0);
-    end;
 
-    if not FileExists(hDrawing.CADCmp2D.CurrentFontFile) then
-      if FileExists(applicationh.fCurrentFontFile) then
-      begin
-        hDrawing.CADCmp2D.CurrentFontFile := applicationh.fCurrentFontFile;
-        {MessageDlg('The DrawingFontFile file could not be found.' + #13#10 +
-                   'The DefaultFontFile   has been used instead.' + #13#10 +
-                   'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
-        }
-      end else;
-        {MessageDlg('Neither the DrawingFontFile nor the DefaultFontFile ' +
-                   ' could be found.' + #13#10 +
-                   'Please check the file paths in the LazCAD.ini file.', mtError, [mbOK], 0);
-        }
     if PageControl1.PageCount = 1 then
       EnableControls;
     hDrawing.UndoRedo.UndoSave;
@@ -2429,10 +2404,8 @@ begin
   else  hDrawing.CADCmp2D.BackgroundColor :=  clBlack;
 
   if  FileExists(applicationh.fDefaultBlockLibrary) then
-  begin
-    hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
-    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
-  end else
+    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
+  else
     MessageDlg('The DefaultLibrary file could not be found.' + #13#10 +
                'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
 
@@ -2461,10 +2434,8 @@ begin
     ImportEssi.Import;
 
     if  FileExists(applicationh.fDefaultBlockLibrary) then
-    begin
-      hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
-      hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
-    end else
+      hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
+    else
       MessageDlg('The DefaultLibrary file could not be found.' + #13#10 +
                  'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
 
@@ -2483,11 +2454,19 @@ begin
 end;
 
 procedure TfrmMain.acFileOpenExecute(Sender: TObject);
-var hExt: string;
+var hExt: string; hDrawing: TDrawing;
 begin
   OpenCADFileDialog.InitialDir := applicationh.GetAppDrawingsPath;
   if OpenCADFileDialog.Execute then
   begin
+
+      //Save CurrentBlocklib
+    if PageControl1.PageCount > 0 then
+    begin
+      hDrawing := GetDrawingFromPage(PageControl1.ActivePage);
+      hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
+    end;
+
     ProgressBarMain.Position := 0;
     //ProgressBarMain.Visible := true;
     Application.ProcessMessages;
@@ -2506,6 +2485,13 @@ end;
 procedure TfrmMain.acFileNewExecute(Sender: TObject);
 var TabSheet: TTabSheet;   hDrawing: TDrawing;
 begin
+  //Save CurrentBlocklib
+  if PageControl1.PageCount > 0 then
+  begin
+    hDrawing := GetDrawingFromPage(PageControl1.ActivePage);
+    hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
+  end;
+
   SetupInspector(nil);
   TabSheet := CreateNewDrawing;
   fActivePage := TabSheet;
@@ -2515,10 +2501,8 @@ begin
   hDrawing := GetDrawingFromPage(TabSheet);
 
   if  FileExists(applicationh.fDefaultBlockLibrary) then
-  begin
-    hDrawing.CADCmp2D.CurrentBlockLibrary := applicationh.fDefaultBlockLibrary;
-    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
-  end else
+    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
+  else
     MessageDlg('The default block library ' + applicationh.fDefaultBlockLibrary + ' does not exist.' + #13#10 +
            'Please change it or disable it' + #13#10 +
            'via the Settings/BlockLibrary menu.', mtWarning, [mbOK], 0);
@@ -2558,8 +2542,6 @@ end;
 procedure SaveCS4File(var ADrawing: TDrawing;  AFileName: string);
 begin
   ADrawing.SaveToFile(AFileName);
-  if FileExists(ADrawing.CADCmp2D.CurrentBlockLibrary) then
-    ADrawing.SaveBlockLibraryToFile(ADrawing.CADCmp2D.CurrentBlockLibrary);
   ADrawing.FileName := AFileName;
     //fActivePage.Caption := ExtractFileName(SaveCADSys4Dialog.FileName);
   ADrawing.Changed := false;
@@ -2601,7 +2583,7 @@ begin
     if SaveCADFileDialog.Execute then
     begin
       hFileName := SaveCADFileDialog.FileName;
-      hDrawing.SaveBlockLibraryToFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
+      hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
     end else
       exit;
   end;
@@ -3284,10 +3266,10 @@ begin
 
   //hDrawing.CADCmp2D.SaveToFile(applicationh.GetAppTempPath + 'tmp.cs4');
 
-  hDrawing.CADCmp2D.SaveToFile('/media/maurog/DATEN/daten/mustafa/entwicklung/lazarus/LazCAD_MDI/x86_64-linux/gtk2/debug/LazCAD/temp/tmp.cs4');
+  hDrawing.CADCmp2D.SaveToFile(GetAppTempPath + 'tmp.cs4');
   self.Hide;
   frmSimulation := TfrmSimulation.Create(self);
-  frmSimulation.CADCmp2D1.LoadFromFile('/media/maurog/DATEN/daten/mustafa/entwicklung/lazarus/LazCAD_MDI/x86_64-linux/gtk2/debug/LazCAD/temp/tmp.cs4');
+  frmSimulation.CADCmp2D1.LoadFromFile(GetAppTempPath + 'tmp.cs4');
   frmSimulation.CADViewport2D1.Repaint;
   frmSimulation.CADViewport2D1.ZoomToExtension;
   frmSimulation.ShowModal;
@@ -3471,6 +3453,7 @@ begin
   hDrawing := GetDrawingFromPage(fActivePage);
   if hDrawing <> nil then
   begin
+    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
     if hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil then
     begin
       acSettingsUnLockTemplateLayer.Visible := true;
@@ -3482,23 +3465,18 @@ begin
     end;
   end;
 
-  //Wenn mehre Drawingfiles gleiche Blockliblary nutzen, syncronisieren.
-  //Sonst würde aktulle Drawing, änderungen and Blocklibrary, die vorige Drawing vorgenommen hat, überschrieben!
-  // If multiple drawing files use the same block library, synchronize them.
-// Otherwise, changes made to the block library by the current drawing will overwrite changes made by a previous drawing!
-
-  if FileExists(hDrawing.CADCmp2D.CurrentBlockLibrary) then
-    hDrawing.LoadBlockLibraryFromFile(hDrawing.CADCmp2D.CurrentBlockLibrary)
-  else if
-    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
-  else
-    MessageDlg('Neither the Drawing.BlocksLibraryFile nor the default BlocksLibrary file ' +
-               ' could be found.' + #13#10 +
-               'Please check the file paths in the LazCAD.ini file.', mtError, [mbOK], 0);
-
   ComponentDrawing.Drawing := hDrawing;
   SetupInspector(ComponentDrawing);
   UpdateUserInterface;
+end;
+
+procedure TfrmMain.PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
+var hDrawing: TDrawing;
+begin
+  fActivePage := PageControl1.ActivePage;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing <> nil then
+    hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
 end;
 
 procedure TfrmMain.PageControl1CloseTabClicked(Sender: TObject);

@@ -101,7 +101,6 @@ type
     property YSnap: TRealType            read  GetYSnap            write SetYSnap;
     //CADCmp
     property DefaultLayersColor: TColor  read   GetDefaultLayersColor write SetDefaultLayersColor;
-    property CurrentBlockLibrary: string read   GetCurrentBlockLibrary  write SetCurrentBlockLibrary;
     property ShowDirection: boolean  read GetShowDirection write SetShowDirection;
     property PolarTracking: boolean read GetPolarTracking write SetPolarTracking;
     property PolarTrackingValue: TRealType read GetPolarTrackingValue write SetPolarTrackingValue;
@@ -427,12 +426,12 @@ end;
 
 function  TComponentDrawing.GetCurrentBlockLibrary: string;
 begin
-  result := fDrawing.CADCmp2D.CurrentBlockLibrary;
+  result := applicationh.fDefaultBlockLibrary;
 end;
 
 procedure TComponentDrawing.SetCurrentBlockLibrary(AValue: string);
 begin
-  fDrawing.CADCmp2D.CurrentBlockLibrary := AValue;
+  applicationh.fDefaultBlockLibrary := AValue;
   fDrawing.LoadBlockLibraryFromFile(AValue);
 end;
 
@@ -832,6 +831,7 @@ end;
 function  TDrawing.LoadBlockLibraryFromFile(AFileName: string): boolean;
 var TmpStr: TFileStream;
 begin
+  AFileName := AFileName;
   result := false;
   TmpStr := TFileStream.Create(AFileName, fmOpenRead);
   try
@@ -846,13 +846,12 @@ end;
 function  TDrawing.SaveBlockLibraryToFile(AFileName: string): boolean;
 var TmpStr: TFileStream;
 begin
+  AFileName := AFileName;
   result := false;
   TmpStr := TFileStream.Create(AFileName, fmCreate);
   try
     CADCmp2D.SaveLibrary(TmpStr);
     result := true;
-  except
-    raise;
   finally
     TmpStr.Free;
   end;

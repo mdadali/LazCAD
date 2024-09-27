@@ -297,7 +297,7 @@ begin
       TmpPolygon2D := TPolygon2D.Create(-1, []);
       CADCmp2D1.AddObject(-1, TmpPolygon2D);
       TmpPolygon2D.ReserveInt1 := ord(OuterContourCW);
-      //TmpPolygon2D.LayerName   := CAM_LAYER_OUTER_CONTOUR_CW;
+      TmpPolygon2D.LayerName   := CAM_LAYER_OUTER_CONTOUR_CW;
       FirstVertex := true;
     end else
     begin

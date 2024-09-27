@@ -1,10 +1,10 @@
 object frmLibraryBlocks: TfrmLibraryBlocks
-  Left = 809
-  Height = 457
-  Top = 124
+  Left = 439
+  Height = 443
+  Top = 132
   Width = 694
   Caption = 'Library Blocks'
-  ClientHeight = 457
+  ClientHeight = 443
   ClientWidth = 694
   FormStyle = fsStayOnTop
   OnClose = FormClose
@@ -138,7 +138,6 @@ object frmLibraryBlocks: TfrmLibraryBlocks
     PolarTracking = False
     PolarTrackingValue = 45
     SelectionMode = smArea
-    CurrentBlockLibrary = 'none'
     ShowDirection = False
     Left = 193
     Top = 281

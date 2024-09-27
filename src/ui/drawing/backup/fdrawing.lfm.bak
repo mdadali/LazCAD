@@ -171,7 +171,6 @@ object Drawing: TDrawing
     PolarTracking = False
     PolarTrackingValue = 45
     SelectionMode = smArea
-    CurrentBlockLibrary = 'none'
     ShowDirection = False
     Left = 188
     Top = 131

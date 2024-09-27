@@ -137,8 +137,8 @@ begin
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
     fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'cnc.cs4');
     fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
-    fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'cnc_blocks.blk');
-    fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('CAD', 'CurrentFontFile', 'none');
+    fDefaultBlockLibrary := fIniFile.ReadString('Application', 'DefaultBlockLibrary',  GetAppBlockLibrarysPath + 'cnc_blocks.blk');
+    fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('Application', 'CurrentFontFile', 'none');
 
     fPythonDLLPath       := fIniFile.ReadString('Python', 'DllPath', '');
     fPythonDLLName       := fIniFile.ReadString('Python', 'DllName', '');
@@ -167,10 +167,11 @@ begin
   try
     fIniFile.WriteString('Application', 'UseTemplates', fUseTemplates);
     fIniFile.WriteString('Application', 'DefaultTemplate', ExtractFileName(fStdTemplate));
+    fIniFile.WriteString('Application',  'DefaultBlockLibrary', fDefaultBlockLibrary);
     fIniFile.WriteString('UserInterface', 'GifAnimFile', ExtractFileName(fGifAnimFile));
 
-    fIniFile.WriteString('CAD', 'DefaultBlockLibrary', ExtractFileName(fDefaultBlockLibrary));
-    fIniFile.WriteString('CAD', 'CurrentFontFile', ExtractFileName(fCurrentFontFile));
+    fIniFile.WriteString('Application', 'DefaultBlockLibrary', fDefaultBlockLibrary);
+    fIniFile.WriteString('Application', 'CurrentFontFile', fCurrentFontFile);
 
     fIniFile.WriteBool('Admin', 'LoginPromt', fLoginPrompt);
     fIniFile.WriteString('DB',  'ConnectionStringFile',  ExtractFileName(fConnStrFileName));
@@ -363,9 +364,9 @@ end;
 function GetAppTempPath: string;
 begin
   {$IFDEF WINDOWS}
-    result := GetAppDataPath + 'temp\';
+    result := GetAppPath + 'temp\';
   {$ELSE}
-    result := GetAppDataPath + 'temp/';
+    result := GetAppPath + 'temp/';
   {$ENDIF}
 end;
 

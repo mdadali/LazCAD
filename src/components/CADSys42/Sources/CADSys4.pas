@@ -2146,9 +2146,7 @@ type
     fListOfViewport: TList; { Contains all the Viewports linked. }
     fLayers: TLayers; { Layers of the component. }
     fCurrentLayer: Word;
-    fCurrentBlockLibrary: string;
     fShowDirection: boolean;
-    fCurrentFontFile: string;
     fDrawOnAdd: Boolean; { If true the object will be drawn on all viewports and the viewports will be refreshed if an object is added. }
     fRepaintAfterTransform: Boolean; { Repaint all the viewports if an object will be transformed. }
 
@@ -2812,9 +2810,6 @@ type
     property PolarTrackingValue: TRealType      read fPolarTrackingValue write fPolarTrackingValue;
     property SelectionMode: TSelectionMode      read fSelectionMode   write fSelectionMode;
     //(smSingle, smArea, smExtendet)
-
-    property CurrentBlockLibrary: string read fCurrentBlockLibrary write fCurrentBlockLibrary;
-    property CurrentFontFile:     string read fCurrentFontFile     write fCurrentFontFile;
     property ShowDirection: boolean      read fShowDirection       write SetShowDirection;
   end;
 
@@ -9914,7 +9909,6 @@ end;
 procedure TCADCmp.SaveToStream(const Stream: TStream);
 var TmpByte: Byte;  TmpColor: string[20];  TmpBool: boolean;
     TmpReal: TRealType;  TmpSelectionMode: TSelectionMode; TmpWord: word;
-    TmpBlockLibrary: string[255];
 begin
   with Stream do
    begin
@@ -9974,16 +9968,12 @@ begin
 
     TmpSelectionMode :=  fSelectionMode;
     Write(TmpSelectionMode, SizeOf(TmpSelectionMode));
-
-    TmpBlockLibrary := CurrentBlockLibrary;
-    Write(TmpBlockLibrary, SizeOf(TmpBlockLibrary));
    end;
 end;
 
 procedure TCADCmp.LoadFromStream(const Stream: TStream);
 var TmpColor: string[20];  TmpBool: boolean;  TmpReal: TRealType;
     TmpSelectionMode: TSelectionMode;  TmpWord: word;
-    TmpBlockLibrary: string[255];
 begin
   { Delete all objects. }
   DeleteAllObjects;
@@ -10032,9 +10022,6 @@ begin
 
   Stream.Read(TmpSelectionMode, SizeOf(TmpSelectionMode));
   fSelectionMode := TmpSelectionMode;
-
-  Stream.Read(TmpBlockLibrary, SizeOf(TmpBlockLibrary));
-  CurrentBlockLibrary := TmpBlockLibrary;
 end;
 
 procedure TCADCmp.MergeFromStream(const Stream: TStream);
@@ -10051,9 +10038,6 @@ begin
       fOnVerError(Self, stDrawing, Stream, TmpBool);
      if TmpBool then
       begin
-        //Read(fCurrentBlockLibrary, SizeOf(fCurrentBlockLibrary));
-        //Read(fCurrentFontFile, SizeOf(fCurrentFontFile));
-
         { Load the layer informations. }
         FLayers.LoadFromStream(Stream, TmpVersion);
         { Load the source blocks. }

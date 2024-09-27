@@ -14,22 +14,7 @@ uses Forms, SysUtils, Classes, Dialogs, IniFiles, messages,
      CS4BaseTypes;
 
 const
-
-
-
-{$IFDEF WINDOWS}
-        //Messages
-      WM_FROM_MDICHILD             = WM_USER + 1000;
-      WMP_MDICHILD_FIRST_CREATED    = 0;
-      WMP_LAST_MDICHILD_CLOSED     = 1;
-      WMP_MDICHILD_ACTIVATED       = 3;
-      WMP_MDICHILD_DEACTIVATED     = 4;
-      
-      WMP_SCRIPER_CLOSED           = 5;
-      WMP_TEXTEDIT_CLOSED          = 6;
-{$ENDIF}
-
-      CAD_LAYER_TEMPLATE           = 'Template';
+      CAD_LAYER_TEMPLATE          = 'Template';
 
       CAD_ONSTART_FILE_STATE_NONE = 0;
       CAD_ONSTART_FILE_STATE_LAST = 1;
@@ -152,8 +137,8 @@ begin
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
     fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'cnc.cs4');
     fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
-    fDefaultBlockLibrary := GetAppBlockLibrarysPath + fIniFile.ReadString('CAD', 'DefaultBlockLibrary',  'cnc_blocks.blk');
-    fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('CAD', 'CurrentFontFile', 'none');
+    fDefaultBlockLibrary := fIniFile.ReadString('Application', 'DefaultBlockLibrary',  GetAppBlockLibrarysPath + 'cnc_blocks.blk');
+    fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('Application', 'CurrentFontFile', 'none');
 
     fPythonDLLPath       := fIniFile.ReadString('Python', 'DllPath', '');
     fPythonDLLName       := fIniFile.ReadString('Python', 'DllName', '');
@@ -182,10 +167,11 @@ begin
   try
     fIniFile.WriteString('Application', 'UseTemplates', fUseTemplates);
     fIniFile.WriteString('Application', 'DefaultTemplate', ExtractFileName(fStdTemplate));
+    fIniFile.WriteString('Application',  'DefaultBlockLibrary', fDefaultBlockLibrary);
     fIniFile.WriteString('UserInterface', 'GifAnimFile', ExtractFileName(fGifAnimFile));
 
-    fIniFile.WriteString('CAD', 'DefaultBlockLibrary', ExtractFileName(fDefaultBlockLibrary));
-    fIniFile.WriteString('CAD', 'CurrentFontFile', ExtractFileName(fCurrentFontFile));
+    fIniFile.WriteString('Application', 'DefaultBlockLibrary', fDefaultBlockLibrary);
+    fIniFile.WriteString('Application', 'CurrentFontFile', fCurrentFontFile);
 
     fIniFile.WriteBool('Admin', 'LoginPromt', fLoginPrompt);
     fIniFile.WriteString('DB',  'ConnectionStringFile',  ExtractFileName(fConnStrFileName));
