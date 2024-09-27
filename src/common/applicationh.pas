@@ -135,10 +135,10 @@ begin
 
   try
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
-    fStdTemplate         := GetAppTemplatesPath + fIniFile.ReadString('Application', 'DefaultTemplate', 'cnc.cs4');
-    fGifAnimFile         := GetAppImagesPath + fIniFile.ReadString('UserInterface', 'GifAnimFile', 'fpc_running_logo.gif');
-    fDefaultBlockLibrary := fIniFile.ReadString('Application', 'DefaultBlockLibrary',  GetAppBlockLibrarysPath + 'cnc_blocks.blk');
-    fCurrentFontFile     := GetAppFontsFNTPath + fIniFile.ReadString('Application', 'CurrentFontFile', 'none');
+    fStdTemplate         := fIniFile.ReadString('Application', 'DefaultTemplate',     GetAppTemplatesPath + 'cnc.cs4');
+    fGifAnimFile         := fIniFile.ReadString('UserInterface', 'GifAnimFile',       GetAppImagesPath + 'fpc_running_logo.gif');
+    fDefaultBlockLibrary := fIniFile.ReadString('Application', 'DefaultBlockLibrary', GetAppBlockLibrarysPath + 'cnc_blocks.blk');
+    fCurrentFontFile     := fIniFile.ReadString('Application', 'CurrentFontFile',     GetAppFontsFNTPath + 'verdana.fnt');
 
     fPythonDLLPath       := fIniFile.ReadString('Python', 'DllPath', '');
     fPythonDLLName       := fIniFile.ReadString('Python', 'DllName', '');
@@ -165,14 +165,11 @@ begin
   fIniFileName := ChangeFileExt(Application.ExeName, '.ini');
   fIniFile := TIniFile.Create(fIniFileName);
   try
-    fIniFile.WriteString('Application', 'UseTemplates', fUseTemplates);
-    fIniFile.WriteString('Application', 'DefaultTemplate', ExtractFileName(fStdTemplate));
-    fIniFile.WriteString('Application',  'DefaultBlockLibrary', fDefaultBlockLibrary);
-    fIniFile.WriteString('UserInterface', 'GifAnimFile', ExtractFileName(fGifAnimFile));
-
-    fIniFile.WriteString('Application', 'DefaultBlockLibrary', fDefaultBlockLibrary);
-    fIniFile.WriteString('Application', 'CurrentFontFile', fCurrentFontFile);
-
+    fIniFile.WriteString('Application',   'UseTemplates',        fUseTemplates);
+    fIniFile.WriteString('Application',   'DefaultTemplate',     fStdTemplate);
+    fIniFile.WriteString('Application',   'DefaultBlockLibrary', fDefaultBlockLibrary);
+    fIniFile.WriteString('Application',   'CurrentFontFile',     fCurrentFontFile);
+    fIniFile.WriteString('UserInterface', 'GifAnimFile',         fGifAnimFile);
     fIniFile.WriteBool('Admin', 'LoginPromt', fLoginPrompt);
     fIniFile.WriteString('DB',  'ConnectionStringFile',  ExtractFileName(fConnStrFileName));
     fIniFile.WriteString('Admin', 'TraceFileName',  ExtractFileName(fTraceFileName));

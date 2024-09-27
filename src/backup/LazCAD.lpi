@@ -248,7 +248,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)"/>
+      <Filename Value="..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)-win"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

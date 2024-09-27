@@ -310,7 +310,6 @@ type
     BCButtonFocus112: TBCButtonFocus;
     BCButtonFocus113: TBCButtonFocus;
     BCButtonFocus114: TBCButtonFocus;
-    BCButtonFocus115: TBCButtonFocus;
     BCButtonFocus116: TBCButtonFocus;
     BCButtonFocus117: TBCButtonFocus;
     BCButtonFocus118: TBCButtonFocus;
@@ -2509,9 +2508,9 @@ begin
 
   if LowerCase(applicationh.fUseTemplates) = 'yes' then
   begin
+     applicationh.ReadIniFile;
     if FileExists(fStdTemplate) then
     begin
-      applicationh.ReadIniFile;
       if   LowerCase(ExtractFileExt(fStdTemplate)) = '.dxf' then
         LoadDXFFile(applicationh.fStdTemplate, hDrawing.CADCmp2D)
       else

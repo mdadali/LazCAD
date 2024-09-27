@@ -1,7 +1,7 @@
 object frmTTF2Vector: TfrmTTF2Vector
-  Left = 544
+  Left = 755
   Height = 721
-  Top = 116
+  Top = 190
   Width = 929
   Caption = 'TTF2Vector'
   ClientHeight = 721

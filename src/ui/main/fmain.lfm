@@ -1,10 +1,10 @@
 object frmMain: TfrmMain
-  Left = 913
-  Height = 800
-  Top = 230
+  Left = 1187
+  Height = 300
+  Top = 630
   Width = 1600
   Caption = 'LazCAD [Main]'
-  ClientHeight = 800
+  ClientHeight = 300
   ClientWidth = 1600
   Menu = MainMenu1
   OnClose = FormClose
@@ -14,7 +14,7 @@ object frmMain: TfrmMain
   WindowState = wsMaximized
   object PageControl1: TPageControl
     Left = 367
-    Height = 576
+    Height = 76
     Top = 147
     Width = 1201
     Align = alClient
@@ -27,12 +27,12 @@ object frmMain: TfrmMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 576
+    Height = 76
     Top = 147
     Width = 330
     Align = alLeft
     Caption = 'pnlLeft'
-    ClientHeight = 576
+    ClientHeight = 76
     ClientWidth = 330
     TabOrder = 1
     Visible = False
@@ -46,7 +46,7 @@ object frmMain: TfrmMain
     end
     object PageControl2: TPageControl
       Left = 1
-      Height = 540
+      Height = 40
       Top = 35
       Width = 328
       ActivePage = tsInspector
@@ -55,11 +55,11 @@ object frmMain: TfrmMain
       TabOrder = 1
       object tsInspector: TTabSheet
         Caption = 'Inspector'
-        ClientHeight = 501
+        ClientHeight = 1
         ClientWidth = 322
         object TIPropertyGrid1: TTIPropertyGrid
           Left = 0
-          Height = 501
+          Height = 1
           Top = 0
           Width = 322
           Align = alClient
@@ -78,11 +78,11 @@ object frmMain: TfrmMain
       end
       object tsShell: TTabSheet
         Caption = 'Shell'
-        ClientHeight = 501
+        ClientHeight = 1
         ClientWidth = 322
         object ShellTreeView1: TShellTreeView
           Left = 0
-          Height = 501
+          Height = 1
           Top = 0
           Width = 322
           Align = alClient
@@ -98,7 +98,7 @@ object frmMain: TfrmMain
   object pnlCMDLine: TPanel
     Left = 0
     Height = 21
-    Top = 758
+    Top = 258
     Width = 1600
     Align = alBottom
     Caption = 'pnlCMDLine'
@@ -120,7 +120,7 @@ object frmMain: TfrmMain
   end
   object Splitter1: TSplitter
     Left = 362
-    Height = 576
+    Height = 76
     Top = 147
     Width = 5
   end
@@ -128,7 +128,7 @@ object frmMain: TfrmMain
     Cursor = crVSplit
     Left = 0
     Height = 3
-    Top = 755
+    Top = 255
     Width = 1600
     Align = alBottom
     ResizeAnchor = akBottom
@@ -5522,7 +5522,7 @@ object frmMain: TfrmMain
   object pnlBottomToolBars: TPanel
     Left = 0
     Height = 32
-    Top = 723
+    Top = 223
     Width = 1600
     Align = alBottom
     ClientHeight = 32
@@ -8765,9 +8765,9 @@ object frmMain: TfrmMain
       Left = 1336
       Height = 28
       Top = 1
-      Width = 152
+      Width = 128
       ClientHeight = 28
-      ClientWidth = 152
+      ClientWidth = 128
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
@@ -9199,111 +9199,6 @@ object frmMain: TfrmMain
         ShowCaption = False
         MemoryUsage = bmuHighF
         TabOrder = 4
-      end
-      object BCButtonFocus115: TBCButtonFocus
-        Left = 120
-        Height = 26
-        Top = 1
-        Width = 28
-        Align = alLeft
-        StateClicked.Background.Gradient1.StartColor = 15844240
-        StateClicked.Background.Gradient1.EndColor = 15709297
-        StateClicked.Background.Gradient1.GradientType = gtLinear
-        StateClicked.Background.Gradient1.Point1XPercent = 0
-        StateClicked.Background.Gradient1.Point1YPercent = 0
-        StateClicked.Background.Gradient1.Point2XPercent = 0
-        StateClicked.Background.Gradient1.Point2YPercent = 100
-        StateClicked.Background.Gradient2.StartColor = 15773025
-        StateClicked.Background.Gradient2.EndColor = 15847059
-        StateClicked.Background.Gradient2.GradientType = gtLinear
-        StateClicked.Background.Gradient2.Point1XPercent = 0
-        StateClicked.Background.Gradient2.Point1YPercent = 0
-        StateClicked.Background.Gradient2.Point2XPercent = 0
-        StateClicked.Background.Gradient2.Point2YPercent = 100
-        StateClicked.Background.Gradient1EndPercent = 55
-        StateClicked.Background.Style = bbsGradient
-        StateClicked.Border.Color = 9394006
-        StateClicked.Border.LightColor = clGray
-        StateClicked.Border.LightOpacity = 100
-        StateClicked.Border.LightWidth = 1
-        StateClicked.Border.Style = bboSolid
-        StateClicked.FontEx.Color = clBlack
-        StateClicked.FontEx.FontQuality = fqSystemClearType
-        StateClicked.FontEx.Shadow = False
-        StateClicked.FontEx.ShadowRadius = 5
-        StateClicked.FontEx.ShadowOffsetX = 5
-        StateClicked.FontEx.ShadowOffsetY = 5
-        StateClicked.FontEx.Style = []
-        StateHover.Background.Gradient1.StartColor = 16573900
-        StateHover.Background.Gradient1.EndColor = 16372129
-        StateHover.Background.Gradient1.GradientType = gtLinear
-        StateHover.Background.Gradient1.Point1XPercent = 0
-        StateHover.Background.Gradient1.Point1YPercent = 0
-        StateHover.Background.Gradient1.Point2XPercent = 0
-        StateHover.Background.Gradient1.Point2YPercent = 100
-        StateHover.Background.Gradient2.StartColor = 16501391
-        StateHover.Background.Gradient2.EndColor = 16643535
-        StateHover.Background.Gradient2.GradientType = gtLinear
-        StateHover.Background.Gradient2.Point1XPercent = 0
-        StateHover.Background.Gradient2.Point1YPercent = 0
-        StateHover.Background.Gradient2.Point2XPercent = 0
-        StateHover.Background.Gradient2.Point2YPercent = 100
-        StateHover.Background.Gradient1EndPercent = 50
-        StateHover.Background.Style = bbsGradient
-        StateHover.Border.Color = 9394006
-        StateHover.Border.LightOpacity = 200
-        StateHover.Border.LightWidth = 1
-        StateHover.Border.Style = bboSolid
-        StateHover.FontEx.Color = clBlack
-        StateHover.FontEx.FontQuality = fqSystemClearType
-        StateHover.FontEx.Shadow = False
-        StateHover.FontEx.ShadowRadius = 5
-        StateHover.FontEx.ShadowOffsetX = 5
-        StateHover.FontEx.ShadowOffsetY = 5
-        StateHover.FontEx.Style = []
-        StateNormal.Background.Gradient1.StartColor = clWhite
-        StateNormal.Background.Gradient1.EndColor = 15987699
-        StateNormal.Background.Gradient1.GradientType = gtLinear
-        StateNormal.Background.Gradient1.Point1XPercent = 0
-        StateNormal.Background.Gradient1.Point1YPercent = 0
-        StateNormal.Background.Gradient1.Point2XPercent = 0
-        StateNormal.Background.Gradient1.Point2YPercent = 100
-        StateNormal.Background.Gradient2.StartColor = 15527148
-        StateNormal.Background.Gradient2.EndColor = 15722194
-        StateNormal.Background.Gradient2.GradientType = gtLinear
-        StateNormal.Background.Gradient2.Point1XPercent = 0
-        StateNormal.Background.Gradient2.Point1YPercent = 0
-        StateNormal.Background.Gradient2.Point2XPercent = 0
-        StateNormal.Background.Gradient2.Point2YPercent = 100
-        StateNormal.Background.Gradient1EndPercent = 50
-        StateNormal.Background.Style = bbsGradient
-        StateNormal.Border.Color = 10132122
-        StateNormal.Border.LightOpacity = 200
-        StateNormal.Border.LightWidth = 1
-        StateNormal.Border.Style = bboSolid
-        StateNormal.FontEx.Color = clBlack
-        StateNormal.FontEx.FontQuality = fqSystemClearType
-        StateNormal.FontEx.Shadow = False
-        StateNormal.FontEx.ShadowRadius = 5
-        StateNormal.FontEx.ShadowOffsetX = 5
-        StateNormal.FontEx.ShadowOffsetY = 5
-        StateNormal.FontEx.Style = []
-        Caption = 'acToolsShowSimulator'
-        Color = clNone
-        DropDownWidth = 16
-        DropDownArrowSize = 8
-        GlobalOpacity = 255
-        ParentColor = False
-        Rounding.RoundX = 3
-        Rounding.RoundY = 3
-        RoundingDropDown.RoundX = 1
-        RoundingDropDown.RoundY = 1
-        TextApplyGlobalOpacity = False
-        Images = ImageListClassic
-        ImageIndex = 104
-        ShowCaption = False
-        MemoryUsage = bmuHighF
-        TabOrder = 5
       end
     end
   end
@@ -10721,7 +10616,7 @@ object frmMain: TfrmMain
   object StatusBarMain: TStatusBar
     Left = 0
     Height = 21
-    Top = 779
+    Top = 279
     Width = 1600
     Panels = <    
       item
@@ -10737,11 +10632,11 @@ object frmMain: TfrmMain
   end
   object pnlLeftToolBars: TPanel
     Left = 330
-    Height = 576
+    Height = 76
     Top = 147
     Width = 32
     Align = alLeft
-    ClientHeight = 576
+    ClientHeight = 76
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -13089,11 +12984,11 @@ object frmMain: TfrmMain
   end
   object pnlRightToolBars: TPanel
     Left = 1568
-    Height = 576
+    Height = 76
     Top = 147
     Width = 32
     Align = alRight
-    ClientHeight = 576
+    ClientHeight = 76
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -13102,7 +12997,7 @@ object frmMain: TfrmMain
     object pnlFormat: TPanel
       Left = 1
       Height = 383
-      Top = 232
+      Top = 75
       Width = 30
       Align = alTop
       ClientHeight = 383
@@ -15040,7 +14935,7 @@ object frmMain: TfrmMain
     object Panel3: TPanel
       Left = 1
       Height = 31
-      Top = 201
+      Top = 75
       Width = 30
       Align = alTop
       TabOrder = 3
