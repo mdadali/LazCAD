@@ -263,6 +263,7 @@ type
     acFileImportEssi: TAction;
     acDrawSegment2D: TAction;
     acDrawSector2D: TAction;
+    acDrawSymetricSymbol2D: TAction;
     acToolsTTF2Vector: TAction;
     acToolsShowSimulator: TAction;
     Action4: TAction;
@@ -908,6 +909,7 @@ type
     procedure acSnapTopLeftExecute(Sender: TObject);
     procedure acSnapTopRightExecute(Sender: TObject);
     procedure acTestsTestLayersExecute(Sender: TObject);
+    procedure acDrawSymetricSymbol2DExecute(Sender: TObject);
     procedure acToolsShowSimulatorExecute(Sender: TObject);
     procedure acToolsTTF2VectorExecute(Sender: TObject);
     procedure acZoomAreaExecute(Sender: TObject);
@@ -975,6 +977,7 @@ var
   frmMain: TfrmMain;
   FPickPosition: integer;
   MoveBasePoint: TPoint2D;
+  IsEntityDragged: boolean;
   CancelEmulation: boolean;
 
 procedure SimulObJ2D(AObj2D: TObject2D; AViewport: TCADViewport2D; T: TTransf2D; AColor: TColor);
@@ -994,6 +997,7 @@ type
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  IsEntityDragged := false;
   fMDICount := 1;
 
   acSettingsUseTemplates.Checked   :=  (LowerCase(applicationh.fUseTemplates) = 'yes');
@@ -1069,6 +1073,11 @@ begin
   hDrawing.CADViewport2D.Cursor := crDefault;
   TIPropertyGrid1.Update;
   TIPropertyGrid1.Repaint;
+  if IsEntityDragged then
+  begin
+    hDrawing.UndoRedo.UndoSave;
+    IsEntityDragged := false;
+  end;
 end;
 
 procedure TfrmMain.OnViewportMouseDown(Sender: TObject;
@@ -1154,6 +1163,7 @@ begin
         hDrawing.SnapOption := 0; //Grid
         hDrawing.CADViewport2D.Cursor := crDrag;
         MoveObject(GlobalObject2D);
+        IsEntityDragged := true;
         hDrawing.SnapOption := TmpSnapOpt;
         hDrawing.CADViewport2D.Repaint;
         hDrawing.CadViewport2D.DrawObject2DWithRubber(GlobalObject2D, true);
@@ -1163,6 +1173,7 @@ begin
       begin
         hDrawing.CADViewport2D.Cursor := crSize;
         EditObject(GlobalObject2D, FPickPosition);
+        IsEntityDragged := true;
         hDrawing.CADViewport2D.Repaint;
         hDrawing.CadViewport2D.DrawObject2DWithRubber(GlobalObject2D, true);
         //hDrawing.UndoRedo.UndoSave;
@@ -1519,6 +1530,24 @@ begin
       StopOperation;
       TmpSegment2D := TSegment2D.Create(-1, Point2D(0, 0), 0, 0, 0);
      StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil, TmpSegment2D, 0, false));
+    end;
+  end;
+end;
+
+procedure TfrmMain.acDrawSymetricSymbol2DExecute(Sender: TObject);
+var TmpSymetricSymbol2D: TSymetricSymbol2D;   hDrawing: TDrawing;
+begin
+  if PageControl1.PageCount = 0 then exit;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing <> nil then
+  begin
+    with hDrawing.CADPrg2D do
+    begin
+      if IsBusy then
+      StopOperation;
+      TmpSymetricSymbol2D := TSymetricSymbol2D.Create(-1, Point2D(0, 0), 0);
+      TmpSymetricSymbol2D.CurvePrecision := 5;
+     StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil, TmpSymetricSymbol2D, 0, false));
     end;
   end;
 end;
@@ -2493,7 +2522,7 @@ begin
   OpenCADFileDialog.InitialDir := applicationh.GetAppDrawingsPath;
   if OpenCADFileDialog.Execute then
   begin
-
+    IsEntityDragged := false;
       //Save CurrentBlocklib
     if PageControl1.PageCount > 0 then
     begin
@@ -2519,6 +2548,8 @@ end;
 procedure TfrmMain.acFileNewExecute(Sender: TObject);
 var TabSheet: TTabSheet;   hDrawing: TDrawing;
 begin
+  IsEntityDragged := false;
+
   //Save CurrentBlocklib
   if PageControl1.PageCount > 0 then
   begin

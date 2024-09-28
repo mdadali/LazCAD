@@ -866,6 +866,12 @@ type
     //property CenterPoint: TPoint2D read fCenterPoint  write SetCenterPoint;
   end;
 
+  TSymetricSymbol2D = class(TCircle2D)
+  public
+    property EdgeCount: word read fCurvePrecision write  fCurvePrecision;
+
+  end;
+
 
   {: This class defines a 2D ellipse.
 
@@ -889,6 +895,13 @@ type
     constructor Create(ID: LongInt; const P1, P2: TPoint2D);
     procedure Assign(const Obj: TGraphicObject); override;
   end;
+
+
+    TASymetricSymbol2D = class(TEllipse2D)
+    public
+      property EdgeCount: word read fCurvePrecision write  fCurvePrecision;
+    end;
+
 
   {: This class defines a 2D filled ellipse.
 
@@ -2985,14 +2998,14 @@ begin
     Exit;
   end;
   Result := inherited PopulateCurvePoints(CurvePrecision);
-  GetArcPoints(ProfilePoints, CurvePrecision);
 
   //Make Sector
-  ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
-  ProfilePoints.Add(ProfilePoints[0]);
+  //ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
+  //ProfilePoints.Add(ProfilePoints[0]);
 
   //Make Segment
-  //ProfilePoints.Add(ProfilePoints[0]); //close Arc
+  ProfilePoints.Add(ProfilePoints[0]); //close Arc
+
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
 end;
 
@@ -3008,12 +3021,12 @@ begin
   end;
   Result := inherited PopulateCurvePoints(CurvePrecision);
 
-  //Make Sector
-  //ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
-  //ProfilePoints.Add(ProfilePoints[0]);
-
   //Make Segment
-  ProfilePoints.Add(ProfilePoints[0]); //close Arc
+  ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
+  ProfilePoints.Add(ProfilePoints[0]);
+
+  //Make Sector
+  //ProfilePoints.Add(ProfilePoints[0]); //close Arc
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
 end;
 
@@ -4578,6 +4591,8 @@ initialization
 
   CADSysRegisterClass(15, TSegment2D);
   CADSysRegisterClass(16, TSector2D);
+
+  CADSysRegisterClass(16, TSymetricSymbol2D);
 
 
   _DefaultHandler2D := TPrimitive2DHandler.Create(nil);

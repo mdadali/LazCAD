@@ -866,6 +866,12 @@ type
     //property CenterPoint: TPoint2D read fCenterPoint  write SetCenterPoint;
   end;
 
+  TSymetricSymbol2D = class(TCircle2D)
+  public
+    property EdgeCount: word read fCurvePrecision write  fCurvePrecision;
+
+  end;
+
 
   {: This class defines a 2D ellipse.
 
@@ -889,6 +895,13 @@ type
     constructor Create(ID: LongInt; const P1, P2: TPoint2D);
     procedure Assign(const Obj: TGraphicObject); override;
   end;
+
+
+    TASymetricSymbol2D = class(TEllipse2D)
+    public
+      property EdgeCount: word read fCurvePrecision write  fCurvePrecision;
+    end;
+
 
   {: This class defines a 2D filled ellipse.
 
@@ -4579,6 +4592,8 @@ initialization
   CADSysRegisterClass(15, TSegment2D);
   CADSysRegisterClass(16, TSector2D);
 
+  CADSysRegisterClass(17, TSymetricSymbol2D);
+  CADSysRegisterClass(18, TASymetricSymbol2D);
 
   _DefaultHandler2D := TPrimitive2DHandler.Create(nil);
 
