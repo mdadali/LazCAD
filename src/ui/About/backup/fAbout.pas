@@ -19,14 +19,11 @@ type
   TfrmAbout = class(TForm)
     btnClose: TButton;
     GifAnim1: TGifAnim;
+    GroupBox1: TGroupBox;
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
-    lbDeveloper: TLabel;
-    lbFPCVersion: TLabel;
-    lbWidgetSet: TLabel;
-    lbOSInfo: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -35,15 +32,21 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
+    lbDeveloper: TLabel;
+    lbFPCVersion: TLabel;
     lbLazarus: TLabel;
+    lbOSInfo: TLabel;
     lbPgmVersion: TLabel;
     lbVersion: TLabel;
+    lbWidgetSet: TLabel;
     Memo1: TMemo;
     Memo2: TMemo;
+    Memo3: TMemo;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

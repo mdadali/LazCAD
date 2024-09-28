@@ -1,12 +1,12 @@
 object frmSplash: TfrmSplash
-  Left = 572
-  Height = 474
-  Top = 354
-  Width = 907
+  Left = 581
+  Height = 481
+  Top = 282
+  Width = 941
   BorderStyle = bsNone
   Caption = 'frmSplash'
-  ClientHeight = 474
-  ClientWidth = 907
+  ClientHeight = 481
+  ClientWidth = 941
   Color = clBtnFace
   Font.Color = clHighlight
   Font.Height = -11
@@ -16,8 +16,8 @@ object frmSplash: TfrmSplash
   object ProgressBar1: TProgressBar
     Left = 0
     Height = 17
-    Top = 457
-    Width = 907
+    Top = 464
+    Width = 941
     Align = alBottom
     TabOrder = 0
   end
@@ -25,16 +25,17 @@ object frmSplash: TfrmSplash
     Left = 0
     Height = 457
     Top = 0
-    Width = 601
+    Width = 529
     ClientHeight = 457
-    ClientWidth = 601
+    ClientWidth = 529
     ParentBackground = False
     TabOrder = 1
     object Image1: TImage
-      Left = 0
-      Height = 458
-      Top = 0
-      Width = 604
+      Left = 1
+      Height = 455
+      Top = 1
+      Width = 527
+      Align = alClient
       AutoSize = True
       Picture.Data = {
         1754506F727461626C654E6574776F726B47726170686963D761000089504E47
@@ -822,35 +823,56 @@ object frmSplash: TfrmSplash
         4110A00841100441802204411004018A1004411004284210044190A6FAFF01E7
         F6780728D2C3E30000000049454E44AE426082
       }
-      Stretch = True
     end
   end
-  object Panel3: TPanel
-    Left = 607
-    Height = 450
-    Top = 7
-    Width = 278
-    BevelOuter = bvNone
-    ClientHeight = 450
-    ClientWidth = 278
+  object GifAnim1: TGifAnim
+    Left = 624
+    Height = 88
+    Top = 16
+    Width = 192
+    AutoSize = False
+    Animate = False
+    FileName = 'D:\daten\mustafa\entwicklung\lazarus\LazCAD_MDI\src\images\fpc_running_logo.gif'
+  end
+  object GroupBox1: TGroupBox
+    Left = 536
+    Height = 344
+    Top = 113
+    Width = 400
+    ClientHeight = 342
+    ClientWidth = 398
     ParentBackground = False
     TabOrder = 2
-    object Label3: TLabel
-      Left = 16
-      Height = 18
-      Top = 320
-      Width = 265
-      Caption = 'Copyright (c)  2024, Lazarus/FPC Community'
+    object lbVersion: TLabel
+      Left = 104
+      Height = 23
+      Top = 48
+      Width = 76
+      Alignment = taCenter
+      Caption = 'Version    '
       Font.Color = clWindowText
-      Font.Height = -13
+      Font.Height = -16
       Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
     end
     object Label1: TLabel
-      Left = 72
+      Left = 66
+      Height = 17
+      Top = 208
+      Width = 247
+      Caption = 'Copyright (c)  2024, Lazarus/FPC Community'
+      Font.Color = clWindowText
+      Font.Height = 12
+      Font.Name = 'Tahoma'
+      ParentColor = False
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 152
       Height = 18
-      Top = 352
+      Top = 224
       Width = 107
       Caption = 'All Right Reserved'
       Font.Color = clWindowText
@@ -859,34 +881,48 @@ object frmSplash: TfrmSplash
       ParentColor = False
       ParentFont = False
     end
-    object Edit1: TEdit
-      Left = 64
+    object Label3: TLabel
+      Left = 126
       Height = 18
-      Top = 379
-      Width = 121
-      BorderStyle = bsNone
-      Color = clBtnFace
+      Top = 256
+      Width = 38
+      Caption = 'EMail :'
       Font.Color = clWindowText
       Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
-      ReadOnly = True
-      TabOrder = 0
-      Text = 'admin@hackcad.com'
     end
-    object GifAnim1: TGifAnim
-      Left = 56
-      Height = 63
-      Top = 120
-      Width = 133
-      AutoSize = False
-      Animate = False
-      FileName = 'D:\daten\mustafa\entwicklung\lazarus\LazCAD_MDI\src\images\fpc_running_logo.gif'
+    object Label5: TLabel
+      Left = 66
+      Height = 18
+      Top = 288
+      Width = 55
+      Caption = 'Based on'
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      ParentColor = False
+      ParentFont = False
     end
-    object Label2: TLabel
-      Left = 88
+    object Label6: TLabel
+      Cursor = crHandPoint
+      Left = 144
+      Height = 36
+      Top = 288
+      Width = 242
+      Caption = 'CADSys4.2  Copyright (c) Piero Valagussa'#13#10'         Allright Reserved'
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      ParentColor = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object Label4: TLabel
+      Left = 152
       Height = 28
-      Top = 264
+      Top = 16
       Width = 75
       Caption = 'LazCAD'
       Font.Color = clBlack
@@ -894,6 +930,136 @@ object frmSplash: TfrmSplash
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentColor = False
+      ParentFont = False
+    end
+    object Label7: TLabel
+      Left = 184
+      Height = 17
+      Top = 256
+      Width = 129
+      Caption = 'mdadali@hackcad.com'
+      Font.Color = clWindowText
+      Font.Height = 12
+      Font.Name = 'Tahoma'
+      ParentColor = False
+      ParentFont = False
+    end
+    object lbPgmVersion: TLabel
+      Left = 199
+      Height = 16
+      Top = 54
+      Width = 73
+      Caption = 'lbPgmVersion'
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object Label8: TLabel
+      Left = 104
+      Height = 23
+      Top = 72
+      Width = 63
+      Caption = 'Lazarus'
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lbLazarus: TLabel
+      Left = 200
+      Height = 16
+      Top = 78
+      Width = 50
+      Caption = 'lbLazarus'
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object Label9: TLabel
+      Left = 104
+      Height = 23
+      Top = 144
+      Width = 68
+      Caption = 'OS-Infos'
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lbOSInfo: TLabel
+      Left = 200
+      Height = 16
+      Top = 150
+      Width = 47
+      Caption = 'lbOSInfo'
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object Label10: TLabel
+      Left = 104
+      Height = 23
+      Top = 120
+      Width = 80
+      Caption = 'Widgetset'
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lbWidgetSet: TLabel
+      Left = 200
+      Height = 16
+      Top = 126
+      Width = 63
+      Caption = 'lbWidgetSet'
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object Label11: TLabel
+      Left = 104
+      Height = 23
+      Top = 96
+      Width = 29
+      Caption = 'FPC'
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lbFPCVersion: TLabel
+      Left = 199
+      Height = 16
+      Top = 102
+      Width = 69
+      Caption = 'lbFPCVersion'
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object Label12: TLabel
+      Left = 122
+      Height = 16
+      Top = 240
+      Width = 54
+      Caption = 'Developer'
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object lbDeveloper: TLabel
+      Left = 208
+      Height = 16
+      Top = 240
+      Width = 64
+      Caption = 'lbDeveloper'
+      Font.Height = -11
+      Font.Name = 'Tahoma'
       ParentFont = False
     end
   end

@@ -512,7 +512,7 @@ begin
 
   // Rückgabewert mit OS-Name, Version und Typ
   Result := Format('OS: %s' + sLineBreak +
-                   '%s' + sLineBreak +
+                   'Version: %s' + sLineBreak +
                    'Architecture: %s', [OSName, OSVersion, OSType]);
 end;
 
