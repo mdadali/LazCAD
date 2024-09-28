@@ -1366,13 +1366,9 @@ begin
     hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE].Active := false;
 
   hDrawing.CADPrg2D.StopOperation;
-  hDrawing.CADViewport2D.Invalidate;
-  hDrawing.CADViewport2D.Repaint;
-
   TIPropertyGrid1.TIObject := nil;
   TIPropertyGrid1.Repaint;
-
-  //hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
+  GlobalObject2D := nil;
 
   case PageControl1.PageCount of
     0: exit;
@@ -1724,7 +1720,8 @@ begin
   if PageControl1.PageCount = 0 then exit;
   hDrawing := GetDrawingFromPage(fActivePage);
   if hDrawing = nil then exit;
-
+  SetPropertyEditorForObjects(nil);  //for Drawing
+  GlobalObject2D := nil;
   hDrawing.UndoRedo.Undo;
 end;
 
@@ -2560,10 +2557,7 @@ begin
   end;
 
   acSettingsUnLockTemplateLayer.Visible := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil;
-
-  hDrawing.CADViewport2D.ZoomToExtension;
-  hDrawing.CADViewport2D.Repaint;
-
+  hDrawing.CADViewport2D.ZoomWindow(Rect2D(-20, -20, 480, 210));
   hDrawing.FileName := TabSheet.Name;
 
   ComponentDrawing.Drawing := hDrawing;

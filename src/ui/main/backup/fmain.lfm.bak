@@ -1,10 +1,10 @@
 object frmMain: TfrmMain
   Left = 579
-  Height = 1500
+  Height = 600
   Top = 0
   Width = 761
   Caption = 'LazCAD [Main]'
-  ClientHeight = 1500
+  ClientHeight = 600
   ClientWidth = 761
   Menu = MainMenu1
   OnClose = FormClose
@@ -14,7 +14,7 @@ object frmMain: TfrmMain
   WindowState = wsMaximized
   object PageControl1: TPageControl
     Left = 367
-    Height = 1276
+    Height = 376
     Top = 147
     Width = 362
     Align = alClient
@@ -27,12 +27,12 @@ object frmMain: TfrmMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 1276
+    Height = 376
     Top = 147
     Width = 330
     Align = alLeft
     Caption = 'pnlLeft'
-    ClientHeight = 1276
+    ClientHeight = 376
     ClientWidth = 330
     TabOrder = 1
     Visible = False
@@ -46,7 +46,7 @@ object frmMain: TfrmMain
     end
     object PageControl2: TPageControl
       Left = 1
-      Height = 1240
+      Height = 340
       Top = 35
       Width = 328
       ActivePage = tsInspector
@@ -55,11 +55,11 @@ object frmMain: TfrmMain
       TabOrder = 1
       object tsInspector: TTabSheet
         Caption = 'Inspector'
-        ClientHeight = 1201
+        ClientHeight = 301
         ClientWidth = 322
         object TIPropertyGrid1: TTIPropertyGrid
           Left = 0
-          Height = 1201
+          Height = 301
           Top = 0
           Width = 322
           Align = alClient
@@ -78,11 +78,11 @@ object frmMain: TfrmMain
       end
       object tsShell: TTabSheet
         Caption = 'Shell'
-        ClientHeight = 1201
+        ClientHeight = 301
         ClientWidth = 322
         object ShellTreeView1: TShellTreeView
           Left = 0
-          Height = 1201
+          Height = 301
           Top = 0
           Width = 322
           Align = alClient
@@ -98,7 +98,7 @@ object frmMain: TfrmMain
   object pnlCMDLine: TPanel
     Left = 0
     Height = 21
-    Top = 1458
+    Top = 558
     Width = 761
     Align = alBottom
     Caption = 'pnlCMDLine'
@@ -120,7 +120,7 @@ object frmMain: TfrmMain
   end
   object Splitter1: TSplitter
     Left = 362
-    Height = 1276
+    Height = 376
     Top = 147
     Width = 5
   end
@@ -128,7 +128,7 @@ object frmMain: TfrmMain
     Cursor = crVSplit
     Left = 0
     Height = 3
-    Top = 1455
+    Top = 555
     Width = 761
     Align = alBottom
     ResizeAnchor = akBottom
@@ -5522,7 +5522,7 @@ object frmMain: TfrmMain
   object pnlBottomToolBars: TPanel
     Left = 0
     Height = 32
-    Top = 1423
+    Top = 523
     Width = 761
     Align = alBottom
     ClientHeight = 32
@@ -10616,7 +10616,7 @@ object frmMain: TfrmMain
   object StatusBarMain: TStatusBar
     Left = 0
     Height = 21
-    Top = 1479
+    Top = 579
     Width = 761
     Panels = <    
       item
@@ -10632,11 +10632,11 @@ object frmMain: TfrmMain
   end
   object pnlLeftToolBars: TPanel
     Left = 330
-    Height = 1276
+    Height = 376
     Top = 147
     Width = 32
     Align = alLeft
-    ClientHeight = 1276
+    ClientHeight = 376
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -13089,11 +13089,11 @@ object frmMain: TfrmMain
   end
   object pnlRightToolBars: TPanel
     Left = 729
-    Height = 1276
+    Height = 376
     Top = 147
     Width = 32
     Align = alRight
-    ClientHeight = 1276
+    ClientHeight = 376
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
