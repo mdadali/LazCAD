@@ -1167,7 +1167,6 @@ begin
         hDrawing.SnapOption := TmpSnapOpt;
         hDrawing.CADViewport2D.Repaint;
         hDrawing.CadViewport2D.DrawObject2DWithRubber(GlobalObject2D, true);
-        //hDrawing.UndoRedo.UndoSave;
       end else
       if  (FPickPosition >=0) then
       begin
@@ -1176,7 +1175,6 @@ begin
         IsEntityDragged := true;
         hDrawing.CADViewport2D.Repaint;
         hDrawing.CadViewport2D.DrawObject2DWithRubber(GlobalObject2D, true);
-        //hDrawing.UndoRedo.UndoSave;
       end;
     end;
   end;
@@ -1199,6 +1197,7 @@ begin
 
   TIPropertyGrid1.Update;
   TIPropertyGrid1.Repaint;
+  //IsEntityDragged := true;
 end;
 
 procedure TfrmMain.MoveObject(AObject: TObject2D);
@@ -1216,6 +1215,7 @@ begin
   MoveBasePoint := hDrawing.CADPrg2D.CurrentViewportSnappedPoint;
   TIPropertyGrid1.Update;
   TIPropertyGrid1.Repaint;
+  //IsEntityDragged := true;
 end;
 
 procedure TfrmMain.OnViewportMouseWheel(Sender: TObject; Shift: TShiftState;

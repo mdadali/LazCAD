@@ -19,7 +19,6 @@ TCADSysLine2D = class(TCADSysBaseComponent2D) //class(tpersistent)
 
   private
     fLine2D: TLine2D;
-    fCAD2D: TCADCmp2D;
     function   GetLine2D: TLine2D;
     procedure  SetLine2D(ALine2D: TLine2D);
     function   GetObjectLength: TRealType;

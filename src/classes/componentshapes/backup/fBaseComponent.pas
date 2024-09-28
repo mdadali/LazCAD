@@ -157,8 +157,8 @@ TCADSysBaseComponent2D = class(TPersistent)
 
     property ObjectLength: TRealType read GetOLength;
     property ObjectArea: TRealType read GetArea;
-    //property Angle: TRealType  read GetAngle write SetAngle;
-    property  ObjectPosition2D: TObjectPosition2D read GetObjectPosition2D write SetObjectPosition2D;
+    property Angle: TRealType  read GetAngle write SetAngle;
+    property  ObjectPosition2D: TObjectPosition2D read GetObjectPosition2D; // write SetObjectPosition2D;
 end;
 
 

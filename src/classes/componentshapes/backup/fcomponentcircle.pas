@@ -39,7 +39,7 @@ TCADSysCircle2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     property Radius:         TRealType       read GetRadius           write SetRadius;
     property Direction:      TArcDirection   read GetDirection        write SetDirection;
     property StartAngle:     TRealType       read GetStartAngle       write SetStartAngle;
-    property CurvePrecision: word            read GetCurvePrecision   write SetCurvePrecision;
+    property EdgeCount: word            read GetCurvePrecision   write SetCurvePrecision;
 
 
     //property Visible;
@@ -86,12 +86,12 @@ end;
 
 function TCADSysCircle2D.GetStartAngle:  TRealType;
 begin
-  result := fCircle2D.StartAngle;
+  result := RadToDeg(fCircle2D.StartAngle);
 end;
 
 procedure TCADSysCircle2D.SetStartAngle(AValue: TRealType);
 begin
-  fCircle2D.StartAngle := AValue;
+  fCircle2D.StartAngle := DegToRad(AValue);
 end;
 
 constructor TCADSysCircle2D.create;

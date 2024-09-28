@@ -3580,10 +3580,12 @@ begin
     ExplodePolygon2D(AObject2D, ADestCAD)
   else if  (AObject2D is TFrame2D) then
     ExplodeFrame2D(AObject2D, ADestCAD)
+  {
   else if (AObject2D is TSegment2D) then
     ExplodeSegment2D(AObject2D, ADestCAD)
   else if (AObject2D is TSector2D) then
     ExplodeSector2D(AObject2D, ADestCAD)
+  }
   else if  (AObject2D is TOutline2D) then
     ExplodeOutline2D(TOutline2D(AObject2D))
   else if (AObject2D is TJustifiedVectText2D) then

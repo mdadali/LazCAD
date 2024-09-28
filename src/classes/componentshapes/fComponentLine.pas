@@ -28,7 +28,7 @@ TCADSysLine2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     property Line2D: TLine2D read GetLine2D write SetLine2D;
   published
     property ObjectLength read GetObjectLength write SetObjectLength;
-    property ObjectPosition2D;
+    //property ObjectPosition2D;
 end;
 
 
