@@ -264,9 +264,9 @@ type
     acDrawSegment2D: TAction;
     acDrawSector2D: TAction;
     acDrawSymetricSymbol2D: TAction;
+    acDrawASymetricSymbol2D: TAction;
     acToolsTTF2Vector: TAction;
     acToolsShowSimulator: TAction;
-    Action4: TAction;
     ActionList: TActionList;
     acToolsArea: TAction;
     acToolsClippingRectangles: TAction;
@@ -837,6 +837,7 @@ type
     procedure acCMDSingleSelectionModeExecute(Sender: TObject);
     procedure acCMDUseOrthoExecute(Sender: TObject);
     procedure acCMDUseSnapExecute(Sender: TObject);
+    procedure acDrawASymetricSymbol2DExecute(Sender: TObject);
     procedure acDrawCircle0Execute(Sender: TObject);
     procedure acDrawCircularArc2DExecute(Sender: TObject);
     procedure acDrawEllipticalArcExecute(Sender: TObject);
@@ -1548,6 +1549,24 @@ begin
       TmpSymetricSymbol2D := TSymetricSymbol2D.Create(-1, Point2D(0, 0), 0);
       TmpSymetricSymbol2D.CurvePrecision := 5;
      StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil, TmpSymetricSymbol2D, 0, false));
+    end;
+  end;
+end;
+
+procedure TfrmMain.acDrawASymetricSymbol2DExecute(Sender: TObject);
+var TmpASymetricSymbol2D: TASymetricSymbol2D;   hDrawing: TDrawing;
+begin
+  if PageControl1.PageCount = 0 then exit;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing <> nil then
+  begin
+    with hDrawing.CADPrg2D do
+    begin
+      if IsBusy then
+      StopOperation;
+      TmpASymetricSymbol2D := TASymetricSymbol2D.Create(-1, Point2D(0, 0),  Point2D(0, 0));
+      TmpASymetricSymbol2D.CurvePrecision := 4;
+     StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil, TmpASymetricSymbol2D, 0, false));
     end;
   end;
 end;

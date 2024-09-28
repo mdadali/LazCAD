@@ -880,6 +880,13 @@ type
   }
   TEllipse2D = class(TCurve2D)
   private
+    fWidth,
+    fHeight: TRealType;
+    function  GetWidth: TRealType;
+    procedure SetWidth(AValue: TRealType);
+    function  GetHeight: TRealType;
+    procedure SetHeight(AValue: TRealType);
+
     procedure GetEllipseParams(var CX, CY, RX, RY: TRealType);
   protected
     function PopulateCurvePoints(N: Word): TRect2D; override;
@@ -894,6 +901,9 @@ type
     }
     constructor Create(ID: LongInt; const P1, P2: TPoint2D);
     procedure Assign(const Obj: TGraphicObject); override;
+
+    property Width: TRealType read GetWidth write SetWidth;
+    property Height: TRealType read GetHeight write SetHeight;
   end;
 
 
@@ -4592,8 +4602,8 @@ initialization
   CADSysRegisterClass(15, TSegment2D);
   CADSysRegisterClass(16, TSector2D);
 
-  CADSysRegisterClass(16, TSymetricSymbol2D);
-
+  CADSysRegisterClass(17, TSymetricSymbol2D);
+  CADSysRegisterClass(18, TASymetricSymbol2D);
 
   _DefaultHandler2D := TPrimitive2DHandler.Create(nil);
 

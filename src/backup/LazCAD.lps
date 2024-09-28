@@ -314,8 +314,8 @@
         <UnitName Value="fMain"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="1156"/>
-        <CursorPos Y="1178"/>
+        <TopLine Value="1556"/>
+        <CursorPos X="33" Y="1560"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -327,7 +327,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="fDrawing"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="700"/>
         <CursorPos X="3" Y="702"/>
         <UsageCount Value="200"/>
@@ -336,7 +336,7 @@
       <Unit>
         <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="145"/>
         <CursorPos X="41" Y="152"/>
         <UsageCount Value="200"/>
@@ -346,11 +346,10 @@
         <Filename Value="classes\componentshapes\figuresascomponents.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FiguresAsComponents"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos Y="56"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentArc.pas"/>
@@ -372,18 +371,20 @@
       <Unit>
         <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="35"/>
-        <CursorPos X="42" Y="53"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="59"/>
+        <CursorPos X="4" Y="59"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentFrame.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="28"/>
-        <CursorPos X="64" Y="47"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="113"/>
+        <CursorPos X="24" Y="124"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentbspline.pas"/>
@@ -414,7 +415,7 @@
       <Unit>
         <Filename Value="classes\componentshapes\fComponentLine.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="18"/>
         <CursorPos X="24" Y="27"/>
         <UsageCount Value="200"/>
@@ -462,7 +463,7 @@
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcircle.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="29"/>
         <CursorPos X="51" Y="40"/>
         <UsageCount Value="232"/>
@@ -537,7 +538,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="479"/>
         <CursorPos X="24" Y="489"/>
-        <UsageCount Value="180"/>
+        <UsageCount Value="182"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\camh.pas"/>
@@ -545,7 +546,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos X="15" Y="135"/>
-        <UsageCount Value="179"/>
+        <UsageCount Value="181"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcontainer.pas"/>
@@ -553,7 +554,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos Y="20"/>
-        <UsageCount Value="109"/>
+        <UsageCount Value="111"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\contours.pas"/>
@@ -561,14 +562,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="88"/>
         <CursorPos X="41" Y="112"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="101"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fobjectposition.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="21"/>
-        <UsageCount Value="86"/>
+        <UsageCount Value="88"/>
       </Unit>
       <Unit>
         <Filename Value="libs\StellaUndoRedo\UndoRedo.pas"/>
@@ -576,7 +577,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="15" Y="52"/>
-        <UsageCount Value="73"/>
+        <UsageCount Value="75"/>
       </Unit>
       <Unit>
         <Filename Value="ui\TTF2Vector\fttf2vector.pas"/>
@@ -588,7 +589,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="286"/>
         <CursorPos X="49" Y="297"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="60"/>
       </Unit>
       <Unit>
         <Filename Value="buildin\import\cImportGCODE2.pas"/>
@@ -763,10 +764,10 @@
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="2126"/>
-        <CursorPos X="38" Y="2136"/>
-        <UsageCount Value="94"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="3558"/>
+        <CursorPos X="29" Y="3565"/>
+        <UsageCount Value="95"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -780,10 +781,10 @@
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="3574"/>
         <CursorPos X="44" Y="3587"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="68"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -826,10 +827,10 @@
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="8750"/>
         <CursorPos Y="8764"/>
-        <UsageCount Value="79"/>
+        <UsageCount Value="80"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -913,98 +914,6 @@
     </OtherDefines>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="3119" Column="20" TopLine="3095"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="3124" Column="23" TopLine="3100"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="3131" Column="20" TopLine="3107"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="872" Column="5" TopLine="852"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="871" Column="29" TopLine="857"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1495" Column="3" TopLine="1492"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1503" Column="90" TopLine="1495"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="3293" TopLine="3282"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1542" Column="83" TopLine="1523"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1054" Column="59" TopLine="1048"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1078" Column="30" TopLine="1059"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="980" Column="30" TopLine="968"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="2556" Column="32" TopLine="2547"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="2527" Column="30" TopLine="2518"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1000" Column="30" TopLine="998"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="161" Column="88" TopLine="142"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="177" Column="24" TopLine="162"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="205" Column="44" TopLine="188"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="111" Column="34" TopLine="105"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="161" Column="90" TopLine="148"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="177" Column="24" TopLine="159"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="200" Column="53" TopLine="188"/>
-      </Position>
-      <Position>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <Caret Line="113" Column="34" TopLine="106"/>
-      </Position>
-      <Position>
         <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
         <Caret Line="160" Column="41" TopLine="147"/>
       </Position>
@@ -1031,6 +940,98 @@
       <Position>
         <Filename Value="ui\main\fmain.pas"/>
         <Caret Line="1055" Column="57" TopLine="1034"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1169" Column="49" TopLine="1155"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1171" Column="49" TopLine="1157"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1546" Column="26" TopLine="1536"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="2304" Column="33" TopLine="2295"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1553" Column="33" TopLine="1540"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="2294" TopLine="2292"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1571" Column="91" TopLine="1548"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <Caret Line="32" Column="36" TopLine="21"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1568" Column="49" TopLine="1556"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1570" Column="109" TopLine="1556"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1568" Column="92" TopLine="1556"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <Caret Line="97" Column="19" TopLine="76"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <Caret Line="92" TopLine="79"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <Caret Line="91" TopLine="79"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <Caret Line="92" TopLine="79"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <Caret Line="91" TopLine="79"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
+        <Caret Line="59" Column="4" TopLine="59"/>
+      </Position>
+      <Position>
+        <Filename Value="classes\componentshapes\fComponentFrame.pas"/>
+        <Caret Line="124" Column="24" TopLine="113"/>
+      </Position>
+      <Position>
+        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
+        <Caret Line="668" Column="45" TopLine="663"/>
+      </Position>
+      <Position>
+        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
+        <Caret Line="666" Column="6" TopLine="663"/>
+      </Position>
+      <Position>
+        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
+        <Caret Line="3188" Column="34" TopLine="3176"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1561" Column="33" TopLine="1557"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\main\fmain.pas"/>
+        <Caret Line="1560" Column="33" TopLine="1556"/>
       </Position>
     </JumpHistory>
     <RunParams>

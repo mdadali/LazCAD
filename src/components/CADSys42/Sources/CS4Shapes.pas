@@ -880,6 +880,13 @@ type
   }
   TEllipse2D = class(TCurve2D)
   private
+    fWidth,
+    fHeight: TRealType;
+    function  GetWidth: TRealType;
+    procedure SetWidth(AValue: TRealType);
+    function  GetHeight: TRealType;
+    procedure SetHeight(AValue: TRealType);
+
     procedure GetEllipseParams(var CX, CY, RX, RY: TRealType);
   protected
     function PopulateCurvePoints(N: Word): TRect2D; override;
@@ -894,6 +901,9 @@ type
     }
     constructor Create(ID: LongInt; const P1, P2: TPoint2D);
     procedure Assign(const Obj: TGraphicObject); override;
+
+    property Width: TRealType read GetWidth write SetWidth;
+    property Height: TRealType read GetHeight write SetHeight;
   end;
 
 
@@ -3536,6 +3546,32 @@ begin
      Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
      Points.GrowingEnabled := False;
    end;
+end;
+
+function TEllipse2D.GetWidth: TRealType;
+begin
+  result := Abs(Points[1].X - Points[0].X);
+end;
+
+procedure TEllipse2D.SetWidth(AValue: TRealType);
+var P1: TPoint2D;
+begin
+  P1 := self.Points[1];
+  P1.X := self.Points[0].X + AValue;
+  self.Points[1] := P1;
+end;
+
+function  TEllipse2D.GetHeight: TRealType;
+begin
+  result := Abs(Points[1].Y - Points[0].Y);
+end;
+
+procedure TEllipse2D.SetHeight(AValue: TRealType);
+var P0: TPoint2D;
+begin
+  P0 := self.Points[0];
+  P0.Y := self.Points[1].Y + AValue;
+  self.Points[0] := P0;
 end;
 
 // =====================================================================
