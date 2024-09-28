@@ -53,7 +53,7 @@ type
     cboxShowDirections: TCheckBox;
     fspeCharHeight: TFloatSpinEdit;
     fspeLineHeight: TFloatSpinEdit;
-    GroupBox1: TGroupBox;
+    grboxSettings: TGroupBox;
     grboxFontPath: TGroupBox;
     GroupBox3: TGroupBox;
     grboxCAD: TGroupBox;
@@ -294,8 +294,7 @@ begin
       scx := x1;
       scy := y1;
       startcountur:=false;
-      //TmpPolygon2D := TPolygon2D.Create(-1, []);
-      TmpPolygon2D := TPolygon2D.Create(-1, 4, 50);
+      TmpPolygon2D := TPolygon2D.Create(-1, []);
       CADCmp2D1.AddObject(-1, TmpPolygon2D);
       TmpPolygon2D.ReserveInt1 := ord(OuterContourCW);
       TmpPolygon2D.LayerName   := CAM_LAYER_OUTER_CONTOUR_CW;

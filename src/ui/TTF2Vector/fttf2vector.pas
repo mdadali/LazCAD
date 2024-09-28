@@ -53,7 +53,7 @@ type
     cboxShowDirections: TCheckBox;
     fspeCharHeight: TFloatSpinEdit;
     fspeLineHeight: TFloatSpinEdit;
-    GroupBox1: TGroupBox;
+    grboxSettings: TGroupBox;
     grboxFontPath: TGroupBox;
     GroupBox3: TGroupBox;
     grboxCAD: TGroupBox;

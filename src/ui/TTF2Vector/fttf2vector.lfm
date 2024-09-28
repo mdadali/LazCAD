@@ -1,11 +1,13 @@
 object frmTTF2Vector: TfrmTTF2Vector
-  Left = 661
-  Height = 721
-  Top = 130
-  Width = 929
+  Left = 402
+  Height = 546
+  Top = 128
+  Width = 800
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
   Caption = 'TTF2Vector'
-  ClientHeight = 721
-  ClientWidth = 929
+  ClientHeight = 546
+  ClientWidth = 800
   FormStyle = fsStayOnTop
   OnClose = FormClose
   OnCreate = FormCreate
@@ -13,9 +15,9 @@ object frmTTF2Vector: TfrmTTF2Vector
   LCLVersion = '3.4.0.0'
   object Memo1: TMemo
     Left = 0
-    Height = 104
-    Top = 336
-    Width = 929
+    Height = 81
+    Top = 176
+    Width = 800
     Align = alTop
     Lines.Strings = (
       '  fpc'
@@ -26,29 +28,29 @@ object frmTTF2Vector: TfrmTTF2Vector
     TabOrder = 0
     OnChange = Memo1Change
   end
-  object GroupBox1: TGroupBox
+  object grboxSettings: TGroupBox
     Left = 0
-    Height = 137
-    Top = 199
-    Width = 929
+    Height = 88
+    Top = 257
+    Width = 800
     Align = alTop
-    ClientHeight = 135
-    ClientWidth = 927
+    ClientHeight = 86
+    ClientWidth = 798
     TabOrder = 2
     object GroupBox3: TGroupBox
       Left = 0
-      Height = 135
+      Height = 86
       Top = 0
       Width = 368
       Align = alLeft
       Caption = 'Font Propertys'
-      ClientHeight = 115
+      ClientHeight = 66
       ClientWidth = 366
       TabOrder = 0
       object cboxHinted: TCheckBox
         Left = 14
         Height = 32
-        Top = 8
+        Top = 0
         Width = 76
         Caption = 'Hinted'
         TabOrder = 0
@@ -57,7 +59,7 @@ object frmTTF2Vector: TfrmTTF2Vector
       object Label2: TLabel
         Left = 19
         Height = 19
-        Top = 48
+        Top = 40
         Width = 71
         Caption = 'CharHeight'
         ParentColor = False
@@ -65,7 +67,7 @@ object frmTTF2Vector: TfrmTTF2Vector
       object fspeCharHeight: TFloatSpinEdit
         Left = 104
         Height = 31
-        Top = 40
+        Top = 32
         Width = 88
         DecimalPlaces = 3
         MinValue = 10
@@ -74,18 +76,18 @@ object frmTTF2Vector: TfrmTTF2Vector
         Value = 100
       end
       object cboxBold: TCheckBox
-        Left = 264
+        Left = 265
         Height = 32
-        Top = 8
+        Top = 0
         Width = 62
         Caption = 'Bold'
         TabOrder = 2
         OnChange = cboxBoldChange
       end
       object cboxItalic: TCheckBox
-        Left = 264
+        Left = 265
         Height = 32
-        Top = 40
+        Top = 32
         Width = 63
         Caption = 'Italic'
         TabOrder = 3
@@ -94,18 +96,18 @@ object frmTTF2Vector: TfrmTTF2Vector
     end
     object grboxCAD: TGroupBox
       Left = 368
-      Height = 135
+      Height = 86
       Top = 0
-      Width = 559
+      Width = 430
       Align = alClient
       Caption = 'CAD'
-      ClientHeight = 115
-      ClientWidth = 557
+      ClientHeight = 66
+      ClientWidth = 428
       TabOrder = 1
       object Label1: TLabel
         Left = 8
         Height = 19
-        Top = 8
+        Top = 0
         Width = 68
         Caption = 'LineHeight'
         ParentColor = False
@@ -122,7 +124,7 @@ object frmTTF2Vector: TfrmTTF2Vector
       object cboxShowControlpoints: TCheckBox
         Left = 8
         Height = 32
-        Top = 40
+        Top = 32
         Width = 153
         Caption = 'Show Controlpoints'
         TabOrder = 1
@@ -139,7 +141,7 @@ object frmTTF2Vector: TfrmTTF2Vector
       object cboxShowDirections: TCheckBox
         Left = 256
         Height = 32
-        Top = 40
+        Top = 32
         Width = 158
         AutoSize = False
         Caption = 'Show Directions'
@@ -150,17 +152,17 @@ object frmTTF2Vector: TfrmTTF2Vector
   end
   object grboxFontPath: TGroupBox
     Left = 0
-    Height = 165
+    Height = 142
     Top = 34
-    Width = 929
+    Width = 800
     Align = alTop
     Caption = 'Font Path'
-    ClientHeight = 145
-    ClientWidth = 927
+    ClientHeight = 122
+    ClientWidth = 798
     TabOrder = 1
     object ShellTreeView1: TShellTreeView
       Left = 0
-      Height = 145
+      Height = 122
       Top = 0
       Width = 288
       Align = alLeft
@@ -171,9 +173,9 @@ object frmTTF2Vector: TfrmTTF2Vector
     end
     object ShellListView1: TShellListView
       Left = 288
-      Height = 145
+      Height = 122
       Top = 0
-      Width = 639
+      Width = 510
       Align = alClient
       Color = clDefault
       SortType = stText
@@ -187,10 +189,10 @@ object frmTTF2Vector: TfrmTTF2Vector
     Left = 0
     Height = 34
     Top = 0
-    Width = 929
+    Width = 800
     Align = alTop
     ClientHeight = 34
-    ClientWidth = 929
+    ClientWidth = 800
     TabOrder = 3
     object pnlZoom: TPanel
       Left = 250
@@ -1190,33 +1192,34 @@ object frmTTF2Vector: TfrmTTF2Vector
   end
   object pnlBottom: TPanel
     Left = 0
-    Height = 281
-    Top = 440
-    Width = 929
+    Height = 201
+    Top = 345
+    Width = 800
     Align = alClient
-    ClientHeight = 281
-    ClientWidth = 929
+    ClientHeight = 201
+    ClientWidth = 800
     TabOrder = 4
     object CADViewport2D1: TCADViewport2D
       Left = 61
-      Height = 217
+      Height = 137
       Top = 1
-      Width = 867
+      Width = 738
       Align = alClient
       AspectRatio = 1
       RubberPenColor = clBlue
       ControlPointsColor = clBlack
-      BackGroundColor = clBlack
+      BackGroundColor = clGray
+      OnPaint = CADViewport2D1Paint
       CADCmp2D = CADCmp2D1
     end
     object Panel1: TPanel
       Left = 1
       Height = 62
-      Top = 218
-      Width = 927
+      Top = 138
+      Width = 798
       Align = alBottom
       ClientHeight = 62
-      ClientWidth = 927
+      ClientWidth = 798
       TabOrder = 1
       object Panel4: TPanel
         Left = 1
@@ -1231,7 +1234,7 @@ object frmTTF2Vector: TfrmTTF2Vector
         Left = 61
         Height = 60
         Top = 1
-        Width = 865
+        Width = 736
         Align = alClient
         LinkedViewport = CADViewport2D1
         Color = clSilver
@@ -1242,7 +1245,7 @@ object frmTTF2Vector: TfrmTTF2Vector
     end
     object rulerLeft: TRuler
       Left = 1
-      Height = 217
+      Height = 137
       Top = 1
       Width = 60
       Align = alLeft
@@ -1268,8 +1271,8 @@ object frmTTF2Vector: TfrmTTF2Vector
     PolarTrackingValue = 45
     SelectionMode = smArea
     ShowDirection = False
-    Left = 736
-    Top = 611
+    Left = 760
+    Top = 544
   end
   object CADPrg2D1: TCADPrg2D
     XSnap = 10
@@ -1278,7 +1281,7 @@ object frmTTF2Vector: TfrmTTF2Vector
     ShowCursorCross = True
     Viewport2D = CADViewport2D1
     Left = 640
-    Top = 611
+    Top = 528
   end
   object ImageListClassic: TImageList
     AllocBy = 10
