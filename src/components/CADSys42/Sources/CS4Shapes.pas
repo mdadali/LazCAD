@@ -27,6 +27,7 @@ type
      the vectorial text shape <See Class=TJustifiedVectText2D> and
      <See Class=TJustifiedVectText3D>.
   }
+
   TExtendedFont = class(TObject)
   private
     LogFont: TLOGFONT;
@@ -390,28 +391,6 @@ type
   TDirectionalPrimitive2D = class(TPrimitive2D)
   end;
 
-  {: This class defines a 2D line segment.
-
-     The entity has two <I=control points> that are the extremes of
-     the segment.
-  }
-  TLine2D = class(TPrimitive2D)
-  public
-    {: This constructor creates a new 2D line segment.
-
-       Parameters:
-
-       <LI=<I=ID> is the object identifier.>
-       <LI=<I=P1> is the starting point of the segment.>
-       <LI=<I=P2> is the ending point of the segment.>
-    }
-    constructor Create(ID: LongInt; const P1, P2: TPoint2D);
-    procedure Assign(const Obj: TGraphicObject); override;
-    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
-    function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
-    procedure SetLength(AValue: TRealType);
-  end;
-
   {: This class defines a <I=2D outline>.
 
      An <I=outline> primitive shape is an entity that is drawed as
@@ -511,6 +490,28 @@ type
 
   end;
 
+  {: This class defines a 2D line segment.
+
+     The entity has two <I=control points> that are the extremes of
+     the segment.
+  }
+  TLine2D = class(TPrimitive2D)
+  public
+    {: This constructor creates a new 2D line segment.
+
+       Parameters:
+
+       <LI=<I=ID> is the object identifier.>
+       <LI=<I=P1> is the starting point of the segment.>
+       <LI=<I=P2> is the ending point of the segment.>
+    }
+    constructor Create(ID: LongInt; const P1, P2: TPoint2D);
+    procedure Assign(const Obj: TGraphicObject); override;
+    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+    function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
+    procedure SetLength(AValue: TRealType);
+  end;
+
   {: This class defines a 2D polyline.
 
      A polyline is obtained by connecting the <I=profile points> (in
@@ -541,21 +542,6 @@ type
     function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
   end;
 
-  {: This class defines a 2D polygon.
-
-     A polygon is obtained by connecting the <I=profile points> (
-     in this case they are the same as the <I=profile points>)
-     with straight segments and filling the shape with the current
-     brush of the Canvas.
-  }
-  TPolygon2D = class(TPolyline2D)
-  private
-  protected
-    function GetIsClosed: Boolean; override;
-  public
-    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
-    function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
-  end;
 
   {: This class defines a 2D curve.
 
@@ -654,6 +640,22 @@ type
        See also <See Type=TPrimitiveSavingType>.
     }
     property SavingType: TPrimitiveSavingType read fSavingType write SetPrimitiveSavingType;
+  end;
+
+  {: This class defines a 2D polygon.
+
+     A polygon is obtained by connecting the <I=profile points> (
+     in this case they are the same as the <I=profile points>)
+     with straight segments and filling the shape with the current
+     brush of the Canvas.
+  }
+  TPolygon2D = class(TPolyline2D)
+  private
+  protected
+    function GetIsClosed: Boolean; override;
+  public
+    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+    function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
   end;
 
   {: This class defines a 2D rectangle.
@@ -830,6 +832,15 @@ type
     property Radius: TRealType read fRadius write  SetRadius;
   end;
 
+  TSector2D = class(TCircularArc2D)
+  protected
+    function  PopulateCurvePoints(N: Word): TRect2D; override;
+  end;
+
+  TSegment2D = class(TCircularArc2D)
+  protected
+    function  PopulateCurvePoints(N: Word): TRect2D; override;
+  end;
 
   TCircle2D = class(TCurve2D)
   private
@@ -2819,6 +2830,11 @@ begin
     else
       CurrAngle := CurrAngle - Delta;
   end;
+  //Make Sector
+  //ProfilePoints.Add(Point2D(CX, CY));
+  //ProfilePoints.Add(ProfilePoints[0]);
+
+  //Make Segment
   //ProfilePoints.Add(ProfilePoints[0]); //close Arc
 end;
 
@@ -2863,7 +2879,6 @@ begin
   // Optional: Schlieﬂen Sie den Bogen
   // PP.Add(PP[0]);
 end; }
-
 
 function TCircularArc2D.PopulateCurvePoints(N: Word): TRect2D;
 begin
@@ -2958,6 +2973,50 @@ begin
    //Write(fDirection, SizeOf(FDirection));
     Write(fRadius, SizeOf(fRadius));
 end;
+
+//=====================================================================
+// TSector2D
+//=====================================================================
+function TSector2D.PopulateCurvePoints(N: Word): TRect2D;
+begin
+  if CurvePrecision = 0 then
+  begin
+    Result := Rect2D(0, 0, 0, 0);
+    Exit;
+  end;
+  Result := inherited PopulateCurvePoints(CurvePrecision);
+
+  //Make Sector
+  //ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
+  //ProfilePoints.Add(ProfilePoints[0]);
+
+  //Make Segment
+  ProfilePoints.Add(ProfilePoints[0]); //close Arc
+
+  Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
+end;
+
+//=====================================================================
+// TSegment2D
+//=====================================================================
+function TSegment2D.PopulateCurvePoints(N: Word): TRect2D;
+begin
+  if CurvePrecision = 0 then
+  begin
+    Result := Rect2D(0, 0, 0, 0);
+    Exit;
+  end;
+  Result := inherited PopulateCurvePoints(CurvePrecision);
+
+  //Make Segment
+  ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
+  ProfilePoints.Add(ProfilePoints[0]);
+
+  //Make Sector
+  //ProfilePoints.Add(ProfilePoints[0]); //close Arc
+  Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
+end;
+
 
 // =====================================================================
 // TCircle2D
@@ -4507,6 +4566,7 @@ initialization
   CADSysRegisterClass(4, TPolyline2D);
   CADSysRegisterClass(5, TPolygon2D);
   CADSysRegisterClass(6, TRectangle2D);
+
   CADSysRegisterClass(7, TEllipticalArc2D);
   CADSysRegisterClass(8, TEllipse2D);
   CADSysRegisterClass(9, TFilledEllipse2D);
@@ -4515,6 +4575,10 @@ initialization
   CADSysRegisterClass(12, TBitmap2D);
   CADSysRegisterClass(13, TBSpline2D);
   CADSysRegisterClass(14, TJustifiedVectText2D);
+
+  CADSysRegisterClass(15, TSegment2D);
+  CADSysRegisterClass(16, TSector2D);
+
 
   _DefaultHandler2D := TPrimitive2DHandler.Create(nil);
 

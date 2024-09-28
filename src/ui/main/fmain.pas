@@ -261,6 +261,8 @@ type
     acModifyInverse: TAction;
     acModifyMakeContainer: TAction;
     acFileImportEssi: TAction;
+    acDrawSegment2D: TAction;
+    acDrawSector2D: TAction;
     acToolsTTF2Vector: TAction;
     acToolsShowSimulator: TAction;
     Action4: TAction;
@@ -310,6 +312,7 @@ type
     BCButtonFocus112: TBCButtonFocus;
     BCButtonFocus113: TBCButtonFocus;
     BCButtonFocus114: TBCButtonFocus;
+    BCButtonFocus115: TBCButtonFocus;
     BCButtonFocus116: TBCButtonFocus;
     BCButtonFocus117: TBCButtonFocus;
     BCButtonFocus118: TBCButtonFocus;
@@ -319,6 +322,7 @@ type
     BCButtonFocus121: TBCButtonFocus;
     BCButtonFocus122: TBCButtonFocus;
     BCButtonFocus123: TBCButtonFocus;
+    BCButtonFocus124: TBCButtonFocus;
     BCButtonFocus128: TBCButtonFocus;
     BCButtonFocus129: TBCButtonFocus;
     BCButtonFocus13: TBCButtonFocus;
@@ -380,7 +384,6 @@ type
     BCButtonFocus61: TBCButtonFocus;
     BCButtonFocus62: TBCButtonFocus;
     BCButtonFocus63: TBCButtonFocus;
-    BCButtonFocus64: TBCButtonFocus;
     BCButtonFocus65: TBCButtonFocus;
     BCButtonFocus66: TBCButtonFocus;
     BCButtonFocus67: TBCButtonFocus;
@@ -842,6 +845,8 @@ type
     procedure acDrawPolygonExecute(Sender: TObject);
     procedure acDrawPolyLineExecute(Sender: TObject);
     procedure acDrawRectangle0Execute(Sender: TObject);
+    procedure acDrawSector2DExecute(Sender: TObject);
+    procedure acDrawSegment2DExecute(Sender: TObject);
     procedure acDrawSingleLineTextExecute(Sender: TObject);
     procedure acDrawSplineExecute(Sender: TObject);
     procedure acDrawVectorialTextExecute(Sender: TObject);
@@ -1482,9 +1487,42 @@ begin
       if IsBusy then
       StopOperation;
       TmpFrame2D := TFrame2D.Create(-1, Point2D(0, 0), Point2D(0, 0));
-     //fCurrentOpBtn := InsertPolylineBtn;
-     StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil,
+      StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil,
         TmpFrame2D, 0, True));
+    end;
+  end;
+end;
+
+procedure TfrmMain.acDrawSector2DExecute(Sender: TObject);
+var TmpSector2D: TSector2D;   hDrawing: TDrawing;
+begin
+  if PageControl1.PageCount = 0 then exit;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing <> nil then
+  begin
+    with hDrawing.CADPrg2D do
+    begin
+      if IsBusy then
+      StopOperation;
+      TmpSector2D := TSector2D.Create(-1, Point2D(0, 0), 0, 0, 0);
+      StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil, TmpSector2D, 0, false));
+    end;
+  end;
+end;
+
+procedure TfrmMain.acDrawSegment2DExecute(Sender: TObject);
+var TmpSegment2D: TCircularArc2D;   hDrawing: TDrawing;
+begin
+  if PageControl1.PageCount = 0 then exit;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing <> nil then
+  begin
+    with hDrawing.CADPrg2D do
+    begin
+      if IsBusy then
+      StopOperation;
+      TmpSegment2D := TSegment2D.Create(-1, Point2D(0, 0), 0, 0, 0);
+     StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil, TmpSegment2D, 0, false));
     end;
   end;
 end;
