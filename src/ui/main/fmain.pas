@@ -3587,6 +3587,7 @@ begin
   if hDrawing = nil then  exit;
   hDrawing.CADViewport2D.Repaint;
   TIPropertyGrid1.Refresh;
+  hDrawing.UndoRedo.UndoSave;
   if GlobalObject2D <> nil then
     hDrawing.CADViewport2D.DrawObject2D(GlobalObject2D, true);
 end;

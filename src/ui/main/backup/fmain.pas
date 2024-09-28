@@ -997,6 +997,7 @@ type
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  IsEntityDragged := false;
   fMDICount := 1;
 
   acSettingsUseTemplates.Checked   :=  (LowerCase(applicationh.fUseTemplates) = 'yes');

@@ -108,7 +108,7 @@ TCADSysBaseComponent2D = class(TPersistent)
     procedure SetKerfType(AKerfType: TKerfType);
 
     function  GetObjectPosition2D: TObjectPosition2D;
-    procedure SetObjectPosition2D(AObjectPosition2D: TObjectPosition2D);
+    procedure SetObjectPosition2D;
   protected
      fPrimitive2D: TPrimitive2D;
 
@@ -152,13 +152,13 @@ TCADSysBaseComponent2D = class(TPersistent)
     //property  LayerID: TLayerID                read  GetLayerID;    //write SetLayerID;
     property  LayerName: TLayerName            read  GetLayerName  write SetLayerName;
 
-    property  Test: tOptionsFlags  read Coordinates write Coordinates;
-    property  KerfType: TKerfType  read GetKerfType write SetKerfType;
+    //property  Test: tOptionsFlags  read Coordinates write Coordinates;
+    //property  KerfType: TKerfType  read GetKerfType write SetKerfType;
 
     property ObjectLength: TRealType read GetOLength;
     property ObjectArea: TRealType read GetArea;
     //property Angle: TRealType  read GetAngle write SetAngle;
-    property  ObjectPosition2D: TObjectPosition2D read GetObjectPosition2D write SetObjectPosition2D;
+    property  ObjectPosition2D: TObjectPosition2D read GetObjectPosition2D; // write SetObjectPosition2D;
 end;
 
 
@@ -197,12 +197,8 @@ begin
   result := fObjectPosition2D;
 end;
 
-procedure TCADSysBaseComponent2D.SetObjectPosition2D(AObjectPosition2D: TObjectPosition2D);
+procedure TCADSysBaseComponent2D.SetObjectPosition2D;
 begin
-  self.fPrimitive2D.Top     := fObjectPosition2D.Top;
-  self.fPrimitive2D.Left    := fObjectPosition2D.Left;
-  self.fPrimitive2D.Bottom  := fObjectPosition2D.Bottom;
-  self.fPrimitive2D.Right   := fObjectPosition2D.Right;
 end;
 
 function TCADSysBaseComponent2D.GetID: longint;
