@@ -72,6 +72,12 @@ end;
 
 procedure  TCADSysEllipse2D.SetCurvePrecision(APrecision: Word);
 begin
+  if APrecision = fEllipse2D.CurvePrecision then exit;
+  if (APrecision < 3) then
+  begin
+    MessageDlg('Warning', 'The minimum allowed number of edges is 3.', mtWarning, [mbOK], 0);
+    APrecision := 3;
+  end;
   fEllipse2D.CurvePrecision := APrecision;
   fEllipse2D.UpdateExtension(self);
 end;

@@ -78,23 +78,23 @@ end;
 
 function  TCADSysEllipse2D.GetWidth: TrealType;
 begin
-  result := TCADSysEllipse2D(self.fPrimitive2D).Width;
+  result := TEllipse2D(self.fPrimitive2D).Width;
 end;
 
 procedure TCADSysEllipse2D.SetWidth(AValue: TrealType);
 begin
-  TCADSysEllipse2D(self.fPrimitive2D).Width := AValue;
+  TEllipse2D(self.fPrimitive2D).Width := AValue;
   self.fPrimitive2D.UpdateExtension(nil);
 end;
 
 function  TCADSysEllipse2D.GetHeight: TrealType;
 begin
-  result := TCADSysEllipse2D(self.fPrimitive2D).Height;
+  result := TEllipse2D(self.fPrimitive2D).Height;
 end;
 
 procedure TCADSysEllipse2D.SetHeight(AValue: TrealType);
 begin
-  TCADSysEllipse2D(self.fPrimitive2D).Height := AValue;
+  TEllipse2D(self.fPrimitive2D).Height := AValue;
   self.fPrimitive2D.UpdateExtension(nil);
 end;
 

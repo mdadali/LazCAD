@@ -39,7 +39,7 @@ TCADSysCircle2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     property Radius:         TRealType       read GetRadius           write SetRadius;
     property Direction:      TArcDirection   read GetDirection        write SetDirection;
     property StartAngle:     TRealType       read GetStartAngle       write SetStartAngle;
-    property EdgeCount: word            read GetCurvePrecision   write SetCurvePrecision;
+    property EdgeCount:      Word            read GetCurvePrecision   write SetCurvePrecision;
 
 
     //property Visible;

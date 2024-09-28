@@ -40,9 +40,6 @@ TCADSysCircle2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     property Direction:      TArcDirection   read GetDirection        write SetDirection;
     property StartAngle:     TRealType       read GetStartAngle       write SetStartAngle;
     property EdgeCount:      Word            read GetCurvePrecision   write SetCurvePrecision;
-
-
-    //property Visible;
 end;
 
 
@@ -68,7 +65,6 @@ begin
   if (D <> fCircle2D.Direction) then
   begin
     fCircle2D.Direction := D;
-    //fCircle2D.OwnerCAD.RefreshViewports;
     fCircle2D.UpdateExtension(nil);
   end;
 end;
@@ -80,8 +76,14 @@ end;
 
 procedure  TCADSysCircle2D.SetCurvePrecision(APrecision: word);
 begin
+  if APrecision = fCircle2D.CurvePrecision then exit;
+  if (APrecision < 3) then
+  begin
+    MessageDlg('Warning', 'The minimum allowed number of edges is 3.', mtWarning, [mbOK], 0);
+    APrecision := 3;
+  end;
   fCircle2D.CurvePrecision := APrecision;
-  fCircle2D.UpdateExtension(nil);
+  fCircle2D.UpdateExtension(self);
 end;
 
 function TCADSysCircle2D.GetStartAngle:  TRealType;
