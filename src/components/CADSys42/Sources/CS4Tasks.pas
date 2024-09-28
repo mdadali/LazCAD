@@ -3546,12 +3546,45 @@ begin
   ADestCAD.AddObject(-1, TmpPolyline2D);
 end;
 
+procedure ExplodeSegment2D(AObject2D: TObject2D; ADestCAD: TCADCmp2D);
+var TmpCircularArc2D: TCircularArc2D;  TmpLine2D: TLine2D;
+begin
+  with TSegment2D(AObject2D) do
+   begin
+     TmpCircularArc2D := TCircularArc2D.Create(-1, CenterPoint, Radius, StartAngle, EndAngle);
+     TmpCircularArc2D.Direction := Direction;
+     ADestCAD.AddObject(-1, TmpCircularArc2D);
+     TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.ProfilePoints[TmpCircularArc2D.ProfilePoints.Count -1], TmpCircularArc2D.CenterPoint);
+     ADestCAD.AddObject(-1, TmpLine2D);
+     TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.CenterPoint, TmpCircularArc2D.ProfilePoints[0]);
+     ADestCAD.AddObject(-1, TmpLine2D);
+   end;
+end;
+
+procedure ExplodeSector2D(AObject2D: TObject2D; ADestCAD: TCADCmp2D);
+var TmpCircularArc2D: TCircularArc2D;  TmpLine2D: TLine2D;
+begin
+  with TSector2D(AObject2D) do
+   begin
+     TmpCircularArc2D := TCircularArc2D.Create(-1, CenterPoint, Radius, StartAngle, EndAngle);
+     TmpCircularArc2D.Direction := Direction;
+     ADestCAD.AddObject(-1, TmpCircularArc2D);
+     TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.ProfilePoints[TmpCircularArc2D.ProfilePoints.Count -1], TmpCircularArc2D.ProfilePoints[0]);
+     ADestCAD.AddObject(-1, TmpLine2D);
+   end;
+end;
+
+
 procedure Explode(AObject2D: TObject2D; ADestCAD: TCADCmp2D);
 begin
   if  (AObject2D is TPolygon2D) then
     ExplodePolygon2D(AObject2D, ADestCAD)
   else if  (AObject2D is TFrame2D) then
     ExplodeFrame2D(AObject2D, ADestCAD)
+  //else if (AObject2D is TSegment2D) then
+    //ExplodeSegment2D(AObject2D, ADestCAD)
+  //else if (AObject2D is TSector2D) then
+    //ExplodeSector2D(AObject2D, ADestCAD)
   else if  (AObject2D is TOutline2D) then
     ExplodeOutline2D(TOutline2D(AObject2D))
   else if (AObject2D is TJustifiedVectText2D) then
