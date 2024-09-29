@@ -1,7 +1,7 @@
 object frmAbout: TfrmAbout
-  Left = 451
+  Left = 507
   Height = 503
-  Top = 137
+  Top = 143
   Width = 477
   BorderStyle = bsDialog
   Caption = 'LazCAD'
@@ -28,7 +28,7 @@ object frmAbout: TfrmAbout
     object TabSheet1: TTabSheet
       Caption = 'LazCAD'
       ClientHeight = 472
-      ClientWidth = 473
+      ClientWidth = 467
       object GifAnim1: TGifAnim
         Left = 152
         Height = 72
@@ -41,8 +41,8 @@ object frmAbout: TfrmAbout
         Height = 344
         Top = 72
         Width = 440
-        ClientHeight = 340
-        ClientWidth = 436
+        ClientHeight = 342
+        ClientWidth = 438
         ParentBackground = False
         TabOrder = 0
         object lbVersion: TLabel
@@ -268,12 +268,12 @@ object frmAbout: TfrmAbout
     object TabSheet4: TTabSheet
       Caption = 'License'
       ClientHeight = 472
-      ClientWidth = 473
+      ClientWidth = 467
       object Memo3: TMemo
         Left = 0
         Height = 472
         Top = 0
-        Width = 473
+        Width = 467
         Align = alClient
         Lines.Strings = (
           'MIT License'
@@ -305,12 +305,12 @@ object frmAbout: TfrmAbout
     object TabSheet2: TTabSheet
       Caption = 'Credits'
       ClientHeight = 472
-      ClientWidth = 473
+      ClientWidth = 467
       object Memo2: TMemo
         Left = 0
         Height = 472
         Top = 0
-        Width = 473
+        Width = 467
         Align = alClient
         Lines.Strings = (
           'Very Important Note:'
@@ -429,12 +429,12 @@ object frmAbout: TfrmAbout
     object TabSheet3: TTabSheet
       Caption = 'Components'
       ClientHeight = 472
-      ClientWidth = 473
+      ClientWidth = 467
       object Memo1: TMemo
         Left = 0
         Height = 472
         Top = 0
-        Width = 473
+        Width = 467
         Align = alClient
         Lines.Strings = (
           'Components:'

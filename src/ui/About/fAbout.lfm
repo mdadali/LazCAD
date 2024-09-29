@@ -1,11 +1,11 @@
 object frmAbout: TfrmAbout
-  Left = 507
-  Height = 503
-  Top = 143
+  Left = 558
+  Height = 524
+  Top = 186
   Width = 477
   BorderStyle = bsDialog
   Caption = 'LazCAD'
-  ClientHeight = 503
+  ClientHeight = 524
   ClientWidth = 477
   Color = clBtnFace
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object frmAbout: TfrmAbout
   LCLVersion = '2.2.6.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 503
+    Height = 524
     Top = 0
     Width = 477
     ActivePage = TabSheet1
@@ -27,7 +27,7 @@ object frmAbout: TfrmAbout
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'LazCAD'
-      ClientHeight = 472
+      ClientHeight = 493
       ClientWidth = 467
       object GifAnim1: TGifAnim
         Left = 152
@@ -38,10 +38,10 @@ object frmAbout: TfrmAbout
       end
       object GroupBox1: TGroupBox
         Left = 16
-        Height = 344
+        Height = 360
         Top = 72
         Width = 440
-        ClientHeight = 342
+        ClientHeight = 358
         ClientWidth = 438
         ParentBackground = False
         TabOrder = 0
@@ -96,7 +96,7 @@ object frmAbout: TfrmAbout
           ParentFont = False
         end
         object Label5: TLabel
-          Left = 66
+          Left = 16
           Height = 18
           Top = 288
           Width = 55
@@ -109,11 +109,11 @@ object frmAbout: TfrmAbout
         end
         object Label6: TLabel
           Cursor = crHandPoint
-          Left = 144
-          Height = 36
+          Left = 80
+          Height = 54
           Top = 288
-          Width = 242
-          Caption = 'CADSys4.2  Copyright (c) Piero Valagussa'#13#10'         Allright Reserved'
+          Width = 290
+          Caption = '   CADSys 4, Copyright © 2001 by Piero Valagussa'#10'                            <pivalag@tin.it>.  '#10'                          All rights reserved.   '
           Font.Height = -13
           Font.Name = 'Tahoma'
           ParentColor = False
@@ -258,7 +258,7 @@ object frmAbout: TfrmAbout
       object btnClose: TButton
         Left = 168
         Height = 32
-        Top = 432
+        Top = 448
         Width = 104
         Caption = 'Close'
         OnClick = btnCloseClick
@@ -267,11 +267,11 @@ object frmAbout: TfrmAbout
     end
     object TabSheet4: TTabSheet
       Caption = 'License'
-      ClientHeight = 472
+      ClientHeight = 493
       ClientWidth = 467
       object Memo3: TMemo
         Left = 0
-        Height = 472
+        Height = 493
         Top = 0
         Width = 467
         Align = alClient
@@ -304,11 +304,11 @@ object frmAbout: TfrmAbout
     end
     object TabSheet2: TTabSheet
       Caption = 'Credits'
-      ClientHeight = 472
+      ClientHeight = 493
       ClientWidth = 467
       object Memo2: TMemo
         Left = 0
-        Height = 472
+        Height = 493
         Top = 0
         Width = 467
         Align = alClient
@@ -428,11 +428,11 @@ object frmAbout: TfrmAbout
     end
     object TabSheet3: TTabSheet
       Caption = 'Components'
-      ClientHeight = 472
+      ClientHeight = 493
       ClientWidth = 467
       object Memo1: TMemo
         Left = 0
-        Height = 472
+        Height = 493
         Top = 0
         Width = 467
         Align = alClient

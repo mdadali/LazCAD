@@ -1209,7 +1209,6 @@ object frmTTF2Vector: TfrmTTF2Vector
       RubberPenColor = clBlue
       ControlPointsColor = clBlack
       BackGroundColor = clGray
-      OnPaint = CADViewport2D1Paint
       CADCmp2D = CADCmp2D1
     end
     object Panel1: TPanel

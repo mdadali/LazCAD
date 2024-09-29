@@ -270,7 +270,6 @@ begin
   end;
   SetShowDirection(cboxShowDirections.Checked);
   CADViewport2D1.ZoomToExtension;
-  //CADViewport2D1.Repaint;
 end;
 
 procedure TfrmTTF2Vector.DrawGlyphAsPolygon(AGlyph: TFreeTypeGlyph; APosX, APosY: TRealType);
