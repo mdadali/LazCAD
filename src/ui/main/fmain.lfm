@@ -1,22 +1,22 @@
 object frmMain: TfrmMain
   Left = 829
-  Height = 798
-  Top = 39
-  Width = 761
+  Height = 900
+  Top = 0
+  Width = 1600
   Caption = 'LazCAD [Main]'
-  ClientHeight = 798
-  ClientWidth = 761
+  ClientHeight = 872
+  ClientWidth = 1600
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '2.2.6.0'
   WindowState = wsMaximized
   object PageControl1: TPageControl
     Left = 367
-    Height = 574
-    Top = 147
-    Width = 362
+    Height = 646
+    Top = 148
+    Width = 1201
     Align = alClient
     ScrollOpposite = True
     TabOrder = 0
@@ -27,12 +27,12 @@ object frmMain: TfrmMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 574
-    Top = 147
+    Height = 646
+    Top = 148
     Width = 330
     Align = alLeft
     Caption = 'pnlLeft'
-    ClientHeight = 574
+    ClientHeight = 646
     ClientWidth = 330
     TabOrder = 1
     Visible = False
@@ -46,7 +46,7 @@ object frmMain: TfrmMain
     end
     object PageControl2: TPageControl
       Left = 1
-      Height = 538
+      Height = 610
       Top = 35
       Width = 328
       ActivePage = tsInspector
@@ -55,11 +55,11 @@ object frmMain: TfrmMain
       TabOrder = 1
       object tsInspector: TTabSheet
         Caption = 'Inspector'
-        ClientHeight = 507
+        ClientHeight = 576
         ClientWidth = 318
         object TIPropertyGrid1: TTIPropertyGrid
           Left = 0
-          Height = 507
+          Height = 576
           Top = 0
           Width = 318
           Align = alClient
@@ -78,11 +78,11 @@ object frmMain: TfrmMain
       end
       object tsShell: TTabSheet
         Caption = 'Shell'
-        ClientHeight = 507
+        ClientHeight = 576
         ClientWidth = 318
         object ShellTreeView1: TShellTreeView
           Left = 0
-          Height = 507
+          Height = 576
           Top = 0
           Width = 318
           Align = alClient
@@ -98,19 +98,19 @@ object frmMain: TfrmMain
   object pnlCMDLine: TPanel
     Left = 0
     Height = 21
-    Top = 756
-    Width = 761
+    Top = 829
+    Width = 1600
     Align = alBottom
     Caption = 'pnlCMDLine'
     ClientHeight = 21
-    ClientWidth = 761
+    ClientWidth = 1600
     TabOrder = 2
     Visible = False
     object Memo1: TMemo
       Left = 1
-      Height = 40
+      Height = 33
       Top = 1
-      Width = 759
+      Width = 1598
       Align = alClient
       Lines.Strings = (
         '>>>'
@@ -120,28 +120,28 @@ object frmMain: TfrmMain
   end
   object Splitter1: TSplitter
     Left = 330
-    Height = 574
-    Top = 147
+    Height = 646
+    Top = 148
     Width = 5
   end
   object Splitter2: TSplitter
     Cursor = crVSplit
     Left = 0
     Height = 3
-    Top = 753
-    Width = 761
+    Top = 826
+    Width = 1600
     Align = alBottom
     ResizeAnchor = akBottom
   end
   object pnlTop: TPanel
     Left = 0
     Height = 34
-    Top = 113
-    Width = 761
+    Top = 114
+    Width = 1600
     Align = alTop
     BevelInner = bvRaised
     ClientHeight = 34
-    ClientWidth = 761
+    ClientWidth = 1600
     TabOrder = 5
     object pnlFile: TPanel
       Left = 2
@@ -5522,11 +5522,11 @@ object frmMain: TfrmMain
   object pnlBottomToolBars: TPanel
     Left = 0
     Height = 32
-    Top = 721
-    Width = 761
+    Top = 794
+    Width = 1600
     Align = alBottom
     ClientHeight = 32
-    ClientWidth = 761
+    ClientWidth = 1600
     TabOrder = 6
     object pnlPgmCommands: TPanel
       Left = 0
@@ -9204,9 +9204,9 @@ object frmMain: TfrmMain
   end
   object SpkToolbar1: TSpkToolbar
     Left = 0
-    Height = 113
+    Height = 114
     Top = 0
-    Width = 761
+    Width = 1600
     Style = spkMetroLight
     Appearance.Tab.TabHeaderFont.Color = 9787178
     Appearance.Tab.BorderColor = 13816015
@@ -10615,9 +10615,9 @@ object frmMain: TfrmMain
   end
   object StatusBarMain: TStatusBar
     Left = 0
-    Height = 21
-    Top = 777
-    Width = 761
+    Height = 22
+    Top = 850
+    Width = 1600
     Panels = <    
       item
         Width = 300
@@ -10632,11 +10632,11 @@ object frmMain: TfrmMain
   end
   object pnlLeftToolBars: TPanel
     Left = 335
-    Height = 574
-    Top = 147
+    Height = 646
+    Top = 148
     Width = 32
     Align = alLeft
-    ClientHeight = 574
+    ClientHeight = 646
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -13088,12 +13088,12 @@ object frmMain: TfrmMain
     end
   end
   object pnlRightToolBars: TPanel
-    Left = 729
-    Height = 574
-    Top = 147
+    Left = 1568
+    Height = 646
+    Top = 148
     Width = 32
     Align = alRight
-    ClientHeight = 574
+    ClientHeight = 646
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -15325,7 +15325,7 @@ object frmMain: TfrmMain
       Category = 'Block'
       Caption = 'Blocks...'
       Enabled = False
-      Hint = 'Blocks...'
+      Hint = 'Blocks Manager'
       ImageIndex = 38
       OnExecute = acBlocksExecute
     end

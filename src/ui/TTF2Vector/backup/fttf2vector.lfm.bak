@@ -1,7 +1,7 @@
 object frmTTF2Vector: TfrmTTF2Vector
-  Left = 404
+  Left = 402
   Height = 546
-  Top = 145
+  Top = 128
   Width = 800
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog

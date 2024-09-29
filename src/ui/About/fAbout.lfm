@@ -1,12 +1,12 @@
 object frmAbout: TfrmAbout
-  Left = 565
-  Height = 491
-  Top = 173
-  Width = 442
+  Left = 507
+  Height = 503
+  Top = 143
+  Width = 477
   BorderStyle = bsDialog
   Caption = 'LazCAD'
-  ClientHeight = 491
-  ClientWidth = 442
+  ClientHeight = 503
+  ClientWidth = 477
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = 12
@@ -15,22 +15,22 @@ object frmAbout: TfrmAbout
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '2.2.6.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 491
+    Height = 503
     Top = 0
-    Width = 442
+    Width = 477
     ActivePage = TabSheet1
     Align = alClient
     TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'LazCAD'
-      ClientHeight = 462
-      ClientWidth = 432
+      ClientHeight = 472
+      ClientWidth = 467
       object GifAnim1: TGifAnim
-        Left = 112
+        Left = 152
         Height = 72
         Top = 0
         Width = 256
@@ -40,9 +40,9 @@ object frmAbout: TfrmAbout
         Left = 16
         Height = 344
         Top = 72
-        Width = 400
+        Width = 440
         ClientHeight = 342
-        ClientWidth = 398
+        ClientWidth = 438
         ParentBackground = False
         TabOrder = 0
         object lbVersion: TLabel
@@ -147,11 +147,12 @@ object frmAbout: TfrmAbout
           ParentFont = False
         end
         object lbPgmVersion: TLabel
-          Left = 199
+          Left = 200
           Height = 17
-          Top = 54
+          Top = 52
           Width = 77
           Caption = 'lbPgmVersion'
+          ParentColor = False
         end
         object Label8: TLabel
           Left = 104
@@ -163,14 +164,16 @@ object frmAbout: TfrmAbout
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
+          ParentColor = False
           ParentFont = False
         end
         object lbLazarus: TLabel
           Left = 200
           Height = 17
-          Top = 78
+          Top = 76
           Width = 54
           Caption = 'lbLazarus'
+          ParentColor = False
         end
         object Label9: TLabel
           Left = 104
@@ -182,14 +185,16 @@ object frmAbout: TfrmAbout
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
+          ParentColor = False
           ParentFont = False
         end
         object lbOSInfo: TLabel
           Left = 200
           Height = 17
-          Top = 150
+          Top = 148
           Width = 48
           Caption = 'lbOSInfo'
+          ParentColor = False
         end
         object Label10: TLabel
           Left = 104
@@ -201,14 +206,16 @@ object frmAbout: TfrmAbout
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
+          ParentColor = False
           ParentFont = False
         end
         object lbWidgetSet: TLabel
-          Left = 200
+          Left = 201
           Height = 17
-          Top = 126
+          Top = 124
           Width = 67
           Caption = 'lbWidgetSet'
+          ParentColor = False
         end
         object Label11: TLabel
           Left = 104
@@ -220,14 +227,16 @@ object frmAbout: TfrmAbout
           Font.Height = -16
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
+          ParentColor = False
           ParentFont = False
         end
         object lbFPCVersion: TLabel
-          Left = 199
+          Left = 200
           Height = 17
-          Top = 102
+          Top = 100
           Width = 73
           Caption = 'lbFPCVersion'
+          ParentColor = False
         end
         object Label12: TLabel
           Left = 122
@@ -235,6 +244,7 @@ object frmAbout: TfrmAbout
           Top = 240
           Width = 58
           Caption = 'Developer'
+          ParentColor = False
         end
         object lbDeveloper: TLabel
           Left = 208
@@ -242,27 +252,28 @@ object frmAbout: TfrmAbout
           Top = 240
           Width = 68
           Caption = 'lbDeveloper'
+          ParentColor = False
         end
       end
       object btnClose: TButton
-        Left = 160
+        Left = 168
         Height = 32
-        Top = 424
+        Top = 432
         Width = 104
         Caption = 'Close'
-        TabOrder = 1
         OnClick = btnCloseClick
+        TabOrder = 1
       end
     end
     object TabSheet4: TTabSheet
       Caption = 'License'
-      ClientHeight = 462
-      ClientWidth = 432
+      ClientHeight = 472
+      ClientWidth = 467
       object Memo3: TMemo
         Left = 0
-        Height = 462
+        Height = 472
         Top = 0
-        Width = 432
+        Width = 467
         Align = alClient
         Lines.Strings = (
           'MIT License'
@@ -293,13 +304,13 @@ object frmAbout: TfrmAbout
     end
     object TabSheet2: TTabSheet
       Caption = 'Credits'
-      ClientHeight = 462
-      ClientWidth = 432
+      ClientHeight = 472
+      ClientWidth = 467
       object Memo2: TMemo
         Left = 0
-        Height = 462
+        Height = 472
         Top = 0
-        Width = 432
+        Width = 467
         Align = alClient
         Lines.Strings = (
           'Very Important Note:'
@@ -417,18 +428,24 @@ object frmAbout: TfrmAbout
     end
     object TabSheet3: TTabSheet
       Caption = 'Components'
-      ClientHeight = 462
-      ClientWidth = 432
+      ClientHeight = 472
+      ClientWidth = 467
       object Memo1: TMemo
         Left = 0
-        Height = 462
+        Height = 472
         Top = 0
-        Width = 432
+        Width = 467
         Align = alClient
         Lines.Strings = (
           'Components:'
           '--------------------'
           ''
+          '--RTTI Controls'
+          '--Abbrevia'
+          '--BRGA Controls'
+          '--SynEdit'
+          '--PythonForLazarus'
+          '--IndyLaz'
           '--CADSys4.2'
           '--BGRA Controls'
           '--GifAnim'

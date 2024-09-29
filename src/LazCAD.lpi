@@ -14,13 +14,13 @@
       </XPManifest>
       <Icon Value="0"/>
       <Resources Count="1">
-        <Resource_0 FileName="../x86_64-linux/gtk2/debug/LazCAD/data.zip" Type="RCDATA" ResourceName="DATA"/>
+        <Resource_0 FileName="resources/data.zip" Type="RCDATA" ResourceName="DATA"/>
       </Resources>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="81"/>
+      <BuildNr Value="86"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>

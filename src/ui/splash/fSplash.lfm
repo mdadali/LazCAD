@@ -1,23 +1,23 @@
 object frmSplash: TfrmSplash
-  Left = 404
+  Left = 335
   Height = 481
-  Top = 248
-  Width = 941
+  Top = 174
+  Width = 998
   BorderStyle = bsNone
   Caption = 'frmSplash'
   ClientHeight = 481
-  ClientWidth = 941
+  ClientWidth = 998
   Color = clBtnFace
   Font.Color = clHighlight
   Font.Height = -11
   Font.Name = 'Tahoma'
   OnCreate = FormCreate
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '2.2.6.0'
   object ProgressBar1: TProgressBar
     Left = 0
     Height = 17
     Top = 464
-    Width = 941
+    Width = 998
     Align = alBottom
     TabOrder = 0
   end
@@ -826,7 +826,7 @@ object frmSplash: TfrmSplash
     end
   end
   object GifAnim1: TGifAnim
-    Left = 624
+    Left = 656
     Height = 88
     Top = 16
     Width = 192
@@ -838,16 +838,16 @@ object frmSplash: TfrmSplash
     Left = 536
     Height = 344
     Top = 113
-    Width = 400
+    Width = 456
     ClientHeight = 342
-    ClientWidth = 398
+    ClientWidth = 454
     ParentBackground = False
     TabOrder = 2
     object lbVersion: TLabel
       Left = 104
-      Height = 23
+      Height = 19
       Top = 48
-      Width = 76
+      Width = 92
       Alignment = taCenter
       Caption = 'Version    '
       Font.Color = clWindowText
@@ -861,19 +861,19 @@ object frmSplash: TfrmSplash
       Left = 66
       Height = 17
       Top = 208
-      Width = 247
+      Width = 290
       Caption = 'Copyright (c)  2024, Lazarus/FPC Community'
       Font.Color = clWindowText
-      Font.Height = 12
+      Font.Height = -13
       Font.Name = 'Tahoma'
       ParentColor = False
       ParentFont = False
     end
     object Label2: TLabel
       Left = 152
-      Height = 18
+      Height = 17
       Top = 224
-      Width = 107
+      Width = 119
       Caption = 'All Right Reserved'
       Font.Color = clWindowText
       Font.Height = -13
@@ -883,9 +883,9 @@ object frmSplash: TfrmSplash
     end
     object Label3: TLabel
       Left = 126
-      Height = 18
+      Height = 17
       Top = 256
-      Width = 38
+      Width = 43
       Caption = 'EMail :'
       Font.Color = clWindowText
       Font.Height = -13
@@ -895,9 +895,9 @@ object frmSplash: TfrmSplash
     end
     object Label5: TLabel
       Left = 66
-      Height = 18
+      Height = 17
       Top = 288
-      Width = 55
+      Width = 60
       Caption = 'Based on'
       Font.Color = clWindowText
       Font.Height = -13
@@ -907,11 +907,11 @@ object frmSplash: TfrmSplash
     end
     object Label6: TLabel
       Cursor = crHandPoint
-      Left = 144
-      Height = 36
+      Left = 136
+      Height = 17
       Top = 288
-      Width = 242
-      Caption = 'CADSys4.2  Copyright (c) Piero Valagussa'#13#10'         Allright Reserved'
+      Width = 274
+      Caption = 'CADSys4.2  Copyright (c) Piero Valagussa.'
       Font.Height = -13
       Font.Name = 'Tahoma'
       ParentColor = False
@@ -921,9 +921,9 @@ object frmSplash: TfrmSplash
     end
     object Label4: TLabel
       Left = 152
-      Height = 28
+      Height = 24
       Top = 16
-      Width = 75
+      Width = 85
       Caption = 'LazCAD'
       Font.Color = clBlack
       Font.Height = -20
@@ -936,130 +936,141 @@ object frmSplash: TfrmSplash
       Left = 184
       Height = 17
       Top = 256
-      Width = 129
+      Width = 152
       Caption = 'mdadali@hackcad.com'
       Font.Color = clWindowText
-      Font.Height = 12
+      Font.Height = -13
       Font.Name = 'Tahoma'
       ParentColor = False
       ParentFont = False
     end
     object lbPgmVersion: TLabel
-      Left = 199
-      Height = 16
-      Top = 54
-      Width = 73
+      Left = 203
+      Height = 17
+      Top = 50
+      Width = 89
       Caption = 'lbPgmVersion'
-      Font.Height = -11
+      Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
     end
     object Label8: TLabel
       Left = 104
-      Height = 23
+      Height = 19
       Top = 72
-      Width = 63
+      Width = 70
       Caption = 'Lazarus'
       Font.Color = clWindowText
       Font.Height = -16
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
+      ParentColor = False
       ParentFont = False
     end
     object lbLazarus: TLabel
-      Left = 200
-      Height = 16
-      Top = 78
-      Width = 50
+      Left = 204
+      Height = 17
+      Top = 74
+      Width = 62
       Caption = 'lbLazarus'
-      Font.Height = -11
+      Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
     end
     object Label9: TLabel
       Left = 104
-      Height = 23
+      Height = 19
       Top = 144
-      Width = 68
+      Width = 78
       Caption = 'OS-Infos'
       Font.Color = clWindowText
       Font.Height = -16
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
+      ParentColor = False
       ParentFont = False
     end
     object lbOSInfo: TLabel
-      Left = 200
-      Height = 16
-      Top = 150
-      Width = 47
+      Left = 204
+      Height = 17
+      Top = 146
+      Width = 55
       Caption = 'lbOSInfo'
-      Font.Height = -11
+      Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
     end
     object Label10: TLabel
       Left = 104
-      Height = 23
+      Height = 19
       Top = 120
-      Width = 80
+      Width = 93
       Caption = 'Widgetset'
       Font.Color = clWindowText
       Font.Height = -16
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
+      ParentColor = False
       ParentFont = False
     end
     object lbWidgetSet: TLabel
-      Left = 200
-      Height = 16
-      Top = 126
-      Width = 63
+      Left = 204
+      Height = 17
+      Top = 122
+      Width = 79
       Caption = 'lbWidgetSet'
-      Font.Height = -11
+      Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
     end
     object Label11: TLabel
       Left = 104
-      Height = 23
+      Height = 19
       Top = 96
-      Width = 29
+      Width = 35
       Caption = 'FPC'
       Font.Color = clWindowText
       Font.Height = -16
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
+      ParentColor = False
       ParentFont = False
     end
     object lbFPCVersion: TLabel
-      Left = 199
-      Height = 16
-      Top = 102
-      Width = 69
+      Left = 203
+      Height = 17
+      Top = 98
+      Width = 84
       Caption = 'lbFPCVersion'
-      Font.Height = -11
+      Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
     end
     object Label12: TLabel
       Left = 122
-      Height = 16
+      Height = 17
       Top = 240
-      Width = 54
+      Width = 67
       Caption = 'Developer'
-      Font.Height = -11
+      Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
     end
     object lbDeveloper: TLabel
       Left = 208
-      Height = 16
+      Height = 17
       Top = 240
-      Width = 64
+      Width = 79
       Caption = 'lbDeveloper'
-      Font.Height = -11
+      Font.Height = -13
       Font.Name = 'Tahoma'
+      ParentColor = False
       ParentFont = False
     end
   end
