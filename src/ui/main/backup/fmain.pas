@@ -2607,7 +2607,7 @@ begin
   end;
 
   acSettingsUnLockTemplateLayer.Visible := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil;
-  hDrawing.CADViewport2D.ZoomWindow(Rect2D(-20, -20, 480, 210));
+  //hDrawing.CADViewport2D.ZoomWindow(Rect2D(-20, -20, 480, 210));
   hDrawing.FileName := TabSheet.Name;
 
   ComponentDrawing.Drawing := hDrawing;

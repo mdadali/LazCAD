@@ -12,7 +12,7 @@ object frmTTF2Vector: TfrmTTF2Vector
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '2.2.6.0'
   object Memo1: TMemo
     Left = 0
     Height = 81
@@ -24,9 +24,9 @@ object frmTTF2Vector: TfrmTTF2Vector
       '   &'
       'Lazarus'
     )
+    OnChange = Memo1Change
     ScrollBars = ssBoth
     TabOrder = 0
-    OnChange = Memo1Change
   end
   object grboxSettings: TGroupBox
     Left = 0
@@ -44,29 +44,29 @@ object frmTTF2Vector: TfrmTTF2Vector
       Width = 368
       Align = alLeft
       Caption = 'Font Propertys'
-      ClientHeight = 66
+      ClientHeight = 65
       ClientWidth = 366
       TabOrder = 0
       object cboxHinted: TCheckBox
         Left = 14
-        Height = 32
+        Height = 24
         Top = 0
-        Width = 76
+        Width = 71
         Caption = 'Hinted'
-        TabOrder = 0
         OnChange = ChangeHinted
+        TabOrder = 0
       end
       object Label2: TLabel
         Left = 19
-        Height = 19
+        Height = 20
         Top = 40
-        Width = 71
+        Width = 77
         Caption = 'CharHeight'
         ParentColor = False
       end
       object fspeCharHeight: TFloatSpinEdit
         Left = 104
-        Height = 31
+        Height = 32
         Top = 32
         Width = 88
         DecimalPlaces = 3
@@ -77,21 +77,21 @@ object frmTTF2Vector: TfrmTTF2Vector
       end
       object cboxBold: TCheckBox
         Left = 265
-        Height = 32
+        Height = 24
         Top = 0
-        Width = 62
+        Width = 56
         Caption = 'Bold'
-        TabOrder = 2
         OnChange = cboxBoldChange
+        TabOrder = 2
       end
       object cboxItalic: TCheckBox
         Left = 265
-        Height = 32
+        Height = 24
         Top = 32
-        Width = 63
+        Width = 59
         Caption = 'Italic'
-        TabOrder = 3
         OnChange = cboxItalicChange
+        TabOrder = 3
       end
     end
     object grboxCAD: TGroupBox
@@ -101,20 +101,20 @@ object frmTTF2Vector: TfrmTTF2Vector
       Width = 430
       Align = alClient
       Caption = 'CAD'
-      ClientHeight = 66
+      ClientHeight = 65
       ClientWidth = 428
       TabOrder = 1
       object Label1: TLabel
         Left = 8
-        Height = 19
+        Height = 20
         Top = 0
-        Width = 68
+        Width = 73
         Caption = 'LineHeight'
         ParentColor = False
       end
       object fspeLineHeight: TFloatSpinEdit
         Left = 96
-        Height = 31
+        Height = 32
         Top = 0
         Width = 112
         OnChange = fspeLineHeightChange
@@ -123,18 +123,18 @@ object frmTTF2Vector: TfrmTTF2Vector
       end
       object cboxShowControlpoints: TCheckBox
         Left = 8
-        Height = 32
+        Height = 24
         Top = 32
-        Width = 153
+        Width = 157
         Caption = 'Show Controlpoints'
-        TabOrder = 1
         OnChange = cboxShowControlpointsChange
+        TabOrder = 1
       end
       object cboxAutoDraw: TCheckBox
         Left = 256
-        Height = 32
+        Height = 24
         Top = 0
-        Width = 96
+        Width = 92
         Caption = 'AutoDraw'
         TabOrder = 2
       end
@@ -145,8 +145,8 @@ object frmTTF2Vector: TfrmTTF2Vector
         Width = 158
         AutoSize = False
         Caption = 'Show Directions'
-        TabOrder = 3
         OnChange = cboxShowDirectionsChange
+        TabOrder = 3
       end
     end
   end
@@ -157,12 +157,12 @@ object frmTTF2Vector: TfrmTTF2Vector
     Width = 800
     Align = alTop
     Caption = 'Font Path'
-    ClientHeight = 122
+    ClientHeight = 121
     ClientWidth = 798
     TabOrder = 1
     object ShellTreeView1: TShellTreeView
       Left = 0
-      Height = 122
+      Height = 121
       Top = 0
       Width = 288
       Align = alLeft
@@ -173,7 +173,7 @@ object frmTTF2Vector: TfrmTTF2Vector
     end
     object ShellListView1: TShellListView
       Left = 288
-      Height = 122
+      Height = 121
       Top = 0
       Width = 510
       Align = alClient
