@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="/home/maurog/Programme/Lazarus/2.2.6/fpc/bin/x86_64-linux/fpc.sh" Date="1728836308"/>
-  <Params Value=" -MDelphi -Scghi -Cg -O1 -gw2 -godwarfsets -gl -l -vewnhibq -Fu/home/maurog/Programme/LazCAD_git/LazCAD/src/components/CADSys42/Sources -Fu/home/maurog/Programme/Lazarus/2.2.6/lazarus/packager/units/x86_64-linux -Fu/home/maurog/Programme/Lazarus/2.2.6/lazarus/components/lazutils/lib/x86_64-linux -Fu/home/maurog/Programme/Lazarus/2.2.6/lazarus/components/freetype/lib/x86_64-linux -Fu/home/maurog/Programme/Lazarus/2.2.6/lazarus/lcl/units/x86_64-linux -Fu/home/maurog/Programme/Lazarus/2.2.6/lazarus/lcl/units/x86_64-linux/qt5 -Fu/home/maurog/Programme/LazCAD_git/LazCAD/src/components/CADSys42/Packages/Lazarus/ -FU/home/maurog/Programme/LazCAD_git/LazCAD/src/components/CADSys42/Packages/Lazarus/lib/x86_64-linux/ -dLCL -dLCLqt5 cadsys.pas"/>
-</CONFIG>
