@@ -502,7 +502,7 @@ begin
   OSVersion := GetEnvironmentVariable('OSTYPE'); // Alternativ mit `uname -r` die Mac-Version auslesen
   {$ENDIF}
 
-  // 32-Bit oder 64-Bit erkennen
+  // 32-Bit or 64-Bit
   {$IFDEF CPU32}
   OSType := '32-bit';
   {$ENDIF}
@@ -510,9 +510,12 @@ begin
   OSType := '64-bit';
   {$ENDIF}
 
-  // Rückgabewert mit OS-Name, Version und Typ
-  Result := Format('OS: %s' + sLineBreak +
-                   'Version: %s' + sLineBreak +
+  //Result := Format('OS: %s' + sLineBreak +
+  //                 '%s' + sLineBreak +
+  //                 'Architecture: %s', [OSName, OSVersion, OSType]);
+
+  Result := Format('%s' + sLineBreak +
+                   '%s' + sLineBreak +
                    'Architecture: %s', [OSName, OSVersion, OSType]);
 end;
 

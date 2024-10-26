@@ -11,16 +11,12 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcompclosedcurve2d;
 
 type
 
-TCADSysFrame2D = class(TCADSysBaseComponent2D) //class(tpersistent)
-
+TCADSysFrame2D = class(TCADSysClosedCurve2D)
   private
-    fFrame2D: TFrame2D;
-    function   GetFrame2D: TFrame2D;
-    procedure  SetFrame2D(AFrame2D: TFrame2D);
     function   GetStartCorner: TFrameStartCorner;
     procedure  SetStartCorner(AValue: TFrameStartCorner);
     function   GetChamfered: boolean;
@@ -34,48 +30,42 @@ TCADSysFrame2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     function  GetHeight: TrealType;
     procedure SetHeight(AValue: TrealType);
 
+    function  GetGraphicObject: TGraphicObject; override;
+    procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
   public
+    fFrame2D:   TFrame2D;
     constructor Create;
-    property Frame2D: TFrame2D read GetFrame2D write SetFrame2D;
+    property    GraphicObject;
   published
-    property Direction;
     property StartCorner: TFrameStartCorner read  GetStartCorner write SetStartCorner;
     property Chamfered: boolean read GetChamfered write SetChamfered;
-    property Chamfer: TrealType read GetChamfer write SetChamfer default 10.0;
-    property Width: TrealType read GetWidth write SetWidth;
-    property Height: TrealType read GetHeight write SetHeight;
-
-    //property BrushColor;
-    //property BrushStyle;
-    //property Filled;
+    property Chamfer: TRealType read GetChamfer write SetChamfer;
+    property Width: TRealType read GetWidth write SetWidth;
+    property Height: TRealType read GetHeight write SetHeight;
 end;
 
 
 implementation
 
+function TCADSysFrame2D.GetGraphicObject: TGraphicObject;
+begin
+  result := fFrame2D;
+end;
+
+procedure TCADSysFrame2D.SetGraphicObject(AGraphicObject: TGraphicObject);
+begin
+  fFrame2D := TFrame2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  self.fClosedCurve2D := AGraphicObject;
+  fGraphicObject := AGraphicObject;
+end;
+
+
 constructor TCADSysFrame2D.create;
 begin
   inherited create;
-  self.fPrimitive2D := fFrame2D;
-end;
-
-{function   TCADSysFrame2D.GetClassName: string;
-begin
-  result := fPrimitive2D.ClassName;
-end;
-}
-
-function TCADSysFrame2D.GetFrame2D: TFrame2D;
-begin
-  //result := fFrame2D;
-  result := TFrame2D(fPrimitive2D);
-end;
-
-procedure TCADSysFrame2D.SetFrame2D(AFrame2D: TFrame2D);
-begin
-  fFrame2D := AFrame2D;
-  self.fPrimitive2D := fFrame2D;
-  //SetLayerIDX(self.LayerIndex);
 end;
 
 function   TCADSysFrame2D.GetStartCorner: TFrameStartCorner;

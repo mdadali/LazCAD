@@ -11,20 +11,18 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcomponentSimplePrim2D;
 
 type
 
-TCADSysPLine2D = class(TCADSysBaseComponent2D) //class(tpersistent)
-
+TCADSysPLine2D = class(TCADSysSimplePrimitive2D) //class(tpersistent)
   private
-    fPolyLine2D: TPolyLine2D;
-    function   GetPolyLine2D: TPolyLine2D;
-    procedure  SetPolyLine2D(APolyLine2D: TPolyLine2D);
+    function  GetGraphicObject: TGraphicObject; override;
+    procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
   public
+    fPolyLine2D: TPolyLine2D;
     constructor Create;
-    property PolyLine2D: TPolyLine2D read GetPolyLine2D write SetPolyLine2D;
-     property Direction;
+    property GraphicObject;
   published
 end;
 
@@ -33,22 +31,21 @@ implementation
 constructor TCADSysPLine2D.create;
 begin
   inherited create;
-  self.fPrimitive2D := fPolyLine2D;
 end;
 
-function TCADSysPLine2D.GetPolyLine2D: TPolyLine2D;
+function TCADSysPLine2D.GetGraphicObject: TGraphicObject;
 begin
   result := fPolyLine2D;
-  //result := TCircle2D_CPR(fPrimitive2D);
 end;
 
-procedure TCADSysPLine2D.SetPolyLine2D(APolyLine2D: TPolyLine2D);
+procedure TCADSysPLine2D.SetGraphicObject(AGraphicObject: TGraphicObject);
 begin
-  fPolyLine2D := APolyLine2D;
-  self.fPrimitive2D := fPolyLine2D;
-  //SetLayerIDX(self.LayerIndex);
+  fPolyLine2D := TPolyLine2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
 end;
-
 
 end.
 

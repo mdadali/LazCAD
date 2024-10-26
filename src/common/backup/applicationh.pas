@@ -47,12 +47,9 @@ var
   SimulationIsStarted: boolean = false;
   CancelCloseAction:   boolean = false;
 
-  //GlobalOptions
   fUseTemplates: string;
   fStdTemplate: string;
 
-
-  //Userinterface
   fLanguage: string;
 
   ImportFileName: string;
@@ -69,7 +66,6 @@ function GetOnlyFileName(AFileName: string): string; //Filename without extentio
 function GetFileExtention(AFileName: string): string;
 
 function GetAppDrawingsPath: string;
-function GetAppDrawingsLiteCADPath: string;
 function GetAppTempPath: string;
 function GetAppDBPath: string;
 function GetAppDBName: string;
@@ -135,10 +131,10 @@ begin
 
   try
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
-    fStdTemplate         := fIniFile.ReadString('Application', 'DefaultTemplate', GetAppTemplatesPath + 'cnc.cs4');
-    fGifAnimFile         := fIniFile.ReadString('UserInterface', 'GifAnimFile',   GetAppImagesPath + 'fpc_running_logo.gif');
-    fDefaultBlockLibrary := fIniFile.ReadString('Application', 'DefaultBlockLibrary',  GetAppBlockLibrarysPath + 'cnc_blocks.blk');
-    fCurrentFontFile     := fIniFile.ReadString('Application', 'CurrentFontFile', GetAppFontsFNTPath + 'verdana.fnt');
+    fStdTemplate         := fIniFile.ReadString('Application', 'DefaultTemplate',     GetAppTemplatesPath + 'cnc.cs4');
+    fGifAnimFile         := fIniFile.ReadString('UserInterface', 'GifAnimFile',       GetAppImagesPath + 'fpc_running_logo.gif');
+    fDefaultBlockLibrary := fIniFile.ReadString('Application', 'DefaultBlockLibrary', GetAppBlockLibrarysPath + 'cnc_blocks.blk');
+    fCurrentFontFile     := fIniFile.ReadString('Application', 'CurrentFontFile',     GetAppFontsFNTPath + 'verdana.fnt');
 
     fPythonDLLPath       := fIniFile.ReadString('Python', 'DllPath', '');
     fPythonDLLName       := fIniFile.ReadString('Python', 'DllName', '');
@@ -302,8 +298,6 @@ begin
 end;
 
 
-//End-LiteCAD
-
 function GetAppExeName: string;
 begin
   result := ExtractFileName(Application.ExeName);
@@ -351,11 +345,6 @@ begin
   {$ELSE}
     result := GetAppDataPath + 'drawings/';
   {$ENDIF}
-end;
-
-function GetAppDrawingsLiteCADPath: string;
-begin
-  result := GetAppDrawingsPath + 'litecad\';
 end;
 
 function GetAppTempPath: string;

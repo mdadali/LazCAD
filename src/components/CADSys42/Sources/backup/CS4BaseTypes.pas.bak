@@ -14,6 +14,8 @@ uses Classes, Graphics, Types, LCLIntf;
 
 type
 
+  TPenSource   = (psByLayer, psByBlock, psCustom);
+  TBrushSource = (bsByLayer, bsByBlock, bsCustom);
   TFrameStartCorner = (fsLeftTop, fsLeftBottom, fsRightBottom, fsRightTop);
 
   {: This type specifies how to draw an arc segment:
@@ -38,7 +40,9 @@ type
    <B=Note>: I don't think that this type will change due to storage
    and speed efficency.
 }
-  TRealType = double;
+
+  TRealType = Single;  //original
+
 {: This type is the result information of a clipping method. The
    clipping functions are used internally by the library and you
    don't need to use them directly.
@@ -242,6 +246,10 @@ type
   end;
 
 const
+  POINT_CODE_START_POINT  = -1;
+  POINT_CODE_END_POINT    = -2;
+  POINT_CODE_MIDDLE_POINT = -3;
+
   TWOPI = 2 * Pi;
   SQRT2 = 1.414213562373;
 

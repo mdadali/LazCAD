@@ -11,11 +11,11 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcompclosedcurve2d;
 
 type
 
-TCADSysEllipse2D = class(TCADSysBaseComponent2D) //class(tpersistent)
+TCADSysEllipse2D = class(TCADSysClosedCurve2D) //class(tpersistent)
   private
     fEllipse2D: TEllipse2D;
     function   GetEllipse2D: TEllipse2D;
@@ -33,7 +33,6 @@ TCADSysEllipse2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     constructor Create;
     property Ellipse2D: TEllipse2D read GetEllipse2D write SetEllipse2D;
   published
-    property Direction;
     property EdgeCount: Word  read GetCurvePrecision write SetCurvePrecision;
 
     property Width: TRealType read GetWidth write SetWidth;
@@ -72,6 +71,12 @@ end;
 
 procedure  TCADSysEllipse2D.SetCurvePrecision(APrecision: Word);
 begin
+  if APrecision = fEllipse2D.CurvePrecision then exit;
+  if (APrecision < 3) then
+  begin
+    MessageDlg('Warning', 'The minimum allowed number of edges is 3.', mtWarning, [mbOK], 0);
+    APrecision := 3;
+  end;
   fEllipse2D.CurvePrecision := APrecision;
   fEllipse2D.UpdateExtension(self);
 end;

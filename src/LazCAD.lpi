@@ -20,7 +20,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="86"/>
+      <BuildNr Value="112"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -41,6 +41,12 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="PenBrushStyles"/>
+      </Item>
+      <Item>
+        <PackageName Value="LazOpenGLContext"/>
+      </Item>
       <Item>
         <PackageName Value="Abbrevia"/>
       </Item>
@@ -100,50 +106,6 @@
         <UnitName Value="fDrawing"/>
       </Unit>
       <Unit>
-        <Filename Value="classes\componentshapes\fBaseComponent.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\figuresascomponents.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="FiguresAsComponents"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fComponentArc.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentrect.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="fComponentRect"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fComponentFrame.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentbspline.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="fComponentBSpline"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentpolygon.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="fComponentPolygon"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fComponentPLine.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fComponentLine.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="ui\splash\fSplash.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmSplash"/>
@@ -164,14 +126,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fLibraryBlocks"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentcirculararc.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentcircle.pas"/>
-        <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="common\applicationh.pas"/>
@@ -206,28 +160,11 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="classes\componentshapes\fcomponentgraphicobj.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="fComponentGraphicObj"/>
-      </Unit>
-      <Unit>
         <Filename Value="buildin\import\cImportEssi.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\camh.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentcontainer.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="CAM\contours.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fobjectposition.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -242,6 +179,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fTTF2Vector"/>
       </Unit>
+      <Unit>
+        <Filename Value="classes\componentshapes\figuresascomponents.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FiguresAsComponents"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -252,7 +194,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="ui\main;ui\drawing;classes\componentshapes;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector"/>
+      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes"/>
       <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
     </SearchPaths>
     <CodeGeneration>
@@ -286,6 +228,15 @@
       </Item>
       <Item>
         <Name Value="EFOpenError"/>
+      </Item>
+      <Item>
+        <Name Value="ECADSourceBlockIsReferenced"/>
+      </Item>
+      <Item>
+        <Name Value="ECADSysException"/>
+      </Item>
+      <Item>
+        <Name Value="ECADOutOfBound"/>
       </Item>
     </Exceptions>
   </Debugging>

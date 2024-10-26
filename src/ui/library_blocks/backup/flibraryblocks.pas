@@ -42,6 +42,7 @@ type
     fDrawing: TDrawing;
     procedure RefreshListBox;
     procedure PreviewBlock(AIndex: integer);
+    function  SaveBlockLibraryToFile(AFileName: string): boolean;
   public
     constructor create(AOwner: TComponent; ADrawing: TDrawing) ;
   end;
@@ -55,13 +56,14 @@ uses fMain;
 
 {$R *.lfm}
 
-constructor TfrmLibraryBlocks.create(AOwner: TComponent;  ADrawing: TDrawing);
+constructor TfrmLibraryBlocks.create(AOwner: TComponent; ADrawing: TDrawing);
 var TmpStm: TFileStream;
 begin
   inherited create(AOwner);
   fDrawing := ADrawing;
+  CADCmp2D1.Layers.Assign(fDrawing.CADCmp2D.Layers);
+  CADCmp2D1.CurrentLayer := fDrawing.CADCmp2D.CurrentLayer;
   edtCurrentBlockLibrary.Text := ExtractFileName(applicationh.fDefaultBlockLibrary);
-
   RefreshListBox;
   if lboxBlocks.Items.Count > 0 then
     PreviewBlock(lboxBlocks.ItemIndex);
@@ -141,20 +143,26 @@ begin
     exit;
   idx    :=  lboxBlocks.ItemIndex;
   TmpStr :=  lboxBlocks.Items[idx];
+
   SrcBlk :=  fDrawing.CADCmp2D.FindSourceBlock(StringToBlockName(TmpStr));
-  try
-    if SrcBlk <> nil then
+  if SrcBlk <> nil then
+    if SrcBlk.NumOfReferences > 0 then
     begin
-      fDrawing.CADCmp2D.DeleteSourceBlock(SrcBlk.Name);
-      lboxBlocks.Items.Delete(lboxBlocks.ItemIndex);
+      ShowMessage('Source Block has References! ');
+      exit;
     end;
-  finally
+
+  try
+    fDrawing.CADCmp2D.DeleteSourceBlock(SrcBlk.Name);
     fDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
+    lboxBlocks.Items.Delete(lboxBlocks.ItemIndex);
+  finally
     RefreshListBox;
     if lboxBlocks.Items.Count > 0 then
       PreviewBlock(lboxBlocks.ItemIndex)
     else begin
       CADCmp2D1.DeleteAllObjects;
+      CADCmp2D1.DeleteLibrarySourceBlocks;
       CADCmp2D1.Viewports[0].ZoomToExtension;
     end;
   end;
@@ -210,9 +218,23 @@ begin
   hSourceBlock := fDrawing.CADCmp2D.FindSourceBlock(lboxBlocks.Items[AIndex]);
   TmpSourceBlk := TSourceBlock2D.Create(-1, hSourceBlock.Name, [nil]);
   TmpSourceBlk.Assign(hSourceBlock);
+
   CADCmp2D1.AddObject(-1, TmpSourceBlk);
 
   CADCmp2D1.Viewports[0].ZoomToExtension;
+end;
+
+function  TfrmLibraryBlocks.SaveBlockLibraryToFile(AFileName: string): boolean;
+var TmpStr: TFileStream;
+begin
+  result := false;
+  TmpStr := TFileStream.Create(AFileName, fmCreate);
+  try
+    CADCmp2D1.SaveLibrary(TmpStr);
+    result := true;
+  finally
+    TmpStr.Free;
+  end;
 end;
 
 

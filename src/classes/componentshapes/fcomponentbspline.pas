@@ -11,46 +11,41 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcomponentcurve2d;
 
 type
 
-TCADSysBSpline2D = class(TCADSysBaseComponent2D) //class(tpersistent)
-
+TCADSysBSpline2D = class(TCADSysCurve2D) //class(tpersistent)
   private
-    fBSpline2D: TBSpline2D;
-    function   GetBSpline2D: TBSpline2D;
-    procedure  SetBSpline2D(ABSpline2D: TBSpline2D);
+    function  GetGraphicObject: TGraphicObject; override;
+    procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
   public
+    fBSpline2D: TBSpline2D;
     constructor Create;
-    property BSpline2D: TBSpline2D read GetBSpline2D write SetBSpline2D;
+    property    GraphicObject;
   published
-    //property BrushColor;
-    //property BrushStyle;
-    //property Filled;
 end;
-
 
 implementation
 
 constructor TCADSysBSpline2D.create;
 begin
   inherited create;
-  self.fPrimitive2D := fBSpline2D;
 end;
 
-
-function TCADSysBSpline2D.GetBSpline2D: TBSpline2D;
+function TCADSysBSpline2D.GetGraphicObject: TGraphicObject;
 begin
-  result := TBSpline2D(fPrimitive2D);
+  result := fBSpline2D;
 end;
 
-procedure TCADSysBSpline2D.SetBSpline2D(ABSpline2D: TBSpline2D);
+procedure TCADSysBSpline2D.SetGraphicObject(AGraphicObject: TGraphicObject);
 begin
-  fBSpline2D := ABSpline2D;
-  self.fPrimitive2D := fBSpline2D;
+  fBSpline2D := TBSpline2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
 end;
-
 
 end.
 

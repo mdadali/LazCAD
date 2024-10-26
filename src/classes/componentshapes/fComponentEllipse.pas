@@ -11,15 +11,12 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcompclosedcurve2d;
 
 type
 
-TCADSysEllipse2D = class(TCADSysBaseComponent2D) //class(tpersistent)
+TCADSysEllipse2D = class(TCADSysClosedCurve2D) //class(tpersistent)
   private
-    fEllipse2D: TEllipse2D;
-    function   GetEllipse2D: TEllipse2D;
-    procedure  SetEllipse2D(AEllipse2D: TEllipse2D);
     function   GetCurvePrecision: Word;
     procedure  SetCurvePrecision(APrecision: Word);
 
@@ -29,19 +26,17 @@ TCADSysEllipse2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     function  GetHeight: TrealType;
     procedure SetHeight(AValue: TrealType);
 
+    function  GetGraphicObject: TGraphicObject; override;
+    procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
   public
+    fEllipse2D: TEllipse2D;
     constructor Create;
-    property Ellipse2D: TEllipse2D read GetEllipse2D write SetEllipse2D;
+    property    GraphicObject;
   published
-    property Direction;
     property EdgeCount: Word  read GetCurvePrecision write SetCurvePrecision;
 
     property Width: TRealType read GetWidth write SetWidth;
     property Height: TRealType read GetHeight write SetHeight;
-
-    //property BrushColor;
-    //property BrushStyle;
-    //property Filled;
 end;
 
 implementation
@@ -49,20 +44,20 @@ implementation
 constructor TCADSysEllipse2D.create;
 begin
   inherited create;
-  self.fPrimitive2D := fEllipse2D;
 end;
 
-function TCADSysEllipse2D.GetEllipse2D: TEllipse2D;
+function TCADSysEllipse2D.GetGraphicObject: TGraphicObject;
 begin
   result := fEllipse2D;
-  //result := TCircle2D_CPR(fPrimitive2D);
 end;
 
-procedure TCADSysEllipse2D.SetEllipse2D(AEllipse2D: TEllipse2D);
+procedure TCADSysEllipse2D.SetGraphicObject(AGraphicObject: TGraphicObject);
 begin
-  fEllipse2D := AEllipse2D;
-  self.fPrimitive2D := fEllipse2D;
-  //SetLayerIDX(self.LayerIndex);
+  fEllipse2D := TEllipse2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
 end;
 
 function   TCADSysEllipse2D.GetCurvePrecision: Word;

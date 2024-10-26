@@ -19,17 +19,11 @@ uses
 type
 
 
-tOptions = (Opt1, Opt2, Opt3);
-tOptionsFlags = set of tOptions;
+
 
 TCADSysBaseComponent2D = class(TPersistent)
-//TCADSysBaseComponent2D = class(TComponent)
   private
     fObjectPosition2D: TObjectPosition2D;
-
-    Coordinates: tOptionsFlags;
-    fKerfType: TKerfType;
-
     //function  GetPointsCount: word;
 
     function  GetClassName: string;
@@ -39,10 +33,6 @@ TCADSysBaseComponent2D = class(TPersistent)
     procedure SetVisible(AVisible: boolean);
     function  GetEnabled: boolean;
     procedure SetEnabled(AEnabled: boolean);
-    function  GetShowDirection: boolean;
-    procedure SetShowDirection(AValue: boolean);
-    function  GetDirection: TArcDirection;
-    procedure SetDirection(ADirection: TArcDirection);
 
     function  GetTag: longint;
     procedure SetTag(ATag: longint);
@@ -97,6 +87,10 @@ TCADSysBaseComponent2D = class(TPersistent)
     procedure SetLayerID(ALayerID: TLayerID);
     function  GetLayerID: TLayerID;
      }
+
+    function  GetPen: TPen;
+    procedure SetPen(APen: TPen);
+
     procedure SetLayerName(ALayerName: TLayerName);
     function  GetLayerName: TLayerName;
 
@@ -110,10 +104,7 @@ TCADSysBaseComponent2D = class(TPersistent)
     function  GetObjectPosition2D: TObjectPosition2D;
     procedure SetObjectPosition2D;
   protected
-     fPrimitive2D: TPrimitive2D;
-
-     property   Direction: TArcDirection read GetDirection write SetDirection;
-
+     fPrimitive2D: TSimplePrimitive2D;
      //property BrushColor: TColor         read  GetBrushColor     write SetBrushColor;
      //property BrushStyle: TBrushStyle    read  GetBrushStyle     write SetBrushStyle;
      //property Filled:     boolean        read  GetFilled         write SetFilled;
@@ -121,7 +112,7 @@ TCADSysBaseComponent2D = class(TPersistent)
     constructor Create;
     destructor  Destroy;
     procedure   ObjectPositionChanged(Sender: TObject);
-    property    Primitive2D: TPrimitive2D read  fPrimitive2D;
+    property    Primitive2D: TSimplePrimitive2D read  fPrimitive2D;
 
   published
     property  ID: longint                read GetID;
@@ -144,8 +135,6 @@ TCADSysBaseComponent2D = class(TPersistent)
     property  EndPointX:     TRealType        read GetEndPointX     write SetEndPointX;
     property  EndPointtY:    TRealType        read GetEndPointY     write SetEndPointY;
 
-    property  ShowDirection: boolean read GetShowDirection  write SetShowDirection;
-
     //property  PenWidth: word                   read  GetPenWidth    write SetPenWidth;
     //property  PenStyle: TPenStyle              read  GetPenStyle    write SetPenStyle;
     //property  PenColor: TColor                 read  GetPenColor    write SetPenColor;
@@ -157,8 +146,10 @@ TCADSysBaseComponent2D = class(TPersistent)
 
     property ObjectLength: TRealType read GetOLength;
     property ObjectArea: TRealType read GetArea;
-    property Angle: TRealType  read GetAngle write SetAngle;
-    property  ObjectPosition2D: TObjectPosition2D read GetObjectPosition2D; // write SetObjectPosition2D;
+    //property Angle: TRealType  read GetAngle write SetAngle;
+    //property  ObjectPosition2D: TObjectPosition2D read GetObjectPosition2D; // write SetObjectPosition2D;
+
+    property Pen: TPen read GetPen write SetPen;
 end;
 
 
@@ -201,6 +192,16 @@ procedure TCADSysBaseComponent2D.SetObjectPosition2D;
 begin
 end;
 
+function  TCADSysBaseComponent2D.GetPen: TPen;
+begin
+  result := fPrimitive2D.Pen;
+end;
+
+procedure TCADSysBaseComponent2D.SetPen(APen: TPen);
+begin
+  Primitive2D.Pen := APen;
+end;
+
 function TCADSysBaseComponent2D.GetID: longint;
 begin
   if fPrimitive2D <> nil then
@@ -235,27 +236,6 @@ procedure TCADSysBaseComponent2D.SetEnabled(AEnabled: boolean);
 begin
   if fPrimitive2D <> nil then
     fPrimitive2D.Enabled := AEnabled;
-end;
-
-function  TCADSysBaseComponent2D.GetShowDirection: boolean;
-begin
-  result := fPrimitive2D.ShowDirection;
-end;
-
-procedure TCADSysBaseComponent2D.SetShowDirection(AValue: boolean);
-begin
-  if fPrimitive2D <> nil then
-    fPrimitive2D.ShowDirection := AValue;
-end;
-
-function  TCADSysBaseComponent2D.GetDirection: TArcDirection;
-begin
-  result := fPrimitive2D.Direction;
-end;
-
-procedure TCADSysBaseComponent2D.SetDirection(ADirection: TArcDirection);
-begin
-  fPrimitive2D.Direction := ADirection;
 end;
 
 function  TCADSysBaseComponent2D.GetTag: longint;

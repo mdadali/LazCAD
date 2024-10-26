@@ -3249,7 +3249,7 @@ begin
          end;
         TmpBlk := BlockObjects(StringToBlockName(TmpStr1), TmpIter);
         if Assigned(TmpBlk) then
-         TmpBlk.IsLibraryBlock := True;
+          TmpBlk.IsLibraryBlock := True;
       finally
         TmpIter.Free;
       end;
@@ -3340,10 +3340,14 @@ begin
 end;
 
 procedure ScaleObject(AObject2D: TObject2D; AFactorX, AFactorY: TRealType);
-var TmpTransf2D: TTransf2D;
+var TmpTransf2D: TTransf2D;  TmpBottom: TRealType;    TmpLeft: TRealType;
 begin
+  TmpBottom := AObject2D.Bottom;
+  TmpLeft := AObject2D.Left;
   TmpTransf2D := Scale2D(AFactorX, AFactorY);
   AObject2D.Transform(TmpTransf2D);
+  AObject2D.Bottom := TmpBottom;
+  AObject2D.Left   :=  TmpLeft;
 end;
 
 constructor TCAD2DScaleObjects.Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass);
@@ -3403,7 +3407,7 @@ begin
     }
     TmpLine2D.Transform(AOutline2D.ModelTransform);
     TCADCmp2D(AOutline2D.OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
-    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
+    TmpLine2D.fReserveInt1:= AOutline2D.fReserveInt1;
     TmpLine2D.LayerName  := AOutline2D.LayerName;
   end;
   if  (AOutline2D is TPolygon2D) then
@@ -3422,7 +3426,7 @@ begin
     }
     TmpLine2D.Transform(AOutline2D.ModelTransform);
     TCADCmp2D(AOutline2D.OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
-    TmpLine2D.ReserveInt1:= AOutline2D.ReserveInt1;
+    TmpLine2D.fReserveInt1:= AOutline2D.fReserveInt1;
     TmpLine2D.LayerName  := AOutline2D.LayerName;
 
   end;
@@ -3475,14 +3479,24 @@ end;
 
 procedure ExplodeContainer(AContainer2D: TContainer2D; ADestCAD: TCADCmp2D);
 var TmpIter: TExclusiveGraphicObjIterator;
-    TmpClass: TGraphicObjectClass; TmpObj: TGraphicObject;
+    TmpClass: TGraphicObjectClass;
+    TmpObj: TGraphicObject;
 begin
   TmpIter := AContainer2D.Objects.GetExclusiveIterator;
   TmpObj  := TmpIter.First;
   try
     repeat
+      if (TmpIter.Current is TCircle2D) then
+      begin
+        TmpObj := TCircle2D.Create(TmpIter.Current.ID, Point2D(0, 0), 0);
+        TCircle2D(TmpObj).Assign(TCircle2D(TmpIter.Current));
+        ADestCAD.AddObject(-1, TCircle2D(TmpObj));
+        exit;
+      end;
       TmpClass := TGraphicObjectClass(TmpIter.Current.ClassType);
       TmpObj := TmpClass.Create(TmpIter.Current.ID);
+      if (TmpObj is TCircle2D) then
+
       TmpObj.Assign(TmpIter.Current);
       if (TmpObj is TPrimitive2D) then
       begin
@@ -3530,7 +3544,7 @@ var TmpPolygon2D: TPolygon2D;
 begin
   TmpPolygon2D := TPolygon2D.Create(-1, []);
   TmpPolygon2D.Assign(AObject2D);
-  TmpPolygon2D.ProfilePoints.Copy(TFrame2D(AObject2D).ProfilePoints, 0, TFrame2D(AObject2D).ProfilePoints.Count - 1);
+  TmpPolygon2D.ProfilePoints.Copy(TFrame2D(AObject2D).ProfilePoints, 0, TFrame2D(AObject2D).ProfilePoints.Count - 2);
   ADestCAD.AddObject(-1, TmpPolygon2D);
 end;
 
@@ -3551,12 +3565,12 @@ var TmpCircularArc2D: TCircularArc2D;  TmpLine2D: TLine2D;
 begin
   with TSegment2D(AObject2D) do
    begin
-     TmpCircularArc2D := TCircularArc2D.Create(-1, CenterPoint, Radius, StartAngle, EndAngle);
+     TmpCircularArc2D := TCircularArc2D.Create(-1, MiddlePoint, Radius, StartAngle, EndAngle);
      TmpCircularArc2D.Direction := Direction;
      ADestCAD.AddObject(-1, TmpCircularArc2D);
-     TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.ProfilePoints[TmpCircularArc2D.ProfilePoints.Count -1], TmpCircularArc2D.CenterPoint);
+     TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.ProfilePoints[TmpCircularArc2D.ProfilePoints.Count -1], TmpCircularArc2D.MiddlePoint);
      ADestCAD.AddObject(-1, TmpLine2D);
-     TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.CenterPoint, TmpCircularArc2D.ProfilePoints[0]);
+     TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.MiddlePoint, TmpCircularArc2D.ProfilePoints[0]);
      ADestCAD.AddObject(-1, TmpLine2D);
    end;
 end;
@@ -3566,7 +3580,7 @@ var TmpCircularArc2D: TCircularArc2D;  TmpLine2D: TLine2D;
 begin
   with TSector2D(AObject2D) do
    begin
-     TmpCircularArc2D := TCircularArc2D.Create(-1, CenterPoint, Radius, StartAngle, EndAngle);
+     TmpCircularArc2D := TCircularArc2D.Create(-1, MiddlePoint, Radius, StartAngle, EndAngle);
      TmpCircularArc2D.Direction := Direction;
      ADestCAD.AddObject(-1, TmpCircularArc2D);
      TmpLine2D := TLine2D.Create(-1, TmpCircularArc2D.ProfilePoints[TmpCircularArc2D.ProfilePoints.Count -1], TmpCircularArc2D.ProfilePoints[0]);
@@ -3609,15 +3623,13 @@ begin
         TmpIter.First;
         while TmpIter.Current <> nil do
          begin
-           if  (not (TmpIter.Current is TLine2D)) and
-               (not (TmpIter.Current is TJustifiedVectText2D))  and
-               (not (TmpIter.Current is TText2D)) then
+           if not (TmpIter.Current is TLine2D) then
            begin
-             Explode(TObject2D(TmpIter.Current), TCADPrg2D(CADPrg).Viewport2D.CADCmp2D);
-             TObject2D(TmpIter.Current).OwnerCAD.DeleteObject(TObject2D(TmpIter.Current).ID);
+             TPrimitive2D(TmpIter.Current).Explode;
+             TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.DeleteObject(TmpIter.Current.ID);
            end;
-             TmpIter.Next;
-           end;
+           TmpIter.Next;
+         end;
       finally
         TmpIter.Free;
       end;
@@ -3631,14 +3643,14 @@ end;
 procedure ReverseOutLine2D(AOutLine2D: TOutLine2D);
 var i: integer; TmpPointsSet2D:  TPointsSet2D; TmpPoint2D: TPoint2D;
 begin
-  if AOutLine2D is TBSpline2D then
+  {if AOutLine2D is TBSpline2D then
   begin
-    if AOutLine2D.Direction = adClockwise then
-      AOutLine2D.Direction := adCounterClockwise
+    if TBSpline2D(AOutLine2D).Direction = adClockwise then
+      TBSpline2D(AOutLine2D).Direction := adCounterClockwise
     else
-      AOutLine2D.Direction := adClockwise;
+      TBSpline2D(AOutLine2D).Direction := adClockwise;
     exit;
-  end;
+  end; }
 
   TmpPointsSet2D := TPointsSet2D.Create(AOutLine2D.ProfilePoints.Count);
   try
@@ -3718,7 +3730,10 @@ end;
 
 procedure Reverse(APrimitive2D: TPrimitive2D);
 begin
-  if (APrimitive2D is TLine2D) then
+  if (APrimitive2D is TBSpline2D) then
+    TBSpline2D(APrimitive2D).Reverse
+
+  else if (APrimitive2D is TLine2D) then
     ReverseLine2D(TLine2D(APrimitive2D))
   else if  (APrimitive2D is TEllipticalArc2D) then
     ReverseEllipticalArc2D(TEllipticalArc2D(APrimitive2D))
@@ -3849,7 +3864,8 @@ begin
         TmpIter.First;
         while TmpIter.Current <> nil do
          begin
-           Inverse(TPrimitive2D(TmpIter.Current));
+           if  (TmpIter.Current is TSimplePrimitive2D) then
+             TSimplePrimitive2D(TmpIter.Current).Inverse;
            TmpIter.Next;
          end;
       finally
@@ -3874,7 +3890,8 @@ begin
         TmpIter.First;
         while TmpIter.Current <> nil do
          begin
-           Reverse(TOutline2D(TmpIter.Current));
+           if  (TmpIter.Current is TSimplePrimitive2D) then
+             TSimplePrimitive2D(TmpIter.Current).Reverse;
            TmpIter.Next;
          end;
       finally
@@ -4543,7 +4560,8 @@ end;
 
 constructor TCAD2DMakeContainer.Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass);
 var TmpIter: TGraphicObjIterator; TmpContainer: TContainer2D;
-    TmpClass: TGraphicObjectClass; TmpObj: TGraphicObject;
+    TmpClass: TGraphicObjectClass;
+    TmpObj: TGraphicObject;
 begin
   inherited;
   TmpContainer := nil;
@@ -4590,7 +4608,7 @@ begin
         TmpIter.First;
         while TmpIter.Current <> nil do
          begin
-           TPrimitive2D(TmpIter).ReserveInt1 := 0;
+           TPrimitive2D(TmpIter).fReserveInt1 := 0;
            TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.DeleteObject(TmpIter.Current.ID);
            TmpIter.Next;
          end;

@@ -502,7 +502,10 @@ Unit CADSys4;
 Interface
 
 uses SysUtils, Classes, LCLType, Graphics, Controls, ClipBrd, ComCtrls,
-  CS4BaseTypes, LMessages, LCLIntf;
+  CS4BaseTypes, LMessages, LCLIntf, FPCanvas;
+
+procedure ReadPenFromStream(APen: TPen; AStream: TStream);
+procedure WritePenToStream(APen:  TPen; AStream: TStream);
 
 function  MirrorY2D: TTransf2D;
 function  MirrorX2D: TTransf2D;
@@ -525,7 +528,8 @@ procedure Make45_2D_V(var V: TVector2D);
 const MAX_LAYER_NUMBER = 255;
 
 type
-{: This type is used by the library for versioning control.
+
+  {: This type is used by the library for versioning control.
    You doesn't need to change it but you may want to use it
    if you are defining new shapes classes and want to make them
    version indipendent.
@@ -842,6 +846,7 @@ type
     }
     procedure Put(PutIndex, ItemIndex: Word; const Item: TPoint2D); virtual;
   public
+    procedure Reverse; //added
     {: This method create a new instance of the class setting its capacity
        to <I=_Capacity>.
 
@@ -1179,18 +1184,96 @@ type
    you must use instead the classes <See Class=TObject2D>, <See Class=TObject3D>
    and the classes derived from them. See the unit <See unit=CS4Shapes>.
 }
-  TGraphicObject = class(TInterfacedObject)
+
+//The Object will be moved
+TPoint2DInsp = class
+  fOwner: TGraphicObject;
+  fPointNr: word;
+  function  GetX: TRealType;
+  procedure SetX(AValue: TRealType);
+  function  GetY: TRealType;
+  procedure SetY(AValue: TRealType);
+public
+  constructor create(AOwner: TGraphicObject; APointNr: word); // 0 = MiddlePoint
+published
+  property  X: TRealType read GetX  write SetX;
+  property  Y: TRealType read GetY  write SetY;
+end;
+
+TPosition2DInsp = class(TPersistent)
+  fOwner: TGraphicObject;
+  fMiddlePoint: TPoint2DInsp;
+  function  GetTop: TRealType;
+  procedure SetTop(ATop: TRealType);
+  function  GetLeft: TRealType;
+  procedure SetLeft(ALeft: TRealType);
+  function  GetBottom: TRealType;
+  procedure SetBottom(ABottom: TRealType);
+  function  GetRight: TRealType;
+  procedure SetRight(ARight: TRealType);
+public
+  constructor create(AOwner: TGraphicObject);
+  destructor  destroy; override;
+published
+  property Top:    TRealType read GetTop     write SetTop;
+  property Left:   TRealType read GetLeft    write SetLeft;
+  property Bottom: TRealType read GetBottom  write SetBottom;
+  property Right:  TRealType read GetRight   write SetRight;
+  property MiddlePoint: TPoint2DInsp  read fMiddlePoint write fMiddlePoint;
+end;
+
+TGrObjectInsp = class(TPersistent)
+     fOwner:  TGraphicObject;
+     function  GetID: LongInt;
+     function  GetClassName: string;
+     function  GetLayerName: TLayerName;
+     procedure SetLayerName(ALayerName: TLayerName);
+     function  GetLayerIDX: word;
+     procedure SetLayerIDX(AValue: word);
+     function  GetVisible: boolean;
+     procedure SetVisible(AValue: boolean);
+     function  GetEnabled: boolean;
+     procedure SetEnabled(AValue: boolean);
+     function  GetTag: LongInt;
+     procedure SetTag(AValue: LongInt);
+    public
+      constructor create(AOwner: TGraphicObject);
+      destructor  destroy; override;
+    published
+      property ObjectClass: string      read GetClassName;
+      property ObjectID:    LongInt     read GetID;
+      property LayerIndex:  word        read GetLayerIDX  write SetLayerIDX;
+      property LayerName:   TLayerName  read GetLayerName write SetLayerName;
+      property Visible:     boolean     read GetVisible   write SetVisible;
+      property Enabled:     boolean     read GetEnabled   write SetEnabled;
+      property Tag:         LongInt     read GetTag       write SetTag;
+end;
+
+TObject2DInsp = class
+   fPosition2D: TPosition2DInsp;
+   fOwner:   TGraphicObject;
+   function  GetAngle: TRealType;
+   procedure SetAngle(AValue: TRealType);
+ public
+   constructor create(AOwner: TGraphicObject);
+   destructor  destroy; override;
+ published
+   property Position2D: TPosition2DInsp read fPosition2D   write fPosition2D;
+   property Angle: TRealType  read  GetAngle  write  SetAngle;
+end;
+
+  //TGraphicObject = class(TInterfacedObject)
+  TGraphicObject = class(TPersistent)
   private
+    fGrObjectInsp: TGrObjectInsp;
     fID, fTag: LongInt;
     fLayerIndex: Byte;
     fVisible, fEnabled, fToBeSaved: Boolean;
     fOnChange: TNotifyEvent;
     fOwnerCAD: TCADCmp;
-
     //added
     function  GetLayerName: TLayerName;
     procedure SetLayerName(ALayerName: TLayerName);
-
   protected
 {: This method is called when the extensions and shape of the object must
    be updated after some change to the object state was done.
@@ -1211,6 +1294,12 @@ type
 }
     procedure _UpdateExtension; virtual; abstract;
   public
+    fReserveInt1,
+    fReserveInt2,
+    fReserveInt3: integer;
+    fReserveStr1,
+    fReserveStr2,
+    fReserveStr3: string;
 {: This is the constructor of the graphic object.
 
    <I=ID> is the identifier of the the object (<See Property=TGraphicObject@ID>).
@@ -1223,6 +1312,7 @@ type
    <LI=<See Property=TGraphicObject@ToBeSaved> to <B=True> >
 }
     constructor Create(ID: LongInt);
+    destructor destroy; override;
 {: This constructor is used to create an instance of the class and initialize
    its state with the one saved to a stream with a previous call to
    <See Method=TGraphicObject@SaveToStream>.
@@ -1324,6 +1414,36 @@ type
    This method fires a <See Property=TGraphicObject@OnChange> event.
 }
     procedure UpdateExtension(Sender: TObject);
+    function GetClassName: string;
+
+    {: This property specify if the object is to be saved in a drawing.
+
+       If it is <B=False> then the object will not be saved into a drawing stream,
+       otherwise it will be.
+
+       The <See Property=TLayer@Streamable> setting of the layer on which the
+       object lies has the priority on this property.
+
+       By Dafault this property is set to <B=True>.
+    }
+        property ToBeSaved: Boolean read fToBeSaved write fToBeSaved;
+    {: This read-only property contains the CAD in which the object was added.
+       Although you can add the same object to more than one CAD (and you can
+       do that safely by removing all the references from the CADs without deleting
+       the object) it isn't a good practice and it is discouraged because this
+       property will not still have any meaning.
+    }
+        property OwnerCAD: TCADCmp read fOwnerCAD;
+        {: This is property can store an event-handler for the event <I=OnChange>
+           that occour whenever an object is modified (actually the event is
+           fired only when the user or the library call <See Method=TGraphicObject@UpdateExtension>
+           method).
+
+           You may want to use this event as described in the description of the
+           <See Property=TGraphicObject@Tag> property.
+        }
+        property OnChange: TNotifyEvent read fOnChange write fOnChange;
+
 {: This property defines the ID of the object.
 
    Any graphic object is identified through th library by means of a
@@ -1351,6 +1471,8 @@ type
    By Dafault this property is set to <B=0>.
 }
     property LayerIndex: Byte read fLayerIndex write fLayerIndex;
+    property ObjectClass: string read GetClassName;
+    property ObjectID: LongInt read fID;
     //added
     property LayerName: TLayerName  read GetLayerName write SetLayerName;
 
@@ -1377,24 +1499,7 @@ type
    By Dafault this property is set to <B=True>.
 }
     property Enabled: Boolean read fEnabled write fEnabled;
-{: This property specify if the object is to be saved in a drawing.
 
-   If it is <B=False> then the object will not be saved into a drawing stream,
-   otherwise it will be.
-
-   The <See Property=TLayer@Streamable> setting of the layer on which the
-   object lies has the priority on this property.
-
-   By Dafault this property is set to <B=True>.
-}
-    property ToBeSaved: Boolean read fToBeSaved write fToBeSaved;
-{: This read-only property contains the CAD in which the object was added.
-   Although you can add the same object to more than one CAD (and you can
-   do that safely by removing all the references from the CADs without deleting
-   the object) it isn't a good practice and it is discouraged because this
-   property will not still have any meaning.
-}
-    property OwnerCAD: TCADCmp read fOwnerCAD;
 {: This property may be used to store some user's defined data
    like object references.
    It is not used by the library.
@@ -1433,15 +1538,9 @@ type
    This is only a simple and not optimized way to handle these problems.
 }
     property Tag: LongInt read fTag write fTag;
-{: This is property can store an event-handler for the event <I=OnChange>
-   that occour whenever an object is modified (actually the event is
-   fired only when the user or the library call <See Method=TGraphicObject@UpdateExtension>
-   method).
+    published
+      property GraphicObject: TGrObjectInsp read  fGrObjectInsp write  fGrObjectInsp;
 
-   You may want to use this event as described in the description of the
-   <See Property=TGraphicObject@Tag> property.
-}
-    property OnChange: TNotifyEvent read fOnChange write fOnChange;
   end;
 
   TGraphicObjectClass = class of TGraphicObject;
@@ -1945,7 +2044,9 @@ type
     procedure SetPen(Pn: TPen);
     procedure SetBrush(Br: TBrush);
     procedure Changed(Sender: TObject);
+
   public
+    procedure Assign(ALayer: TLayer);
 {: This is the constructor of the layer.
 
    <I=Idx> is the index number of the layer. The layers are indexed from
@@ -2044,6 +2145,8 @@ type
    user defined values like object references.
 }
     property Tag: LongInt read fTag write fTag;
+
+
   end;
 
 {: This class defines a set of 256 layers (from 0 to 255).
@@ -2058,6 +2161,7 @@ type
     function GetLayer(Index: Byte): TLayer;
     function GetLayerByName(const Nm: TLayerName): TLayer;
   public
+    procedure Assign(ALayers: TLayers);
 {: This is the constructor of the class. It creates a new istance of the set of layers and initialize all
    the layers to the default settings.
 }
@@ -2170,7 +2274,6 @@ type
     fOnVerError: TBadVersionEvent;
     fOnLoadProgress: TOnLoadProgress;
     fOnSaveProgress: TOnSaveProgress;
-
 
     function  GetListOfObjects: TGraphicObjIterator;
     function  GetListOfBlocks: TGraphicObjIterator;
@@ -2810,7 +2913,6 @@ type
     property PolarTrackingValue: TRealType      read fPolarTrackingValue write fPolarTrackingValue;
     property SelectionMode: TSelectionMode      read fSelectionMode   write fSelectionMode;
     //(smSingle, smArea, smExtendet)
-    property CurrentFontFile:     string read fCurrentFontFile     write fCurrentFontFile;
     property ShowDirection: boolean      read fShowDirection       write SetShowDirection;
   end;
 
@@ -3900,6 +4002,7 @@ type
 
   TObject2DHandlerClass = class of TObject2DHandler;
 
+
   {: A <I=2D graphic object> is a graphic object that is defined on
      a 2D plane.
 
@@ -3948,6 +4051,7 @@ type
 
   TObject2D = class(TGraphicObject)
   private
+    fObject2DInsp: TObject2DInsp;
     fSavedTransform, fModelTransform: ^TTransf2D;
     fDrawBoundingBox: Boolean;
     fBox: TRect2D;
@@ -3956,6 +4060,34 @@ type
     { Non modifica ModelTransform. }
     procedure SaveTransform(const T: TTransf2D);
   protected
+    fAngle: TRealType; //added
+    function GetLeft: TRealType;
+    function GetBottom: TRealType;
+    function GetRight: TRealType;
+    function GetTop: TRealType;
+    procedure SetLeft(AValue:TRealType);
+    procedure SetBottom(AValue:TRealType);
+    procedure SetRight(AValue:TRealType);
+    procedure SetTop(AValue:TRealType);
+    function GetLeftTop: TPoint2D;
+    function GetLeftCenter: TPoint2D;
+    function GetLeftBottom: TPoint2D;
+    function GetRightTop: TPoint2D;
+    function GetRightCenter: TPoint2D;
+    function GetRightBottom: TPoint2D;
+    function GetBottomCenter: TPoint2D;
+    function GetTopCenter: TPoint2D;
+
+    procedure SetMiddlePointY(AValue:TRealType);
+    procedure SetMiddlePointX(AValue:TRealType);
+    function  GetMiddlePointY: TRealType;
+    function  GetMiddlePointX: TRealType;
+    function  GetMiddlePoint: TPoint2D;
+
+
+    function  GetAngle: TRealType;          virtual;
+    procedure SetAngle(AAngle: TRealType);  virtual;
+
     {: This method returns the <I=actual model matrix>.
 
        The actual model matrix is the concatenation of the
@@ -3990,6 +4122,11 @@ type
     }
     property  WritableBox: TRect2D read fBox write fBox;
   public
+
+    procedure Reverse; virtual; abstract;
+    procedure Inverse; virtual; abstract;
+    procedure Explode; virtual; Abstract;
+    procedure InitializeAngle;  virtual;
     constructor Create(ID: LongInt);
     destructor Destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
@@ -4149,6 +4286,23 @@ type
        Call this method with <B=nil> to remove the current handler.
     }
     procedure SetHandler(const Hndl: TObject2DHandlerClass);
+
+    function  GetPenSource: TPenSource; virtual; abstract;
+    procedure SetPenSource(APenSource: TPenSource); virtual; abstract;
+    function  GetPenColor: TColor;  virtual; abstract;
+    procedure SetPenColor(APenColor: TColor); virtual; abstract;
+    function  GetPenStyle: TPenStyle;  virtual; abstract;
+    procedure SetPenStyle(APenStyle: TPenStyle); virtual; abstract;
+    function  GetPenWidth: word;  virtual; abstract;
+    procedure SetPenWidth(AValue: word); virtual; abstract;
+
+    function  GetBrushSource: TBrushSource; virtual; abstract;
+    procedure SetBrushSource(ABrushSource: TBrushSource); virtual; abstract;
+    function  GetBrushColor: TColor;  virtual; abstract;
+    procedure SetBrushColor(ABrushColor: TColor); virtual; abstract;
+    function  GetBrushStyle: TBrushStyle;  virtual; abstract;
+    procedure SetBrushStyle(ABrushStyle: TBrushStyle); virtual; abstract;
+
     {: This property contains the <I=actual model transform> of the object.
 
        The 2D object is defined in a special coordinate system referred
@@ -4164,6 +4318,11 @@ type
        to obtain the points in the screen system that are easily displayed.
     }
     property ModelTransform: TTransf2D read GetModelTransform write SetModelTransform;
+      {: If this property is <B=True> then the bounding box is drawed
+       in the <See Method=TObject2D@DrawControlPoints>.
+    }
+    property DrawBoundingBox: Boolean read fDrawBoundingBox write fDrawBoundingBox;
+
     {: This property contains the bounding box of the object.
 
        The 2D object has a 2D bounding box, that is the smallest
@@ -4175,15 +4334,45 @@ type
        to be redefined.
     }
     property Box: TRect2D read fBox;
-    {: If this property is <B=True> then the bounding box is drawed
-       in the <See Method=TObject2D@DrawControlPoints>.
-    }
-    property DrawBoundingBox: Boolean read fDrawBoundingBox write fDrawBoundingBox;
     {: This property contains the current handler object.
 
        See <See Class=TObject2DHandler@TObject2DHandler> for details.
+
+
     }
     property Handler: TObject2DHandler read fHandler;
+
+    property LeftTop:        TPoint2D  read  GetLeftTop;
+    property LeftCenter:     TPoint2D  read  GetLeftCenter;
+    property LeftBottom:     TPoint2D  read  GetLeftBottom;
+    property RightTop:       TPoint2D  read  GetRightTop;
+    property RightCenter:    TPoint2D  read  GetRightCenter;
+    property RightBottom:    TPoint2D  read  GetRightBottom;
+    property BottomCenter:   TPoint2D  read  GetBottomCenter;
+    property TopCenter:      TPoint2D  read  GetTopCenter;
+
+    property Left:   TrealType    read  GetLeft       write SetLeft;
+    property Bottom: TRealType    read  GetBottom     write SetBottom;
+    property Right:  TRealType    read  GetRight      write SetRight;
+    property Top:    TRealType    read  GetTop        write SetTop;
+
+    //property Angle:  TRealType read  GetAngle write SetAngle;
+    property MiddLePoint: TPoint2D   read GetMiddlePoint;
+    property MiddLePointX: TRealType read GetMiddlePointX write SetMiddlePointX;
+    property MiddLePointY: TRealType read GetMiddlePointY write SetMiddlePointY;
+
+    property  PenSource: TPenSource read GetPenSource write SetPenSource;
+    property  PenColor: TColor    read GetPenColor write SetPenColor;
+    property  PenStyle: TPenStyle read GetPenStyle write SetPenStyle;
+    property  PenWidth: word     read GetPenWidth write SetPenWidth;
+
+    property  BrushSource: TBrushSource read GetBrushSource write SetBrushSource;
+    property  BrushColor: TColor        read GetBrushColor  write SetBrushColor;
+    property  BrushStyle: TBrushStyle   read GetBrushStyle  write SetBrushStyle;
+
+    property Angle: TRealType read GetAngle write SetAngle;
+  published
+    property Object2D: TObject2DInsp read fObject2DInsp write fObject2DInsp;
   end;
 
   TObject2DClass = class of TObject2D;
@@ -4225,6 +4414,7 @@ type
        itself and will be freed when the container is deleted. So it
        isn't possible to share objects between containers.
     }
+    procedure Explode; override;
     constructor Create(ID: LongInt; const Objs: array of TObject2D);
     destructor Destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
@@ -4367,6 +4557,7 @@ type
        <I=Source> is the source block that is used to define
        the instance.
     }
+    procedure   Explode; override;
     constructor Create(ID: LongInt; const Source: TSourceBlock2D);
     destructor Destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
@@ -4512,8 +4703,8 @@ type
     function  BlockObjects(const SrcName: TSourceBlockName; const Objs: TGraphicObjIterator): TSourceBlock2D;
     procedure DeleteLibrarySourceBlocks; override;
     procedure DeleteSavedSourceBlocks; override;
-    function AddObject(const ID: LongInt; const Obj: TObject2D): TObject2D;
-    function InsertObject(const ID, IDInsertPoint: LongInt; const Obj: TObject2D): TObject2D;
+    function  AddObject(const ID: LongInt; const Obj: TObject2D): TObject2D;
+    function  InsertObject(const ID, IDInsertPoint: LongInt; const Obj: TObject2D): TObject2D;
     {: This method adds a new block (instance of a source block) into
        the CAD.
 
@@ -6497,6 +6688,8 @@ const
   }
   DRAWMODE_VECTTEXTONLYBOX = 32;
 
+  DRAWMODE_EDIT     = 40;
+
   {:
   }
   MAX_REGISTERED_CLASSES = 512;
@@ -6523,9 +6716,15 @@ const ISqrt2 = 0.707106781186547; // 1/sqrt(2)
 
 var CADClipboard2D: TContainer2D;
 
+    EditPenColor: TColor;
+    EditPenStyle: TPenStyle;
+    EditPenWidth: word;
+    EditBrushColor: TColor;
+    EditBrushStyle: TBrushStyle;
+
 Implementation
 
-uses Math, Dialogs, Forms;
+uses CS4Shapes, Math, Dialogs, Forms;
 
 type
   TPaintingThread = class(TThread)
@@ -6552,7 +6751,6 @@ type
 
 var
   GraphicObjectsRegistered: TGraphicClassRegistered;
-
 
 // 2D Clipping functions.
 
@@ -6727,7 +6925,7 @@ begin
   result := false;
   // Nenner berechnen (Matrize)
   N:=P0.X*P3.Y + P3.X*P1.Y + P1.X*P2.Y + P2.X*P0.Y - P3.X*P0.Y - P0.X*P2.Y - P2.X*P1.Y - P1.X*P3.Y;
-  // Möglicherweise Abruch wegen Divison durch Null
+  // Möglicherweise Abbruch wegen Divison durch Null
   If N=0 then Exit;
   // T berechnen (Matrize)
   T:=(P0.X*P1.Y + P1.X*P2.Y + P2.X*P0.Y - P1.X*P0.Y - P2.X*P1.Y - P0.X*P2.Y) / N;
@@ -7881,7 +8079,7 @@ begin
     end;
 end;
 
-//added, ChatGPT
+//added
 function ExtendLine(startPoint, endPoint: TPoint2D; totalLength: TRealType): TPoint2D;
 var
   dx, dy, currentLength, extensionLength: TRealType;
@@ -8464,6 +8662,32 @@ begin
   fTag := 0;
 end;
 
+procedure TPointsSet2D.Reverse;
+var
+  i, j: Integer;
+  Temp: TPoint2D;
+begin
+  if fCount <= 1 then Exit; // Kein Reverse notwendig für 0 oder 1 Punkt
+
+  i := 0;
+  j := fCount - 1;
+
+  while i < j do
+  begin
+    // Punkte an den Positionen i und j tauschen
+    Temp := Get(i);  // Temporärspeicher für Punkt an Position i
+    Put(i, i, Get(j));  // Punkt an Position j wird an Position i gesetzt
+    Put(j, j, Temp);    // Temporärer Punkt wird an Position j gesetzt
+
+    // Zeiger verschieben
+    Inc(i);
+    Dec(j);
+  end;
+
+  // Events/Änderungen nach der Modifikation auslösen
+  CallOnChange;
+end;
+
 destructor TPointsSet2D.Destroy;
 begin
   FreeMem(fPoints, fCapacity * SizeOf(TPoint2D));
@@ -8634,6 +8858,214 @@ begin
   Draw2DSubSetAsPolyline(fPoints, fCount, Cnv, Clip, Extent, S, StartIdx, EndIdx, ToBeClosed);
 end;
 
+
+//TPoint2DInsp//////////////////////////////////////////////////////////////////
+constructor TPoint2DInsp.create(AOwner: TGraphicObject; APointNr: word); // 0 = MiddlePoint
+begin
+  fOwner   := AOwner;
+  fPointNr := APointNr;
+end;
+
+function  TPoint2DInsp.GetX: TRealType;
+begin
+  case  fPointNr of
+   0: result := TObject2D(fOwner).GetMiddlePointX;
+   1: ; //.........
+  end;
+end;
+
+procedure TPoint2DInsp.SetX(AValue: TRealType);
+begin
+  case  fPointNr of
+   0: TObject2D(fOwner).SetMiddlePointX(AValue);
+   1: ; //.........
+  end;
+end;
+
+function  TPoint2DInsp.GetY: TRealType;
+begin
+  case  fPointNr of
+   0: result := TObject2D(fOwner).GetMiddlePointY;
+   1: ; //.........
+  end;
+end;
+
+procedure TPoint2DInsp.SetY(AValue: TRealType);
+begin
+  case  fPointNr of
+   0: TObject2D(fOwner).SetMiddlePointY(AValue);
+   1: ; //.........
+  end;
+end;
+
+///////////////////////////////////////////////////////
+// TPosition2D/////////////////////////////////////////
+constructor TPosition2DInsp.create(AOwner: TGraphicObject);
+begin
+  inherited create;
+  fOwner := AOwner;
+  fMiddlePoint := TPoint2DInsp.create(fOwner, 0);  // 0 = MiddlePoint
+end;
+
+destructor TPosition2DInsp.destroy;
+begin
+  fMiddlePoint.Free;
+  inherited;
+end;
+
+function  TPosition2DInsp.GetTop: TRealType;
+begin
+  if  fOwner <> nil then
+    result := TObject2D(fOwner).Top
+  else
+    result := -99999999;
+end;
+
+procedure TPosition2DInsp.SetTop(ATop: TRealType);
+begin
+  if  fOwner <> nil then
+    TObject2D(fOwner).Top := ATop;
+end;
+
+function  TPosition2DInsp.GetLeft: TRealType;
+begin
+  if  fOwner <> nil then
+    result := TObject2D(fOwner).Left
+  else
+    result := -99999999;
+end;
+
+procedure TPosition2DInsp.SetLeft(ALeft: TRealType);
+begin
+  if  fOwner <> nil then
+    TObject2D(fOwner).Left := ALeft;
+end;
+
+function  TPosition2DInsp.GetBottom: TRealType;
+begin
+  if  fOwner <> nil then
+    result := TObject2D(fOwner).Bottom
+  else
+    result := -99999999;
+end;
+
+procedure TPosition2DInsp.SetBottom(ABottom: TRealType);
+begin
+  if  fOwner <> nil then
+    TObject2D(fOwner).Bottom := ABottom;
+end;
+
+function  TPosition2DInsp.GetRight: TRealType;
+begin
+  if  fOwner <> nil then
+    result := TObject2D(fOwner).Right
+  else
+    result := -99999999;
+end;
+
+procedure TPosition2DInsp.SetRight(ARight: TRealType);
+begin
+  if  fOwner <> nil then
+   TObject2D(fOwner).Right := ARight;
+end;
+
+//TGrObjectInsp/////////////////////////////////////////////////////////////////
+
+constructor TGrObjectInsp.create(AOwner: TGraphicObject);
+begin
+ inherited create;
+ fOwner := AOwner;
+end;
+
+destructor  TGrObjectInsp.destroy;
+begin
+  inherited;
+end;
+
+function  TGrObjectInsp.GetID: LongInt;
+begin
+  result := fOwner.ID;
+end;
+
+function  TGrObjectInsp.GetClassName: string;
+begin
+  result := fOwner.ClassName;
+end;
+
+function  TGrObjectInsp.GetLayerName: TLayerName;
+begin
+  result := fOwner.LayerName;
+end;
+
+procedure TGrObjectInsp.SetLayerName(ALayerName: TLayerName);
+begin
+  fOwner.LayerName := ALayerName;
+end;
+
+function  TGrObjectInsp.GetLayerIDX: word;
+begin
+  result := fOwner.LayerIndex;
+end;
+
+procedure TGrObjectInsp.SetLayerIDX(AValue: word);
+begin
+  fOwner.LayerIndex := AValue;
+end;
+
+function  TGrObjectInsp.GetVisible: boolean;
+begin
+  result := fOwner.Visible;
+end;
+
+procedure TGrObjectInsp.SetVisible(AValue: boolean);
+begin
+  fOwner.Visible := AValue;
+end;
+
+function  TGrObjectInsp.GetEnabled: boolean;
+begin
+  result := fOwner.Enabled;
+end;
+
+procedure TGrObjectInsp.SetEnabled(AValue: boolean);
+begin
+  fOwner.Enabled := AValue;
+end;
+
+function  TGrObjectInsp.GetTag: LongInt;
+begin
+  result := fOwner.Tag;
+end;
+
+procedure TGrObjectInsp.SetTag(AValue: LongInt);
+begin
+  fOwner.Tag := AValue;
+end;
+
+//TObject2DInsp/////////////////////////////////////////////////////////////////
+constructor TObject2DInsp.create(AOwner: TGraphicObject);
+begin
+  inherited create;
+  fOwner := AOwner;
+  fPosition2D   := TPosition2DInsp.create(fOwner);
+end;
+
+destructor  TObject2DInsp.destroy;
+begin
+  fPosition2D.Free;
+  inherited;
+end;
+
+function TObject2DInsp.GetAngle: TRealType;
+begin
+  result := TObject2D(fOwner).Angle;
+end;
+
+procedure TObject2DInsp.SetAngle(AValue: TRealType);
+begin
+  TObject2D(fOwner).Angle := AValue;
+end;
+
 // =====================================================================
 // TGraphicObject 
 // =====================================================================
@@ -8641,7 +9073,7 @@ end;
 constructor TGraphicObject.Create(ID: LongInt);
 begin
   inherited Create;
-
+  fGrObjectInsp := TGrObjectInsp.create(self);
   fID := ID;
   fLayerIndex := 0;
   fVisible := True;
@@ -8651,21 +9083,39 @@ begin
   fOnChange := nil;
 end;
 
+destructor TGraphicObject.destroy;
+begin
+  fGrObjectInsp.Free;
+  inherited;
+end;
+
 constructor TGraphicObject.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
 var
   BitMask: Byte;
 begin
   inherited Create;
+  fGrObjectInsp := TGrObjectInsp.create(self);
+
   with Stream do
    begin
      Read(fID, SizeOf(fID));
      Read(fLayerIndex, SizeOf(fLayerIndex));
+     Read(fTag, SizeOf(fTag));
+
+     Read(fReserveInt1, SizeOf(fReserveInt1));
+     Read(fReserveInt2, SizeOf(fReserveInt2));
+     Read(fReserveInt3, SizeOf(fReserveInt3));
+
+     Read(fReserveStr1, SizeOf(fReserveStr1));
+     Read(fReserveStr2, SizeOf(fReserveStr2));
+     Read(fReserveStr3, SizeOf(fReserveStr3));
+
      Read(BitMask, SizeOf(BitMask))
    end;
   fVisible := (BitMask and 1) = 1;
   fEnabled := (BitMask and 2) = 2;
   fToBeSaved := not ((BitMask and 4) = 4);
-  fTag := 0;
+
   fOnChange := nil;
 end;
 
@@ -8682,6 +9132,16 @@ begin
    begin
      Write(fID, SizeOf(fID));
      Write(fLayerIndex, SizeOf(fLayerIndex));
+     Write(fTag, SizeOf(fTag));
+
+     Write(fReserveInt1, SizeOf(fReserveInt1));
+     Write(fReserveInt2, SizeOf(fReserveInt2));
+     Write(fReserveInt3, SizeOf(fReserveInt3));
+
+     Write(fReserveStr1, SizeOf(fReserveStr1));
+     Write(fReserveStr2, SizeOf(fReserveStr2));
+     Write(fReserveStr3, SizeOf(fReserveStr3));
+
      Write(BitMask, SizeOf(BitMask));
    end;
 end;
@@ -8690,9 +9150,17 @@ procedure TGraphicObject.Assign(const Obj: TGraphicObject);
 begin
   if (Obj = Self) then
    Exit;
-  fVisible := Obj.Visible;
-  fEnabled := Obj.Enabled;
+  fVisible   := Obj.Visible;
+  fEnabled   := Obj.Enabled;
   fToBeSaved := Obj.ToBeSaved;
+
+  fReserveInt1 := Obj.fReserveInt1;
+  fReserveInt2 := Obj.fReserveInt2;
+  fReserveInt3 := Obj.fReserveInt3;
+
+  fReserveStr1 := Obj.fReserveStr1;
+  fReserveStr2 := Obj.fReserveStr2;
+  fReserveStr3 := Obj.fReserveStr2;
 end;
 
 procedure TGraphicObject.UpdateExtension(Sender: TObject);
@@ -8712,6 +9180,11 @@ begin
     result := TmpLayer.Name
   else
     result := '0';
+end;
+
+function TGraphicObject.GetClassName: string;
+begin
+  result := self.ClassName;
 end;
 
 procedure TGraphicObject.SetLayerName(ALayerName: TLayerName);
@@ -9468,6 +9941,16 @@ end;
 // TLayer
 // =====================================================================
 
+procedure TLayer.Assign(ALayer: TLayer);
+begin
+  fPen.Assign(ALayer.Pen);
+  fBrush.Assign(ALayer.Brush);
+  fName   := ALayer.Name;
+  fOpaque  := ALayer.Opaque;
+  fVisible := ALayer.Visible;
+  fActive  := ALayer.Active;
+end;
+
 procedure TLayer.Changed(Sender: TObject);
 begin
   FModified := True;
@@ -9514,10 +9997,10 @@ begin
   FPen := TPen.Create;
   FPen.Color := clWhite;
   FPen.Style := psSolid;
-  FPen.Width := 2;
+  FPen.Width := 1;
   FBrush := TBrush.Create;
   FBrush.Color := clWhite;
-  FBrush.Style := bsSolid;
+  FBrush.Style := bsClear;
   fDecorativePen := TDecorativePen.Create;
   FActive := True;
   fVisible := True;
@@ -9537,6 +10020,33 @@ begin
   inherited Destroy;
 end;
 
+procedure WritePenToStream(APen: TPen; AStream: TStream);
+var
+  TmpColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpWidth: Integer;
+  TmpPenMode: TPenMode;
+  TmpCosmetic: boolean;
+  TmpFPPenEndCap: TFPPenEndCap;
+  TmpJoinStyle : TFPPenJoinStyle;
+begin
+  if (not Assigned(APen)) or (not Assigned(AStream)) then exit;
+  TmpColor := APen.Color;
+  AStream.Write(TmpColor, SizeOf(TmpColor));
+  TmpPenStyle := APen.Style;
+  AStream.Write(TmpPenStyle, SizeOf(TmpPenStyle));
+  TmpWidth := APen.Width;
+  AStream.Write(TmpWidth, SizeOf(TmpWidth));
+  {TmpPenMode := APen.Mode;
+  AStream.Write(TmpPenMode, SizeOf(TmpPenMode));
+  TmpCosmetic := APen.Cosmetic;
+  AStream.Write(TmpCosmetic, SizeOf(TmpCosmetic));
+  TmpFPPenEndCap := APen.EndCap;
+  AStream.Write(TmpFPPenEndCap, SizeOf(TmpFPPenEndCap));
+  TmpJoinStyle := APen.JoinStyle;
+  AStream.Write(TmpJoinStyle, SizeOf(TmpJoinStyle));}
+end;
+
 procedure TLayer.SaveToStream(const Stream: TStream);
 var
   TmpColor: TColor;
@@ -9546,15 +10056,7 @@ var
   TmpBrushStyle: TBrushStyle;
   TmpBool: Boolean;
 begin
-  TmpColor := fPen.Color;
-  Stream.Write(TmpColor, SizeOf(TmpColor));
-  TmpPenStyle := fPen.Style;
-  Stream.Write(TmpPenStyle, SizeOf(TmpPenStyle));
-  TmpPenMode := fPen.Mode;
-  Stream.Write(TmpPenMode, SizeOf(TmpPenMode));
-  TmpWidth := fPen.Width;
-  Stream.Write(TmpWidth, SizeOf(TmpWidth));
-
+  WritePenToStream(fPen, Stream);
   TmpColor := fBrush.Color;
   Stream.Write(TmpColor, SizeOf(TmpColor));
   TmpBrushStyle := fBrush.Style;
@@ -9575,6 +10077,33 @@ begin
   Stream.Write(fName, SizeOf(TLayerName));
 end;
 
+procedure ReadPenFromStream(APen: TPen; AStream: TStream);
+var
+  TmpColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpWidth: Integer;
+  TmpPenMode: TPenMode;
+  TmpCosmetic: boolean;
+  TmpFPPenEndCap: TFPPenEndCap;
+  TmpJoinStyle : TFPPenJoinStyle;
+begin
+  if (not Assigned(APen)) or (not Assigned(AStream)) then exit;
+  AStream.Read(TmpColor, SizeOf(TmpColor));
+  APen.Color := TmpColor;
+  AStream.Read(TmpPenStyle, SizeOf(TmpPenStyle));
+  APen.Style := TmpPenStyle;
+  AStream.Read(TmpWidth, SizeOf(TmpWidth));
+  APen.Width := TmpWidth;
+  {AStream.Read(TmpPenMode, SizeOf(TmpPenMode));
+  APen.Mode := TmpPenMode;
+  AStream.Read(TmpCosmetic, SizeOf(TmpCosmetic));
+  APen.Cosmetic := TmpCosmetic;
+  AStream.Read(TmpFPPenEndCap, SizeOf(TmpFPPenEndCap));
+  APen.EndCap := TmpFPPenEndCap;
+  AStream.Read(TmpJoinStyle, SizeOf(TmpJoinStyle));
+  APen.JoinStyle := TmpJoinStyle;}
+end;
+
 procedure TLayer.LoadFromStream(const Stream: TStream;
                                 const Version: TCADVersion);
 var
@@ -9585,14 +10114,7 @@ var
   TmpBrushStyle: TBrushStyle;
   TmpBool: Boolean;
 begin
-  Stream.Read(TmpColor, SizeOf(TmpColor));
-  fPen.Color := TmpColor;
-  Stream.Read(TmpPenStyle, SizeOf(TmpPenStyle));
-  fPen.Style := TmpPenStyle;
-  Stream.Read(TmpPenMode, SizeOf(TmpPenMode));
-  fPen.Mode := TmpPenMode;
-  Stream.Read(TmpWidth, SizeOf(TmpWidth));
-  fPen.Width := TmpWidth;
+  ReadPenFromStream(fPen, Stream);
 
   Stream.Read(TmpColor, SizeOf(TmpColor));
   fBrush.Color := TmpColor;
@@ -9659,12 +10181,22 @@ begin
   Result := nil;
   for Cont := 0 to MAX_LAYER_NUMBER do
     if LowerCase(Nm) = LowerCase(TLayer(Flayers.Items[Cont]).fName) then
+    begin
       Result := TLayer(Flayers.Items[Cont]);
+      exit;
+    end;
 end;
 
 function TLayers.GetLayer(Index: Byte): TLayer;
 begin
   Result := TLayer(Flayers.Items[Index]);
+end;
+
+procedure TLayers.Assign(ALayers: TLayers);
+var Cont: Byte;
+begin
+  for Cont := 0 to MAX_LAYER_NUMBER do
+    self.Layers[cont].Assign(ALayers[cont]);
 end;
 
 constructor TLayers.Create;
@@ -9710,7 +10242,7 @@ begin
        Write(Cont, SizeOf(Cont));
        TLayer(FLayers[Cont]).SaveToStream(Stream);
      end;
-  Cont := 256;
+  Cont := MAX_LAYER_NUMBER + 1;
   Stream.Write(Cont, SizeOf(Cont));
 end;
 
@@ -9726,7 +10258,7 @@ begin
    with Stream do
     begin
       Read(Cont, SizeOf(Cont));
-      if Cont = 256 then Break;
+      if Cont = (MAX_LAYER_NUMBER + 1) then Break;
       TLayer(FLayers[Cont]).LoadFromStream(Stream, Version);
     end;
 end;
@@ -9847,7 +10379,6 @@ begin
   fPolarTracking      := false;
   fPolarTrackingValue := 45.0;
   fSelectionMode      := smArea;
-
 end;
 
 // Used because BlockList can contain circular references.
@@ -9873,15 +10404,53 @@ begin
        end;
      end;
      if (Deleted = 0) and (fListOfBlocks.Count > 0) then
-      begin
-        Raise ECADSourceBlockIsReferenced.Create('TCADCmp.FreeSourceBlocks: CADSys 4.0 Severe error'#10#13'The drawing contains circular reference of source blocks. They will be not deleted !');
-        Exit;
+      begin   //!!!
+        //Raise ECADSourceBlockIsReferenced.Create('TCADCmp.FreeSourceBlocks: CADSys 4.0 Severe error'#10#13'The drawing contains circular reference of source blocks. They will be not deleted !');
+        //Exit;
       end;
    until TmpIter.Count = 0;
   finally
     TmpIter.Free;
   end;
 end;
+
+{
+procedure TCADCmp.DeleteAllSourceBlocks;
+var
+  TmpObj: TGraphicObject;
+  Deleted: Integer;
+  TmpIter: TExclusiveGraphicObjIterator;
+begin
+  TmpIter := fListOfBlocks.GetExclusiveIterator;
+  try
+    repeat
+      Deleted := 0;
+      TmpObj := TmpIter.Last;
+      while Assigned(TmpObj) do
+      begin
+        try
+          TmpIter.DeleteCurrent;
+          Inc(Deleted);
+          TmpObj := TmpIter.Prev; // Nach dem Löschen rückwärts gehen
+        except
+          TmpObj := TmpIter.Prev; // Bei Fehler auch rückwärts gehen
+        end;
+      end;
+
+      if (Deleted = 0) and (fListOfBlocks.Count > 0) then
+      begin
+        raise ECADSourceBlockIsReferenced.Create(
+          'TCADCmp.FreeSourceBlocks: CADSys 4.0 Severe error'#10#13 +
+          'The drawing contains circular reference of source blocks. They will not be deleted!');
+        Exit;
+      end;
+
+    until TmpIter.Count = 0;
+  finally
+    TmpIter.Free;
+  end;
+end;
+}
 
 procedure TCADCmp.DeleteAllObjects;
 begin
@@ -10681,7 +11250,6 @@ end;
 constructor TCADViewport.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-
   fViewGuard := TCADSysCriticalSection.Create;
   ControlStyle := ControlStyle - [csOpaque];
   ControlStyle := ControlStyle + [csClickEvents, csSetCaption, csDoubleClicks];
@@ -11368,7 +11936,6 @@ end;
 constructor TRuler.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-
   fOwnerView := nil;
   fSize := 20;
   fFontSize := 6;
@@ -11519,7 +12086,6 @@ end;
 constructor TObject2DHandler.Create(AObject: TObject2D);
 begin
   inherited Create;
-
   fHandledObject := AObject;
   fRefCount := 1;
 end;
@@ -11542,19 +12108,44 @@ end;
 // =====================================================================
 // TObject2D
 // =====================================================================
+procedure TObject2D.InitializeAngle;
+begin
+  fAngle := 0;
+end;
+
+function  TObject2D.GetAngle: TRealType;
+begin
+  result := RadToDeg(fAngle);
+end;
+
+procedure TObject2D.SetAngle(AAngle: TRealType);
+var relativeAngle: TRealType;  TmpPoint0, TmpPoint1: TPoint2D;
+begin
+  self.Visible := false;
+  TmpPoint0 := self.MiddlePoint;
+  relativeAngle := DegToRad(AAngle) - fAngle;
+  fAngle := DegToRad(AAngle);
+  self.Transform(Rotate2D(relativeAngle));
+  TmpPoint1 := self.MiddlePoint;
+  self.MoveTo(TmpPoint0, TmpPoint1);
+  self.Visible := true;
+end;
 
 constructor TObject2D.Create(ID: LongInt);
 begin
   inherited Create(ID);
+  fObject2DInsp := TObject2DInsp.create(self);
   fBox := Rect2D(0, 0, 0, 0);
   fModelTransform := nil;
   fSavedTransform := nil;
   fDrawBoundingBox := False;
   fHandler := nil;
+  fAngle := 0.0;
 end;
 
 destructor TObject2D.Destroy;
 begin
+  fObject2DInsp.Free;
   if Assigned(fHandler) then
    fHandler.Free;
   if fModelTransform <> nil then
@@ -11565,21 +12156,22 @@ begin
 end;
 
 constructor TObject2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
-var
-  TmpTransf: TTransf2D;
+var TmpTransf: TTransf2D; TmpAngle: TRealType;
 begin
   inherited;
+  fObject2DInsp := TObject2DInsp.create(self);
   with Stream do
    begin
      Read(TmpTransf, sizeof(TTransf2D));
      SaveTransform(TmpTransf);
+     //Read(TmpAngle, sizeof(TmpAngle));
+     //fAngle := TmpAngle;
    end;
   fHandler := nil;
 end;
 
 procedure TObject2D.SaveToStream(const Stream: TStream);
-var
-  TmpTransf: TTransf2D;
+var TmpTransf: TTransf2D; TmpAngle: TRealType;
 begin
   inherited SaveToStream(Stream);
   with Stream do
@@ -11587,6 +12179,8 @@ begin
      SaveTransform(ModelTransform);
      TmpTransf := ModelTransform;
      Write(TmpTransf, SizeOf(TTransf2D));
+     //TmpAngle := fAngle;
+     //Write(TmpAngle, SizeOf(TmpAngle));
    end;
 end;
 
@@ -11600,7 +12194,8 @@ begin
      SaveTransform(TObject2D(Obj).ModelTransform);
      fBox := TObject2D(Obj).fBox;
      if fHandler <> TObject2D(Obj).fHandler then
-      SetSharedHandler(TObject2D(Obj).fHandler);
+       SetSharedHandler(TObject2D(Obj).fHandler);
+     fAngle := TObject2D(Obj).fAngle;
    end;
 end;
 
@@ -11756,6 +12351,125 @@ begin
    fHandler := nil;
 end;
 
+//Object Position
+procedure TObject2D.SetTop(AValue:TRealType);
+begin
+  self.Transform(Translate2D(0, AValue - self.Box.Top));
+end;
+
+procedure TObject2D.SetLeft(AValue:TRealType);
+begin
+  self.Transform(Translate2D((AValue - self.Box.Left), 0));
+end;
+
+procedure TObject2D.SetBottom(AValue:TRealType);
+begin
+  self.Transform(Translate2D(0, AValue - self.Box.Bottom));
+end;
+
+procedure TObject2D.SetRight(AValue:TRealType);
+begin
+  self.Transform(Translate2D((AValue - self.Box.Right), 0));
+end;
+
+function TObject2D.GetRight: TRealType;
+begin
+  result := box.Right;
+end;
+
+function TObject2D.GetBottom: TRealType;
+begin
+  result := self.Box.Bottom;
+end;
+
+function TObject2D.GetLeft: TRealType;
+begin
+  result := self.Box.Left
+ end;
+
+function TObject2D.GetTop: TRealType;
+begin
+  result := box.Top;
+end;
+
+function TObject2D.GetLeftTop: TPoint2D;
+begin
+  result := Point2D(GetLeft, GetTop);
+end;
+
+function TObject2D.GetLeftBottom: TPoint2D;
+begin
+  result := Point2D(GetLeft, GetBottom);
+end;
+
+function TObject2D.GetRightBottom: TPoint2D;
+begin
+  result := Point2D(GetRight, GetBottom);
+end;
+
+function TObject2D.GetRightTop: TPoint2D;
+begin
+  result := Point2D(GetRight, GetTop);
+end;
+
+function TObject2D.GetLeftCenter: TPoint2D;
+begin
+  result := Point2D(GetLeft, (GetTop + GetBottom) / 2)
+end;
+
+function TObject2D.GetBottomCenter: TPoint2D;
+begin
+  result := Point2D((GetRight + GetLeft) /2 , GetBottom);
+end;
+
+function TObject2D.GetRightCenter: TPoint2D;
+begin
+  result := Point2D(GetRight, (GetBottom + GetTop) / 2);
+end;
+
+function TObject2D.GetTopCenter: TPoint2D;
+begin
+  result := Point2D((GetRight + GetLeft) /2 , GetTop);
+end;
+
+function TObject2D.GetMiddlePoint: TPoint2D;
+begin
+  //if (self is TEllipticalArc2D) then
+    //result := TransformPoint2D(Point2D(((Points[0].X +  Points[1].X) / 2), ((Points[0].Y +  Points[1].Y) / 2)), ModelTransform)
+  //else
+    result := Point2D(((GetRight + GetLeft) / 2),
+                      ((GetBottom + GetTop) / 2));
+end;
+
+function TObject2D.GetMiddlePointX: TRealType;
+begin
+  result := StrToFloat(FormatFloat('0.0000000000', GetMiddlePoint.X));
+  //result := GetMiddlePoint.X;
+end;
+
+function TObject2D.GetMiddlePointY: TRealType;
+begin
+  result := StrToFloat(FormatFloat('0.0000000000', GetMiddlePoint.Y))
+  //result := GetMiddlePoint.Y;
+end;
+
+procedure TObject2D.SetMiddlePointX(AValue:TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := self.GetMiddlePoint;
+  ToPt   := Point2D(AValue, self.GetMiddlePointY);
+  self.MoveTo(ToPt, DragPt);
+end;
+
+procedure TObject2D.SetMiddlePointY(AValue:TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := self.GetMiddlePoint;
+  ToPt   := Point2D(self.GetMiddlePointX, AValue);
+  self.MoveTo(ToPt, DragPt);
+end;
+//End-Object Position
+
 // =====================================================================
 // TContainer2D
 // =====================================================================
@@ -11779,6 +12493,134 @@ begin
   result := '';
   for i := 0  to 128 do
     result := result + ABlockName[i];
+end;
+
+//TContainer2D
+procedure TContainer2D.Explode;
+var TmpIter: TExclusiveGraphicObjIterator;
+    TmpObj: TObject2D;
+begin
+  TmpIter := Objects.GetExclusiveIterator;
+  TmpIter.First;
+  try
+    repeat
+      if (TmpIter.Current is TLine2D) then
+      begin
+        TmpObj := TLine2D.Create(TmpIter.Current.ID, Point2D(0, 0), Point2D(0, 0));
+        TmpObj.Assign(TLine2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TSector2D) then
+      begin
+        TmpObj := TSector2D.Create(TmpIter.Current.ID, Point2D(0, 0), 0, 0, 0);
+        TSector2D(TmpObj).Assign(TSector2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TSegment2D) then
+      begin
+        TmpObj := TSegment2D.Create(TmpIter.Current.ID, Point2D(0, 0), 0, 0, 0);
+        TSegment2D(TmpObj).Assign(TSegment2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TEllipticalArc2D) then
+      begin
+        TmpObj := TEllipticalArc2D.Create(TmpIter.Current.ID, Point2D(0, 0), Point2D(0, 0), 0, 0);
+        TEllipticalArc2D(TmpObj).Assign(TEllipticalArc2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TPolygon2D) then
+      begin
+        TmpObj := TPolygon2D.Create(TmpIter.Current.ID, []);
+        TPolygon2D(TmpObj).Assign(TPolygon2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TPolyline2D) then
+      begin
+        TmpObj := TPolyline2D.Create(TmpIter.Current.ID, []);
+        TPolyline2D(TmpObj).Assign(TPolyline2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TFrame2D) then
+      begin
+        TmpObj := TFrame2D.Create(TmpIter.Current.ID, Point2D(0, 0), Point2D(0, 0));
+        TFrame2D(TmpObj).Assign(TFrame2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TBSpline2D) then
+      begin
+        TmpObj := TBSpline2D.Create(TmpIter.Current.ID, []);
+        TBSpline2D(TmpObj).Assign(TBSpline2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TCircularArc2D) then
+      begin
+        TmpObj := TCircularArc2D.Create(TmpIter.Current.ID, Point2D(0, 0), 0, 0, 0);
+        TCircularArc2D(TmpObj).Assign(TCircularArc2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TSymetricSymbol2D) then
+      begin
+        TmpObj := TSymetricSymbol2D.Create(TmpIter.Current.ID, Point2D(0, 0), 0);
+        TSymetricSymbol2D(TmpObj).Assign(TSymetricSymbol2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TASymetricSymbol2D) then
+      begin
+        TmpObj := TASymetricSymbol2D.Create(TmpIter.Current.ID, Point2D(0, 0), Point2D(0, 0));
+        TASymetricSymbol2D(TmpObj).Assign(TASymetricSymbol2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TCircle2D) then
+      begin
+        TmpObj := TCircle2D.Create(TmpIter.Current.ID, Point2D(0, 0), 0);
+        TCircle2D(TmpObj).Assign(TCircle2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TEllipse2D) then
+      begin
+        TmpObj := TEllipse2D.Create(TmpIter.Current.ID, Point2D(0, 0), Point2D(0, 0));
+        TEllipse2D(TmpObj).Assign(TEllipse2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TText2D) then
+      begin
+        TmpObj := TText2D.Create(TmpIter.Current.ID, Rect2D(0, 0, 0, 0),   0, '');
+        TText2D(TmpObj).Assign(TText2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TJustifiedVectText2D) then
+      begin
+        TmpObj := TJustifiedVectText2D.Create(TmpIter.Current.ID, nil, Rect2D(0, 0, 0, 0), 0, '');
+        TJustifiedVectText2D(TmpObj).Assign(TJustifiedVectText2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TBitmap2D) then
+      begin
+        TmpObj := TBitmap2D.Create(TmpIter.Current.ID, Point2D(0, 0), Point2D(0, 0), nil);
+        TBitmap2D(TmpObj).Assign(TBitmap2D(TmpIter.Current));
+      end else
+
+      if (TmpIter.Current is TBlock2D) then
+      begin
+        TmpObj := TBlock2D.Create(TmpIter.Current.ID, nil);
+        TBlock2D(TmpObj).Assign(TBlock2D(TmpIter.Current));
+      end else
+
+      if (TmpObj is TContainer2D) then
+      begin
+        TmpObj := TContainer2D.Create(TmpIter.Current.ID, [nil]);
+        TContainer2D(TmpObj).Assign(TContainer2D(TmpIter.Current));
+        if TmpObj is TBlock2D then
+          ShowMessage('Block');
+      end;
+
+      TmpObj.Transform(ModelTransform);
+      OwnerCAD.AddObject(TmpObj.ID, TmpObj);
+
+    until TmpIter.Next = nil;
+  finally
+    TmpIter.Free;
+  end;
 end;
 
 constructor TContainer2D.Create(ID: LongInt; const Objs: array of TObject2D);
@@ -11946,34 +12788,74 @@ end;
 procedure TContainer2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas;
                             const ClipRect2D: TRect2D; const DrawMode: Integer);
 var
-  TmpObj: TObject2D;
+  Obj: TObject2D;
   TmpTransf: TTransf2D;
   TmpIter: TGraphicObjIterator;
-  TmpPen: TPen;
-  TmpBrush: TBrush;
+
+  TmpPenColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpPenWidth: word;
+
+  TmpBrushColor: TColor;
+  TmpBrushStyle: TBrushStyle;
 begin
+  TmpPenColor   := Cnv.Canvas.Pen.Color;
+  TmpPenStyle   := Cnv.Canvas.Pen.Style;
+  TmpPenWidth   := Cnv.Canvas.Pen.Width;
+  TmpBrushColor := Cnv.Canvas.Brush.Color;
+  TmpBrushStyle := Cnv.Canvas.Brush.Style;
+
   // Crea un iterator temporaneo.
   TmpIter := fObjects.GetIterator;
-  TmpPen := TPen.Create;
-  TmpBrush := TBrush.Create;
   try
+
     { Transform the container. }
     TmpTransf := MultiplyTransform2D(ModelTransform, VT);
-    TmpObj := TObject2D(TmpIter.First);
-    TmpPen.Assign(Cnv.Canvas.Pen);
-    TmpBrush.Assign(Cnv.Canvas.Brush);
-    while TmpObj <> nil do
-     begin
-       Cnv.Canvas.Pen.Assign(TmpPen);
-       Cnv.Canvas.Brush.Assign(TmpBrush);
+    Obj := TObject2D(TmpIter.First);
+
+    while Obj <> nil do
+    begin
+      if (Obj is TPrimitive2D)then
+      begin
+        Cnv.Canvas.Pen.Color   := Obj.PenColor;
+        Cnv.Canvas.Pen.Style   := Obj.PenStyle;
+        Cnv.Canvas.Pen.Width   := Obj.PenWidth;
+      end;
+
+      if (Obj is TClosedPolyline2D) then
+      begin
+        Cnv.Canvas.Brush.Color  := TClosedPolyline2D(Obj).BrushColor;
+        Cnv.Canvas.Brush.Style  := TClosedPolyline2D(Obj).BrushStyle;
+      end;
+      if (Obj is TClosedCurve2D) then
+      begin
+        Cnv.Canvas.Brush.Color  := TClosedCurve2D(Obj).BrushColor;
+        Cnv.Canvas.Brush.Style  := TClosedCurve2D(Obj).BrushStyle;
+      end;
+
+
        { Transform the object in the container. }
-       TmpObj.Draw(TmpTransf, Cnv, ClipRect2D, DrawMode);
-       TmpObj := TObject2D(TmpIter.Next);
-     end;
+       Obj.Draw(TmpTransf, Cnv, ClipRect2D, DrawMode);
+       Obj := TObject2D(TmpIter.Next);
+    end;
+
   finally
-    TmpPen.Free;
-    TmpBrush.Free;
     TmpIter.Free;
+
+    if (Obj is TPrimitive2D)then
+    begin
+      Cnv.Canvas.Pen.Color   := TmpPenColor;
+      Cnv.Canvas.Pen.Style   := TmpPenStyle;
+      Cnv.Canvas.Pen.Width   := TmpPenWidth;
+    end;
+
+    if (Obj is TClosedPolyline2D) or (Obj is TClosedCurve2D) then
+    begin
+      Cnv.Canvas.Brush.Color  := TmpBrushColor;
+      Cnv.Canvas.Brush.Style  := TmpBrushStyle;
+    end;
+
+
   end;
 end;
 
@@ -12027,7 +12909,6 @@ end;
 constructor TSourceBlock2D.Create(ID: LongInt; const Name: TSourceBlockName; const Objs: array of TObject2D);
 begin
   inherited Create(ID, Objs);
-
   fName := Name;
   fLibraryBlock := False;
   fNReference := 0;
@@ -12035,8 +12916,8 @@ end;
 
 destructor TSourceBlock2D.Destroy;
 begin
-  if fNReference > 0 then
-   Raise ECADSourceBlockIsReferenced.Create('TSourceBlock2D.Destroy: This source block is referenced and cannot be deleted');
+  //if fNReference > 0 then   !!!
+   //Raise ECADSourceBlockIsReferenced.Create('TSourceBlock2D.Destroy: This source block is referenced and cannot be deleted');
   inherited Destroy;
 end;
 
@@ -12046,7 +12927,8 @@ begin
   Stream.Read(fToBeSaved, SizeOf(fToBeSaved));
   Stream.Read(fLibraryBlock, SizeOf(fLibraryBlock));
   Stream.Read(fName, SizeOf(fName));
-  fNReference := 0;
+  fNReference := 0; //original
+  //Stream.Read(fNReference, SizeOf(fNReference));
 end;
 
 procedure TSourceBlock2D.SaveToStream(const Stream: TStream);
@@ -12055,6 +12937,7 @@ begin
   Stream.Write(fToBeSaved, SizeOf(fToBeSaved));
   Stream.Write(fLibraryBlock, SizeOf(fLibraryBlock));
   Stream.Write(FName, SizeOf(FName));
+  //Stream.Write(fNReference, SizeOf(fNReference));
 end;
 
 procedure TSourceBlock2D.Assign(const Obj: TGraphicObject);
@@ -12089,6 +12972,24 @@ procedure TBlock2D.SetOriginPoint(Pt: TPoint2D);
 begin
   fOriginPoint := Pt;
   UpdateExtension(Self);
+end;
+
+procedure  TBlock2D.Explode;
+var TmpIter: TExclusiveGraphicObjIterator;
+    TmpObj: TObject2D;
+begin
+  TmpIter := self.SourceBlock.Objects.GetExclusiveIterator;
+  TmpIter.First;
+  try
+    while TmpIter.Current <> nil do
+    begin
+      TObject2D(TmpIter.Current).Transform(ModelTransform);
+      TmpIter.Next;
+    end;
+  finally
+    TmpIter.Free;
+  end;
+  TContainer2D(self.fSourceBlock).Explode;
 end;
 
 constructor TBlock2D.Create(ID: LongInt; const Source: TSourceBlock2D);
@@ -12457,7 +13358,8 @@ begin
 end;
 
 function TCADCmp2D.FindSourceBlock(const SrcName: TSourceBlockName): TSourceBlock2D;
-var TmpIter: TGraphicObjIterator;
+var
+  TmpIter: TGraphicObjIterator;
 begin
   TmpIter := SourceBlocksIterator;
   try
@@ -12465,7 +13367,7 @@ begin
     while Result <> nil do
      begin
        if LowerCase(SrcName) = LowerCase(Result.Name) then
-        Exit;
+        Exit(result);
        Result := TmpIter.Next as TSourceBlock2D;
      end;
   finally
@@ -12473,6 +13375,7 @@ begin
   end;
   //Raise ECADListObjNotFound.Create(Format('TCADCmp2D.FindSourceBlock: Source block %s not found', [SrcName]));
 end;
+
 
 function TCADCmp2D.BlockObjects(const SrcName: TSourceBlockName; const Objs: TGraphicObjIterator): TSourceBlock2D;
 var
@@ -12707,7 +13610,8 @@ begin
      Cnv.Canvas.Pen.Assign(RubberPen);
      Cnv.Canvas.Brush.Color := RubberPen.Color;
      Cnv.Canvas.Brush.Style := bsSolid;
-     Draw(ViewportToScreenTransform, Cnv, ClipRect2D, DrawMode);
+     //Draw(ViewportToScreenTransform, Cnv, ClipRect2D, DrawMode);
+     Draw(ViewportToScreenTransform, Cnv, ClipRect2D, DRAWMODE_EDIT);
      if ShowControlPoints then
       begin
         Cnv.Canvas.Pen.Assign(RubberPen);
@@ -13839,14 +14743,52 @@ begin
 end;
 
 var cont: word;
+
 initialization
+  EditPenColor            := clWhite;
+  EditPenStyle            := psDot;
+  EditPenWidth            := 1;
+
+  EditBrushColor          := clRed;
+  EditBrushStyle          := bsSolid;
+
   CADSysInitClassRegister;
+
   CADSysRegisterClass(0, TContainer2D);
   CADSysRegisterClass(1, TSourceBlock2D);
   CADSysRegisterClass(2, TBlock2D);
 
-  CADClipboard2D := TContainer2D.Create(-1, [nil]);
+  CADSysRegisterClass(3, TLine2D);
+  CADSysRegisterClass(4, TPolyline2D);
+  CADSysRegisterClass(5, TPolygon2D);
+  CADSysRegisterClass(6, TRectangle2D);
+
+  CADSysRegisterClass(7, TEllipticalArc2D);
+  CADSysRegisterClass(8, TEllipse2D);
+  CADSysRegisterClass(9, TFilledEllipse2D);
+  CADSysRegisterClass(10, TText2D);
+  CADSysRegisterClass(11, TFrame2D);
+  CADSysRegisterClass(12, TBitmap2D);
+  CADSysRegisterClass(13, TBSpline2D);
+  CADSysRegisterClass(14, TJustifiedVectText2D);
+
+  CADSysRegisterClass(15, TSegment2D);
+  CADSysRegisterClass(16, TSector2D);
+
+  CADSysRegisterClass(17, TSymetricSymbol2D);
+  CADSysRegisterClass(18, TASymetricSymbol2D);
+
+  CADSysRegisterClass(19, TSimplePrimitive2D);
+  CADSysRegisterClass(20, TDirectionalCurve2D);
+  CADSysRegisterClass(21, TClosedCurve2D);
+  CADSysRegisterClass(22, TClosedPolyline2D);
+
+  CADSysRegisterClass(23, TCircle2D);
+  CADSysRegisterClass(24, TCircularArc2D);
+
+  //CADClipboard2D := TContainer2D.Create(-1, [nil]);
   CADClipboard2D := nil;
+
 
 finalization
   if CADClipboard2D <> nil then

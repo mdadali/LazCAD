@@ -11,18 +11,19 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fComponentFrame;
 
 type
 
-TCADSysRectangle2D = class(TCADSysBaseComponent2D) //class(tpersistent)
+TCADSysRectangle2D = class(TCADSysFrame2D) //class(tpersistent)
 
   private
-    fRectangle2D: TRectangle2D;
+
     function   GetRectangle2D: TRectangle2D;
     procedure  SetRectangle2D(ARectangle2D: TRectangle2D);
 
   public
+    fRectangle2D: TRectangle2D;
     constructor Create;
     property Rectangle2D: TRectangle2D read GetRectangle2D write SetRectangle2D;
   published

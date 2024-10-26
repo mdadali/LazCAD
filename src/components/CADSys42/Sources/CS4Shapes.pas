@@ -10,7 +10,7 @@ unit CS4Shapes;
 
 interface
 
-uses SysUtils, Classes, Graphics,  LCLType, LCLIntf,
+uses SysUtils, Classes, Graphics,  LCLType, LCLIntf, FPCanvas,
      CADSys4, CS4BaseTypes;
 
 type
@@ -27,6 +27,12 @@ type
      the vectorial text shape <See Class=TJustifiedVectText2D> and
      <See Class=TJustifiedVectText3D>.
   }
+
+  TSimplePrimitive2D  = class;
+  TDirectionalCurve2D = class;
+  TClosedCurve2D      = class;
+  TFrame2D = class;
+  TBSpline2D = class;
 
   TExtendedFont = class(TObject)
   private
@@ -220,77 +226,269 @@ type
      <B=Note>: The control points are always in the object model
      coordinate system !
   }
+
+  //The PointValue will be changed
+  TCoordPoint2DInsp = class
+    fOwner: TGraphicObject; fPointCode: integer;
+  public
+    function  GetX: TRealType;
+    function  GetY: TrealType;
+    procedure SetX(AValue: TRealType);
+    procedure SetY(AValue: TRealType);
+  public
+    constructor create(AOwner: TGraphicObject; APointCode: integer);
+  published
+    property X: TRealType read GetX write SetX;
+    property Y: TRealType read GetY write SetY;
+  end;
+
+  //The OwnerObject  will be moved
+  TCoordPoint2DMoveObjectInsp = class
+    fOwner: TGraphicObject; fPointIndex: word;
+  public
+    function  GetX: TRealType;
+    function  GetY: TrealType;
+    procedure SetX(AValue: TRealType);
+    procedure SetY(AValue: TRealType);
+  public
+    constructor create(AOwner: TGraphicObject; APointIndex: word);
+  published
+    property X: TRealType read GetX write SetX;
+    property Y: TRealType read GetY write SetY;
+  end;
+
+  TCoordPoints2DInsp = class
+    protected
+      fOwner: TGraphicObject; fPointIndex: integer;
+      fStartPoint, fEndPoint: TCoordPoint2DInsp;
+    public
+      constructor create(AOwner: TGraphicObject);
+      destructor  destroy; override;
+    published
+      property StartPoint:  TCoordPoint2DInsp  read  fStartPoint  write fStartPoint;
+      property EndPoint:    TCoordPoint2DInsp  read  fEndPoint    write fEndPoint;
+  end;
+
+  TArcAngles = class
+    fOwner: TGraphicObject;
+  protected
+    function  GetStartAngle: TRealType;
+    procedure SetStartAngle(AAngle: TRealType);
+    function  GetEndAngle: TRealType;
+    procedure SetEndAngle(AAngle: TRealType);
+    function  GetArcAngle: TRealType;
+    procedure SetArcAngle(AAngle: TRealType);
+  public
+    constructor create(AOwner: TGraphicObject);
+  published
+    property StartAngle: TRealType read  GetStartAngle write SetStartAngle;
+    property EndAngle:   TRealType read  GetEndAngle   write SetEndAngle;
+    property ArcAngle:   TRealType read  GetArcAngle   write SetArcAngle;
+  end;
+
+  TEllipticalArc2DInsp = class
+    fOwner: TGraphicObject;
+    fArcAngles: TArcAngles;
+    function   GetDirection: TArcDirection;
+    procedure  SetDirection(AArcDirection: TArcDirection);
+    function   GetCurvePrecision: word;
+    procedure  SetCurvePrecision(AValue: word);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor destroy; override;
+  published
+    property ArcAngles: TArcAngles    read  fArcAngles   write fArcAngles;
+    property Direction: TArcDirection read  GetDirection write SetDirection;
+    property CurvePrecision: word     read  GetCurvePrecision write SetCurvePrecision;
+  end;
+
+  TCircle2DInsp = class
+  protected
+    fOwner: TGraphicObject;
+    fCenterPoint: TCoordPoint2DMoveObjectInsp;
+    function  GetRadius: TrealType;
+    procedure SetRadius(AValue: TRealType);
+    function  GetStartAngle: TrealType;
+    procedure SetStartAngle(AValue: TRealType);
+    function  GetDirection: TArcDirection;
+    procedure SetDirection(ADirection: TArcDirection);
+    function  GetCurvePrecision: word;
+    procedure SetCurvePrecision(AValue: word);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property CenterPoint: TCoordPoint2DMoveObjectInsp  read  fCenterPoint   write fCenterPoint;
+    property StartAngle:  TRealType      read   GetStartAngle     write SetStartAngle;
+    property Radius:      TRealType      read   GetRadius         write SetRadius;
+    property Direction:   TArcDirection  read   GetDirection      write SetDirection;
+    property CurvePrecision: word        read   GetCurvePrecision write SetCurvePrecision;
+  end;
+
+  TCircularArc2DInsp = class
+    fOwner: TGraphicObject;
+    fCenterPoint: TCoordPoint2DMoveObjectInsp;
+    fArcAngles: TArcAngles;
+    function   GetRadius: TrealType;
+    procedure  SetRadius(AValue: TRealType);
+    function   GetDirection: TArcDirection;
+    procedure  SetDirection(ADirection: TArcDirection);
+    function   GetCurvePrecision: word;
+    procedure  SetCurvePrecision(AValue: word);
+   public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property CenterPoint:    TCoordPoint2DMoveObjectInsp read  fCenterPoint   write fCenterPoint;
+    property Radius:         TRealType      read  GetRadius          write SetRadius;
+    property Direction:      TArcDirection  read  GetDirection       write SetDirection;
+    property ArcAngles:      TArcAngles     read  fArcAngles         write fArcAngles;
+    property CurvePrecision: word           read  GetCurvePrecision  write SetCurvePrecision;
+   end;
+
+  TSegment2DInsp = class
+    fOwner: TGraphicObject;
+    fCenterPoint: TCoordPoint2DMoveObjectInsp;
+    fArcAngles: TArcAngles;
+    function  GetRadius: TrealType;
+    procedure SetRadius(AValue: TRealType);
+    function  GetStartAngle: TrealType;
+    procedure SetStartAngle(AValue: TRealType);
+    function  GetDirection: TArcDirection;
+    procedure SetDirection(ADirection: TArcDirection);
+    function  GetEndAngle: TrealType;
+    procedure SetEndAngle(AValue: TRealType);
+    function  GetCurvePrecision: word;
+    procedure SetCurvePrecision(AValue: word);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property CenterPoint: TCoordPoint2DMoveObjectInsp  read  fCenterPoint   write fCenterPoint;
+    property Radius:         TRealType      read  GetRadius         write SetRadius;
+    property Direction:      TArcDirection  read  GetDirection      write SetDirection;
+    property CurvePrecision: word           read  GetCurvePrecision write SetCurvePrecision;
+    property ArcAngles:      TArcAngles     read fArcAngles         write fArcAngles;
+    //property EndAngle:    TRealType      read  GetEndAngle    write SetEndAngle;
+    //property StartAngle:  TRealType      read  GetStartAngle  write SetStartAngle;
+  end;
+
+  TSector2DInsp = class
+     fOwner: TGraphicObject;
+     fCenterPoint: TCoordPoint2DMoveObjectInsp;
+     fArcAngles: TArcAngles;
+     function  GetRadius: TrealType;
+     procedure SetRadius(AValue: TRealType);
+     function  GetStartAngle: TrealType;
+     procedure SetStartAngle(AValue: TRealType);
+     function  GetDirection: TArcDirection;
+     procedure SetDirection(ADirection: TArcDirection);
+     function  GetEndAngle: TrealType;
+     procedure SetEndAngle(AValue: TRealType);
+     function  GetCurvePrecision: word;
+     procedure SetCurvePrecision(AValue: word);
+   public
+     constructor create(AOwner: TGraphicObject);
+     destructor  destroy; override;
+   published
+     property CenterPoint:    TCoordPoint2DMoveObjectInsp  read  fCenterPoint   write fCenterPoint;
+     property Radius:         TRealType      read  GetRadius         write SetRadius;
+     property Direction:      TArcDirection  read  GetDirection      write SetDirection;
+     property CurvePrecision: word           read  GetCurvePrecision write SetCurvePrecision;
+     property ArcAngles:      TArcAngles     read fArcAngles         write fArcAngles;
+     //property EndAngle:    TRealType      read  GetEndAngle    write SetEndAngle;
+     //property StartAngle:  TRealType      read  GetStartAngle  write SetStartAngle;
+   end;
+
+
+  TBrushInspClosedCurve2D = class
+  private
+    fOwner: TGraphicObject;
+    function   GetBrushSource: TBrushSource;
+    procedure  SetBrushSource(ABrushSource: TBrushSource);
+    function   GetBrushColor:  TColor;
+    procedure  SetBrushColor(ABrushColor: TColor);
+    function   GetBrushStyle:  TBrushStyle;
+    procedure  SetBrushStyle(ABrushStyle: TBrushStyle);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property  BrushSource: TBrushSource  read GetBrushSource   write SetBrushSource;
+    property  BrushColor:  TColor        read GetBrushColor    write SetBrushColor;
+    property  BrushStyle:  TBrushStyle   read GetBrushStyle    write SetBrushStyle;
+  end;
+
+  TBrushInspClosedPolyline2D = class
+  private
+    fOwner: TGraphicObject;
+    function   GetBrushSource: TBrushSource;
+    procedure  SetBrushSource(ABrushSource: TBrushSource);
+    function   GetBrushColor:  TColor;
+    procedure  SetBrushColor(ABrushColor: TColor);
+    function   GetBrushStyle:  TBrushStyle;
+    procedure  SetBrushStyle(ABrushStyle: TBrushStyle);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property  BrushSource: TBrushSource  read GetBrushSource   write SetBrushSource;
+    property  BrushColor:  TColor        read GetBrushColor    write SetBrushColor;
+    property  BrushStyle:  TBrushStyle   read GetBrushStyle    write SetBrushStyle;
+  end;
+
+  TPenInsp = class
+  private
+    fOwner: TGraphicObject;
+    function   GetPenSource: TPenSource;
+    procedure  SetPenSource(APenSource: TPenSource);
+    function   GetPenColor:  TColor;
+    procedure  SetPenColor(APenColor: TColor);
+    function   GetPenStyle:  TPenStyle;
+    procedure  SetPenStyle(APenStyle: TPenStyle);
+    function   GetPenWidth: word;
+    procedure  SetPenWidth(APenWidht: word);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property  PenSource: TPenSource  read GetPenSource   write SetPenSource;
+    property  PenColor:  TColor      read GetPenColor    write SetPenColor;
+    property  PenStyle:  TPenStyle   read GetPenStyle    write SetPenStyle;
+    property  PenWidth:  word        read GetPenWidth    write SetPenWidth;
+  end;
+
+  TPrim2DInsp = class
+     fOwner: TGraphicObject;
+     fPenInsp: TPenInsp;
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property Pen: TPenInsp read fPenInsp write fPenInsp;
+  end;
+
+  TClosedCurve2DInsp = class
+     fOwner: TGraphicObject;
+     fBrushInsp: TBrushInspClosedCurve2D;
+     function  GetArea:  TRealType;
+   public
+     constructor create(AOwner: TGraphicObject);
+     destructor  destroy; override;
+   published
+     property Area:  TRealType  read  GetArea;
+     property Brush: TBrushInspClosedCurve2D read fBrushInsp  write fBrushInsp;
+   end;
+
   TPrimitive2D = class(TObject2D)
   private
+     fPrim2DInsp: TPrim2DInsp;
      fPoints: TPointsSet2D;
-     //added
-     fDirection: TArcDirection;
-     fShowDirection: boolean;
-     fReserveInt1: integer;
-{     fReserveInt2,
-     fReserveInt3: integer;
-     fReserveStr1,
-     fReserveStr2,
-     fReserveStr3: string;
-     fPenColor: TColor;
-     fPenStyle: TPenStyle;
-     fPenSize: word;
- }
-     fArea,
-     fAngle: TRealType;
-
-     procedure SetArcDirection(D: TArcDirection);
-
-     function GetLeft: TRealType;
-     function GetBottom: TRealType;
-     function GetRight: TRealType;
-     function GetTop: TRealType;
-
-     procedure SetLeft(AValue:TRealType);
-     procedure SetBottom(AValue:TRealType);
-     procedure SetRight(AValue:TRealType);
-     procedure SetTop(AValue:TRealType);
-
-     function GetLeftTop: TPoint2D;
-     function GetLeftCenter: TPoint2D;
-     function GetLeftBottom: TPoint2D;
-     function GetRightTop: TPoint2D;
-     function GetRightCenter: TPoint2D;
-     function GetRightBottom: TPoint2D;
-
-     function GetBottomCenter: TPoint2D;
-     function GetTopCenter: TPoint2D;
-
-     function GetCenterPoint: TPoint2D;
-     function GetStartPoint: TPoint2D;
-     function GetEndPoint: TPoint2D;
-
-     function GetCenterPointX: TRealType;
-     function GetCenterPointY: TRealType;
-
-     function GetStartPointX: TRealType;
-     function GetStartPointY: TRealType;
-
-     function GetEndPointX: TRealType;
-     function GetEndPointY: TRealType;
-
-     procedure SetCenterPointX(AValue:TRealType);
-     procedure SetCenterPointY(AValue:TRealType);
-
-     procedure SetStartPointX(AValue:TRealType);
-     procedure SetStartPointY(AValue:TRealType);
-
-     procedure SetEndPointX(AValue:TRealType);
-     procedure SetEndPointY(AValue:TRealType);
-
-     function  GetLength: TRealType;
-
-     function  GetAngle: TRealType;
-     procedure SetAngle(AAngle: TRealType);
-
-     function GetArea: TRealType;
-
   protected
+    fPenSource: TPenSource;
+    fPenColor:  TColor;
+    fPenStyle:  TPenStyle;
+    fPenWidth:  word;
     procedure _UpdateExtension; override;
     {: This method allows you to change the type of the set
        of points used to store the <I=control points> of the
@@ -312,6 +510,28 @@ type
        segment as well as straight lines.
     }
     function CreateVect(const Size: Integer): TPointsSet2D; dynamic;
+
+    function  GetStartPoint: TPoint2D;           virtual; abstract;
+    function  GetStartPointX: TRealType;         virtual; abstract;
+    function  GetStartPointY: TRealType;         virtual; abstract;
+    procedure SetStartPointX(AValue:TRealType);  virtual; abstract;
+    procedure SetStartPointY(AValue:TRealType);  virtual; abstract;
+
+    function  GetEndPointX: TRealType;           virtual; abstract;
+    function  GetEndPointY: TRealType;           virtual; abstract;
+    function  GetEndPoint: TPoint2D;             virtual; abstract;
+    procedure SetEndPointX(AValue:TRealType);    virtual; abstract;
+    procedure SetEndPointY(AValue:TRealType);    virtual; abstract;
+
+    //propertys
+    property  StartPointX:  TRealType   read GetStartPointX  write   SetStartPointX;
+    property  StartPointY:  TRealType   read GetStartPointY  write   SetStartPointY;
+
+    property  EndPointX:    TRealType   read GetEndPointX    write    SetEndPointX;
+    property  EndPointY:    TRealType   read GetEndPointY    write    SetEndPointY;
+
+    property  MiddlePointX: TRealType   read GetMiddlePointX write  SetMiddlePointX;
+    property  MiddlePointY: TRealType   read GetMiddlePointY write  SetMiddlePointY;
 
   public
     {: This is the constructor of the class.
@@ -340,55 +560,95 @@ type
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure Assign(const Obj: TGraphicObject); override;
     procedure SaveToStream(const Stream: TStream); override;
+
+    function  GetPenSource: TPenSource;  override;
+    procedure SetPenSource(APenSource: TPenSource); override;
+
+    function  GetPenColor: TColor;  override;
+    procedure SetPenColor(APenColor: TColor); override;
+
+    function  GetPenStyle: TPenStyle;  override;
+    procedure SetPenStyle(APenStyle: TPenStyle); override;
+
+    function  GetPenWidth: word;  override;
+    procedure SetPenWidth(AValue: word); override;
+
     {: This property contains the set of <I=control points> used
        to define the shape of the entity.
 
        See the introduction of <See Class=TPrimitive2D> for details.
     }
-    property Points: TPointsSet2D read fPoints write fPoints;
+    property  Points: TPointsSet2D read fPoints write fPoints;
 
-    //added
-    property Left: TRealType  read GetLeft write SetLeft;
-    property Bottom: TRealType  read GetBottom  write  SetBottom;
-    property Right: TRealType read GetRight  write  SetRight;
-    property Top: TRealType   read GetTop   write   SetTop;
+    property  StartPoint:  TPoint2D  read  GetStartPoint;
+    property  EndPoint:    TPoint2D  read  GetEndPoint;
+    property  MiddlePoint: TPoint2D  read  GetMiddlePoint;
 
-    property StartPointX: TRealType  read GetStartPointX  write  SetStartPointX;
-    property StartPointY: TRealType read  GetStartPointY  write  SetStartPointY;
+    property  PenSource: TPenSource  read GetPenSource write SetPenSource;
+    property  PenColor:  TColor      read GetPenColor  write SetPenColor;
+    property  PenStyle:  TPenStyle   read GetPenStyle  write SetPenStyle;
+    property  PenWidth:  word        read GetPenWidth  write SetPenWidth;
 
-    property EndPointX: TRealType  read  GetEndPointX    write  SetEndPointX;
-    property EndPointY: TRealType  read  GetEndPointY    write  SetEndPointY;
-
-    property CenterPointX: TRealType read  GetCenterPointX write SetCenterPointX;
-    property CenterPointY: TRealType read  GetCenterPointY write SetCenterPointY;
-
-    property LeftTop: TPoint2D    read  GetLeftTop;
-    property LeftCenter: TPoint2D read  GetLeftCenter;
-    property LeftBottom: TPoint2D read  GetLeftBottom;
-    property RightTop: TPoint2D   read  GetRightTop;
-    property RightCenter: TPoint2D read GetRightCenter;
-    property RightBottom: TPoint2D read GetRightBottom;
-
-    property BottomCenter: TPoint2D read  GetBottomCenter;
-    property TopCenter: TPoint2D    read  GetTopCenter;
-
-    property CenterPoint: TPoint2D read   GetCenterPoint;
-
-    property StartPoint: TPoint2D  read   GetStartPoint;
-    property EndPoint: TPoint2D   read    GetEndPoint;
-
-    property Angle: TRealType  read GetAngle write SetAngle;
-    property Direction: TArcDirection read FDirection write SetArcDirection default adClockwise;
-    property ShowDirection: boolean read fShowDirection write fShowDirection;
-    property Area: TRealType read GetArea;
-
-    property ReserveInt1: integer read  fReserveInt1  write fReserveInt1;
-  //added
   published
-    property ObjectLength: TRealType read GetLength;
+    property Primitive2D: TPrim2DInsp  read fPrim2DInsp write  fPrim2DInsp;
   end;
 
-  TDirectionalPrimitive2D = class(TPrimitive2D)
+  TSimplePrim2DInsp = class
+     fOwner: TGraphicObject;
+     fCoordPoints2DInsp: TCoordPoints2DInsp;
+     function   GetShowDirection: boolean;
+     procedure  SetShowDirection(AValue: boolean);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property CoordPoints: TCoordPoints2DInsp read fCoordPoints2DInsp write fCoordPoints2DInsp;
+    property ShowDirection: boolean read GetShowDirection write SetShowDirection;
+  end;
+
+  TLine2DInsp = class
+     fOwner: TGraphicObject;
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+  end;
+
+  TSimplePrimitive2D = class(TPrimitive2D)
+  private
+    fSimplePrim2DInsp: TSimplePrim2DInsp;
+
+    fShowDirection: boolean;
+
+    function  GetLength: TRealType;
+
+
+    function  GetStartPoint: TPoint2D;            override;
+    function  GetStartPointX: TRealType;          override;
+    function  GetStartPointY: TRealType;          override;
+    procedure SetStartPointX(AValue:TRealType);   override;
+    procedure SetStartPointY(AValue:TRealType);   override;
+
+    function  GetEndPointX: TRealType;            override;
+    function  GetEndPointY: TRealType;            override;
+    function  GetEndPoint: TPoint2D;              override;
+    procedure SetEndPointX(AValue:TRealType);     override;
+    procedure SetEndPointY(AValue:TRealType);     override;
+
+  protected
+  public
+    procedure   Reverse; override; //added
+    procedure   Inverse; override; //adedd
+    procedure   Explode; override; //added
+    constructor create(ID: LongInt; NPts: Integer);
+    destructor  destroy; override;
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    procedure   Assign(const Obj: TGraphicObject); override;
+    procedure   SaveToStream(const Stream: TStream); override;
+
+    property ShowDirection: boolean read fShowDirection write fShowDirection;
+  published
+    property SimplePrimitive2D: TSimplePrim2DInsp read fSimplePrim2DInsp write fSimplePrim2DInsp;
   end;
 
   {: This class defines a <I=2D outline>.
@@ -416,9 +676,21 @@ type
      <B=Note>: The control points are always in the object model
      coordinate system !
   }
-  TOutline2D = class(TPrimitive2D)
+  //TOutline2D = class(TPrimitive2D)    //original
+  TOutline2D = class(TSimplePrimitive2D)
   private
-    //
+    function  GetStartPoint: TPoint2D;          override;
+    function  GetStartPointX: TRealType;        override;
+    function  GetStartPointY: TRealType;        override;
+    procedure SetStartPointX(AValue:TRealType); override;
+    procedure SetStartPointY(AValue:TRealType); override;
+
+    function  GetEndPointX: TRealType;           override;
+    function  GetEndPointY: TRealType;           override;
+    function  GetEndPoint: TPoint2D;             override;
+    procedure SetEndPointX(AValue:TRealType);    override;
+    procedure SetEndPointY(AValue:TRealType);    override;
+
   protected
     {: This method is called when the <I=profile points>
        are needed.
@@ -441,8 +713,10 @@ type
        The fact that the set is closed influences the way in which
        it is drawed and picked.
     }
-    function GetIsClosed: Boolean; virtual;
+    function GetHasBrush: Boolean; virtual;
+
   public
+
     {: This method initializes the profile points vector for using.
 
        You must call this method before any use of the methods that
@@ -482,11 +756,13 @@ type
     {: This property is <B=True> when the shape of the
        entity must be considere as closed.
     }
-    property IsClosed: Boolean read GetIsClosed;
-    {: This property contains the direction used to draw the arc.
+    property HasBrush: Boolean read GetHasBrush;
 
-       See <See Type=TArcDirection> for details.
-    }
+    property StartPointX;
+    property StartPointY;
+    property EndPointX;
+    property EndPointY;
+  published
 
   end;
 
@@ -495,7 +771,9 @@ type
      The entity has two <I=control points> that are the extremes of
      the segment.
   }
-  TLine2D = class(TPrimitive2D)
+  TLine2D = class(TSimplePrimitive2D)
+    fSimplePrim2DInsp: TSimplePrim2DInsp;
+  private
   public
     {: This constructor creates a new 2D line segment.
 
@@ -505,43 +783,19 @@ type
        <LI=<I=P1> is the starting point of the segment.>
        <LI=<I=P2> is the ending point of the segment.>
     }
+    procedure   InitializeAngle; override;
     constructor Create(ID: LongInt; const P1, P2: TPoint2D);
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    destructor destroy; override;
+
     procedure Assign(const Obj: TGraphicObject); override;
     procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
     function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
     procedure SetLength(AValue: TRealType);
+
+  published
+    property SimplePrimitive2D: TSimplePrim2DInsp read fSimplePrim2DInsp write fSimplePrim2DInsp;
   end;
-
-  {: This class defines a 2D polyline.
-
-     A polyline is obtained by connecting the <I=profile points> (in
-     this case are the same as the <I=control points>) with straight
-     line segments.
-  }
-  TPolyline2D = class(TOutline2D)
-  protected
-    function GetProfilePoints: TPointsSet2D; override;
-    function GetNPts: Integer; override;
-  public
-    {: This constructor creates a new 2D polyline.
-
-       Parameters:
-
-       <LI=<I=ID> is the object identifier.>
-       <LI=<I=Pts> is an array that contains the <I=control points> of
-        the polyline. If you want to create a pointless polyline
-        (because you want to add the points after the construction)
-        you must pass an array of only one point (an empty array is
-        not allowed by Delphi) and delete the point after the
-        construction phase by using the method of
-        <See Property=TPrimitive2D@Points>.>
-    }
-    constructor Create(ID: LongInt; const Pts: array of TPoint2D);
-    procedure Assign(const Obj: TGraphicObject); override;
-    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
-    function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
-  end;
-
 
   {: This class defines a 2D curve.
 
@@ -577,6 +831,17 @@ type
      <B=Note>: The control points and the profile points are
      always in the object model coordinate system !
   }
+  {TCurve2DInsp = class
+    fOwner: TGraphicObject;
+    function   GetCurvePrecision: word;
+    procedure  SetCurvePrecision(AValue: word);
+  public
+     constructor create(AOwner: TGraphicObject);
+     destructor  destroy; override;
+  published
+    property CurvePrecision: word read GetCurvePrecision write SetCurvePrecision;
+  end;}
+
   TCurve2D = class(TOutline2D)
   private
     fSavingType: TPrimitiveSavingType;
@@ -642,6 +907,153 @@ type
     property SavingType: TPrimitiveSavingType read fSavingType write SetPrimitiveSavingType;
   end;
 
+  TDirectionalCurve2DInsp = class
+    fOwner: TGraphicObject;
+    function   GetDirection: TArcDirection;
+    procedure  SetDirection(ADirection: TArcDirection);
+  public
+     constructor create(AOwner: TGraphicObject);
+     destructor  destroy; override;
+  published
+    property Direction: TArcDirection read GetDirection write SetDirection;
+  end;
+
+  TDirectionalCurve2D = class(TCurve2D)
+  private
+    fDirectionalCurve2DInsp: TDirectionalCurve2DInsp;
+    fDirection: TArcDirection;
+    procedure SetDirection(ArcDirection: TArcDirection);
+    procedure SetStartPointX(AValue:TRealType); override;
+    procedure SetStartPointY(AValue:TRealType); override;
+    procedure SetEndPointX(AValue:TRealType);   override;
+    procedure SetEndPointY(AValue:TRealType);   override;
+  protected
+  public
+    procedure   Reverse; override; //added
+    procedure   Inverse; override; //added
+    constructor Create(ID: LongInt; NPts: Integer; CurvePrec: Word);
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    destructor  destroy; override;
+    property    Direction: TArcDirection read fDirection write SetDirection;
+  published
+    //property  DirectionalCurve2D: TDirectionalCurve2DInsp read fDirectionalCurve2DInsp write fDirectionalCurve2DInsp;
+  end;
+
+  TClosedCurve2D = class(TDirectionalCurve2D)
+  private
+    fClosedCurve2DInsp: TClosedCurve2DInsp;
+    fArea:   TRealType;
+    function GetArea: TRealType;
+  protected
+    fBrushSource: TBrushSource;
+    fBrushColor:  TColor;
+    fBrushStyle:  TBrushStyle;
+  public
+    procedure   Explode; override;
+    constructor Create(ID: LongInt; NPts: Integer; CurvePrec: Word);
+    destructor  destroy; override;
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    procedure SaveToStream(const Stream: TStream);  override;
+    procedure Assign(const Obj: TGraphicObject); override;
+    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+
+    function  GetBrushSource: TBrushSource;  override;
+    procedure SetBrushSource(ABrushSource: TBrushSource); override;
+    function  GetBrushColor: TColor;  override;
+    procedure SetBrushColor(ABrushColor: TColor); override;
+    function  GetBrushStyle: TBrushStyle;  override;
+    procedure SetBrushStyle(ABrushStyle: TBrushStyle); override;
+    property Area: TRealType read  GetArea;
+
+    property BrushSource: TBrushSource read GetBrushSource   write SetBrushSource;
+    property BrushColor:  TColor       read GetBrushColor    write SetBrushColor;
+    property BrushStyle:  TBrushStyle  read GetBrushStyle    write SetBrushStyle;
+
+    property HasBrush: boolean read GetHasBrush;
+  published
+    property ClosedCurve2D: TClosedCurve2DInsp read  fClosedCurve2DInsp write fClosedCurve2DInsp;
+  end;
+
+  {: This class defines a 2D polyline.
+
+     A polyline is obtained by connecting the <I=profile points> (in
+     this case are the same as the <I=control points>) with straight
+     line segments.
+  }
+  TPolyline2D = class(TOutline2D)
+  protected
+    function GetProfilePoints: TPointsSet2D; override;
+    function GetNPts: Integer; override;
+  public
+    {: This constructor creates a new 2D polyline.
+
+       Parameters:
+
+       <LI=<I=ID> is the object identifier.>
+       <LI=<I=Pts> is an array that contains the <I=control points> of
+        the polyline. If you want to create a pointless polyline
+        (because you want to add the points after the construction)
+        you must pass an array of only one point (an empty array is
+        not allowed by Delphi) and delete the point after the
+        construction phase by using the method of
+        <See Property=TPrimitive2D@Points>.>
+    }
+    procedure  Explode; override;
+    constructor Create(ID: LongInt; const Pts: array of TPoint2D);
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    destructor  destroy; override;
+    procedure Assign(const Obj: TGraphicObject); override;
+    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+    function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
+  published
+    property SimplePrimitive2D: TSimplePrim2DInsp read fSimplePrim2DInsp write fSimplePrim2DInsp;
+  end;
+
+  TClosedPolyline2DInsp = class
+    fOwner: TGraphicObject;
+    fBrushInsp: TBrushInspClosedPolyline2D;
+    function  GetArea: TRealType;
+    function  GetDirection: TArcDirection;
+    procedure SetDirection(AArcDirection: TArcDirection);
+  public
+     constructor create(AOwner: TGraphicObject);
+     destructor  destroy; override;
+  published
+    property Brush: TBrushInspClosedPolyline2D read fBrushInsp write fBrushInsp;
+    property Direction: TArcDirection read GetDirection write SetDirection;
+    property Area: TRealType read  GetArea;
+  end;
+
+  TClosedPolyline2D = class(TPolyline2D)  //polygon
+  private
+    fClosedPolyline2DInsp: TClosedPolyline2DInsp;
+
+    fBrushSource: TBrushSource;
+    fBrushColor: TColor;
+    fBrushStyle: TBrushStyle;
+
+    fArea:  TRealType;
+    fDirection: TArcDirection;
+    function GetArea: TRealType;
+  protected
+  public
+    procedure  Explode; override;
+    constructor Create(ID: LongInt; const Pts: array of TPoint2D);
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    procedure SaveToStream(const Stream: TStream); override;
+    procedure Assign(const Obj: TGraphicObject); override;
+    destructor destroy; override;
+
+    property Direction: TArcDirection read fDirection write fDirection;
+    property Area: TRealType read GetArea;
+
+    property BrushSource: TBrushSource read fBrushSource write fBrushSource;
+    property BrushColor:  TColor       read fBrushColor  write fBrushColor;
+    property BrushStyle:  TBrushStyle  read fBrushStyle  write fBrushStyle;
+  published
+    property ClosedPolyline2D: TClosedPolyline2DInsp read fClosedPolyline2DInsp write fClosedPolyline2DInsp;
+  end;
+
   {: This class defines a 2D polygon.
 
      A polygon is obtained by connecting the <I=profile points> (
@@ -649,13 +1061,41 @@ type
      with straight segments and filling the shape with the current
      brush of the Canvas.
   }
-  TPolygon2D = class(TPolyline2D)
+
+  TPolygon2D = class(TClosedPolyline2D)
   private
   protected
-    function GetIsClosed: Boolean; override;
   public
     procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
     function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
+  end;
+
+
+  TFrame2DInsp = class
+    fOwner: TGraphicObject;
+    fStartCorner: TFrameStartCorner;
+    function   GeStartCorner: TFrameStartCorner;
+    procedure  SetStartCorner(AValue: TFrameStartCorner);
+    function   GetWidth: TRealType;
+    procedure  SetWidth(AValue: TRealType);
+    function   GetHeight: TRealType;
+    procedure  SetHeight(AValue: TRealType);
+    function   GetDirection: TArcDirection;
+    procedure  SetDirection(ADirection: TArcDirection);
+    function   GetChamfered: boolean;
+    procedure  SetfChamfered(AValue: boolean);
+    function   GetChamferValue: TRealType;
+    procedure  SetChamferValue(AValue:  TRealType);
+  public
+    constructor create(AOwner: TGraphicObject);
+    destructor  destroy; override;
+  published
+    property Direction:    TArcDirection     read GetDirection    write SetDirection;
+    property Height:       TRealType         read GetHeight       write SetHeight;
+    property Width:        TRealType         read GetWidth        write SetWidth;
+    //property Chamfered:    boolean           read GetChamfered    write SetfChamfered;
+    //property ChamferValue: TRealType         read GetChamferValue write SetChamferValue;
+    property StartCorner:  TFrameStartCorner read GeStartCorner   write SetStartCorner;
   end;
 
   {: This class defines a 2D rectangle.
@@ -663,17 +1103,22 @@ type
      The entity has two <I=control points> that are the corner
      points of the rectangle.
   }
-  TFrame2D = class(TCurve2D)
+  TFrame2D = class(TClosedCurve2D)
   private
+    fFrame2DInsp: TFrame2DInsp;
     fStartCorner: TFrameStartCorner;
     fChamfered: boolean;
-    fChamfer: TRealType;
+    fChamferValue: TRealType;
     fWidth,
     fHeight: TRealType;
-    function  GetWidth: TRealType;
-    procedure SetWidth(AValue: TRealType);
-    function  GetHeight: TRealType;
-    procedure SetHeight(AValue: TRealType);
+    procedure  SetStartCorner(AValue: TFrameStartCorner);
+    procedure  SetChamfered(AValue: boolean);
+    procedure  SetChamferValue(AValue:  TRealType);
+
+    function   GetWidth: TRealType;
+    procedure  SetWidth(AValue: TRealType);
+    function   GetHeight: TRealType;
+    procedure  SetHeight(AValue: TRealType);
   protected
     function PopulateCurvePoints(N: Word): TRect2D; override;
   public
@@ -685,15 +1130,23 @@ type
        <LI=<I=P1> is the bottom-left corner of the frame.>
        <LI=<I=P2> is the upper-right corner of the frame.>
     }
+    procedure   InitializeAngle; override;
+
     constructor Create(ID: LongInt; const P1, P2: TPoint2D);
+    destructor  destroy; override;
     procedure Assign(const Obj: TGraphicObject); override;
+    //procedure SaveToStream(const Stream: TStream; const Version: TCADVersion);  override;
     procedure SaveToStream(const Stream: TStream);  override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
-    property StartCorner: TFrameStartCorner read  fStartCorner write fStartCorner;
-    property Chamfered: boolean read fChamfered write fChamfered;
-    property Chamfer: TRealType read fChamfer write fChamfer;
-    property Width: TRealType read GetWidth write SetWidth;
-    property Height: TRealType read GetHeight write SetHeight;
+    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
+
+    property StartCorner:  TFrameStartCorner read fStartCorner  write SetStartCorner;
+    property Chamfered:    boolean           read fChamfered    write SetChamfered;
+    property ChamferValue: TRealType         read fChamferValue write SetChamferValue;
+    property Width:        TRealType         read GetWidth        write SetWidth;
+    property Height:       TRealType         read GetHeight       write SetHeight;
+  published
+    property Frame2D: TFrame2DInsp read fFrame2DInsp write fFrame2DInsp;
   end;
 
   {: This class defines a 2D filled rectangle.
@@ -703,7 +1156,7 @@ type
   }
   TRectangle2D = class(TFrame2D)
   public
-    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
     function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
   end;
 
@@ -713,13 +1166,19 @@ type
      contains the arc's ellipse, and the starting and ending
      angles of the arc.
   }
-  TEllipticalArc2D = class(TCurve2D)
+  TEllipticalArc2D = class(TDirectionalCurve2D)
   private
+    fEllipticalArc2DInsp: TEllipticalArc2DInsp;
     //FDirection:  TArcDirection;
     FStartAngle, FEndAngle: TRealType;
-
+    function  GetStartAngle: TRealType;
+    function  GetEndAngle: TRealType;
     procedure SetStartAngle(A: TRealType);
     procedure SetEndAngle(A: TRealType);
+
+    function  GetArcAngle: TRealType;
+    procedure SetArcAngle(A: TRealType);
+
     procedure GetArcParams(var CX, CY, RX, RY, SA, EA: TRealType);
   protected
     function PopulateCurvePoints(N: Word): TRect2D; override;
@@ -747,7 +1206,10 @@ type
        that lies on the segment from the center of the arc's ellipse and
        the ending point of the arc.
     }
+
+    procedure Inverse; override;
     constructor Create(ID: LongInt; const P1, P2: TPoint2D; SA, EA: TRealType);
+    destructor destroy; override;
     procedure Assign(const Obj: TGraphicObject); override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure SaveToStream(const Stream: TStream); override;
@@ -757,14 +1219,17 @@ type
        positive x-axis (if no transformation is applied to the
        object).
     }
-    property StartAngle: TRealType read FStartAngle write SetStartAngle;
-    {: This property contains the ending angle of the arc in radiants.
+    property StartAngle: TRealType read GetStartAngle write SetStartAngle;
+     {: This property contains the ending angle of the arc in radiants.
 
-       The angle that correspond to zero radiants is along the
-       positive x-axis (if no transformation is applied to the
-       object).
-    }
-    property EndAngle: TRealType read FEndAngle write SetEndAngle;
+      The angle that correspond to zero radiants is along the
+      positive x-axis (if no transformation is applied to the
+      object).
+     }
+     property EndAngle: TRealType read GetEndAngle write SetEndAngle;
+     property ArcAngle: TRealType read GetArcAngle write SetArcAngle;
+  published
+    property EllipticalArc2D: TEllipticalArc2DInsp read fEllipticalArc2DInsp write fEllipticalArc2DInsp;
   end;
 
   {: This class defines an arc segment of a 2D Circle.
@@ -773,16 +1238,25 @@ type
      contains the arc's ellipse, and the starting and ending
      angles of the arc.
   }
-  TCircularArc2D = class(TCurve2D)
+  TCircularArc2D = class(TDirectionalCurve2D)
   private
-    //FDirection:  TArcDirection;
+    fCircularArc2DInsp: TCircularArc2DInsp;
     fRadius: TrealType;
     FStartAngle, FEndAngle: TRealType;
 
+    function  GetStartAngle: TrealType;
+    function  GetEndAngle: TrealType;
     procedure SetStartAngle(A: TRealType);
     procedure SetEndAngle(A: TRealType);
+
+    function  GetArcAngle: TRealType;
+    procedure SetArcAngle(A: TRealType);
+
     procedure SetRadius(ARadius: TRealType);
     procedure GetArcParams(var CX, CY, R, SA, EA: TRealType);
+
+    function  GetCenterPoint: TPoint2D;
+    procedure SetCenterPoint(APoint2D: TPoint2D);
 
   protected
     procedure GetArcPoints(PP: TPointsSet2D; NPts: Word);
@@ -811,45 +1285,40 @@ type
        that lies on the segment from the center of the arc's ellipse and
        the ending point of the arc.
     }
+    procedure Inverse; override;
     constructor Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
+    destructor  destroy; override;
     procedure Assign(const Obj: TGraphicObject); override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure SaveToStream(const Stream: TStream); override;
-    {: This property contains the starting angle of the arc in radiants.
+    property CenterPoint2D: TPoint2D read  GetCenterPoint write  SetCenterPoint;
+    property Radius:       TRealType read fRadius         write SetRadius;
+    property StartAngle:   TRealType read GetStartAngle   write SetStartAngle;
+    property EndAngle:     TRealType read GetEndAngle     write SetEndAngle;
+    property ArcAngle:     TRealType read GetArcAngle     write SetArcAngle;
+  published
 
-       The angle that correspond to zero radiants is along the
-       positive x-axis (if no transformation is applied to the
-       object).
-    }
-    property StartAngle: TRealType read FStartAngle write SetStartAngle;
-    {: This property contains the ending angle of the arc in radiants.
+    property CircularArc2D: TCircularArc2DInsp read fCircularArc2DInsp write fCircularArc2DInsp;
+   end;
 
-       The angle that correspond to zero radiants is along the
-       positive x-axis (if no transformation is applied to the
-       object).
-    }
-    property EndAngle: TRealType read FEndAngle write SetEndAngle;
-    property Radius: TRealType read fRadius write  SetRadius;
-  end;
-
-  TSector2D = class(TCircularArc2D)
-  protected
-    function  PopulateCurvePoints(N: Word): TRect2D; override;
-  end;
-
-  TSegment2D = class(TCircularArc2D)
-  protected
-    function  PopulateCurvePoints(N: Word): TRect2D; override;
-  end;
-
-  TCircle2D = class(TCurve2D)
+  TCircle2D = class(TClosedCurve2D)
   private
-    fRadius,
+    fCircle2DInsp: TCircle2DInsp;
+    fRadius: TRealType;
     fStartAngle: TRealType;
     fCenterPoint: TPoint2D;
     procedure GetCircleParams(var CX, CY, R, SA: TRealType);
+    function  GetStartAngle: TRealType;
+
     procedure SetStartAngle(AValue: TRealType);
     procedure SetRadius(AValue: TRealType);
+
+    function  GetCenterPoint: TPoint2D;
+    function  GetCenterPointX: TRealType;
+    function  GetCenterPointY: TRealType;
+    procedure SetCenterPointX(AValue: TRealType);
+    procedure SetCenterPointY(AValue: TRealType);
+
   protected
     function PopulateCurvePoints(N: Word): TRect2D; override;
   public
@@ -859,27 +1328,130 @@ type
        P2 = Radius end point
     }
     constructor Create(ID: LongInt; const P1: TPoint2D; R : TRealType);
+    destructor  destroy; override;
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure Assign(const Obj: TGraphicObject); override;
 
-    property StartAngle: TrealType read fStartAngle write SetStartAngle;
-    property Radius: TrealType read fRadius write SetRadius;
-    //property CenterPoint: TPoint2D read fCenterPoint  write SetCenterPoint;
+    property Radius:     TRealType read  fRadius       write  SetRadius;
+    property StartAngle: TRealType read  GetStartAngle write  SetStartAngle;
+    property HasBrush;
+  published
+    {: This property contains the starting angle of the arc in radiants.
+
+       The angle that correspond to zero radiants is along the
+       positive x-axis (if no transformation is applied to the
+       object).
+    }
+    property Circle2D: TCircle2DInsp read fCircle2DInsp write fCircle2DInsp;
   end;
 
   TSymetricSymbol2D = class(TCircle2D)
   public
     property EdgeCount: word read fCurvePrecision write  fCurvePrecision;
-
   end;
 
+  TSegment2D = class(TClosedCurve2D)
+  private
+      fSegment2DInsp: TSegment2DInsp;
+      fRadius: TrealType;
+      FStartAngle, FEndAngle: TRealType;
+
+      function  GetStartAngle: TRealType;
+      function  GetEndAngle: TrealType;
+      procedure SetStartAngle(A: TRealType);
+      procedure SetEndAngle(A: TRealType);
+      function  GetArcAngle: TRealType;
+      procedure SetArcAngle(A: TRealType);
+      procedure SetRadius(ARadius: TRealType);
+      procedure GetArcParams(var CX, CY, R, SA, EA: TRealType);
+
+    protected
+      procedure   GetArcPoints(PP: TPointsSet2D; NPts: Word);
+      function    PopulateCurvePoints(N: Word): TRect2D; override;
+    public
+      procedure   Inverse; override;
+      procedure   Explode; override;
+      constructor Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
+      destructor  destroy; override;
+      procedure   Assign(const Obj: TGraphicObject); override;
+      constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+      procedure   SaveToStream(const Stream: TStream); override;
+
+      property StartAngle: TRealType read GetStartAngle write SetStartAngle;
+      property EndAngle:   TRealType read GetEndAngle   write SetEndAngle;
+      property ArcAngle:   TRealType read GetArcAngle   write SetArcAngle;
+      property Radius: TRealType read fRadius write  SetRadius;
+    published
+      property Segment2D: TSegment2DInsp read fSegment2DInsp write fSegment2DInsp;
+    end;
+
+  TSector2D = class(TClosedCurve2D)
+  //TSector2D = class(TCircularArc2D)
+  private
+      fSector2DInsp: TSector2DInsp;
+      fRadius: TrealType;
+      FStartAngle, FEndAngle: TRealType;
+
+      function  GetStartAngle: TRealType;
+      function  GetEndAngle: TrealType;
+      procedure SetStartAngle(A: TRealType);
+      procedure SetEndAngle(A: TRealType);
+      function  GetArcAngle: TRealType;
+      procedure SetArcAngle(A: TRealType);
+
+      procedure SetRadius(ARadius: TRealType);
+      procedure GetArcParams(var CX, CY, R, SA, EA: TRealType);
+
+    protected
+      procedure GetArcPoints(PP: TPointsSet2D; NPts: Word);
+      function  PopulateCurvePoints(N: Word): TRect2D; override;
+    public
+      procedure   Inverse; override;
+      procedure   Explode; override;
+      constructor Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
+      destructor destroy; override;
+      procedure Assign(const Obj: TGraphicObject); override;
+      constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+      procedure SaveToStream(const Stream: TStream); override;
+
+      property StartAngle: TRealType read GetStartAngle write SetStartAngle;
+      property EndAngle:   TRealType read GetEndAngle   write SetEndAngle;
+      property ArcAngle:   TRealType read GetArcAngle   write SetArcAngle;
+      property Radius:     TRealType read fRadius write  SetRadius;
+    published
+      property  Sector2D: TSector2DInsp read fSector2DInsp write fSector2DInsp;
+    end;
 
   {: This class defines a 2D ellipse.
 
      The ellipse is defined by the two corner of the box that
      contains it.
   }
-  TEllipse2D = class(TCurve2D)
+
+  TEllipse2DInsp = class
+    fOwner: TGraphicObject;
+    function   GetWidth: TRealType;
+    procedure  SetWidth(AValue: TRealType);
+    function   GetHeight: TRealType;
+    procedure  SetHeight(AValue: TRealType);
+    function   GetDirection: TArcDirection;
+    procedure  SetDirection(ADirection: TArcDirection);
+    function   GetCurvePrecision: word;
+    procedure  SetCurvePrecision(AValue: word);
+  public
+     constructor create(AOwner: TGraphicObject);
+     destructor  destroy; override;
+  published
+    property Direction:      TArcDirection read GetDirection  write SetDirection;
+    property Height:         TRealType     read GetHeight     write SetHeight;
+    property Width:          TRealType     read GetWidth      write SetWidth;
+    property CurvePrecision: word          read GetCurvePrecision write  SetCurvePrecision;
+  end;
+
+
+  TEllipse2D = class(TClosedCurve2D)
   private
+    fEllipse2DInsp: TEllipse2DInsp;
     fWidth,
     fHeight: TRealType;
     function  GetWidth: TRealType;
@@ -899,11 +1471,19 @@ type
        <LI=<I=P1> and <I=P2> are the corner points of the frame
         that contains the ellipse.>
     }
+
+    procedure   InitializeAngle;  override;
+
     constructor Create(ID: LongInt; const P1, P2: TPoint2D);
+    constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    destructor  destroy; override;
+
     procedure Assign(const Obj: TGraphicObject); override;
 
-    property Width: TRealType read GetWidth write SetWidth;
+    property Width: TRealType  read GetWidth write SetWidth;
     property Height: TRealType read GetHeight write SetHeight;
+  published
+    property Ellipse2D: TEllipse2DInsp  read fEllipse2DInsp  write fEllipse2DInsp;
   end;
 
 
@@ -920,7 +1500,7 @@ type
   }
   TFilledEllipse2D = class(TEllipse2D)
   public
-    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
     function OnMe(Pt: TPoint2D; Aperture: TRealType;
                   var Distance: TRealType): Integer; override;
   end;
@@ -930,6 +1510,7 @@ type
      The B-Spline is defined by its control points.
      The order of the spline is 3 but you can change it.
   }
+  //TBSpline2D = class(TCurve2D) //original
   TBSpline2D = class(TCurve2D)
   private
     fOrder: Byte;
@@ -952,11 +1533,16 @@ type
     procedure Assign(const Obj: TGraphicObject); override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure SaveToStream(const Stream: TStream); override;
+
     {: This property contains the order of the spline.
 
        By default it is three (cubic spline).
     }
     property Order: Byte read FOrder write FOrder;
+  published
+    //property EndPointX;
+    //property EndPointY;
+     //property Coordinates;
   end;
 
   {: This class defines a 2D text object that uses the Windows
@@ -975,6 +1561,18 @@ type
       interior of characters. If you need this capability you
       still have to use this kind of Text object.
   }
+
+
+  {TText2DInsp = class
+  private
+    fOwnner: TText2D;
+  public
+    constructor create(AOwner: TText2D);
+    destructor  destroy; override;
+  published
+
+  end; }
+
   TText2D = class(TPrimitive2D)
   private
     fText: AnsiString;
@@ -1514,6 +2112,1392 @@ var
   _DefaultHandler2D: TPrimitive2DHandler;
 
 
+//TCoordPoints2DInsp////////////////////////////////////////////////////////////
+constructor TCoordPoints2DInsp.create(AOwner: TGraphicObject);
+var fOwner: TGraphicObject; TmpPointCount: word;
+begin
+  inherited Create;
+  fOwner := AOwner;
+  TmpPointCount := TPrimitive2D(fOwner).Points.Count;
+  fStartPoint  := TCoordPoint2DInsp.create(fOwner, POINT_CODE_START_POINT);
+  fEndPoint    := TCoordPoint2DInsp.create(fOwner, POINT_CODE_END_POINT);
+  //fMiddlePoint    := TCoordPoint2DInsp.create(fOwner, POINT_CODE_MIDDLE_POINT)
+end;
+
+destructor TCoordPoints2DInsp.destroy;
+begin
+  //fStartPoint.Free;
+  fEndPoint.Free;
+  inherited;
+end;
+
+//TCoordPoint2DInsp/////////////////////////////////////////////////////////////
+//Chage PointValue
+constructor TCoordPoint2DInsp.create(AOwner: TGraphicObject; APointCode: integer);
+begin
+  inherited create;
+  fOwner := AOwner;
+  fPointCode := APointCode;
+end;
+
+function  TCoordPoint2DInsp.GetX: TRealType;
+begin
+  case fPointCode of
+    POINT_CODE_START_POINT:   result := TPrimitive2D(fOwner).StartPointX;
+    POINT_CODE_END_POINT:     result := TPrimitive2D(fOwner).EndPointX;
+    POINT_CODE_MIDDLE_POINT:  result := TPrimitive2D(fOwner).MiddlePoint.X;
+    else result := TPrimitive2D(fOwner).Points[fPointCode].X;
+  end;
+end;
+
+function  TCoordPoint2DInsp.GetY: TRealType;
+begin
+  case fPointCode of
+    POINT_CODE_START_POINT:   result := TPrimitive2D(fOwner).StartPointY;
+    POINT_CODE_END_POINT:     result := TPrimitive2D(fOwner).EndPointY;
+    POINT_CODE_MIDDLE_POINT:  result := TPrimitive2D(fOwner).MiddlePoint.Y;
+    else result := TPrimitive2D(fOwner).Points[fPointCode].Y;
+  end;
+end;
+
+procedure TCoordPoint2DInsp.SetX(AValue: TRealType);
+begin
+  TPrimitive2D(fOwner).Points.DisableEvents := true;
+  case fPointCode of
+    POINT_CODE_START_POINT:  TPrimitive2D(fOwner).StartPointX   := AValue;
+    POINT_CODE_END_POINT:    TPrimitive2D(fOwner).EndPointX     := AValue;
+    POINT_CODE_MIDDLE_POINT: TPrimitive2D(fOwner).MiddlePointX  := AValue;
+    else PVectPoints2D(TPrimitive2D(fOwner).Points.PointsReference)^[fPointCode].X := AValue;
+  end;
+  TPrimitive2D(fOwner).Points.DisableEvents := false;
+  TPrimitive2D(fOwner).UpdateExtension(nil);
+end;
+
+procedure TCoordPoint2DInsp.SetY(AValue: TRealType);
+begin
+  TPrimitive2D(fOwner).Points.DisableEvents := true;
+  case fPointCode of
+    POINT_CODE_START_POINT:  TPrimitive2D(fOwner).StartPointY   := AValue;
+    POINT_CODE_END_POINT:    TPrimitive2D(fOwner).EndPointY     := AValue;
+    POINT_CODE_MIDDLE_POINT: TPrimitive2D(fOwner).MiddlePointY  := AValue;
+    else PVectPoints2D(TPrimitive2D(fOwner).Points.PointsReference)^[fPointCode].Y := AValue;
+  end;
+  TPrimitive2D(fOwner).Points.DisableEvents := false;
+  TPrimitive2D(fOwner).UpdateExtension(nil);
+end;
+
+//The OwnerObject will be moved
+//TCoordPoint2DMoveObjectInsp = class
+constructor TCoordPoint2DMoveObjectInsp.create(AOwner: TGraphicObject; APointIndex: word);
+begin
+  fOwner        := AOwner;
+  fPointIndex   := APointIndex;
+end;
+
+function  TCoordPoint2DMoveObjectInsp.GetX: TRealType;
+var TmpPoint2D: TPoint2D;
+begin
+  TmpPoint2D := TransformPoint2D(TPrimitive2D(fOwner).Points[fPointIndex], TPrimitive2D(fOwner).ModelTransform);
+  result := TmpPoint2D.X;
+end;
+
+function  TCoordPoint2DMoveObjectInsp.GetY: TrealType;
+var TmpPoint2D: TPoint2D;
+begin
+  TmpPoint2D := TransformPoint2D(TPrimitive2D(fOwner).Points[fPointIndex], TPrimitive2D(fOwner).ModelTransform);
+  result := TmpPoint2D.Y;
+end;
+
+procedure TCoordPoint2DMoveObjectInsp.SetX(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := TPrimitive2D(fOwner).Points[fPointIndex];
+  ToPt := Point2D(AValue, GetY);
+  ToPt := TObject2D(fOwner).WorldToObject(ToPt);
+  TPrimitive2D(fOwner).MoveTo(ToPt, DragPt);
+end;
+
+procedure TCoordPoint2DMoveObjectInsp.SetY(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := TPrimitive2D(fOwner).Points[fPointIndex];
+  ToPt := Point2D(GetX, AValue);
+  ToPt := TObject2D(fOwner).WorldToObject(ToPt);
+  TPrimitive2D(fOwner).MoveTo(ToPt, DragPt);
+end;
+
+//TPenInsp
+constructor TPenInsp.create(AOwner: TGraphicObject);
+begin
+  inherited create;
+  fOwner := AOwner;
+end;
+
+destructor  TPenInsp.destroy;
+begin
+  inherited;
+end;
+
+function   TPenInsp.GetPenSource: TPenSource;
+begin
+  result :=  TPrimitive2D(fOwner).PenSource;
+end;
+
+procedure  TPenInsp.SetPenSource(APenSource: TPenSource);
+begin
+  TPrimitive2D(fOwner).PenSource := APenSource;
+end;
+
+function  TPenInsp.GetPenColor:  TColor;
+begin
+  result :=  TPrimitive2D(fOwner).PenColor;
+end;
+
+procedure TPenInsp.SetPenColor(APenColor: TColor);
+begin
+  TPrimitive2D(fOwner).PenColor := APenColor;
+end;
+
+function  TPenInsp.GetPenStyle:  TPenStyle;
+begin
+  result :=  TPrimitive2D(fOwner).PenStyle;
+end;
+
+procedure TPenInsp.SetPenStyle(APenStyle: TPenStyle);
+begin
+  TPrimitive2D(fOwner).PenStyle := APenStyle;
+end;
+
+function  TPenInsp.GetPenWidth: word;
+begin
+  result :=  TPrimitive2D(fOwner).PenWidth;
+end;
+
+procedure TPenInsp.SetPenWidth(APenWidht: word);
+begin
+  TPrimitive2D(fOwner).PenWidth := APenWidht;
+end;
+
+
+//TBrushInspClosedCurve2D
+constructor TBrushInspClosedCurve2D.create(AOwner: TGraphicObject);
+begin
+  inherited create;
+  fOwner := AOwner;
+end;
+
+destructor  TBrushInspClosedCurve2D.destroy;
+begin
+  inherited;
+end;
+
+function   TBrushInspClosedCurve2D.GetBrushSource: TBrushSource;
+begin
+  result :=  TClosedCurve2D(fOwner).BrushSource;
+end;
+
+procedure  TBrushInspClosedCurve2D.SetBrushSource(ABrushSource: TBrushSource);
+begin
+  TClosedCurve2D(fOwner).BrushSource := ABrushSource;
+end;
+
+function  TBrushInspClosedCurve2D.GetBrushColor:  TColor;
+begin
+  result :=  TClosedCurve2D(fOwner).BrushColor;
+end;
+
+procedure TBrushInspClosedCurve2D.SetBrushColor(ABrushColor: TColor);
+begin
+  TClosedCurve2D(fOwner).BrushColor := ABrushColor;
+end;
+
+function  TBrushInspClosedCurve2D.GetBrushStyle:  TBrushStyle;
+begin
+  result :=  TClosedCurve2D(fOwner).BrushStyle;
+end;
+
+procedure TBrushInspClosedCurve2D.SetBrushStyle(ABrushStyle: TBrushStyle);
+begin
+  TClosedCurve2D(fOwner).BrushStyle := ABrushStyle;
+end;
+
+
+//TBrushInspClosedPolyline2D
+constructor TBrushInspClosedPolyline2D.create(AOwner: TGraphicObject);
+begin
+  inherited create;
+  fOwner := AOwner;
+end;
+
+destructor  TBrushInspClosedPolyline2D.destroy;
+begin
+  inherited;
+end;
+
+function   TBrushInspClosedPolyline2D.GetBrushSource: TBrushSource;
+begin
+  result :=  TClosedPolyline2D(fOwner).BrushSource;
+end;
+
+procedure  TBrushInspClosedPolyline2D.SetBrushSource(ABrushSource: TBrushSource);
+begin
+  TClosedPolyline2D(fOwner).BrushSource := ABrushSource;
+end;
+
+function  TBrushInspClosedPolyline2D.GetBrushColor:  TColor;
+begin
+  result :=  TClosedPolyline2D(fOwner).BrushColor;
+end;
+
+procedure TBrushInspClosedPolyline2D.SetBrushColor(ABrushColor: TColor);
+begin
+  TClosedPolyline2D(fOwner).BrushColor := ABrushColor;
+end;
+
+function  TBrushInspClosedPolyline2D.GetBrushStyle:  TBrushStyle;
+begin
+  result :=  TClosedPolyline2D(fOwner).BrushStyle;
+end;
+
+procedure TBrushInspClosedPolyline2D.SetBrushStyle(ABrushStyle: TBrushStyle);
+begin
+  TClosedPolyline2D(fOwner).BrushStyle := ABrushStyle;
+end;
+
+
+//TPrim2DInsp///////////////////////////////////////////////////////////////////
+constructor TPrim2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fPenInsp := TPenInsp.Create(fOwner);
+end;
+
+destructor  TPrim2DInsp.destroy;
+begin
+  fPenInsp.free;
+  inherited;
+end;
+
+
+//TSimplePrim2DInsp/////////////////////////////////////////////////////////////
+constructor TSimplePrim2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fCoordPoints2DInsp := TCoordPoints2DInsp.create(fOwner);
+end;
+
+destructor  TSimplePrim2DInsp.destroy;
+begin
+  fCoordPoints2DInsp.Free;
+  inherited;
+end;
+
+function   TSimplePrim2DInsp.GetShowDirection: boolean;
+begin
+  result := TSimplePrimitive2D(fOwner).ShowDirection;
+end;
+
+procedure  TSimplePrim2DInsp.SetShowDirection(AValue: boolean);
+begin
+  TSimplePrimitive2D(fOwner).ShowDirection := AValue;
+end;
+
+//TLine2DInsp.
+constructor TLine2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+end;
+destructor  TLine2DInsp.destroy;
+begin
+  inherited;
+end;
+
+//TClosedPolyline2DInsp
+constructor TClosedPolyline2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fBrushInsp := TBrushInspClosedPolyline2D.create(fOwner);
+end;
+
+destructor  TClosedPolyline2DInsp.destroy;
+begin
+  fBrushInsp.Free;
+  inherited;
+end;
+
+function  TClosedPolyline2DInsp.GetArea: TRealType;
+begin
+  result := TClosedPolyline2D(fOwner).GetArea;
+end;
+
+function  TClosedPolyline2DInsp.GetDirection: TArcDirection;
+begin
+ result := TClosedPolyline2D(fOwner).Direction;
+end;
+
+procedure TClosedPolyline2DInsp.SetDirection(AArcDirection: TArcDirection);
+begin
+ TClosedPolyline2D(fOwner).Direction := AArcDirection;
+end;
+
+//TDirectionalCurve2DInsp
+constructor TDirectionalCurve2DInsp.create(AOwner: TGraphicObject);
+begin
+   fOwner := AOwner;
+end;
+
+destructor  TDirectionalCurve2DInsp.destroy;
+begin
+  inherited;
+end;
+
+function   TDirectionalCurve2DInsp.GetDirection: TArcDirection;
+begin
+  result := TDirectionalCurve2D(fOwner).Direction;
+end;
+
+procedure  TDirectionalCurve2DInsp.SetDirection(ADirection: TArcDirection);
+begin
+  TDirectionalCurve2D(fOwner).Direction := ADirection;
+end;
+
+//TEllipse2DInsp.
+constructor TEllipse2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+end;
+
+destructor  TEllipse2DInsp.destroy;
+begin
+  inherited;
+end;
+
+function   TEllipse2DInsp.GetWidth: TRealType;
+begin
+  result := TEllipse2D(fOwner).Width;
+end;
+
+procedure  TEllipse2DInsp.SetWidth(AValue: TRealType);
+begin
+  TEllipse2D(fOwner).Width := AValue;
+end;
+
+function   TEllipse2DInsp.GetHeight: TRealType;
+begin
+  result := TEllipse2D(fOwner).Height;
+end;
+
+procedure  TEllipse2DInsp.SetHeight(AValue: TRealType);
+begin
+  TEllipse2D(fOwner).Height := AValue;
+end;
+
+function  TEllipse2DInsp.GetDirection: TArcDirection;
+begin
+  result := TEllipse2D(fOwner).Direction;
+end;
+
+procedure  TEllipse2DInsp.SetDirection(ADirection: TArcDirection);
+begin
+  TEllipse2D(fOwner).Direction := ADirection;
+end;
+
+function   TEllipse2DInsp.GetCurvePrecision: word;
+begin
+  result := TEllipse2D(fOwner).CurvePrecision;
+end;
+
+procedure  TEllipse2DInsp.SetCurvePrecision(AValue: word);
+begin
+  TEllipse2D(fOwner).CurvePrecision := AValue;
+end;
+
+//TFrame2DInsp.
+constructor TFrame2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+end;
+
+destructor  TFrame2DInsp.destroy;
+begin
+  inherited;
+end;
+
+function   TFrame2DInsp.GetWidth: TRealType;
+begin
+  result := TFrame2D(fOwner).Width;
+end;
+
+procedure  TFrame2DInsp.SetWidth(AValue: TRealType);
+begin
+  TFrame2D(fOwner).Width := AValue;
+end;
+
+function   TFrame2DInsp.GetHeight: TRealType;
+begin
+  result := TFrame2D(fOwner).Height;
+end;
+
+procedure  TFrame2DInsp.SetHeight(AValue: TRealType);
+begin
+  TFrame2D(fOwner).Height := AValue;
+end;
+
+function  TFrame2DInsp.GetDirection: TArcDirection;
+begin
+  result := TFrame2D(fOwner).Direction;
+end;
+
+procedure  TFrame2DInsp.SetDirection(ADirection: TArcDirection);
+begin
+  TFrame2D(fOwner).Direction := ADirection;
+end;
+
+function   TFrame2DInsp.GetChamfered: boolean;
+begin
+  result := TFrame2D(fOwner).Chamfered;
+end;
+
+procedure  TFrame2DInsp.SetfChamfered(AValue: boolean);
+begin
+  TFrame2D(fOwner).Chamfered := AValue;
+end;
+
+function   TFrame2DInsp.GetChamferValue: TRealType;
+begin
+  result := TFrame2D(fOwner).ChamferValue;
+end;
+
+procedure  TFrame2DInsp.SetChamferValue(AValue: TRealType);
+begin
+  TFrame2D(fOwner).ChamferValue := AValue;
+end;
+
+function   TFrame2DInsp.GeStartCorner: TFrameStartCorner;
+begin
+  result := TFrame2D(fOwner).StartCorner;
+end;
+
+procedure  TFrame2DInsp.SetStartCorner(AValue: TFrameStartCorner);
+begin
+  TFrame2D(fOwner).StartCorner := AValue;
+end;
+
+//TArcAngles////////////////////////////////////////////////////////////////////
+constructor TArcAngles.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+end;
+
+function  TArcAngles.GetStartAngle: TRealType;
+begin
+  if (fOwner is TCircularArc2D) then
+    result := TCircularArc2D(fOwner).StartAngle
+  else if (fOwner is TEllipticalArc2D) then
+    result := TEllipticalArc2D(fOwner).StartAngle
+  else if (fOwner is TSegment2D) then
+    result := TSegment2D(fOwner).StartAngle
+  else if (fOwner is TSector2D) then
+    result := TSector2D(fOwner).StartAngle
+end;
+
+procedure TArcAngles.SetStartAngle(AAngle: TRealType);
+begin
+  if (fOwner is TCircularArc2D) then
+    TCircularArc2D(fOwner).StartAngle :=  AAngle
+  else if (fOwner is TEllipticalArc2D) then
+    TEllipticalArc2D(fOwner).StartAngle :=  AAngle
+  else if (fOwner is TSegment2D) then
+    TSegment2D(fOwner).StartAngle :=  AAngle
+  else if (fOwner is TSector2D) then
+    TSector2D(fOwner).StartAngle :=  AAngle
+end;
+
+function  TArcAngles.GetEndAngle: TRealType;
+begin
+  if (fOwner is TCircularArc2D) then
+    result := TCircularArc2D(fOwner).EndAngle
+  else if (fOwner is TEllipticalArc2D) then
+    result := TEllipticalArc2D(fOwner).EndAngle
+  else if (fOwner is TSegment2D) then
+    result := TSegment2D(fOwner).EndAngle
+  else if (fOwner is TSector2D) then
+    result := TSector2D(fOwner).EndAngle
+end;
+
+procedure TArcAngles.SetEndAngle(AAngle: TRealType);
+begin
+  if (fOwner is TCircularArc2D) then
+    TCircularArc2D(fOwner).EndAngle :=  AAngle
+  else if (fOwner is TEllipticalArc2D) then
+    TEllipticalArc2D(fOwner).EndAngle :=  AAngle
+  else if (fOwner is TSegment2D) then
+    TSegment2D(fOwner).EndAngle :=  AAngle
+  else if (fOwner is TSector2D) then
+    TSector2D(fOwner).EndAngle :=  AAngle
+end;
+
+function  TArcAngles.GetArcAngle: TRealType;
+begin
+  if (fOwner is TCircularArc2D) then
+    result := TCircularArc2D(fOwner).ArcAngle
+  else if (fOwner is TEllipticalArc2D) then
+    result := TEllipticalArc2D(fOwner).ArcAngle
+  else if (fOwner is TSegment2D) then
+    result := TSegment2D(fOwner).ArcAngle
+  else if (fOwner is TSector2D) then
+    result := TSector2D(fOwner).ArcAngle
+end;
+
+procedure TArcAngles.SetArcAngle(AAngle: TRealType);
+begin
+  if (fOwner is TCircularArc2D) then
+    TCircularArc2D(fOwner).ArcAngle :=  AAngle
+  else if (fOwner is TEllipticalArc2D) then
+    TEllipticalArc2D(fOwner).ArcAngle :=  AAngle
+  else if (fOwner is TSegment2D) then
+    TSegment2D(fOwner).ArcAngle :=  AAngle
+  else if (fOwner is TSector2D) then
+    TSector2D(fOwner).ArcAngle :=  AAngle
+end;
+
+//TEllipticalArc2DInsp
+constructor TEllipticalArc2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fArcAngles      :=  TArcAngles.create(fOwner);
+end;
+
+destructor TEllipticalArc2DInsp.destroy;
+begin
+  fArcAngles.Free;
+  inherited;
+end;
+
+function  TEllipticalArc2DInsp.GetDirection: TArcDirection;
+begin
+  result := TEllipticalArc2D(fOwner).Direction;
+end;
+
+procedure TEllipticalArc2DInsp.SetDirection(AArcDirection: TArcDirection);
+begin
+  TEllipticalArc2D(fOwner).Direction := AArcDirection;
+end;
+
+function   TEllipticalArc2DInsp.GetCurvePrecision: word;
+begin
+  result := TEllipticalArc2D(fOwner).CurvePrecision;
+end;
+
+procedure  TEllipticalArc2DInsp.SetCurvePrecision(AValue: word);
+begin
+  TEllipticalArc2D(fOwner).CurvePrecision := AValue;
+end;
+
+//TClosedCurve2DInsp
+constructor TClosedCurve2DInsp.create(AOwner: TGraphicObject);
+begin
+  inherited create;
+  fOwner := AOwner;
+  fBrushInsp := TBrushInspClosedCurve2D.create(fOwner);
+end;
+
+destructor  TClosedCurve2DInsp.destroy;
+begin
+  fBrushInsp.Free;
+  inherited;
+end;
+
+function  TClosedCurve2DInsp.GetArea:  TRealType;
+begin
+  result := TClosedCurve2D(fOwner).Area;
+end;
+
+
+//TCircle2DInsp
+constructor TCircle2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fCenterPoint  := TCoordPoint2DMoveObjectInsp.create(fOwner, 0);
+end;
+
+destructor  TCircle2DInsp.destroy;
+begin
+  fCenterPoint.Free;
+  inherited;
+end;
+
+function  TCircle2DInsp.GetDirection: TArcDirection;
+begin
+  result := TCircle2D(fOwner).Direction;
+end;
+
+procedure TCircle2DInsp.SetDirection(ADirection: TArcDirection);
+begin
+  TCircle2D(fOwner).Direction := ADirection;
+end;
+
+function  TCircle2DInsp.GetRadius: TrealType;
+begin
+  result := TCircle2D(fOwner).Radius;
+end;
+
+procedure TCircle2DInsp.SetRadius(AValue: TRealType);
+begin
+  TCircle2D(fOwner).Radius := AValue;
+end;
+
+function  TCircle2DInsp.GetStartAngle: TrealType;
+begin
+  result := TCircle2D(fOwner).StartAngle;
+end;
+
+procedure TCircle2DInsp.SetStartAngle(AValue: TRealType);
+begin
+  TCircle2D(fOwner).StartAngle := AValue;
+end;
+
+function   TCircle2DInsp.GetCurvePrecision: word;
+begin
+  result := TCircle2D(fOwner).CurvePrecision;
+end;
+
+procedure  TCircle2DInsp.SetCurvePrecision(AValue: word);
+begin
+  TCircle2D(fOwner).CurvePrecision := AValue;
+end;
+
+//TCircularArc2DInsp
+constructor TCircularArc2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fCenterPoint  := TCoordPoint2DMoveObjectInsp.create(fOwner, 0);
+  fArcAngles := TArcAngles.create(fOwner);
+end;
+
+destructor  TCircularArc2DInsp.destroy;
+begin
+  fCenterPoint.Free;
+  fArcAngles.Free;
+  inherited;
+end;
+
+function  TCircularArc2DInsp.GetDirection: TArcDirection;
+begin
+  result := TCircularArc2D(fOwner).Direction;
+end;
+
+procedure TCircularArc2DInsp.SetDirection(ADirection: TArcDirection);
+begin
+  TCircularArc2D(fOwner).Direction := ADirection;
+end;
+
+function  TCircularArc2DInsp.GetRadius: TrealType;
+begin
+  result := TCircularArc2D(fOwner).Radius;
+end;
+
+procedure TCircularArc2DInsp.SetRadius(AValue: TRealType);
+begin
+  TCircularArc2D(fOwner).Radius := AValue;
+end;
+
+function   TCircularArc2DInsp.GetCurvePrecision: word;
+begin
+  result := TCircularArc2D(fOwner).CurvePrecision;
+end;
+
+procedure  TCircularArc2DInsp.SetCurvePrecision(AValue: word);
+begin
+  TCircularArc2D(fOwner).CurvePrecision := AValue;
+end;
+
+
+//TSector2DInsp
+constructor TSector2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fCenterPoint  := TCoordPoint2DMoveObjectInsp.create(fOwner, 0);
+  fArcAngles    := TArcAngles.create(fOwner);
+end;
+
+destructor  TSector2DInsp.destroy;
+begin
+  fCenterPoint.Free;
+  fArcAngles.Free;
+  inherited;
+end;
+
+function  TSector2DInsp.GetDirection: TArcDirection;
+begin
+  result := TSector2D(fOwner).Direction;
+end;
+
+procedure TSector2DInsp.SetDirection(ADirection: TArcDirection);
+begin
+  TSector2D(fOwner).Direction := ADirection;
+end;
+
+function  TSector2DInsp.GetRadius: TrealType;
+begin
+  result := TSector2D(fOwner).Radius;
+end;
+
+procedure TSector2DInsp.SetRadius(AValue: TRealType);
+begin
+  TSector2D(fOwner).Radius := AValue;
+end;
+
+function  TSector2DInsp.GetStartAngle: TrealType;
+begin
+  result := TSector2D(fOwner).StartAngle;
+end;
+
+procedure TSector2DInsp.SetStartAngle(AValue: TRealType);
+begin
+  TSector2D(fOwner).StartAngle := AValue;
+end;
+
+function  TSector2DInsp.GetEndAngle: TrealType;
+begin
+  result := TSector2D(fOwner).EndAngle;
+end;
+
+procedure TSector2DInsp.SetEndAngle(AValue: TRealType);
+begin
+  TSector2D(fOwner).EndAngle := AValue;
+end;
+
+function   TSector2DInsp.GetCurvePrecision: word;
+begin
+  result := TSector2D(fOwner).CurvePrecision;
+end;
+
+procedure  TSector2DInsp.SetCurvePrecision(AValue: word);
+begin
+  TSector2D(fOwner).CurvePrecision := AValue;
+end;
+
+
+//TSegmet2DInsp
+constructor TSegment2DInsp.create(AOwner: TGraphicObject);
+begin
+  fOwner := AOwner;
+  fCenterPoint  := TCoordPoint2DMoveObjectInsp.create(fOwner, 0);
+  fArcAngles    := TArcAngles.create(fOwner);
+end;
+
+destructor  TSegment2DInsp.destroy;
+begin
+  fCenterPoint.Free;
+  fArcAngles.Free;
+  inherited;
+end;
+
+function  TSegment2DInsp.GetDirection: TArcDirection;
+begin
+  result := TSegment2D(fOwner).Direction;
+end;
+
+procedure TSegment2DInsp.SetDirection(ADirection: TArcDirection);
+begin
+  TSegment2D(fOwner).Direction := ADirection;
+end;
+
+function  TSegment2DInsp.GetRadius: TrealType;
+begin
+  result := TSegment2D(fOwner).Radius;
+end;
+
+procedure TSegment2DInsp.SetRadius(AValue: TRealType);
+begin
+  TSegment2D(fOwner).Radius := AValue;
+end;
+
+function  TSegment2DInsp.GetStartAngle: TrealType;
+begin
+  result := TSegment2D(fOwner).StartAngle;
+end;
+
+procedure TSegment2DInsp.SetStartAngle(AValue: TRealType);
+begin
+  TSegment2D(fOwner).StartAngle := AValue;
+end;
+
+function  TSegment2DInsp.GetEndAngle: TrealType;
+begin
+  result := TSegment2D(fOwner).EndAngle;
+end;
+
+procedure TSegment2DInsp.SetEndAngle(AValue: TRealType);
+begin
+  TSegment2D(fOwner).EndAngle := AValue;
+end;
+
+function   TSegment2DInsp.GetCurvePrecision: word;
+begin
+  result := TSegment2D(fOwner).CurvePrecision;
+end;
+
+procedure  TSegment2DInsp.SetCurvePrecision(AValue: word);
+begin
+  TSegment2D(fOwner).CurvePrecision := AValue;
+end;
+
+
+//TSimplePrimitive2D////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+procedure   TSimplePrimitive2D.Reverse;
+begin
+  self.Points.Reverse;
+end;
+
+procedure TSimplePrimitive2D.Inverse;
+begin
+  self.Points.Reverse;
+end;
+
+procedure TSimplePrimitive2D.Explode;
+begin
+  //
+end;
+
+constructor TSimplePrimitive2D.create(ID: LongInt; NPts: Integer);
+begin
+  inherited create(ID, NPts);
+  fSimplePrim2DInsp := TSimplePrim2DInsp.create(self);
+end;
+
+destructor  TSimplePrimitive2D.destroy;
+begin
+  fSimplePrim2DInsp.Free;
+  inherited;
+end;
+
+procedure TSimplePrimitive2D.Assign(const Obj: TGraphicObject);
+begin
+  if (Obj = Self) then
+    Exit;
+  inherited Assign(Obj);
+  if (Obj is TSimplePrimitive2D) then
+  begin // Per default non aggiunge i punti.
+    if not Assigned(fPoints) then
+    begin
+      fPoints := CreateVect(0);
+      fPoints.GrowingEnabled := True;
+      fPoints.OnChange := UpdateExtension;
+    end;
+    LayerName      := (Obj as TSimplePrimitive2D).LayerName;
+    fShowDirection := (Obj as TSimplePrimitive2D).ShowDirection;
+    fPoints.Clear;
+  end;
+end;
+
+constructor TSimplePrimitive2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+var TmpWord: Word; Cont: Integer; TmpPt: TPoint2D; TmpBoolean: Boolean;
+    TmpReal: TRealType;
+begin
+  { Load the standard properties }
+  inherited;
+  fSimplePrim2DInsp := TSimplePrim2DInsp.create(self);
+  with Stream do
+   begin
+     Read(TmpReal, SizeOf(TmpReal));
+     Read(TmpBoolean, SizeOf(TmpBoolean));
+     fShowDirection := TmpBoolean;
+   end;
+end;
+
+procedure TSimplePrimitive2D.SaveToStream(const Stream: TStream);
+var
+  TmpWord: Word;
+  Cont: Integer;
+  TmpPt: TPoint2D;
+  TmpBoolean: Boolean;
+  TmpReal: TrealType;
+begin
+  { Save the standard properties }
+  inherited SaveToStream(Stream);
+  with Stream do
+   begin
+     Write(TmpReal, SizeOf(TmpReal));
+     TmpBoolean :=  fShowDirection;
+     Write(TmpBoolean, SizeOf(TmpBoolean));
+   end;
+end;
+
+function  TSimplePrimitive2D.GetLength: TRealType;
+var i: integer;  hPoints: TPointsSet2D;
+begin
+  result := 0;
+  if (self is TLine2D) or (self is TPolyline2D) or (self is TPolygon2D) then
+     hPoints := TLine2D(self).Points
+  else if (self is TFrame2D) or (self is TRectangle2D) then
+     hPoints := TFrame2D(self).ProfilePoints
+  else if (self is TOutline2D) then
+       hPoints := TOutline2D(self).ProfilePoints
+  else hPoints := self.Points;
+  for i := 1 to hPoints.Count - 1 do
+    result := result + PointDistance2D(hPoints[i-1], hPoints[i]);
+end;
+
+function TSimplePrimitive2D.GetStartPoint: TPoint2D;
+begin
+  if self is TLine2D then
+    result := TransformPoint2D(Points[0], ModelTransform)
+  else  if (self is TOutline2D) then
+    result := TransformPoint2D(TOutline2D(self).ProfilePoints[0], ModelTransform)
+end;
+
+function TSimplePrimitive2D.GetStartPointX: TRealType;
+begin
+  result := GetStartPoint.X;
+end;
+
+function TSimplePrimitive2D.GetStartPointY: TRealType;
+begin
+  result := GetStartPoint.Y
+end;
+
+procedure TSimplePrimitive2D.SetStartPointX(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetStartPoint.Y - AValue;
+  self.Points.DisableEvents := true;
+  PVectPoints2D(self.Points.PointsReference)^[0].X := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+
+procedure TSimplePrimitive2D.SetStartPointY(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetStartPoint.Y - AValue;
+  self.Points.DisableEvents := true;
+  PVectPoints2D(self.Points.PointsReference)^[0].Y := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+
+function TSimplePrimitive2D.GetEndPoint: TPoint2D;
+begin
+  if (self is TLine2D) then
+    result := TransformPoint2D(Points[1], ModelTransform)
+  else  if (self is TOutline2D) then
+    result := TransformPoint2D(TOutline2D(self).ProfilePoints[TOutline2D(self).ProfilePoints.Count - 1], ModelTransform)
+end;
+
+function TSimplePrimitive2D.GetEndPointX: TRealType;
+begin
+  result := GetEndPoint.X
+end;
+
+function TSimplePrimitive2D.GetEndPointY: TRealType;
+begin
+  result := GetEndPoint.Y
+end;
+
+procedure TSimplePrimitive2D.SetEndPointX(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetEndPoint.X - AValue;
+  self.Points.DisableEvents := true;
+  count := self.Points.Count;
+  PVectPoints2D(self.Points.PointsReference)^[count-1].X := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+
+procedure TSimplePrimitive2D.SetEndPointY(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetEndPoint.Y - AValue;
+  self.Points.DisableEvents := true;
+  count := self.Points.Count;
+  PVectPoints2D(self.Points.PointsReference)^[count-1].Y := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+//end   TSimplePrimitive2D
+
+
+////////////////////////////////////////////////////////////////////////////////
+// TDirectionalCurve2D
+procedure TDirectionalCurve2D.Reverse; //added
+begin
+  if fDirection = adClockwise then
+    fDirection := adCounterClockwise
+  else
+    fDirection := adClockwise;
+  UpdateExtension(self);
+end;
+
+procedure TDirectionalCurve2D.Inverse; //added
+begin
+  if fDirection = adClockwise then
+    fDirection := adCounterClockwise
+  else
+    fDirection := adClockwise;
+  UpdateExtension(self);
+end;
+
+constructor TDirectionalCurve2D.Create(ID: LongInt; NPts: Integer; CurvePrec: Word);
+begin
+  inherited Create(ID, NPts, CurvePrec);
+  fDirectionalCurve2DInsp := TDirectionalCurve2DInsp.create(self);
+  fDirection := adClockwise;
+end;
+
+destructor TDirectionalCurve2D.destroy;
+begin
+  fDirectionalCurve2DInsp.Free;
+  inherited destroy;
+end;
+
+constructor TDirectionalCurve2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+begin
+  inherited CreateFromStream(Stream, Version);
+  fDirectionalCurve2DInsp := TDirectionalCurve2DInsp.create(self);
+end;
+
+procedure TDirectionalCurve2D.SetDirection(ArcDirection: TArcDirection);
+begin
+  fDirection := ArcDirection;
+  UpdateExtension(Self);
+end;
+
+procedure TDirectionalCurve2D.SetStartPointX(AValue:TRealType);
+begin
+
+end;
+
+procedure TDirectionalCurve2D.SetStartPointY(AValue:TRealType);
+begin
+
+end;
+
+procedure TDirectionalCurve2D.SetEndPointX(AValue:TRealType);
+begin
+
+end;
+
+procedure TDirectionalCurve2D.SetEndPointY(AValue:TRealType);
+begin
+
+end;
+
+
+//TClosedCurve2D
+procedure   TClosedCurve2D.Explode;
+var TmpPolygon2D: TPolygon2D;  i: integer;
+begin
+  BeginUseProfilePoints;
+  TmpPolygon2D := TPolygon2D.Create(-1, []);
+  TmpPolygon2D.Assign(self);
+  //for i := 0   to ProfilePoints.Count - 2 do    //Assign
+    //TmpPolygon2D.Points.Add(ProfilePoints[i]);
+  TmpPolygon2D.Transform(ModelTransform);
+  TCADCmp2D(OwnerCAD).AddObject(-1, TmpPolygon2D);
+  EndUseProfilePoints;
+end;
+
+constructor TClosedCurve2D.Create(ID: LongInt; NPts: Integer; CurvePrec: Word);
+begin
+  inherited Create(ID, NPts, CurvePrec);
+  fClosedCurve2DInsp := TClosedCurve2DInsp.create(self);
+end;
+
+constructor TClosedCurve2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+var
+  TmpBrushSource: TBrushSource;
+  TmpBrushColor:  TColor;
+  TmpBrushStyle:  TBrushStyle;
+begin
+  inherited  CreateFromStream(Stream, Version);
+  fClosedCurve2DInsp := TClosedCurve2DInsp.create(self);
+
+  Stream.Read(TmpBrushSource, SizeOf(TmpBrushSource));
+  self.fBrushSource := TmpBrushSource;
+  Stream.Read(TmpBrushColor, SizeOf(TmpBrushColor));
+  self.BrushColor := TmpBrushColor;
+  Stream.Read(TmpBrushStyle, SizeOf(TmpBrushStyle));
+  self.BrushStyle := TmpBrushStyle;
+end;
+
+procedure TClosedCurve2D.SaveToStream(const Stream: TStream);
+var
+  TmpBrushSource: TBrushSource;
+  TmpBrushColor:  TColor;
+  TmpBrushStyle:  TBrushStyle;
+begin
+  inherited  SaveToStream(Stream);
+  TmpBrushSource := self.fBrushSource;
+  Stream.Write(TmpBrushSource, SizeOf(TmpBrushSource));
+  TmpBrushColor := self.fBrushColor;
+  Stream.Write(TmpBrushColor, SizeOf(TmpBrushColor));
+  TmpBrushStyle := self.fBrushStyle;
+  Stream.Write(TmpBrushStyle, SizeOf(TmpBrushStyle));
+end;
+
+procedure TClosedCurve2D.Assign(const Obj: TGraphicObject);
+begin
+  if (Obj = Self) then
+    Exit;
+  inherited Assign(Obj);
+  if (Obj is TClosedCurve2D) then
+  begin
+    fBrushSource :=  (Obj as TClosedCurve2D).BrushSource;
+    fBrushColor  :=  (Obj as TClosedCurve2D).BrushColor;
+    fBrushStyle  :=  (Obj as TClosedCurve2D).BrushStyle;
+  end;
+end;
+
+destructor  TClosedCurve2D.destroy;
+begin
+  fClosedCurve2DInsp.Free;
+  inherited destroy;
+end;
+
+function TClosedCurve2D.GetArea: TRealType;
+begin
+  result := ObjectArea(ProfilePoints);
+end;
+
+procedure TClosedCurve2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
+var P0, P1: TPoint2D;  x, y, TmpArrowLength: TRealType;
+  TmpPenColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpPenWidth: word;
+  TmpPenMode: TPenMode;
+  TmpCosmetic: boolean;
+  TmpPenEndCap: TFPPenEndCap;
+  TmpJoinStyle : TFPPenJoinStyle;
+
+  TmpBrushColor: TColor;
+  TmpBrushStyle: TBrushStyle;
+begin
+  case self.fBrushSource of
+    bsByLayer: begin
+      //defaul Value is ByLayer
+    end;
+    bsByBlock: begin
+      fBrushSource := bsByLayer;
+      exit; //not implemented.
+    end;
+    bsCustom: begin
+      TmpBrushColor := Cnv.Canvas.Brush.Color;
+      TmpBrushStyle := Cnv.Canvas.Brush.Style;
+      Cnv.Canvas.Brush.Color := self.BrushColor;
+      Cnv.Canvas.Brush.Style := self.BrushStyle;
+    end;
+    else begin
+      //
+    end;
+  end;
+
+  case fPenSource of
+    psByLayer: begin
+      //defaul Value is ByLayer
+    end;
+    psByBlock: begin
+      fPenSource := psByLayer;
+      exit; //not implemented.
+    end;
+    psCustom: begin
+        //TmpPen := TPen.Create;
+         TmpPenColor  := Cnv.Canvas.Pen.Color;
+         TmpPenStyle  := Cnv.Canvas.Pen.Style;
+         TmpPenWidth  := Cnv.Canvas.Pen.Width;
+         {TmpPenMode   := Cnv.Canvas.Pen.Mode;
+         TmpJoinStyle := Cnv.Canvas.Pen.JoinStyle;
+         TmpPenEndCap := Cnv.Canvas.Pen.EndCap;
+         TmpCosmetic  := Cnv.Canvas.Pen.Cosmetic;}
+         case  DrawMode of
+           DRAWMODE_EDIT: begin
+             //Cnv.Canvas.Pen.Color := EditPenColor;
+             //Cnv.Canvas.Pen.Style := EditPenStyle;
+             //Cnv.Canvas.Pen.Width := EditPenWidth;
+           end;
+           DRAWMODE_NORMAL: begin
+             Cnv.Canvas.Pen.Color     := self.PenColor;
+             Cnv.Canvas.Pen.Style     := self.PenStyle;
+             Cnv.Canvas.Pen.Width     := self.PenWidth;
+             {Cnv.Canvas.Pen.Mode      := self.Pen.Mode;
+             Cnv.Canvas.Pen.JoinStyle := self.Pen.JoinStyle;
+             Cnv.Canvas.Pen.EndCap    := self.Pen.EndCap;
+             Cnv.Canvas.Pen.Cosmetic  := self.Pen.Cosmetic;}
+           end;
+           else begin
+           end;
+         end; // case
+    end // Custom
+    else
+      begin
+      end;
+  end;
+
+  BeginUseProfilePoints;
+  try
+    if Assigned(fCurvePoints) then
+     begin
+      if not HasTransform then
+        fCurvePoints.DrawAsPolygon(Cnv, RectToRect2D(Cnv.Canvas.ClipRect), Box, VT)
+       //fCurvePoints.DrawAsPolyline(Cnv, RectToRect2D(Cnv.Canvas.ClipRect), Box, VT)
+      else
+       //fCurvePoints.DrawAsPolyline(Cnv, RectToRect2D(Cnv.Canvas.ClipRect), Box, MultiplyTransform2D(ModelTransform, VT));
+       fCurvePoints.DrawAsPolygon(Cnv, RectToRect2D(Cnv.Canvas.ClipRect), Box, MultiplyTransform2D(ModelTransform, VT));
+     end;
+  finally
+    EndUseProfilePoints;
+  end;
+
+  if fShowDirection then
+  begin
+    if self.OwnerCAD <> nil then
+    begin
+      x := self.OwnerCAD.Viewports[0].VisualRect.Right;
+      y := self.OwnerCAD.Viewports[0].VisualRect.Left;
+      TmpArrowLength := (x - y) / 75;
+    end else TmpArrowLength := 10;
+    P0 := ProfilePoints[ProfilePoints.Count - 2];
+    P1 := ProfilePoints[ProfilePoints.Count - 1];
+    DrawArrows2D(MultiplyTransform2D(ModelTransform, VT), Cnv, ClipRect2D, DrawMode, P0, P1, TmpArrowLength, 0, 0);
+  end;
+
+  //if DrawMode = DRAWMODE_EDIT then
+  //begin
+    Cnv.Canvas.Pen.Color     := TmpPenColor;
+    Cnv.Canvas.Pen.Style     := TmpPenStyle;
+    Cnv.Canvas.Pen.Width     := TmpPenWidth;
+    {Cnv.Canvas.Pen.Mode      := TmpPenMode;
+    Cnv.Canvas.Pen.JoinStyle := TmpJoinStyle;
+    Cnv.Canvas.Pen.EndCap    := TmpPenEndCap;
+    Cnv.Canvas.Pen.Cosmetic  := TmpCosmetic;}
+  //end;
+  Cnv.Canvas.Brush.Color := TmpBrushColor;
+  Cnv.Canvas.Brush.Style := TmpBrushStyle;
+end;
+
+function  TClosedCurve2D.GetBrushSource: TBrushSource;
+begin
+  result := fBrushSource;
+end;
+
+procedure TClosedCurve2D.SetBrushSource(ABrushSource: TBrushSource);
+begin
+  fBrushSource := ABrushSource;
+end;
+
+function  TClosedCurve2D.GetBrushColor: TColor;
+begin
+  result := fBrushColor;
+end;
+
+procedure TClosedCurve2D.SetBrushColor(ABrushColor: TColor);
+begin
+  fBrushColor := ABrushColor;
+end;
+
+function  TClosedCurve2D.GetBrushStyle: TBrushStyle;
+begin
+  result := fBrushStyle;
+end;
+
+procedure TClosedCurve2D.SetBrushStyle(ABrushStyle: TBrushStyle);
+begin
+  fBrushStyle := ABrushStyle;
+end;
+
+//TClosedPolyline2D
+procedure   TClosedPolyline2D.Explode;
+var TmpPolyline2D: TPolyline2D;  i: integer;
+begin
+  BeginUseProfilePoints;
+  TmpPolyline2D := TPolyline2D.Create(-1, []);
+  TmpPolyline2D.Assign(self);
+  //for i := 0   to ProfilePoints.Count - 1 do
+    //TmpPolyline2D.Points.Add(ProfilePoints[i]);
+  TmpPolyline2D.Points.Add(TmpPolyline2D.Points[0]);
+  TmpPolyline2D.Transform(ModelTransform);
+  TCADCmp2D(OwnerCAD).AddObject(-1, TmpPolyline2D);
+  EndUseProfilePoints;
+end;
+
+constructor TClosedPolyline2D.Create(ID: LongInt; const Pts: array of TPoint2D);
+begin
+  inherited Create(ID, Pts);
+  fClosedPolyline2DInsp := TClosedPolyline2DInsp.create(self);
+  fBrushSource := bsByLayer;
+  fBrushColor  := clBlue;
+  fBrushStyle  := bsClear;
+  fDirection   := adClockwise;
+end;
+
+destructor TClosedPolyline2D.destroy;
+begin
+  //fBrush.Free;
+  fClosedPolyline2DInsp.Free;
+  inherited destroy;
+end;
+
+constructor TClosedPolyline2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+var
+  TmpBrushSource: TBrushSource;
+  TmpBrushColor:  TColor;
+  TmpBrushStyle:  TBrushStyle;
+begin
+  inherited CreateFromStream(Stream, Version);
+  fClosedPolyline2DInsp := TClosedPolyline2DInsp.create(self);
+
+  Stream.Read(TmpBrushSource, SizeOf(TmpBrushSource));
+  self.fBrushSource := TmpBrushSource;
+  Stream.Read(TmpBrushColor, SizeOf(TmpBrushColor));
+  self.fBrushColor := TmpBrushColor;
+  Stream.Read(TmpBrushStyle, SizeOf(TmpBrushStyle));
+  self.fBrushStyle := TmpBrushStyle;
+end;
+
+procedure TClosedPolyline2D.SaveToStream(const Stream: TStream);
+var
+  TmpBrushSource: TBrushSource;
+  TmpBrushColor: TColor;
+  TmpBrushStyle: TBrushStyle;
+begin
+  inherited SaveToStream(Stream);
+
+  TmpBrushSource :=  self.fBrushSource;
+  Stream.Write(TmpBrushSource, SizeOf(TmpBrushSource));
+  TmpBrushColor := self.fBrushColor;
+  Stream.Write(TmpBrushColor, SizeOf(TmpBrushColor));
+  TmpBrushStyle := self.fBrushStyle;
+  Stream.Write(TmpBrushStyle, SizeOf(TmpBrushStyle));
+end;
+
+procedure TClosedPolyline2D.Assign(const Obj: TGraphicObject);
+begin
+  if (Obj = Self) then
+    Exit;
+  inherited Assign(Obj);
+  if (Obj is TClosedPolyline2D) then
+  begin
+    ProfilePoints.Copy(TClosedPolyline2D(Obj).ProfilePoints, 0, TClosedPolyline2D(Obj).ProfilePoints.Count - 1);
+    fBrushSource :=  (Obj as TClosedPolyline2D).BrushSource;
+    fBrushColor  :=  (Obj as TClosedPolyline2D).BrushColor;
+    fBrushStyle  :=  (Obj as TClosedPolyline2D).BrushStyle;
+  end else
+  if (Obj is TClosedCurve2D) then
+  begin
+    ProfilePoints.Copy(TClosedCurve2D(Obj).ProfilePoints, 0, TClosedCurve2D(Obj).ProfilePoints.Count - 1);
+    fBrushSource :=  (Obj as TClosedCurve2D).BrushSource;
+    fBrushColor  :=  (Obj as TClosedCurve2D).BrushColor;
+    fBrushStyle  :=  (Obj as TClosedCurve2D).BrushStyle;
+  end;
+end;
+
+function TClosedPolyline2D.GetArea: TRealType;
+begin
+  result := ObjectArea(ProfilePoints);
+end;
 
 // =====================================================================
 // TExtendedFont
@@ -1782,7 +3766,6 @@ end;
 // =====================================================================
 // TPrimitive2D
 // =====================================================================
-
 procedure TPrimitive2D._UpdateExtension;
 begin
   if not Assigned(fPoints) or (fPoints.Count = 0) then
@@ -1800,10 +3783,25 @@ end;
 constructor TPrimitive2D.Create(ID: LongInt; NPts: Integer);
 begin
   inherited Create(ID);
+  fPrim2DInsp := TPrim2DInsp.create(self);
+
+  fPenSource := psByLayer;
+  fPenColor  := clWhite;
+  fPenStyle  := psSolid;
+  fPenWidth  := 1;
+
   { Create the internal vector. }
   fPoints := CreateVect(NPts);
   fPoints.OnChange := UpdateExtension;
   SetSharedHandler(_DefaultHandler2D);
+end;
+
+destructor TPrimitive2D.Destroy;
+begin
+  fPrim2DInsp.Free;
+  if Assigned(fPoints) then
+    fPoints.Free;
+  inherited Destroy;
 end;
 
 procedure TPrimitive2D.Assign(const Obj: TGraphicObject);
@@ -1819,24 +3817,28 @@ begin
       fPoints.GrowingEnabled := True;
       fPoints.OnChange := UpdateExtension;
     end;
-    fShowDirection := (Obj as TPrimitive2D).fShowDirection;  //added
-    ReserveInt1 := (Obj as TPrimitive2D).ReserveInt1;
-    LayerName   := (Obj as TPrimitive2D).LayerName;
     fPoints.Clear;
+    LayerName   := (Obj as TPrimitive2D).LayerName;
+    fPenSource  := (Obj as TPrimitive2D).PenSource;
+    fPenColor   := (Obj as TPrimitive2D).PenColor;
+    fPenStyle   := (Obj as TPrimitive2D).PenStyle;
+    fPenWidth   := (Obj as TPrimitive2D).PenWidth;
   end;
 end;
 
 constructor TPrimitive2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
 var TmpWord: Word; Cont: Integer; TmpPt: TPoint2D; TmpBoolean: Boolean;
+    TmpPenSource: byte;
+    TmpPenColor: TColor;
+    TmpPenStyle: TPenStyle;
+    TmpPenWidth: word;
 begin
   { Load the standard properties }
   inherited;
+  fPrim2DInsp := TPrim2DInsp.create(self);
   with Stream do
    begin
-     Read(TmpBoolean, SizeOf(TmpBoolean));
-     Read(fReserveInt1, SizeOf(fReserveInt1));
-     fShoWDirection := TmpBoolean;
-     Read(FDirection, SizeOf(FDirection));
+     //Read(TmpBoolean, SizeOf(TmpBoolean));
      Read(TmpWord, SizeOf(TmpWord));
      fPoints := CreateVect(TmpWord);
      { Read all the points. }
@@ -1847,26 +3849,32 @@ begin
       end;
      Read(TmpBoolean, SizeOf(TmpBoolean));
      fPoints.GrowingEnabled := TmpBoolean;
+     Read(TmpPenSource, SizeOf(TmpPenSource));
+     fPenSource := TPenSource(TmpPenSource);
+     Read(TmpPenColor, SizeOf(TmpPenColor));
+     fPenColor := TmpPenColor;
+     Read(TmpPenStyle, SizeOf(TmpPenStyle));
+     fPenStyle := TmpPenStyle;
+     Read(TmpPenWidth, SizeOf(TmpPenWidth));
+     fPenWidth := TmpPenWidth;
+     //ReadPenFromStream(fPen, Stream);
    end;
   fPoints.OnChange := UpdateExtension;
   SetSharedHandler(_DefaultHandler2D);
 end;
 
 procedure TPrimitive2D.SaveToStream(const Stream: TStream);
-var
-  TmpWord: Word;
-  Cont: Integer;
-  TmpPt: TPoint2D;
-  TmpBoolean: Boolean;
+var TmpWord: Word; Cont: Integer; TmpPt: TPoint2D; TmpBoolean: Boolean; TmpReal: TrealType;
+  TmpPenSource: byte;
+  TmpPenColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpPenWidth: word;
 begin
   { Save the standard properties }
   inherited SaveToStream(Stream);
   with Stream do
    begin
-     TmpBoolean := fShowDirection;
-     Write(TmpBoolean, SizeOf(TmpBoolean));
-     Write(fReserveInt1, SizeOf(fReserveInt1));
-     Write(FDirection, SizeOf(FDirection));
+     //Write(TmpBoolean, SizeOf(TmpBoolean));
      TmpWord := fPoints.Count;
      Write(TmpWord, SizeOf(TmpWord));
      { Write all points. }
@@ -1877,309 +3885,68 @@ begin
       end;
      TmpBoolean := fPoints.GrowingEnabled;
      Write(TmpBoolean, SizeOf(TmpBoolean));
+     TmpPenSource := ord(fPenSource);
+     Write(TmpPenSource, SizeOf(TmpPenSource));
+     TmpPenColor := fPenColor;
+     Write(TmpPenColor, SizeOf(TmpPenColor));
+     TmpPenStyle := fPenStyle;
+     Write(TmpPenStyle, SizeOf(TmpPenStyle));
+     TmpPenWidth := fPenWidth;
+     Write(TmpPenWidth, SizeOf(TmpPenWidth));
+     //WritePenToStream(fPen, Stream);
    end;
 end;
 
-destructor TPrimitive2D.Destroy;
+function  TPrimitive2D.GetPenSource: TPenSource;
 begin
-  if Assigned(fPoints) then
-   fPoints.Free;
-  inherited Destroy;
+  result := fPenSource;
 end;
 
-procedure TPrimitive2D.SetArcDirection(D: TArcDirection);
+procedure TPrimitive2D.SetPenSource(APenSource: TPenSource);
 begin
-  if D <> FDirection then
-   begin
-     FDirection := D;
-     UpdateExtension(Self);
-   end;
+  fPenSource := APenSource;
 end;
 
-function TPrimitive2D.GetRight: TRealType;
+function  TPrimitive2D.GetPenColor: TColor;
 begin
-  result := box.Right;
+  result := fPenColor;
 end;
 
-procedure TPrimitive2D.SetRight(AValue:TRealType);
+procedure TPrimitive2D.SetPenColor(APenColor: TColor);
 begin
-   self.Transform(Translate2D((AValue - self.Box.Right), 0));
+  fPenColor := APenColor;
 end;
 
-function TPrimitive2D.GetBottom: TRealType;
+function  TPrimitive2D.GetPenStyle: TPenStyle;
 begin
-  result := self.Box.Bottom;
+  result := fPenStyle;
 end;
 
-procedure TPrimitive2D.SetBottom(AValue:TRealType);
+procedure TPrimitive2D.SetPenStyle(APenStyle: TPenStyle);
 begin
-  self.Transform(Translate2D(0, AValue - self.Box.Bottom));
+  fPenStyle := APenStyle;
 end;
 
-procedure TPrimitive2D.SetLeft(AValue:TRealType);
+function  TPrimitive2D.GetPenWidth: word;
 begin
-  self.Transform(Translate2D((AValue - self.Box.Left), 0));
-  self.UpdateExtension(nil);
+  result := fPenWidth;
 end;
 
-function GetRealLeft(APrim: TPrimitive2D): TRealType;
+procedure TPrimitive2D.SetPenWidth(AValue: word);
 begin
-
-end;
-
-function TPrimitive2D.GetLeft: TRealType;
-var hPt, hPt2: TPoint2D; hX: TRealType;
-begin
-  //result := TOutLine2D(self).ProfilePoints.Extension.Left;
-  //hX := TOutLine2D(self).ProfilePoints.Extension.Left;
-  //hPt.X := hX;
-  //hPt.Y := 0;
-  //hPt.W := TOutLine2D(self).ProfilePoints[0].W;
-  //hPt := TransformPoint2D(hPt, MultiplyTransform2D(ModelTransform, TCADViewport2D(self.OwnerCAD.Viewports[0]).ScreenToViewportTransform));
-  //MultiplyTransform2D(ModelTransform, TCADViewport2D(self.OwnerCAD.Viewports[0]).ViewportToScreenTransform)
-  //TCADViewport.ViewportToScreenTransform;
-  //hPt2 := TCADViewport2D(self.OwnerCAD.Viewports[0]).ViewportToScreenTransform;
-  //hPt := TransformPoint2D(hPt, self.ModelTransform);
-  //result := hPt.X;
-  //ShowMessage(FloatToStr(GetRealLeft(self)));
-  //if self is TLine2D or self is TFrame2D  then
-    result := self.Box.Left
-  //else
-    //result := TOutline2D(self).ProfilePoints.Extension.Left;
-end;
-
-function TPrimitive2D.GetTop: TRealType;
-begin
-  result := box.Top;
-end;
-
-procedure TPrimitive2D.SetTop(AValue:TRealType);
-begin
-  self.Transform(Translate2D(0, AValue - self.Box.Top));
-end;
-
-function TPrimitive2D.GetCenterPoint: TPoint2D;
-begin
-  if (self is TEllipticalArc2D) then
-    result := TransformPoint2D(Point2D(((Points[0].X +  Points[1].X) / 2), ((Points[0].Y +  Points[1].Y) / 2)), ModelTransform)
-  else
-    result := Point2D(((GetRight + GetLeft) / 2),
-                      ((GetBottom + GetTop) / 2));
-end;
-
-function TPrimitive2D.GetStartPoint: TPoint2D;
-begin
-  if (self is TLine2D) then
-    result := TransformPoint2D(Points[0], ModelTransform)
-  else  if (self is TOutline2D) then
-    result := TransformPoint2D(TOutline2D(self).ProfilePoints[0], ModelTransform)
-end;
-
-function TPrimitive2D.GetEndPoint: TPoint2D;
-begin
-  if (self is TLine2D) then
-    result := TransformPoint2D(Points[1], ModelTransform)
-  else  if (self is TOutline2D) then
-    result := TransformPoint2D(TOutline2D(self).ProfilePoints[TOutline2D(self).ProfilePoints.Count - 1], ModelTransform)
-end;
-
-function TPrimitive2D.GetStartPointX: TRealType;
-begin
-  result := GetStartPoint.X;
-end;
-
-function TPrimitive2D.GetStartPointY: TRealType;
-begin
-  result := GetStartPoint.Y
-end;
-
-function TPrimitive2D.GetLeftTop: TPoint2D;
-var TmpBox: Trect2D;
-begin
-  result := Point2D(Left, Top);
-  //TmpBox := TransformBoundingBox2D(Self.Box, self.ModelTransform);
-  //result := Point2D(TmpBox.Left, TmpBox.Top);
-  //result := TransformPoint2D(Point2D(GetLeft, GetTop), ModelTransform);
-  //result := TCADViewport2D(self.OwnerCAD.Viewports[0]).WorldToObject(self,  Point2D(GetLeft, GetTop));
-end;
-
-function TPrimitive2D.GetLeftBottom: TPoint2D;
-begin
-  result := Point2D(GetLeft, GetBottom);
-end;
-
-function TPrimitive2D.GetRightBottom: TPoint2D;
-begin
-  result := Point2D(GetRight, GetBottom);
-end;
-
-function TPrimitive2D.GetRightTop: TPoint2D;
-begin
-  result := Point2D(GetRight, GetTop);
-end;
-
-function TPrimitive2D.GetCenterPointX: TRealType;
-begin
-  result := GetCenterPoint.X;
-end;
-
-function TPrimitive2D.GetCenterPointY: TRealType;
-begin
-  result := GetCenterPoint.X
-end;
-
-function TPrimitive2D.GetEndPointX: TRealType;
-begin
-  result := GetEndPoint.X
-end;
-
-function TPrimitive2D.GetEndPointY: TRealType;
-begin
-  result := GetEndPoint.Y
-end;
-
-procedure TPrimitive2D.SetCenterPointX(AValue:TRealType);
-var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
-begin
-  Delta := GetCenterPoint.X - AValue;
-  self.Points.DisableEvents := true;
-  count := self.Points.Count;
-  for i:= 0 to  Count - 1 do
-    PVectPoints2D(self.Points.PointsReference)^[I].X :=  PVectPoints2D(self.Points.PointsReference)^[I].X - Delta;
-  self.Points.DisableEvents := false;
-  self.UpdateExtension(nil);
-end;
-
-procedure TPrimitive2D.SetCenterPointY(AValue:TRealType);
-var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
-begin
-  Delta := GetCenterPoint.Y - AValue;
-  self.Points.DisableEvents := true;
-  count := self.Points.Count;
-  for i:= 0 to  Count - 1 do
-    PVectPoints2D(self.Points.PointsReference)^[I].Y :=  PVectPoints2D(self.Points.PointsReference)^[I].Y - Delta;
-  self.Points.DisableEvents := false;
-  self.UpdateExtension(nil);
-end;
-
-procedure TPrimitive2D.SetStartPointX(AValue:TRealType);
-var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
-begin
-  //if (self is TCircle2D) then i := 1
-  //else i := 0;
-  i := 0;
-  Delta := GetStartPoint.X - AValue;
-  self.Points.DisableEvents := true;
-  {count := self.Points.Count;
-  for i:= 0 to  Count - 1 do
-    PVectPoints2D(self.Points.PointsReference)^[I].X :=  PVectPoints2D(self.Points.PointsReference)^[I].X - Delta;
-  }
-  PVectPoints2D(self.Points.PointsReference)^[i].X := AValue;
-  self.Points.DisableEvents := false;
-  self.UpdateExtension(nil);
-end;
-
-procedure TPrimitive2D.SetStartPointY(AValue:TRealType);
-var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
-begin
-  Delta := GetStartPoint.Y - AValue;
-  self.Points.DisableEvents := true;
-  {count := self.Points.Count;
-  for i:= 0 to  Count - 1 do
-    PVectPoints2D(self.Points.PointsReference)^[I].X :=  PVectPoints2D(self.Points.PointsReference)^[I].X - Delta;
-  }
-  PVectPoints2D(self.Points.PointsReference)^[0].Y := AValue;
-  self.Points.DisableEvents := false;
-  self.UpdateExtension(nil);
-end;
-
-procedure TPrimitive2D.SetEndPointX(AValue:TRealType);
-var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
-begin
-  Delta := GetEndPoint.X - AValue;
-  self.Points.DisableEvents := true;
-  count := self.Points.Count;
-  PVectPoints2D(self.Points.PointsReference)^[count-1].X := AValue;
-  self.Points.DisableEvents := false;
-  self.UpdateExtension(nil);
-end;
-
-procedure TPrimitive2D.SetEndPointY(AValue:TRealType);
-var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
-begin
-  Delta := GetEndPoint.Y - AValue;
-  self.Points.DisableEvents := true;
-  count := self.Points.Count;
-  PVectPoints2D(self.Points.PointsReference)^[count-1].Y := AValue;
-  self.Points.DisableEvents := false;
-  self.UpdateExtension(nil);
-end;
-
-function TPrimitive2D.GetLeftCenter: TPoint2D;
-begin
-  result := Point2D(GetLeft, (GetTop + GetBottom) / 2)
-end;
-
-function TPrimitive2D.GetBottomCenter: TPoint2D;
-begin
-  result := Point2D((GetRight + GetLeft) /2 , GetBottom);
-end;
-
-function TPrimitive2D.GetRightCenter: TPoint2D;
-begin
-  result := Point2D(GetRight, (GetBottom + GetTop) / 2);
-end;
-
-function TPrimitive2D.GetTopCenter: TPoint2D;
-begin
-  result := Point2D((GetRight + GetLeft) /2 , GetTop);
-end;
-
-function  TPrimitive2D.GetLength: TRealType;
-var i: integer;  hPoints: TPointsSet2D;
-begin
-  result := 0;
-  if (self is TLine2D) or (self is TPolyline2D) or (self is TPolygon2D) then
-     hPoints := TLine2D(self).Points
-  else if (self is TFrame2D) or (self is TRectangle2D) then
-     hPoints := TFrame2D(self).ProfilePoints
-  else if (self is TOutline2D) then
-       hPoints := TOutline2D(self).ProfilePoints
-  else hPoints := self.Points;
-  for i := 1 to hPoints.Count - 1 do
-    result := result + PointDistance2D(hPoints[i-1], hPoints[i]);
-end;
-
-function  TPrimitive2D.GetAngle: TRealType;
-begin
-  result := fAngle;
-end;
-
-procedure TPrimitive2D.SetAngle(AAngle: TRealType);
-var hPoints: TPointsSet2D;
-begin
-  fAngle := AAngle;
-  if (self is TLine2D) or (self is TPolyline2D) or (self is TPolygon2D) then
-     hPoints := TLine2D(self).Points
-  else if (self is TFrame2D) or (self is TRectangle2D) then
-     hPoints := TFrame2D(self).ProfilePoints
-  else if (self is TCurve2D) then
-       hPoints := TCurve2D(self).ProfilePoints
-  else hPoints := self.Points;
-  //RotatePointAroundCenter(hPoints, -Self.Angle);
-  RotatePointAroundCenter(hPoints, AAngle);
-end;
-
-function TPrimitive2D.GetArea: TRealType;
-begin
-  result := 0.0;
-  if (self is TPolyline2D) or (self is TCurve2D) then
-    result := ObjectArea(TCurve2D(self).ProfilePoints);
+  fPenWidth := AValue;
 end;
 
 // =====================================================================
 // TLine2D
 // =====================================================================
+procedure   TLine2D.InitializeAngle;
+var P0, P1: TPoint2D;
+begin
+  P0 := TransformPoint2D(Points[0], ModelTransform);
+  P1 := TransformPoint2D(Points[1], ModelTransform);
+  fAngle := ArcTan2(P1.Y - P0.Y, P1.X - P0.X);
+end;
 
 constructor TLine2D.Create(ID: LongInt; const P1, P2: TPoint2D);
 begin
@@ -2193,6 +3960,18 @@ begin
     Points.DisableEvents := False;
     UpdateExtension(Self);
   end;
+  fSimplePrim2DInsp := TSimplePrim2DInsp.create(self);
+end;
+
+destructor TLine2D.destroy;
+begin
+  fSimplePrim2DInsp.Free;
+end;
+
+constructor TLine2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+begin
+  inherited CreateFromStream(Stream, Version);
+  fSimplePrim2DInsp := TSimplePrim2DInsp.create(self);
 end;
 
 procedure TLine2D.Assign(const Obj: TGraphicObject);
@@ -2208,8 +3987,56 @@ begin
 end;
 
 procedure TLine2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
-var x, y, TmpArrowLength: TRealType;
+var x, y, TmpArrowLength: TRealType; TmpPen: TPen;  OldMode: TCopyMode;
+  TmpPenColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpPenWidth: word;
+  TmpPenMode: TPenMode;
+  TmpCosmetic: boolean;
+  TmpPenEndCap: TFPPenEndCap;
+  TmpJoinStyle : TFPPenJoinStyle;
 begin
+  case fPenSource of
+    psByLayer: begin
+      //defaul Value is ByLayer
+    end;
+    psByBlock: begin
+      fPenSource := psByLayer;
+      exit; //not implemented.
+    end;
+    psCustom: begin
+        //TmpPen := TPen.Create;
+         TmpPenColor  := Cnv.Canvas.Pen.Color;
+         TmpPenStyle  := Cnv.Canvas.Pen.Style;
+         TmpPenWidth  := Cnv.Canvas.Pen.Width;
+         {TmpPenMode   := Cnv.Canvas.Pen.Mode;
+         TmpJoinStyle := Cnv.Canvas.Pen.JoinStyle;
+         TmpPenEndCap := Cnv.Canvas.Pen.EndCap;
+         TmpCosmetic  := Cnv.Canvas.Pen.Cosmetic;}
+         case  DrawMode of
+           DRAWMODE_EDIT: begin
+             Cnv.Canvas.Pen.Color := EditPenColor;
+             Cnv.Canvas.Pen.Style := EditPenStyle;
+             Cnv.Canvas.Pen.Width := EditPenWidth;
+           end;
+           DRAWMODE_NORMAL: begin
+             Cnv.Canvas.Pen.Color     := self.fPenColor;
+             Cnv.Canvas.Pen.Style     := self.fPenStyle;
+             Cnv.Canvas.Pen.Width     := self.fPenWidth;
+             {Cnv.Canvas.Pen.Mode      := self.Pen.Mode;
+             Cnv.Canvas.Pen.JoinStyle := self.Pen.JoinStyle;
+             Cnv.Canvas.Pen.EndCap    := self.Pen.EndCap;
+             Cnv.Canvas.Pen.Cosmetic  := self.Pen.Cosmetic;}
+           end;
+           else begin
+           end;
+         end; // case
+    end // Custom
+    else
+      begin
+      end;
+  end;
+
   if not HasTransform then
    DrawLine2D(Cnv, Points[0], Points[1], ClipRect2D, VT)
   else
@@ -2224,12 +4051,21 @@ begin
     end else TmpArrowLength := 10;
     DrawArrows2D(MultiplyTransform2D(ModelTransform, VT), Cnv, ClipRect2D, DrawMode, Points.Points[0], Points.Points[1], TmpArrowLength, 0, 0);
   end;
+
+  //if DrawMode = DRAWMODE_EDIT then
+  //begin
+    Cnv.Canvas.Pen.Color     := TmpPenColor;
+    Cnv.Canvas.Pen.Style     := TmpPenStyle;
+    Cnv.Canvas.Pen.Width     := TmpPenWidth;
+    {Cnv.Canvas.Pen.Mode      := TmpPenMode;  //crash!!!
+    Cnv.Canvas.Pen.JoinStyle := TmpJoinStyle;
+    Cnv.Canvas.Pen.EndCap    := TmpPenEndCap;
+    Cnv.Canvas.Pen.Cosmetic  := TmpCosmetic; }
+  //end;
 end;
 
-function TLine2D.OnMe(Pt: TPoint2D; Aperture: TRealType;
-                      var Distance: TRealType): Integer;
-var
-  TmpDist: TRealType;
+function TLine2D.OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer;
+var TmpDist: TRealType;
 begin
   Result := inherited OnMe(Pt, Aperture, Distance);
   if Result = PICK_INBBOX then
@@ -2248,7 +4084,7 @@ end;
 // TOutline2D
 // =====================================================================
 
-function TOutline2D.GetIsClosed: Boolean;
+function TOutline2D.GetHasBrush: Boolean;
 begin
   BeginUseProfilePoints;
   try
@@ -2271,6 +4107,79 @@ begin
   // there is no need to do finalization here.
 end;
 
+function TOutline2D.GetStartPoint: TPoint2D;
+begin
+  result := TransformPoint2D(TOutline2D(self).ProfilePoints[0], ModelTransform)
+end;
+
+function TOutline2D.GetStartPointX: TRealType;
+begin
+  result := GetStartPoint.X;
+end;
+
+function TOutline2D.GetStartPointY: TRealType;
+begin
+  result := GetStartPoint.Y
+end;
+
+procedure TOutline2D.SetStartPointX(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetStartPoint.X - AValue;
+  self.Points.DisableEvents := true;
+  PVectPoints2D(self.Points.PointsReference)^[0].X := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+
+procedure TOutline2D.SetStartPointY(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetStartPoint.Y - AValue;
+  self.Points.DisableEvents := true;
+  PVectPoints2D(self.Points.PointsReference)^[0].Y := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+
+function TOutline2D.GetEndPoint: TPoint2D;
+begin
+  result := TransformPoint2D(TOutline2D(self).ProfilePoints[TOutline2D(self).ProfilePoints.Count - 1], ModelTransform)
+end;
+
+function TOutline2D.GetEndPointX: TRealType;
+begin
+  result := GetEndPoint.X
+end;
+
+function TOutline2D.GetEndPointY: TRealType;
+begin
+  result := GetEndPoint.Y
+end;
+
+procedure TOutline2D.SetEndPointX(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetEndPoint.X - AValue;
+  self.Points.DisableEvents := true;
+  count := self.Points.Count;
+  PVectPoints2D(self.Points.PointsReference)^[count-1].X := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+
+procedure TOutline2D.SetEndPointY(AValue:TRealType);
+var Delta: TRealType; i: integer;  TmpPoint2D: TPoint2D;  count: integer;
+begin
+  Delta := GetEndPoint.Y - AValue;
+  self.Points.DisableEvents := true;
+  count := self.Points.Count;
+  PVectPoints2D(self.Points.PointsReference)^[count-1].Y := AValue;
+  self.Points.DisableEvents := false;
+  self.UpdateExtension(nil);
+end;
+
+
 // =====================================================================
 // TPolyline2D
 // =====================================================================
@@ -2281,6 +4190,33 @@ begin
   Points.AddPoints(Pts);
 end;
 
+destructor TPolyline2D.destroy;
+begin
+  inherited;
+end;
+
+constructor TPolyline2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+begin
+  inherited CreateFromStream(Stream, Version);
+  fSimplePrim2DInsp := TSimplePrim2DInsp.create(self);
+end;
+
+procedure TPolyLine2D.Explode;
+var TmpLine2D: TLine2D; i: integer;
+begin
+  for i := 0   to ProfilePoints.Count - 2 do
+  begin
+    TmpLine2D := TLine2D.Create(-1, ProfilePoints[i], ProfilePoints[i+1]);
+    TmpLine2D.PenSource   := PenSource;
+    TmpLine2D.PenColor    := PenColor;
+    TmpLine2D.PenStyle    := PenStyle;
+    TmpLine2D.PenWidth    := PenWidth;
+
+    TmpLine2D.Transform(ModelTransform);
+    TCADCmp2D(OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
+  end;
+end;
+
 procedure TPolyLine2D.Assign(const Obj: TGraphicObject);
 begin
   if (Obj = Self) then
@@ -2288,14 +4224,62 @@ begin
   inherited Assign(Obj);
   if (Obj is TLine2D) or (Obj is TPolyline2D) or (Obj is TPolygon2D) then
    begin
-     Points.Copy(TPrimitive2D(Obj).Points, 0, TPrimitive2D(Obj).Points.Count - 1);
+     Points.Copy(TSimplePrimitive2D(Obj).Points, 0, TSimplePrimitive2D(Obj).Points.Count - 1);
      Points.GrowingEnabled := True;
    end;
 end;
 
 procedure TPolyLine2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
 var P0, P1: TPoint2D; x, y, TmpArrowLength: TRealType;
+  TmpPenColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpPenWidth: word;
+  TmpPenMode: TPenMode;
+  TmpCosmetic: boolean;
+  TmpPenEndCap: TFPPenEndCap;
+  TmpJoinStyle : TFPPenJoinStyle;
 begin
+  case fPenSource of
+    psByLayer: begin
+      //defaul Value is ByLayer
+    end;
+    psByBlock: begin
+      fPenSource := psByLayer;
+      exit; //not implemented.
+    end;
+    psCustom: begin
+        //TmpPen := TPen.Create;
+         TmpPenColor  := Cnv.Canvas.Pen.Color;
+         TmpPenStyle  := Cnv.Canvas.Pen.Style;
+         TmpPenWidth  := Cnv.Canvas.Pen.Width;
+         {TmpPenMode   := Cnv.Canvas.Pen.Mode;
+         TmpJoinStyle := Cnv.Canvas.Pen.JoinStyle;
+         TmpPenEndCap := Cnv.Canvas.Pen.EndCap;
+         TmpCosmetic  := Cnv.Canvas.Pen.Cosmetic;}
+         case  DrawMode of
+           DRAWMODE_EDIT: begin
+             Cnv.Canvas.Pen.Color := EditPenColor;
+             Cnv.Canvas.Pen.Style := EditPenStyle;
+             Cnv.Canvas.Pen.Width := EditPenWidth;
+           end;
+           DRAWMODE_NORMAL: begin
+             Cnv.Canvas.Pen.Color     := self.fPenColor;
+             Cnv.Canvas.Pen.Style     := self.fPenStyle;
+             Cnv.Canvas.Pen.Width     := self.fPenWidth;
+             {Cnv.Canvas.Pen.Mode      := self.Pen.Mode;
+             Cnv.Canvas.Pen.JoinStyle := self.Pen.JoinStyle;
+             Cnv.Canvas.Pen.EndCap    := self.Pen.EndCap;
+             Cnv.Canvas.Pen.Cosmetic  := self.Pen.Cosmetic;}
+           end;
+           else begin
+           end;
+         end; // case
+    end // Custom
+    else
+      begin
+      end;
+  end;
+
   if not HasTransform then
    Points.DrawAsPolyline(Cnv, RectToRect2D(Cnv.Canvas.ClipRect), Box, VT)
   else
@@ -2313,6 +4297,17 @@ begin
     P1 := ProfilePoints[ProfilePoints.Count - 1];
     DrawArrows2D(MultiplyTransform2D(ModelTransform, VT), Cnv, ClipRect2D, DrawMode, P0, P1, TmpArrowLength, 0, 0);
   end;
+
+  //if DrawMode = DRAWMODE_EDIT then
+  //begin
+    Cnv.Canvas.Pen.Color     := TmpPenColor;
+    Cnv.Canvas.Pen.Style     := TmpPenStyle;
+    Cnv.Canvas.Pen.Width     := TmpPenWidth;
+    {Cnv.Canvas.Pen.Mode     := TmpPenMode;
+    Cnv.Canvas.Pen.JoinStyle := TmpJoinStyle;
+    Cnv.Canvas.Pen.EndCap    := TmpPenEndCap;
+    Cnv.Canvas.Pen.Cosmetic  := TmpCosmetic;}
+  //end;
 end;
 
 function TPolyline2D.OnMe(Pt: TPoint2D; Aperture: TRealType;
@@ -2338,21 +4333,84 @@ begin
   Result := Points.Count;
 end;
 
+
 // =====================================================================
 // TPolygon2D
 // =====================================================================
-
-function TPolygon2D.GetIsClosed: Boolean;
-begin
-  Result := True; // Sempre chiuso.
-end;
-
 procedure TPolygon2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
-var P0, P1: TPoint2D;  TmpBrushStyle:  TBrushStyle;  x, y, TmpArrowLength: TRealType;
+var P0, P1: TPoint2D;    x, y, TmpArrowLength: TRealType;
+  TmpPenColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpPenWidth: word;
+  TmpPenMode: TPenMode;
+  TmpCosmetic: boolean;
+  TmpPenEndCap: TFPPenEndCap;
+  TmpJoinStyle : TFPPenJoinStyle;
+
+  TmpBrushColor: TColor;
+  TmpBrushStyle: TBrushStyle;
 begin
+  case self.fBrushSource of
+    bsByLayer: begin
+      //defaul Value is ByLayer
+    end;
+    bsByBlock: begin
+      fBrushSource := bsByLayer;
+      exit; //not implemented.
+    end;
+    bsCustom: begin
+      TmpBrushColor := Cnv.Canvas.Brush.Color;
+      TmpBrushStyle := Cnv.Canvas.Brush.Style;
+      Cnv.Canvas.Brush.Color := self.BrushColor;
+      Cnv.Canvas.Brush.Style := self.BrushStyle;
+    end;
+    else begin
+      //
+    end;
+  end;
+
+  case fPenSource of
+    psByLayer: begin
+      //defaul Value is ByLayer
+    end;
+    psByBlock: begin
+      fPenSource := psByLayer;
+      exit; //not implemented.
+    end;
+    psCustom: begin
+        //TmpPen := TPen.Create;
+         TmpPenColor  := Cnv.Canvas.Pen.Color;
+         TmpPenStyle  := Cnv.Canvas.Pen.Style;
+         TmpPenWidth  := Cnv.Canvas.Pen.Width;
+         {TmpPenMode   := Cnv.Canvas.Pen.Mode;
+         TmpJoinStyle := Cnv.Canvas.Pen.JoinStyle;
+         TmpPenEndCap := Cnv.Canvas.Pen.EndCap;
+         TmpCosmetic  := Cnv.Canvas.Pen.Cosmetic;}
+         case  DrawMode of
+           DRAWMODE_EDIT: begin
+             Cnv.Canvas.Pen.Color := EditPenColor;
+             Cnv.Canvas.Pen.Style := EditPenStyle;
+             Cnv.Canvas.Pen.Width := EditPenWidth;
+           end;
+           DRAWMODE_NORMAL: begin
+             Cnv.Canvas.Pen.Color     := self.fPenColor;
+             Cnv.Canvas.Pen.Style     := self.fPenStyle;
+             Cnv.Canvas.Pen.Width     := self.fPenWidth;
+             {Cnv.Canvas.Pen.Mode      := self.Pen.Mode;
+             Cnv.Canvas.Pen.JoinStyle := self.Pen.JoinStyle;
+             Cnv.Canvas.Pen.EndCap    := self.Pen.EndCap;
+             Cnv.Canvas.Pen.Cosmetic  := self.Pen.Cosmetic;}
+           end;
+           else begin
+           end;
+         end; // case
+    end // Custom
+    else
+      begin
+      end;
+  end;
   { Draw the polygon. }
-  TmpBrushStyle :=  Cnv.Canvas.Brush.Style;  //Added
-  Cnv.Canvas.Brush.Style := bsClear;
+
   if not HasTransform then
    Points.DrawAsPolygon(Cnv, RectToRect2D(Cnv.Canvas.ClipRect), Box, VT)
   else
@@ -2372,7 +4430,20 @@ begin
     P1 := ProfilePoints[0];
     DrawArrows2D(MultiplyTransform2D(ModelTransform, VT), Cnv, ClipRect2D, DrawMode, P0, P1, TmpArrowLength, 0, 0);
   end;
-  Cnv.Canvas.Brush.Style := TmpBrushStyle; //Added
+
+  //if DrawMode = DRAWMODE_EDIT then
+  //begin
+    Cnv.Canvas.Pen.Color     := TmpPenColor;
+    Cnv.Canvas.Pen.Style     := TmpPenStyle;
+    Cnv.Canvas.Pen.Width     := TmpPenWidth;
+    {Cnv.Canvas.Pen.Mode     := TmpPenMode;
+    Cnv.Canvas.Pen.JoinStyle := TmpJoinStyle;
+    Cnv.Canvas.Pen.EndCap    := TmpPenEndCap;
+    Cnv.Canvas.Pen.Cosmetic  := TmpCosmetic;}
+  //end;
+
+  Cnv.Canvas.Brush.Color := TmpBrushColor;
+  Cnv.Canvas.Brush.Style := TmpBrushStyle;
 end;
 
 function TPolygon2D.OnMe(Pt: TPoint2D; Aperture: TRealType;
@@ -2383,7 +4454,8 @@ begin
   Result := inherited OnMe(Pt, Aperture, Distance);
   if (Result = PICK_INBBOX) then
    begin
-     Result := MaxIntValue([PICK_INBBOX, IsPointInPolygon2D(Points.PointsReference, Points.Count, Pt, TmpDist, Aperture, ModelTransform)]);
+     //Result := MaxIntValue([PICK_INBBOX, IsPointInPolygon2D(Points.PointsReference, Points.Count, Pt, TmpDist, Aperture, ModelTransform)]);
+     Result := MaxIntValue([PICK_INBBOX, IsPointOnPolyLine2D(Points.PointsReference, Points.Count, Pt, TmpDist, Aperture, ModelTransform, True)]);
      Distance := MinValue([Aperture, TmpDist]);
    end;
 end;
@@ -2404,7 +4476,10 @@ end;
 procedure TCurve2D.SetCurvePrecision(N: Word);
 begin
   if fCurvePrecision <> N then
-   fCurvePrecision := N;
+  begin
+    fCurvePrecision := N;
+    UpdateExtension(nil);
+  end;
 end;
 
 function TCurve2D.PopulateCurvePoints(N: Word): TRect2D;
@@ -2497,7 +4572,55 @@ end;
 
 procedure TCurve2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
 var P0, P1: TPoint2D;  x, y, TmpArrowLength: TRealType;
+  TmpPenColor: TColor;
+  TmpPenStyle: TPenStyle;
+  TmpPenWidth: word;
+  TmpPenMode: TPenMode;
+  TmpCosmetic: boolean;
+  TmpPenEndCap: TFPPenEndCap;
+  TmpJoinStyle : TFPPenJoinStyle;
 begin
+  case fPenSource of
+    psByLayer: begin
+      //defaul Value is ByLayer
+    end;
+    psByBlock: begin
+      fPenSource := psByLayer;
+      exit; //not implemented.
+    end;
+    psCustom: begin
+        //TmpPen := TPen.Create;
+         TmpPenColor  := Cnv.Canvas.Pen.Color;
+         TmpPenStyle  := Cnv.Canvas.Pen.Style;
+         TmpPenWidth  := Cnv.Canvas.Pen.Width;
+         {TmpPenMode   := Cnv.Canvas.Pen.Mode;
+         TmpJoinStyle := Cnv.Canvas.Pen.JoinStyle;
+         TmpPenEndCap := Cnv.Canvas.Pen.EndCap;
+         TmpCosmetic  := Cnv.Canvas.Pen.Cosmetic;}
+         case  DrawMode of
+           DRAWMODE_EDIT: begin
+             Cnv.Canvas.Pen.Color := EditPenColor;
+             Cnv.Canvas.Pen.Style := EditPenStyle;
+             Cnv.Canvas.Pen.Width := EditPenWidth;
+           end;
+           DRAWMODE_NORMAL: begin
+             Cnv.Canvas.Pen.Color     := self.fPenColor;
+             Cnv.Canvas.Pen.Style     := self.fPenStyle;
+             Cnv.Canvas.Pen.Width     := self.fPenWidth;
+             {Cnv.Canvas.Pen.Mode      := self.Pen.Mode;
+             Cnv.Canvas.Pen.JoinStyle := self.Pen.JoinStyle;
+             Cnv.Canvas.Pen.EndCap    := self.Pen.EndCap;
+             Cnv.Canvas.Pen.Cosmetic  := self.Pen.Cosmetic;}
+           end;
+           else begin
+           end;
+         end; // case
+    end // Custom
+    else
+      begin
+      end;
+  end;
+
   BeginUseProfilePoints;
   try
     if Assigned(fCurvePoints) then
@@ -2523,6 +4646,17 @@ begin
     P1 := ProfilePoints[ProfilePoints.Count - 1];
     DrawArrows2D(MultiplyTransform2D(ModelTransform, VT), Cnv, ClipRect2D, DrawMode, P0, P1, TmpArrowLength, 0, 0);
   end;
+
+  //if DrawMode = DRAWMODE_EDIT then
+  //begin
+    Cnv.Canvas.Pen.Color     := TmpPenColor;
+    Cnv.Canvas.Pen.Style     := TmpPenStyle;
+    Cnv.Canvas.Pen.Width     := TmpPenWidth;
+    {Cnv.Canvas.Pen.Mode      := TmpPenMode;
+    Cnv.Canvas.Pen.JoinStyle := TmpJoinStyle;
+    Cnv.Canvas.Pen.EndCap    := TmpPenEndCap;
+    Cnv.Canvas.Pen.Cosmetic  := TmpCosmetic;}
+  //end;
 end;
 
 function TCurve2D.OnMe(Pt: TPoint2D; Aperture: TRealType;
@@ -2574,6 +4708,41 @@ end;
 // =====================================================================
 // TEllipticalArc2D
 // =====================================================================
+procedure TEllipticalArc2D.Inverse;
+var TmpEA: TRealType;
+begin
+  TmpEA       := fEndAngle;
+  EndAngle    := RadToDeg(fStartAngle);
+  StartAngle  := RadToDeg(TmpEA);
+
+  if fDirection  = adCounterClockwise then
+    fDirection := adClockwise
+  else
+    fDirection := adCounterClockwise;
+
+  UpdateExtension(self);
+end;
+
+{ Angles are in radiants. }
+constructor TEllipticalArc2D.Create(ID: LongInt; const P1, P2: TPoint2D; SA, EA: TRealType);
+begin
+  inherited Create(ID, 4, 50);
+  fEllipticalArc2DInsp := TEllipticalArc2DInsp.create(self);
+  Points.DisableEvents := True;
+  try
+    Points.Add(P1);
+    Points.Add(P2);
+    Points.Add(Point2D(0, 0));
+    Points.Add(Point2D(0, 0));
+    fDirection := adCounterClockwise;
+    StartAngle := SA;
+    EndAngle := EA;
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+end;
 
 procedure TEllipticalArc2D.GetArcParams(var CX, CY, RX, RY, SA, EA: TRealType);
 var P1, P0, P3: TPoint2D;  //Radius: TRealType;
@@ -2602,15 +4771,25 @@ begin
   end;
 end;
 
+function  TEllipticalArc2D.GetStartAngle: TRealType;
+begin
+  result := RadToDeg(FStartAngle);
+end;
+
+function  TEllipticalArc2D.GetEndAngle: TRealType;
+begin
+  result := RadToDeg(FEndAngle);
+end;
+
 procedure TEllipticalArc2D.SetStartAngle(A: TRealType);
 var
   CX, RX, CY, RY, SA, EA: TRealType;
 begin
-  if fStartAngle <> A then
+  if fStartAngle <> DegToRad(A) then
    begin
      fStartAngle := A;
      GetArcParams(CX, CY, RX, RY, SA, EA);
-     Points[2] := Point2D(CX + RX * Cos(A), CY + RY * Sin(A));
+     Points[2] := Point2D(CX + RX * Cos(DegToRad(A)), CY + RY * Sin(DegToRad(A)));
    end;
 end;
 
@@ -2622,8 +4801,19 @@ begin
    begin
      fEndAngle := A;
      GetArcParams(CX, CY, RX, RY, SA, EA);
-     Points[3] := Point2D(CX + RX * Cos(A), CY + RY * Sin(A));
+     Points[3] := Point2D(CX + RX * Cos(DegToRad(A)), CY + RY * Sin(DegToRad(A)));
    end;
+end;
+
+function  TEllipticalArc2D.GetArcAngle: TRealType;
+begin
+  result := RadToDeg(FEndAngle - FStartAngle);
+end;
+
+procedure TEllipticalArc2D.SetArcAngle(A: TRealType);
+begin
+  SetEndAngle(RadToDeg(FStartAngle) + A);
+  UpdateExtension(nil);
 end;
 
 function TEllipticalArc2D.PopulateCurvePoints(N: Word): TRect2D;
@@ -2651,7 +4841,8 @@ begin
   if fDirection = adClockwise then
   begin
     CurrAngle := fStartAngle;
-    for Cont := 0 to NPts - 1 do
+    //for Cont := 0 to NPts - 1 do
+    for Cont := 0 to NPts do
     begin
       ProfilePoints.Add(Point2D(CX + RX * Cos(CurrAngle), CY - RY * Sin(CurrAngle)));
       CurrAngle := CurrAngle + Delta
@@ -2660,7 +4851,8 @@ begin
   end else
   begin
      CurrAngle := fStartAngle;
-     for Cont := 0 to NPts - 1 do
+     //for Cont := 0 to NPts - 1 do
+     for Cont := 0 to NPts do
      begin
        ProfilePoints.Add(Point2D(CX + RX * Cos(CurrAngle), CY + RY * Sin(CurrAngle)));
        CurrAngle := CurrAngle + Delta
@@ -2670,24 +4862,10 @@ begin
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
 end;
 
-{ Angles are in radiants. }
-constructor TEllipticalArc2D.Create(ID: LongInt; const P1, P2: TPoint2D; SA, EA: TRealType);
+destructor TEllipticalArc2D.destroy;
 begin
-  inherited Create(ID, 4, 50);
-  Points.DisableEvents := True;
-  try
-    Points.Add(P1);
-    Points.Add(P2);
-    Points.Add(Point2D(0, 0));
-    Points.Add(Point2D(0, 0));
-    fDirection := adCounterClockwise;
-    StartAngle := SA;
-    EndAngle := EA;
-    Points.GrowingEnabled := False;
-  finally
-    Points.DisableEvents := False;
-    UpdateExtension(Self);
-  end;
+  fEllipticalArc2DInsp.Free;
+  inherited;
 end;
 
 procedure TEllipticalArc2D.Assign(const Obj: TGraphicObject);
@@ -2724,6 +4902,7 @@ constructor TEllipticalArc2D.CreateFromStream(const Stream: TStream; const Versi
 begin
   { Load the standard properties }
   inherited;
+  fEllipticalArc2DInsp := TEllipticalArc2DInsp.create(self);
   Points.DisableEvents := True;
   with Stream do
    try
@@ -2745,6 +4924,42 @@ end;
 // =====================================================================
 // TCircularArc2D
 // =====================================================================
+procedure TCircularArc2D.Inverse;
+var TmpEA: TRealType;
+begin
+  TmpEA       := fEndAngle;
+  EndAngle    := RadToDeg(fStartAngle);
+  StartAngle  := RadToDeg(TmpEA);
+
+  if fDirection  = adCounterClockwise then
+    fDirection := adClockwise
+  else
+    fDirection := adCounterClockwise;
+
+  UpdateExtension(self);
+end;
+
+{ Angles are in radiants. }
+constructor TCircularArc2D.Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
+begin
+  inherited Create(ID, 4, 50);
+  fCircularArc2DInsp := TCircularArc2DInsp.create(self);
+  Points.DisableEvents := True;
+  try
+    fPoints.Add(CP);
+    fPoints.Add(Point2D(CP.X + R * Cos(SA), CP.Y + R * Sin(SA)));
+    fPoints.Add(Point2D(CP.X + R * Cos(EA), CP.Y + R * Sin(EA)));
+    FStartAngle := SA;
+    FEndAngle := EA;
+    fRadius := R;
+    FDirection := adCounterClockwise;
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+end;
+
 procedure TCircularArc2D.GetArcParams(var CX, CY, R, SA, EA: TRealType);
 const TwoPi = 2 * pi;
 var P0, P1, P2: TPoint2D;
@@ -2789,37 +5004,59 @@ begin
   if  EA = (2*pi) then EA := 0;  }
 end;
 
-procedure TCircularArc2D.SetEndAngle(A: TRealType);
-var
-  CX, CY, R, SA, EA: TRealType;
+function  TCircularArc2D.GetStartAngle: TrealType;
 begin
-  if FEndAngle <> A then
-  begin
-    FEndAngle := A;
-    GetArcParams(CX, CY, R, SA, EA);
-    fPoints[2] := Point2D(CX + R * Cos(A), CY + R * Sin(A));
-  end;
+  result := RadToDeg(FStartAngle);
 end;
 
-procedure TCircularArc2D.SetRadius(ARadius: TRealType);
+function  TCircularArc2D.GetEndAngle: TrealType;
 begin
-  if ARadius <> fRadius then
-  begin
-    fRadius := ARadius;
-    fPoints[1] := ExtendLine(fPoints[0], fPoints[1], fRadius);
-    fPoints[2] := ExtendLine(fPoints[0], fPoints[2], fRadius);
-  end;
+  result := RadToDeg(FEndAngle);
 end;
 
 procedure TCircularArc2D.SetStartAngle(A: TRealType);
 var
   CX, CY, R, SA, EA: TRealType;
 begin
-  if FStartAngle <> A then
+  if FStartAngle <> DegToRad(A) then
   begin
-    FStartAngle := A;
+    FStartAngle := DegToRad(A);
     GetArcParams(CX, CY, R, SA, EA);
-    fPoints[1] := Point2D(CX + R * Cos(A), CY + R * Sin(A));
+    fPoints[1] := Point2D(CX + R * Cos(DegToRad(A)), CY + R * Sin(DegToRad(A)));
+  end;
+end;
+
+procedure TCircularArc2D.SetEndAngle(A: TRealType);
+var
+  CX, CY, R, SA, EA: TRealType;
+begin
+  if FEndAngle <> DegToRad(A) then
+  begin
+    FEndAngle := DegToRad(A);
+    GetArcParams(CX, CY, R, SA, EA);
+    fPoints[2] := Point2D(CX + R * Cos(DegToRad(A)), CY + R * Sin(DegToRad(A)));
+  end;
+end;
+
+function  TCircularArc2D.GetArcAngle: TRealType;
+begin
+  result := RadToDeg(FEndAngle - FStartAngle);
+end;
+
+procedure TCircularArc2D.SetArcAngle(A: TRealType);
+begin
+  SetEndAngle(RadToDeg(FStartAngle) + A);
+  UpdateExtension(nil);
+end;
+
+procedure TCircularArc2D.SetRadius(ARadius: TRealType);
+begin
+  if ARadius <> fRadius then
+  begin
+    if ARadius = 0 then ARadius := 0.001;
+    fRadius := ARadius;
+    fPoints[1] := ExtendLine(fPoints[0], fPoints[1], fRadius);
+    fPoints[2] := ExtendLine(fPoints[0], fPoints[2], fRadius);
   end;
 end;
 
@@ -2915,24 +5152,10 @@ begin
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
 end;
 
-{ Angles are in radiants. }
-constructor TCircularArc2D.Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
+destructor TCircularArc2D.destroy;
 begin
-  inherited Create(ID, 4, 50);
-  Points.DisableEvents := True;
-  try
-    fPoints.Add(CP);
-    fPoints.Add(Point2D(CP.X + R * Cos(SA), CP.Y + R * Sin(SA)));
-    fPoints.Add(Point2D(CP.X + R * Cos(EA), CP.Y + R * Sin(EA)));
-    FStartAngle := SA;
-    FEndAngle := EA;
-    fRadius := R;
-    FDirection := adCounterClockwise;
-    Points.GrowingEnabled := False;
-  finally
-    Points.DisableEvents := False;
-    UpdateExtension(Self);
-  end;
+  fCircularArc2DInsp.Free;
+  inherited;
 end;
 
 procedure TCircularArc2D.Assign(const Obj: TGraphicObject);
@@ -2978,6 +5201,7 @@ constructor TCircularArc2D.CreateFromStream(const Stream: TStream; const Version
 begin
   { Load the standard properties }
   inherited;
+  fCircularArc2DInsp := TCircularArc2DInsp.create(self);
   Points.DisableEvents := True;
   with Stream do
    try
@@ -2997,9 +5221,159 @@ begin
     Write(fRadius, SizeOf(fRadius));
 end;
 
+function  TCircularArc2D.GetCenterPoint: TPoint2D;
+begin
+  result := self.Points[0];
+end;
+
+procedure TCircularArc2D.SetCenterPoint(APoint2D: TPoint2D);
+var TmpPoint2D: TPoint2D;
+begin
+  self.Points.Delete(0);
+  self.Points.Insert(0, APoint2D);
+end;
+
 //=====================================================================
 // TSector2D
 //=====================================================================
+procedure TSector2D.GetArcParams(var CX, CY, R, SA, EA: TRealType);
+const TwoPi = 2 * pi;
+var P0, P1, P2: TPoint2D;
+
+  function NormalizeAngle(Angle: TRealType): TRealType;
+  begin
+    if Angle < 0 then
+      Result := Angle + TwoPi
+    else if Angle >= TwoPi then
+      Result := Angle - TwoPi
+    else
+      Result := Angle;
+  end;
+
+begin
+  P0 := CartesianPoint2D(fPoints[0]);
+  P1 := CartesianPoint2D(fPoints[1]);
+  P2 := CartesianPoint2D(fPoints[2]);
+  CX := P0.X;
+  CY := P0.Y;
+  R  := PointDistance2D(P0, P1);
+
+  if FDirection = adCounterClockwise then
+  begin
+    SA := ArcTan2(P1.Y - CY, P1.X - CX);
+    EA := ArcTan2(P2.Y - CY, P2.X - CX);
+  end else
+  begin  //Clockwise
+    SA := ArcTan2(P2.Y - CY, P2.X - CX);
+    EA := ArcTan2(P1.Y - CY, P1.X - CX);
+  end;
+
+  SA := NormalizeAngle(SA);
+  EA := NormalizeAngle(EA);
+
+  {if  SA < 0 then SA := (2*pi) - abs(SA);
+  if  SA = 2*pi then SA := 0;
+  if  SA = (2*pi) then SA := 0;
+
+  if  EA < 0 then EA := (2*pi) - abs(EA);
+  if  EA = 2*pi then EA := 0;
+  if  EA = (2*pi) then EA := 0;  }
+end;
+
+function  TSector2D.GetStartAngle: TRealType;
+begin
+  result := RadToDeg(FStartAngle);
+end;
+
+function  TSector2D.GetEndAngle: TrealType;
+begin
+  result := RadToDeg(FEndAngle);
+end;
+
+procedure TSector2D.SetStartAngle(A: TRealType);
+var
+  CX, CY, R, SA, EA: TRealType;
+begin
+  if FStartAngle <> DegToRad(A) then
+  begin
+    FStartAngle := DegToRad(A);
+    GetArcParams(CX, CY, R, SA, EA);
+    fPoints[1] := Point2D(CX + R * Cos(DegToRad(A)), CY + R * Sin(DegToRad(A)));
+  end;
+end;
+
+procedure TSector2D.SetEndAngle(A: TRealType);
+var
+  CX, CY, R, SA, EA: TRealType;
+begin
+  if FEndAngle <> DegToRad(A) then
+  begin
+    FEndAngle := DegToRad(A);
+    GetArcParams(CX, CY, R, SA, EA);
+    fPoints[2] := Point2D(CX + R * Cos(DegToRad(A)), CY + R * Sin(DegToRad(A)));
+  end;
+end;
+
+function  TSector2D.GetArcAngle: TRealType;
+begin
+  result := RadToDeg(FEndAngle - FStartAngle);
+end;
+
+procedure TSector2D.SetArcAngle(A: TRealType);
+begin
+  SetEndAngle(RadToDeg(FStartAngle) + A);
+  UpdateExtension(nil);
+end;
+
+procedure TSector2D.SetRadius(ARadius: TRealType);
+begin
+  if ARadius <> fRadius then
+  begin
+    if ARadius = 0 then ARadius := 0.001;
+    fRadius := ARadius;
+    fPoints[1] := ExtendLine(fPoints[0], fPoints[1], fRadius);
+    fPoints[2] := ExtendLine(fPoints[0], fPoints[2], fRadius);
+  end;
+end;
+
+procedure TSector2D.GetArcPoints(PP: TPointsSet2D; NPts: Word);
+var  ArcAngle: TRealType;
+  Cont: Integer;
+  CX, CY, R: TRealType;
+  Delta, CurrAngle: TRealType;
+begin
+  GetArcParams(CX, CY, R, FStartAngle, FEndAngle);
+  fRadius := R;
+  // Calcola il delta angolare tra due punti
+  if FStartAngle < FEndAngle then
+    Delta := (FEndAngle - FStartAngle) / (NPts - 1)
+  else
+    Delta := (TWOPI - FStartAngle + FEndAngle) / (NPts - 1);
+  // Crea il vettore curvilineo.
+  // Popola il vettore curvilineo.
+  if FDirection = adClockwise then
+  begin
+    ArcAngle    := FEndAngle - FStartAngle;
+    FEndAngle   := FEndAngle   + ArcAngle;
+    FStartAngle := FStartAngle + ArcAngle;
+  end;
+  CurrAngle := FStartAngle;
+  for Cont := 1 to NPts do
+  begin
+    ProfilePoints.Add(Point2D(CX + R * Cos(CurrAngle), CY + R * Sin(CurrAngle)));
+    if FDirection = adCounterClockwise then
+      CurrAngle := CurrAngle + Delta
+    else
+      CurrAngle := CurrAngle - Delta;
+  end;
+  //Make Sector
+  ProfilePoints.Add(Point2D(CX, CY));
+  ProfilePoints.Add(ProfilePoints[0]);
+
+  //Make Segment
+  //ProfilePoints.Add(ProfilePoints[0]); //close Arc
+end;
+
 function TSector2D.PopulateCurvePoints(N: Word): TRect2D;
 begin
   if CurvePrecision = 0 then
@@ -3008,20 +5382,276 @@ begin
     Exit;
   end;
   Result := inherited PopulateCurvePoints(CurvePrecision);
-
-  //Make Sector
-  //ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
-  //ProfilePoints.Add(ProfilePoints[0]);
-
-  //Make Segment
-  ProfilePoints.Add(ProfilePoints[0]); //close Arc
-
+  GetArcPoints(ProfilePoints, CurvePrecision);
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
+end;
+
+procedure TSector2D.Inverse;
+var TmpEA: TRealType;
+begin
+  TmpEA       := fEndAngle;
+  EndAngle    := RadToDeg(fStartAngle);
+  StartAngle  := RadToDeg(TmpEA);
+
+  if fDirection  = adCounterClockwise then
+    fDirection := adClockwise
+  else
+    fDirection := adCounterClockwise;
+
+  UpdateExtension(self);
+end;
+
+procedure TSector2D.Explode;
+begin
+  inherited;
+end;
+
+{ Angles are in radiants. }
+constructor TSector2D.Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
+begin
+  inherited Create(ID, 3, 50);
+
+  fSector2DInsp := TSector2DInsp.create(self);
+
+  Points.DisableEvents := True;
+  try
+    fPoints.Add(CP);
+    fPoints.Add(Point2D(CP.X + R * Cos(SA), CP.Y + R * Sin(SA)));
+    fPoints.Add(Point2D(CP.X + R * Cos(EA), CP.Y + R * Sin(EA)));
+    FStartAngle := SA;
+    FEndAngle := EA;
+    fRadius := R;
+    FDirection := adCounterClockwise;
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+end;
+
+destructor TSector2D.destroy;
+begin
+  fSector2DInsp.Free;
+  inherited;
+end;
+
+procedure TSector2D.Assign(const Obj: TGraphicObject);
+var i, x: integer;
+begin
+  if (Obj = Self) then
+   Exit;
+  inherited Assign(Obj);
+
+  if (Obj is TSector2D) then
+  begin
+    UpdateExtension(Self);
+    self.BeginUseProfilePoints;
+    self.ProfilePoints.DisableEvents := true;
+    ProfilePoints.Copy(TSector2D(Obj).ProfilePoints, 0, TSector2D(Obj).ProfilePoints.Count - 1);
+    self.ProfilePoints.DisableEvents := false;
+    self.EndUseProfilePoints;
+    UpdateExtension(Self);
+  end else
+
+  if (Obj is TEllipse2D) or (Obj is TFrame2D) then
+   begin
+     fStartAngle := 0;
+     fEndAngle := TWOPI;
+     Points.DisableEvents := True;
+     try
+       Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
+       Points.Add(Point2D(0, 0));
+       Points.Add(Point2D(0, 0));
+       Points.GrowingEnabled := False;
+     finally
+       Points.DisableEvents := False;
+       UpdateExtension(Self);
+     end;
+   end
+  else if Obj is TEllipticalArc2D then
+   begin
+     fStartAngle := (Obj as TEllipticalArc2D).StartAngle;
+     fEndAngle := (Obj as TEllipticalArc2D).EndAngle;
+     fDirection := (Obj as TEllipticalArc2D).Direction;
+     Points.Copy(TPrimitive2D(Obj).Points, 0, 3);
+     Points.GrowingEnabled := False;
+   end
+  else if  Obj is TCircularArc2D then
+  begin
+    fStartAngle := (Obj as TCircularArc2D).StartAngle;
+    fEndAngle := (Obj as TCircularArc2D).EndAngle;
+    fDirection := (Obj as TCircularArc2D).Direction;
+    fShowDirection := (Obj as TCircularArc2D).fShowDirection;
+    Points.Copy(TPrimitive2D(Obj).Points, 0, 2);
+    Points.GrowingEnabled := False;
+  end;
+end;
+
+constructor TSector2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+begin
+  { Load the standard properties }
+  inherited;
+  fSector2DInsp := TSector2DInsp.create(self);
+  Points.DisableEvents := True;
+  with Stream do
+   try
+     //Read(FDirection, SizeOf(FDirection));
+     Read(fRadius, SizeOf(fRadius));
+   finally
+     Points.DisableEvents := False;
+   end;
+end;
+
+procedure TSector2D.SaveToStream(const Stream: TStream);
+begin
+  { Save the standard properties }
+  inherited SaveToStream(Stream);
+  with Stream do
+   //Write(fDirection, SizeOf(FDirection));
+    Write(fRadius, SizeOf(fRadius));
 end;
 
 //=====================================================================
 // TSegment2D
 //=====================================================================
+procedure TSegment2D.GetArcParams(var CX, CY, R, SA, EA: TRealType);
+const TwoPi = 2 * pi;
+var P0, P1, P2: TPoint2D;
+
+  function NormalizeAngle(Angle: TRealType): TRealType;
+  begin
+    if Angle < 0 then
+      Result := Angle + TwoPi
+    else if Angle >= TwoPi then
+      Result := Angle - TwoPi
+    else
+      Result := Angle;
+  end;
+
+begin
+  P0 := CartesianPoint2D(fPoints[0]);
+  P1 := CartesianPoint2D(fPoints[1]);
+  P2 := CartesianPoint2D(fPoints[2]);
+  CX := P0.X;
+  CY := P0.Y;
+  R  := PointDistance2D(P0, P1);
+
+  if FDirection = adCounterClockwise then
+  begin
+    SA := ArcTan2(P1.Y - CY, P1.X - CX);
+    EA := ArcTan2(P2.Y - CY, P2.X - CX);
+  end else
+  begin  //Clockwise
+    SA := ArcTan2(P2.Y - CY, P2.X - CX);
+    EA := ArcTan2(P1.Y - CY, P1.X - CX);
+  end;
+
+  SA := NormalizeAngle(SA);
+  EA := NormalizeAngle(EA);
+
+  {if  SA < 0 then SA := (2*pi) - abs(SA);
+  if  SA = 2*pi then SA := 0;
+  if  SA = (2*pi) then SA := 0;
+
+  if  EA < 0 then EA := (2*pi) - abs(EA);
+  if  EA = 2*pi then EA := 0;
+  if  EA = (2*pi) then EA := 0;  }
+end;
+
+function  TSegment2D.GetStartAngle: TRealType;
+begin
+  result := RadToDeg(FStartAngle);
+end;
+
+function  TSegment2D.GetEndAngle: TrealType;
+begin
+  result := RadToDeg(FEndAngle);
+end;
+
+procedure TSegment2D.SetStartAngle(A: TRealType);
+var
+  CX, CY, R, SA, EA: TRealType;
+begin
+  if FStartAngle <> DegToRad(A) then
+  begin
+    FStartAngle := DegToRad(A);
+    GetArcParams(CX, CY, R, SA, EA);
+    fPoints[1] := Point2D(CX + R * Cos(DegToRad(A)), CY + R * Sin(DegToRad(A)));
+  end;
+end;
+
+procedure TSegment2D.SetEndAngle(A: TRealType);
+var
+  CX, CY, R, SA, EA: TRealType;
+begin
+  if FEndAngle <> DegToRad(A) then
+  begin
+    FEndAngle := DegToRad(A);
+    GetArcParams(CX, CY, R, SA, EA);
+    fPoints[2] := Point2D(CX + R * Cos(DegToRad(A)), CY + R * Sin(DegToRad(A)));
+  end;
+end;
+
+function  TSegment2D.GetArcAngle: TRealType;
+begin
+  result := RadToDeg(FEndAngle - FStartAngle);
+end;
+
+procedure TSegment2D.SetArcAngle(A: TRealType);
+begin
+  SetEndAngle(RadToDeg(FStartAngle) + A);
+  UpdateExtension(nil);
+end;
+
+procedure TSegment2D.SetRadius(ARadius: TRealType);
+begin
+  if ARadius <> fRadius then
+  begin
+    if ARadius = 0 then ARadius := 0.001;
+    fRadius := ARadius;
+    fPoints[1] := ExtendLine(fPoints[0], fPoints[1], fRadius);
+    fPoints[2] := ExtendLine(fPoints[0], fPoints[2], fRadius);
+  end;
+end;
+
+procedure TSegment2D.GetArcPoints(PP: TPointsSet2D; NPts: Word);
+var  ArcAngle: TRealType;
+  Cont: Integer;
+  CX, CY, R: TRealType;
+  Delta, CurrAngle: TRealType;
+begin
+  GetArcParams(CX, CY, R, FStartAngle, FEndAngle);
+  fRadius := R;
+  // Calcola il delta angolare tra due punti
+  if FStartAngle < FEndAngle then
+    Delta := (FEndAngle - FStartAngle) / (NPts - 1)
+  else
+    Delta := (TWOPI - FStartAngle + FEndAngle) / (NPts - 1);
+  // Crea il vettore curvilineo.
+  // Popola il vettore curvilineo.
+  if FDirection = adClockwise then
+  begin
+    ArcAngle    := FEndAngle - FStartAngle;
+    FEndAngle   := FEndAngle   + ArcAngle;
+    FStartAngle := FStartAngle + ArcAngle;
+  end;
+  CurrAngle := FStartAngle;
+  for Cont := 1 to NPts do
+  begin
+    ProfilePoints.Add(Point2D(CX + R * Cos(CurrAngle), CY + R * Sin(CurrAngle)));
+    if FDirection = adCounterClockwise then
+      CurrAngle := CurrAngle + Delta
+    else
+      CurrAngle := CurrAngle - Delta;
+  end;
+  //Make Sector
+  //ProfilePoints.Add(Point2D(CX, CY));
+  //ProfilePoints.Add(ProfilePoints[0]);
+
+  //Make Segment
+  ProfilePoints.Add(ProfilePoints[0]); //close Arc
+end;
+
 function TSegment2D.PopulateCurvePoints(N: Word): TRect2D;
 begin
   if CurvePrecision = 0 then
@@ -3030,31 +5660,169 @@ begin
     Exit;
   end;
   Result := inherited PopulateCurvePoints(CurvePrecision);
-
-  //Make Segment
-  ProfilePoints.Add(Point2D(Points[0].X, Points[0].Y));  //CenterPoint
-  ProfilePoints.Add(ProfilePoints[0]);
-
-  //Make Sector
-  //ProfilePoints.Add(ProfilePoints[0]); //close Arc
+  GetArcPoints(ProfilePoints, CurvePrecision);
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
+end;
+
+procedure TSegment2D.Inverse;
+var TmpEA: TRealType;
+begin
+  TmpEA       := fEndAngle;
+  EndAngle    := RadToDeg(fStartAngle);
+  StartAngle  := RadToDeg(TmpEA);
+
+  if fDirection  = adCounterClockwise then
+    fDirection := adClockwise
+  else
+    fDirection := adCounterClockwise;
+
+  UpdateExtension(self);
+end;
+
+procedure TSegment2D.Explode;
+begin
+  inherited;
+end;
+
+{ Angles are in radiants. }
+constructor TSegment2D.Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
+begin
+  inherited Create(ID, 4, 50);
+  fSegment2DInsp := TSegment2DInsp.create(self);
+  Points.DisableEvents := True;
+  try
+    fPoints.Add(CP);
+    fPoints.Add(Point2D(CP.X + R * Cos(SA), CP.Y + R * Sin(SA)));
+    fPoints.Add(Point2D(CP.X + R * Cos(EA), CP.Y + R * Sin(EA)));
+    FStartAngle := SA;
+    FEndAngle := EA;
+    fRadius := R;
+    FDirection := adCounterClockwise;
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+end;
+
+destructor TSegment2D.destroy;
+begin
+  fSegment2DInsp.Free;
+  inherited;
+end;
+
+procedure TSegment2D.Assign(const Obj: TGraphicObject);
+begin
+  if (Obj = Self) then
+   Exit;
+  inherited Assign(Obj);
+  if (Obj is TEllipse2D) or (Obj is TFrame2D) then
+   begin
+     fStartAngle := 0;
+     fEndAngle := TWOPI;
+     Points.DisableEvents := True;
+     try
+       Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
+       Points.Add(Point2D(0, 0));
+       Points.Add(Point2D(0, 0));
+       Points.GrowingEnabled := False;
+     finally
+       Points.DisableEvents := False;
+       UpdateExtension(Self);
+     end;
+   end
+  else if Obj is TEllipticalArc2D then
+   begin
+     fStartAngle := (Obj as TEllipticalArc2D).StartAngle;
+     fEndAngle := (Obj as TEllipticalArc2D).EndAngle;
+     fDirection := (Obj as TEllipticalArc2D).Direction;
+     Points.Copy(TPrimitive2D(Obj).Points, 0, 3);
+     Points.GrowingEnabled := False;
+   end
+  else if  Obj is TCircularArc2D then
+  begin
+    fStartAngle := (Obj as TCircularArc2D).StartAngle;
+    fEndAngle := (Obj as TCircularArc2D).EndAngle;
+    fDirection := (Obj as TCircularArc2D).Direction;
+    fShowDirection := (Obj as TCircularArc2D).fShowDirection;
+    Points.Copy(TPrimitive2D(Obj).Points, 0, 2);
+    Points.GrowingEnabled := False;
+  end;
+end;
+
+constructor TSegment2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+begin
+  { Load the standard properties }
+  inherited;
+  fSegment2DInsp := TSegment2DInsp.create(self);
+  Points.DisableEvents := True;
+  with Stream do
+   try
+     //Read(FDirection, SizeOf(FDirection));
+     Read(fRadius, SizeOf(fRadius));
+   finally
+     Points.DisableEvents := False;
+   end;
+end;
+
+procedure TSegment2D.SaveToStream(const Stream: TStream);
+begin
+  { Save the standard properties }
+  inherited SaveToStream(Stream);
+  with Stream do
+   //Write(fDirection, SizeOf(FDirection));
+    Write(fRadius, SizeOf(fRadius));
 end;
 
 
 // =====================================================================
 // TCircle2D
 // =====================================================================
-procedure OutText2D(ACADViewport2D: TCADViewport2D; APoint2D: TPoint2D; AText: string;  CntlPoints: boolean);
+constructor TCircle2D.Create(ID: LongInt; const P1: TPoint2D; R : TRealType);
+var P2 : TPoint2d;
 begin
-  {TmpText2D.Text   := AText;
+  inherited Create(ID, 2, 50);
+  fCircle2DInsp := TCircle2DInsp.create(self);
+  Points.DisableEvents := True;
+  try
+    Points.Add(P1);
+    P2 := P1; P2.X := P2.X + R;
+    Points.Add(P2);
+    fStartAngle := 0;
+    fDirection := adCounterClockwise;
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+end;
+
+constructor TCircle2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+begin
+  { Load the standard properties }
+  inherited;
+  fCircle2DInsp := TCircle2DInsp.create(self);
+end;
+
+destructor TCircle2D.destroy;
+begin
+  fCircle2DInsp.Free;
+  inherited;
+end;
+
+procedure OutText2D(ACADViewport2D: TCADViewport2D; APoint2D: TPoint2D; AText: string;  CntlPoints: boolean);
+var TmpText2D: TText2D;
+begin
+  TmpText2D := TText2D.Create(-1, Rect2D(APoint2D.X, APoint2D.Y, APoint2D.X+100, APoint2D.Y+100), 10, AText);
+  TmpText2D.Text   := AText;
   TmpText2D.Left   := APoint2D.X;
   TmpText2D.Top    := APoint2D.Y;
-  TmpText2D.Right  := TmpText2D.Left + 50;
-  TmpText2D.Bottom := TmpText2D.Top + 10;
-  //TmpText2D.
+  TmpText2D.Right  := TmpText2D.Left;;
+  TmpText2D.Bottom := TmpText2D.Top;
+
   //TmpText2D
+  //ACADViewport2D.Canvas.TextOut(round(APoint2D.X), round(APoint2D.y), AText);
   ACADViewport2D.DrawObject2D(TmpText2D, CntlPoints);
-  }
 end;
 
 procedure TCircle2D.GetCircleParams(var CX, CY, R, SA: TRealType);
@@ -3072,19 +5840,24 @@ begin
     //SA := AngleFromPoints2D(P1, P0);
     SA := ArcTan2(CY - P1.Y, P1.X - CX);
 
-  hStr    := 'Angle = ' + FloatToStr(RadToDeg(SA));
+  hStr := 'Angle = ' + FloatToStr(RadToDeg(SA));
   //if OwnerCAd <> nil then
     //OutText2D(TCADViewport2D(self.OwnerCAD.Viewports[0]), P1, hStr, false);
+end;
+
+function  TCircle2D.GetStartAngle: TRealType;
+begin
+  result := RadToDeg(fStartAngle);
 end;
 
 procedure TCircle2D.SetStartAngle(AValue: TRealType);
 var CX, CY, R, SA, EA: TRealType;
 begin
-  if fStartAngle <> AValue then
+  if fStartAngle <> DegToRad(AValue) then
   begin
     fStartAngle := DegToRad(AValue);
     GetCircleParams(CX, CY, R, fStartAngle);
-    fPoints[1] := Point2D(CX + R * Cos(AValue), CY + R * Sin(AValue));
+    fPoints[1] := Point2D(CX + R * Cos( DegToRad(AValue) ), CY + R * Sin( DegToRad(AValue) ));
   end;
 end;
 
@@ -3121,24 +5894,6 @@ begin
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
 end;
 
-constructor TCircle2D.Create(ID: LongInt; const P1: TPoint2D; R : TRealType);
-VAR P2 : TPoint2d;
-begin
-  inherited Create(ID, 2, 50);
-  Points.DisableEvents := True;
-  try
-    Points.Add(P1);
-    P2 := P1; P2.X := P2.X + R;
-    Points.Add(P2);
-    fStartAngle := 0;
-    fDirection := adCounterClockwise;
-    Points.GrowingEnabled := False;
-  finally
-    Points.DisableEvents := False;
-    UpdateExtension(Self);
-  end;
-end;
-
 procedure TCircle2D.Assign(const Obj: TGraphicObject);
 begin
   if (Obj = Self) then
@@ -3155,14 +5910,70 @@ procedure TCircle2D.SetRadius(AValue: TRealType);
 begin
   if AValue <> fRadius then
   begin
+    if AValue = 0 then AValue := 0.001;
     fRadius := AValue;
     fPoints[1] := ExtendLine(fPoints[0], fPoints[1], AValue);
   end;
 end;
 
+function  TCircle2D.GetCenterPoint: TPoint2D;
+begin
+  result := Points[0];
+end;
+
+function  TCircle2D.GetCenterPointX: TRealType;
+begin
+  result := Points[0].X;
+end;
+
+function  TCircle2D.GetCenterPointY: TRealType;
+begin
+  result := Points[0].Y;
+end;
+
+procedure TCircle2D.SetCenterPointX(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt   := Point2D(AValue,Points[0].Y);
+  self.MoveTo(ToPt, DragPt);
+end;
+
+procedure TCircle2D.SetCenterPointY(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt   := Point2D(Points[0].X, AValue);
+  self.MoveTo(ToPt, DragPt);
+end;
+
 // =====================================================================
 // TFrame2D
 // =====================================================================
+procedure  TFrame2D.SetStartCorner(AValue: TFrameStartCorner);
+begin
+  fStartCorner := AValue;
+  UpdateExtension(self);
+end;
+
+{procedure  TFrame2D.SetDirection(ADirection: TArcDirection);
+begin
+  fDirection := ADirection;
+  UpdateExtension(self);
+end; }
+
+procedure  TFrame2D.SetChamfered(AValue: boolean);
+begin
+  fChamfered := AValue;
+  UpdateExtension(self);
+end;
+
+procedure  TFrame2D.SetChamferValue(AValue:  TRealType);
+begin
+  fChamferValue := AValue;
+  UpdateExtension(self);
+end;
+
 function TFrame2D.GetWidth: TRealType;
 begin
   result := Abs(Points[1].X - Points[0].X);
@@ -3204,15 +6015,15 @@ begin
       fsLeftTop: begin
         if fChamfered then
         begin
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
         end else
         begin
           ProfilePoints.Add(Points[0]);
@@ -3225,15 +6036,15 @@ begin
       fsLeftBottom: begin
         if fChamfered then
         begin
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
         end else
         begin
           ProfilePoints.Add(Point2D(Points[0].X, Points[1].Y));
@@ -3246,15 +6057,15 @@ begin
       fsRightBottom: begin
         if fChamfered then
         begin
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
         end else
         begin
           ProfilePoints.Add(Points[1]);
@@ -3267,15 +6078,15 @@ begin
       fsRightTop: begin
         if fChamfered then
         begin
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
         end else
         begin
           ProfilePoints.Add(Point2D(Points[1].X, Points[0].Y));
@@ -3292,15 +6103,15 @@ begin
       fsLeftTop: begin
         if fChamfered then
         begin
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
         end else
         begin
           ProfilePoints.Add(Points[0]);
@@ -3313,15 +6124,15 @@ begin
       fsLeftBottom: begin
         if fChamfered then
         begin
-         ProfilePoints.Add(Point2D(Points[0].X +  fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
+         ProfilePoints.Add(Point2D(Points[0].X +  fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
         end else
         begin
           ProfilePoints.Add(Point2D(Points[0].X, Points[1].Y));
@@ -3334,15 +6145,15 @@ begin
       fsRightBottom: begin
         if fChamfered then
         begin
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
         end else
         begin
           ProfilePoints.Add(Points[1]);
@@ -3355,15 +6166,15 @@ begin
       fsRightTop: begin
         if fChamfered then
         begin
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[0].Y));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[0].X + fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[1].Y));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamfer));
-          ProfilePoints.Add(Point2D(Points[1].X - fChamfer, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[0].Y));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[0].X + fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[1].Y));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[1].Y+fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X,     Points[0].Y-fChamferValue));
+          ProfilePoints.Add(Point2D(Points[1].X - fChamferValue, Points[0].Y));
         end else
         begin
           ProfilePoints.Add(Point2D(Points[1].X, Points[0].Y));
@@ -3378,9 +6189,19 @@ begin
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
 end;
 
+
+procedure   TFrame2D.InitializeAngle;
+var P0, P1: TPoint2D;
+begin
+  P0 := TransformPoint2D(Points[0], ModelTransform);
+  P1 := TransformPoint2D(Point2D(Points[1].X, Points[0].Y), ModelTransform);
+  fAngle := ArcTan2(P1.Y - P0.Y, P1.X - P0.X);
+end;
+
 constructor TFrame2D.Create(ID: LongInt; const P1, P2: TPoint2D);
 begin
   inherited Create(ID, 2, 50);
+  fFrame2DInsp := TFrame2DInsp.create(self);
   Points.DisableEvents := True;
   try
     Points.Add(P2);
@@ -3388,10 +6209,17 @@ begin
     Points.GrowingEnabled := False;
     Width := Points[1].X - Points[0].X;
     fStartCorner := fsRightBottom;
+    fChamferValue := 10;
   finally
     Points.DisableEvents := False;
     UpdateExtension(Self);
   end;
+end;
+
+destructor TFrame2D.destroy;
+begin
+  fFrame2DInsp.Free;
+  inherited;
 end;
 
 procedure TFrame2D.Assign(const Obj: TGraphicObject);
@@ -3399,13 +6227,14 @@ begin
   if (Obj = Self) then
    Exit;
   inherited Assign(Obj);
-  if (Obj is TFrame2D) or (Obj is TEllipse2D) or (Obj is TEllipticalArc2D) then
+  if (Obj is TFrame2D) then
    begin
      if (Obj is TFrame2D) then   //added
       begin
-        fChamfered :=   (Obj as TFrame2D).Chamfered;
-        fChamfer     := (Obj as TFrame2D).Chamfer;
-        fStartCorner := (Obj as TFrame2D).StartCorner;
+        fChamfered     := (Obj as TFrame2D).Chamfered;
+        fChamferValue  := (Obj as TFrame2D).ChamferValue;
+        fStartCorner   := (Obj as TFrame2D).StartCorner;
+        fAngle         := (Obj as TFrame2D).fAngle;
       end;
      Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
      Points.GrowingEnabled := False;
@@ -3417,15 +6246,21 @@ begin
   inherited;
   Stream.Write(fStartCorner, SizeOf(fStartCorner));
   Stream.Write(fChamfered, SizeOf(fChamfered));
-  Stream.Write(fChamfer, SizeOf(fChamfer));
+  Stream.Write(fChamferValue, SizeOf(fChamferValue));
 end;
 
 constructor TFrame2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
 begin
   inherited;
+  fFrame2DInsp := TFrame2DInsp.create(self);
   Stream.Read(fStartCorner, SizeOf(fStartCorner));
   Stream.Read(fChamfered, SizeOf(fChamfered));
-  Stream.Read(fChamfer, SizeOf(fChamfer));
+  Stream.Read(fChamferValue, SizeOf(fChamferValue));
+end;
+
+procedure TFrame2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
+begin
+  inherited Draw(VT, Cnv, ClipRect2D, DrawMode);
 end;
 
 // =====================================================================
@@ -3467,6 +6302,40 @@ end;
 // =====================================================================
 // TEllipse2D
 // =====================================================================
+procedure   TEllipse2D.InitializeAngle;
+var P0, P1: TPoint2D;
+begin
+  P0 := TransformPoint2D(Points[0], ModelTransform);
+  P1 := TransformPoint2D(Point2D(Points[1].X, Points[0].Y), ModelTransform);
+  fAngle := ArcTan2(P1.Y - P0.Y, P1.X - P0.X);
+end;
+
+constructor TEllipse2D.Create(ID: LongInt; const P1, P2: TPoint2D);
+begin
+  inherited Create(ID, 2, 50);
+  fEllipse2DInsp := TEllipse2DInsp.create(self);
+  Points.DisableEvents := True;
+  try
+    Points.Add(P1);
+    Points.Add(P2);
+    Points.GrowingEnabled := False;
+  finally
+    Points.DisableEvents := False;
+    UpdateExtension(Self);
+  end;
+end;
+
+destructor TEllipse2D.destroy;
+begin
+  fEllipse2DInsp.Free;
+  inherited;
+end;
+
+constructor TEllipse2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
+begin
+  inherited CreateFromStream(Stream, Version);
+  fEllipse2DInsp := TEllipse2DInsp.create(self);
+end;
 
 procedure TEllipse2D.GetEllipseParams(var CX, CY, RX, RY: TRealType);
 var
@@ -3520,20 +6389,6 @@ begin
   end;
 
   Result := TransformBoundingBox2D(Points.Extension, ModelTransform);
-end;
-
-constructor TEllipse2D.Create(ID: LongInt; const P1, P2: TPoint2D);
-begin
-  inherited Create(ID, 2, 50);
-  Points.DisableEvents := True;
-  try
-    Points.Add(P1);
-    Points.Add(P2);
-    Points.GrowingEnabled := False;
-  finally
-    Points.DisableEvents := False;
-    UpdateExtension(Self);
-  end;
 end;
 
 procedure TEllipse2D.Assign(const Obj: TGraphicObject);
@@ -3665,7 +6520,7 @@ begin
    end;
 end;
 
-function TBSpline2D.PopulateCurvePoints(N: Word): TRect2D;
+{function TBSpline2D.PopulateCurvePoints(N: Word): TRect2D;
 var Cont: Integer;
 begin
   if CurvePrecision = 0 then
@@ -3698,6 +6553,31 @@ begin
                                 Points.Count - 1, FOrder, Points));
     end;
   end;
+  Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
+end;}
+
+function TBSpline2D.PopulateCurvePoints(N: Word): TRect2D;
+var
+  Cont: Integer;
+begin
+  if CurvePrecision = 0 then
+   begin
+     Result := Rect2D(0, 0, 0, 0);
+     Exit;
+   end;
+  if Points.Count < FOrder then
+   begin
+     inherited PopulateCurvePoints(Points.Count);
+     ProfilePoints.Copy(Points, 0, Points.Count - 1);
+   end
+  else
+   begin
+     inherited PopulateCurvePoints(CurvePrecision + 1);
+     for Cont := 0 to CurvePrecision - 1 do
+      ProfilePoints.Add(BSpline2D(Cont / CurvePrecision * (Points.Count - 2),
+                                Points.Count - 1, FOrder, Points));
+     ProfilePoints.Add(Points[Points.Count - 1]);
+   end;
   Result := TransformBoundingBox2D(ProfilePoints.Extension, ModelTransform);
 end;
 
@@ -4604,6 +7484,7 @@ begin
    end;
 end;
 
+
 procedure TJustifiedVectText2D._UpdateExtension;
 begin
   inherited;
@@ -4611,7 +7492,7 @@ begin
 end;
 
 initialization
-  CADSysRegisterClass(3, TLine2D);
+  {CADSysRegisterClass(3, TLine2D);
   CADSysRegisterClass(4, TPolyline2D);
   CADSysRegisterClass(5, TPolygon2D);
   CADSysRegisterClass(6, TRectangle2D);
@@ -4631,6 +7512,13 @@ initialization
   CADSysRegisterClass(17, TSymetricSymbol2D);
   CADSysRegisterClass(18, TASymetricSymbol2D);
 
+  CADSysRegisterClass(19, TSimplePrimitive2D);
+  CADSysRegisterClass(20, TDirectionalCurve2D);
+  CADSysRegisterClass(21, TClosedCurve2D);
+  CADSysRegisterClass(22, TClosedPolyline2D);
+
+  CADSysRegisterClass(23, TCircle2D);
+  }
   _DefaultHandler2D := TPrimitive2DHandler.Create(nil);
 
   // Vectorial fonts

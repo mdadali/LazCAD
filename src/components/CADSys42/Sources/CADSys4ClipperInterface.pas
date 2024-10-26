@@ -186,17 +186,17 @@ begin
 end;
 
 procedure  TClipperInterface.ExportToCAD(ACADCmp2D: TCADCmp2D);
-var TmpIter: TGraphicObjIterator;
-TmpClass: TGraphicObjectClass; TmpObj: TGraphicObject;
+var TmpIter: TGraphicObjIterator; TmpPolygon2D: TPolygon2D;
 begin
   TmpIter := fDestGraphicObjList.GetIterator;
   TmpIter.First;
   try
     repeat
-      TmpClass := TGraphicObjectClass(TmpIter.Current.ClassType);
-      TmpObj := TmpClass.Create(TmpIter.Current.ID);
-      TmpObj.Assign(TmpIter.Current);
-      ACADCmp2D.AddObject(-1, TObject2D(TmpObj));
+      TmpPolygon2D := TPolygon2D.Create(-1, []);
+      TmpPolygon2D.Points.DisableEvents := true;
+      TmpPolygon2D.Assign(TmpIter.Current);
+      ACADCmp2D.AddObject(-1, TmpPolygon2D);
+      TmpPolygon2D.Points.DisableEvents := false;
     until TmpIter.Next = nil;
   finally
     TmpIter.Free;
@@ -269,7 +269,7 @@ begin
     TmpPolyline2D := TPolyline2D.Create(-1, []);
     for i := 0 to  PointCount - 1 do
       TmpPolyline2D.ProfilePoints.Add(ClipperPointToPoint2D(APolygon[i]));
-    TmpPolyline2D.ProfilePoints.Add(TmpPolyline2D.ProfilePoints[0]);  //Polygon abschliessen.
+    //TmpPolyline2D.ProfilePoints.Add(TmpPolyline2D.ProfilePoints[0]);  //Polygon schliessen.
   end;
   result := TmpPolyline2D;
 end;

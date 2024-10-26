@@ -7,60 +7,69 @@ unit fComponentPolygon;
 interface
 
 uses
-  Classes, SysUtils, dialogs,  StdCtrls,
+  Classes, SysUtils, dialogs,  StdCtrls,  Graphics,
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcompclosedpolyline2d;
 
 type
 
-TCADSysPolygon2D = class(TCADSysBaseComponent2D) //class(tpersistent)
+TCADSysPolygon2D = class(TCADSysClosedPolyline2D) //class(tpersistent)
   private
-    fabc: integer;
-    fPolygon2D: TPolygon2D;
-    function    GetPolygon2D: TPolygon2D;
-    procedure   SetPolygon2D(APolygon2D: TPolygon2D);
-    function    GetDirection: TArcDirection;
-    procedure   SetDirection(AValue: TArcDirection);
-  public
-    constructor Create;
-    property Polygon2D: TPolygon2D read GetPolygon2D write SetPolygon2D;
-  published
-    property Direction; // read  GetDirection write  SetDirection;
+    function    GetArcDirection: TArcDirection;
+    procedure   SetArcDirection(ADirection: TArcDirection);
 
-    //property BrushColor;
-    //property BrushStyle;
-    //property Filled;
-end;
+    function  GetGraphicObject: TGraphicObject; override;
+    procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
+  public
+    fPolygon2D: TPolygon2D;
+    constructor Create;
+    property    GraphicObject;
+  published
+    property Direction: TArcDirection  read GetArcDirection write SetArcDirection;
+  end;
 
 implementation
 
-constructor TCADSysPolygon2D.create;
-begin
-  inherited create;
-  self.fPrimitive2D := fPolygon2D;
-end;
 
-function TCADSysPolygon2D.GetPolygon2D: TPolygon2D;
+function TCADSysPolygon2D.GetGraphicObject: TGraphicObject;
 begin
   result := fPolygon2D;
 end;
 
-procedure TCADSysPolygon2D.SetPolygon2D(APolygon2D: TPolygon2D);
+procedure TCADSysPolygon2D.SetGraphicObject(AGraphicObject: TGraphicObject);
 begin
-  fPolygon2D := APolygon2D;
-  self.fPrimitive2D := fPolygon2D;
+  fPolygon2D := TPolygon2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
 end;
 
-function  TCADSysPolygon2D.GetDirection: TArcDirection;
+constructor TCADSysPolygon2D.create;
 begin
-  result :=  self.fPrimitive2D.Direction;
+  inherited create;
 end;
 
-procedure TCADSysPolygon2D.SetDirection(AValue: TArcDirection);
+function   TCADSysPolygon2D.GetArcDirection: TArcDirection;
 begin
-  fPolygon2D.fPrimitive2D := AValue;
+  result := fPolygon2D.Direction;
+end;
+
+procedure  TCADSysPolygon2D.SetArcDirection(ADirection: TArcDirection);
+begin
+  fPolygon2D.Direction := ADirection;
+end;
+
+function  TCADSysPolygon2D.GetBrush: TBrush;
+begin
+  result := fPolygon2D.Brush;
+end;
+
+procedure TCADSysPolygon2D.SetBrush(ABrush: TBrush);
+begin
+  fPolygon2D.Brush := ABrush;
 end;
 
 end.

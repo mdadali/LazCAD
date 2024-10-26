@@ -11,17 +11,12 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcompclosedcurve2d;
 
 type
 
-TCADSysCircle2D = class(TCADSysBaseComponent2D) //class(tpersistent)
-
+TCADSysCircle2D = class(TCADSysClosedCurve2D)
   private
-    fCircle2D: TCircle2D;
-    function   GetCircle2D: TCircle2D;
-    procedure  SetCircle2D(ACircle2D: TCircle2D);
-
     function   GetRadius: TRealType;
     procedure  SetRadius(ARadius: TRealType);
     function   GetDirection: TArcDirection;
@@ -31,22 +26,35 @@ TCADSysCircle2D = class(TCADSysBaseComponent2D) //class(tpersistent)
     function   GetStartAngle: TRealType;
     procedure  SetStartAngle(AValue: TRealType);
 
+    function  GetGraphicObject: TGraphicObject; override;
+    procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
   public
+    fCircle2D: TCircle2D;
     constructor Create;
-    property Circle2D: TCircle2D read GetCircle2D write SetCircle2D;
-
+    property GraphicObject;
   published
     property Radius:         TRealType       read GetRadius           write SetRadius;
     property Direction:      TArcDirection   read GetDirection        write SetDirection;
     property StartAngle:     TRealType       read GetStartAngle       write SetStartAngle;
     property EdgeCount:      Word            read GetCurvePrecision   write SetCurvePrecision;
-
-
-    //property Visible;
 end;
 
 
 implementation
+
+function  TCADSysCircle2D.GetGraphicObject: TGraphicObject;
+begin
+  result := fCircle2D;
+end;
+
+procedure TCADSysCircle2D.SetGraphicObject(AGraphicObject: TGraphicObject);
+begin
+  fCircle2D :=  TCircle2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
+end;
 
 function   TCADSysCircle2D.GetRadius: TRealType;
 begin
@@ -68,7 +76,6 @@ begin
   if (D <> fCircle2D.Direction) then
   begin
     fCircle2D.Direction := D;
-    //fCircle2D.OwnerCAD.RefreshViewports;
     fCircle2D.UpdateExtension(nil);
   end;
 end;
@@ -80,8 +87,14 @@ end;
 
 procedure  TCADSysCircle2D.SetCurvePrecision(APrecision: word);
 begin
+  if APrecision = fCircle2D.CurvePrecision then exit;
+  if (APrecision < 3) then
+  begin
+    MessageDlg('Warning', 'The minimum allowed number of edges is 3.', mtWarning, [mbOK], 0);
+    APrecision := 3;
+  end;
   fCircle2D.CurvePrecision := APrecision;
-  fCircle2D.UpdateExtension(nil);
+  fCircle2D.UpdateExtension(self);
 end;
 
 function TCADSysCircle2D.GetStartAngle:  TRealType;
@@ -97,28 +110,8 @@ end;
 constructor TCADSysCircle2D.create;
 begin
   inherited create;
-  self.fPrimitive2D := fCircle2D;
 end;
 
-
-function TCADSysCircle2D.GetCircle2D: TCircle2D;
-begin
-  result := fCircle2D;
-  //result := TCircle2D_CPR(fPrimitive2D);
-end;
-
-procedure TCADSysCircle2D.SetCircle2D(ACircle2D: TCircle2D);
-begin
-  fCircle2D := ACircle2D;
-  self.fPrimitive2D := fCircle2D;
-  //SetLayerIDX(self.LayerIndex);
-end;
-
-initialization
-  //CADSysInitClassRegister;
-
-  CADSysRegisterClass(260, TCircle2D);
-finalization
 
 end.
 

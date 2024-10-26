@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, Dialogs, Graphics, ComCtrls,
-  Menus, Types,
+  Menus, StdCtrls, Types,
   UndoRedo,
   applicationh,
   camh,
@@ -21,11 +21,18 @@ type
 
   { TDrawing }
 
-   TDrawing = class;
-
+   TDrawing    = class;
+   TColorsInsp = class;
+   TGridInsp   = class;
+   TCmdsInsp   = class;
+   TLayerInsp  = class;
 
   TComponentDrawing = class(TPersistent)
   private
+    fColorsInsp: TColorsInsp;
+    fGridInsp:   TGridInsp;
+    fCmdsInsp:   TCmdsInsp;
+    fLayerInsp: TLayerInsp;
     fDrawing: TDrawing;
     fEnableDragDrop: boolean;
     function  GetFileName: string;
@@ -74,17 +81,37 @@ type
     procedure SetCurrentBlockLibrary(AValue: string);
     function  GetShowDirection: boolean;
     procedure SetShowDirection(AValue: boolean);
+
+    function   GetActiveLayerName: TLayerName;
+    procedure  SetActiveLayerName(ALayerName: TLayerName);
+    function   GetActiveLayerIDX: Word;
+    procedure  SetActiveLayerIDX(AValue: Word);
+    function   GetActiveLayerPenColor: TColor;
+    procedure  SetActiveLayerPenColor(AColor: TColor);
+    function   GetActiveLayerPenStyle: TPenStyle;
+    procedure  SetActiveLayerPenStyle(APenStyle: TPenStyle);
+    function   GetActiveLayerPenWidth: word;
+    procedure  SetActiveLayerPenWidth(AValue: word);
+    function   GetActiveLayerBrushColor: TColor;
+    procedure  SetActiveLayerBrushColor(AColor: TColor);
+    function   GetActiveLayerBrushStyle: TBrushStyle;
+    procedure  SetActiveLayerBrushStyle(ABrushStyle: TBrushStyle);
+    function   GetActiveLayerVisible: boolean;
+    procedure  SetActiveLayerVisible(AValue: boolean);
+    function   GetActiveLayerTransparent: boolean;
+    procedure  SetActiveLayerTransparent(AValue: boolean);
+    function   GetActiveLayerStreamable:  boolean;
+    procedure  SetActiveLayerStreamable(AValue: boolean);
   public
+    constructor create;
+    destructor  destroy; override;
+
     property Drawing: TDrawing read fDrawing          write fDrawing;
     property Changed: boolean  read GetDrawingChanged write SetDrawingChanged;
 
-  published
-    property FileName: string            read GetFileName; // write SetFileName;
-
-    property EnableDragDrop: boolean read fEnableDragDrop write fEnableDragDrop default true;
-
+    property EnableDragDrop: boolean read fEnableDragDrop write fEnableDragDrop;
     //CADViewport
-    property  BackgroundColor: TColor    read GetBackgroundColor write SetBackgroundColor;
+    property  BackgroundColor: TColor    read  GetBackgroundColor write SetBackgroundColor;
     property  ShowGrid:   boolean        read  GetShowGrid   write SetShowGrid;
     property  ShowGridMainAxes: boolean  read  GetShowGridMainAxes write SetShowGridMainAxes;
     property  GridColor:  TColor         read  GetGridColor  write SetGridColor;
@@ -100,10 +127,148 @@ type
     property XSnap: TRealType            read  GetXSnap            write SetXSnap;
     property YSnap: TRealType            read  GetYSnap            write SetYSnap;
     //CADCmp
-    property DefaultLayersColor: TColor  read   GetDefaultLayersColor write SetDefaultLayersColor;
-    property ShowDirection: boolean  read GetShowDirection write SetShowDirection;
-    property PolarTracking: boolean read GetPolarTracking write SetPolarTracking;
+    property ShowDirection: boolean        read GetShowDirection      write SetShowDirection;
+    property PolarTracking: boolean        read GetPolarTracking      write SetPolarTracking;
     property PolarTrackingValue: TRealType read GetPolarTrackingValue write SetPolarTrackingValue;
+    property DefaultLayersColor: TColor    read GetDefaultLayersColor write SetDefaultLayersColor;
+
+    property ActiveLayerName:        TLayerName   read GetActiveLayerName        write SetActiveLayerName;
+    property ActiveLayerIndex:       Word         read GetActiveLayerIDX         write SetActiveLayerIDX;
+    property ActiveLayerPenColor:    TColor       read GetActiveLayerPenColor    write SetActiveLayerPenColor;
+    property ActiveLayerPenStyle:    TPenStyle    read GetActiveLayerPenStyle    write SetActiveLayerPenStyle;
+    Property ActiveLayerPenWidth:    word         read GetActiveLayerPenWidth    write SetActiveLayerPenWidth;
+    property ActiveLayerBrushColor:  TColor       read GetActiveLayerBrushColor  write SetActiveLayerBrushColor;
+    property ActiveLayerBrushStyle:  TBrushStyle  read GetActiveLayerBrushStyle  write SetActiveLayerBrushStyle;
+    property ActiveLayerVisible:     boolean      read GetActiveLayerVisible     write SetActiveLayerVisible;
+    property ActiveLayerTransparent: boolean      read GetActiveLayerTransparent write SetActiveLayerTransparent;
+    property ActiveLayerStreamable:  boolean      read GetActiveLayerStreamable  write SetActiveLayerStreamable;
+  published
+    property FileName: string             read GetFileName; // write SetFileName;
+    property Colors:      TColorsInsp     read fColorsInsp    write fColorsInsp;
+    property Grid:        TGridInsp       read fGridInsp      write fGridInsp;
+    property Commands:    TCmdsInsp       read fCmdsInsp      write fCmdsInsp;
+    property ActiveLayer: TLayerInsp      read fLayerInsp     write fLayerInsp;
+  end;
+
+  TColorsInsp = class
+  private
+    fOwner: TComponentDrawing;
+    function  GetBackgroundColor: TColor;
+    procedure SetBackgroundColor(AColor: TColor);
+    function  GetGridColor: TColor;
+    procedure SetGridColor(AColor: TColor);
+    function  GetCursorCrossColor: TColor;
+    procedure SetCursorCrossColor(AColor: TColor);
+    function  GetRubberColor: TColor;
+    procedure SetRubberColor(AColor: TColor);
+    function  GetDefaultLayersColor: TColor;
+    procedure SetDefaultLayersColor(AColor: TColor);
+  public
+    constructor create(AOwner: TComponentDrawing);
+    destructor  destroy; override;
+  published
+    property  BackgroundColor: TColor    read  GetBackgroundColor    write SetBackgroundColor;
+    property  GridColor:  TColor         read  GetGridColor          write SetGridColor;
+    property  RubberColor: TColor        read  GetRubberColor        write SetRubberColor;
+    property  CrossCursorColor: TColor   read  GetCursorCrossColor   write SetCursorCrossColor;
+    //property  DefaultLayersColor: TColor read  GetDefaultLayersColor write SetDefaultLayersColor;
+  end;
+
+  TGridInsp = class
+  private
+    fOwner: TComponentDrawing;
+    function  GetShowGrid: boolean;
+    function  GetShowGridMainAxes: boolean;
+    procedure SetShowGridMainAxes(AValue: boolean);
+    procedure SetShowGrid(AValue: boolean);
+    function  GetGridColor: TColor;
+    procedure SetGridColor(AColor: TColor);
+    function  GetGridDeltaX: TRealType;
+    procedure SetGridDeltaX(AValue: TRealType);
+    function  GetGridDeltaY: TRealType;
+    procedure SetGridDeltaY(AValue: TRealType);
+  public
+    constructor create(AOwner: TComponentDrawing);
+    destructor  destroy; override;
+  published
+    property  ShowGrid:   boolean        read  GetShowGrid   write SetShowGrid;
+    property  ShowGridMainAxes: boolean  read  GetShowGridMainAxes write SetShowGridMainAxes;
+    property  GridColor:  TColor         read  GetGridColor  write SetGridColor;
+    property  GridDeltaX: TRealType      read  GetGridDeltaX write SetGridDeltaX;
+    property  GridDeltaY: TRealType      read  GetGridDeltaY write SetGridDeltaY;
+  end;
+
+  TCmdsInsp = class
+  private
+    fOwner:  TComponentDrawing;
+    function  GetUseOrto: boolean;
+    procedure SetUseOrto(AValue: boolean);
+    function  GetUseSnap: boolean;
+    procedure SetUseSnap(AValue: boolean);
+    function  GetXSnap: TRealType;
+    procedure SetXSnap(AValue: TRealType);
+    function  GetYSnap: TRealType;
+    procedure SetYSnap(AValue: TRealType);
+    function  GetShowControlPoints: boolean;
+    procedure SetShowControlPoints(AValue: boolean);
+    function  GetShowDirection: boolean;
+    procedure SetShowDirection(AValue: boolean);
+    function  GetPolarTracking: boolean;
+    procedure SetPolarTracking(AValue: boolean);
+    function  GetPolarTrackingValue: TRealType;
+    procedure SetPolarTrackingValue(AValue: TRealType);
+    function  GetEnableDragDrop: boolean;
+    procedure SetEnableDragDrop(AValue: boolean);
+  public
+    constructor create(AOwner: TComponentDrawing);
+    destructor  destroy; override;
+  published
+    property UseOrto: boolean              read  GetUseOrto            write SetUseOrto;
+    property UseSnap: boolean              read  GetUseSnap            write SetUseSnap;
+    property XSnap: TRealType              read  GetXSnap              write SetXSnap;
+    property YSnap: TRealType              read  GetYSnap              write SetYSnap;
+    property ShowDirection: boolean        read  GetShowDirection      write SetShowDirection;
+    property PolarTracking: boolean        read  GetPolarTracking      write SetPolarTracking;
+    property PolarTrackingValue: TRealType read  GetPolarTrackingValue  write SetPolarTrackingValue;
+    property EnableDragDrop: boolean       read  GetEnableDragDrop      write SetEnableDragDrop;
+  end;
+
+  TLayerInsp = class
+    fOwner: TComponentDrawing;
+    function   GetLayerName: TLayerName;
+    procedure  SetLayerName(ALayerName: TLayerName);
+    function   GetLayerIDX: Word;
+    procedure  SetLayerIDX(AValue: Word);
+    function   GetLayerPenColor: TColor;
+    procedure  SetLayerPenColor(AColor: TColor);
+    function   GetLayerPenStyle: TPenStyle;
+    procedure  SetLayerPenStyle(APenStyle: TPenStyle);
+    function   GetLayerPenWidth: word;
+    procedure  SetLayerPenWidth(AValue: word);
+    function   GetLayerBrushColor: TColor;
+    procedure  SetLayerBrushColor(AColor: TColor);
+    function   GetLayerBrushStyle: TBrushStyle;
+    procedure  SetLayerBrushStyle(ABrushStyle: TBrushStyle);
+    function   GetLayerVisible: boolean;
+    procedure  SetLayerVisible(AValue: boolean);
+    function   GetLayerTransparent: boolean;
+    procedure  SetLayerTransparent(AValue: boolean);
+    function   GetLayerStreamable:  boolean;
+    procedure  SetLayerStreamable(AValue: boolean);
+  public
+    constructor create(AOwner: TComponentDrawing);
+    destructor  destroy; override;
+  published
+    property Name:        TLayerName   read GetLayerName        write SetLayerName;
+    property Index:       Word         read GetLayerIDX         write SetLayerIDX;
+    property PenColor:    TColor       read GetLayerPenColor    write SetLayerPenColor;
+    property PenStyle:    TPenStyle    read GetLayerPenStyle    write SetLayerPenStyle;
+    Property PenWidth:    word         read GetLayerPenWidth    write SetLayerPenWidth;
+    property BrushColor:  TColor       read GetLayerBrushColor  write SetLayerBrushColor;
+    property BrushStyle:  TBrushStyle  read GetLayerBrushStyle  write SetLayerBrushStyle;
+    property Visible:     boolean      read GetLayerVisible     write SetLayerVisible;
+    property Transparent: boolean      read GetLayerTransparent write SetLayerTransparent;
+    property Streamable:  boolean      read GetLayerStreamable  write SetLayerStreamable;
   end;
 
   TDrawing = class(TFrame)
@@ -196,6 +361,24 @@ uses fMain;
 
 {$R *.lfm}
 
+constructor TComponentDrawing.create;
+begin
+  inherited;
+  fColorsInsp := TColorsInsp.create(self);
+  fGridInsp   := TGridInsp.Create(self);
+  fCmdsInsp   := TCmdsInsp.create(self);
+  fLayerInsp  := TLayerInsp.create(self);
+end;
+
+destructor  TComponentDrawing.destroy;
+begin
+  fColorsInsp.Free;
+  fGridInsp.Free;
+  fCmdsInsp.Free;
+  fLayerInsp.Free;
+  inherited;
+end;
+
 function TComponentDrawing.GetFileName: string;
 begin
   result := fDrawing.FileName;
@@ -241,7 +424,7 @@ end;
 
 procedure TComponentDrawing.SetRubberColor(AColor: TColor);
 begin
-  fDrawing.CADViewport2D.RubberPen.Color := AColor;// xor  fDrawing.CADCmp2D.DefaultLayersColor;
+  fDrawing.CADViewport2D.RubberPen.Color := AColor; // xor fDrawing.CADCmp2D.BackgroundColor;
 end;
 
 function  TComponentDrawing.GetGridDeltaX: TRealType;
@@ -451,8 +634,11 @@ begin
     begin
       if (TmpIter.Current.LayerName <> CAM_LAYER_STR_JUMPS) and (TmpIter.Current.LayerName <> LAYER_STR_TEMPLATE) then
       begin
-        TPrimitive2D(TmpIter.Current).ShowDirection := AValue;
-        fDrawing.CADCmp2D.RedrawObject(TPrimitive2D(TmpIter.Current));
+        if  (TmpIter.Current is TSimplePrimitive2D) then
+        begin
+          TSimplePrimitive2D(TmpIter.Current).ShowDirection := AValue;
+          fDrawing.CADCmp2D.RedrawObject(TSimplePrimitive2D(TmpIter.Current));
+        end;
       end;
       TmpIter.Next;
     end;
@@ -460,6 +646,452 @@ begin
     TmpIter.Free;
   end;
 end;
+
+function   TComponentDrawing.GetActiveLayerName: TLayerName;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Name;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerName(ALayerName: TLayerName);
+var TmpLayer: TLayer;
+begin
+  TmpLayer := fDrawing.CADCmp2D.Layers.LayerByName[ALayerName];
+  if   TmpLayer <> nil then
+    fDrawing.CADCmp2D.CurrentLayer := TmpLayer.LayerIndex
+  else
+    fDrawing.CADCmp2D.CurrentLayer := 0;
+end;
+
+function   TComponentDrawing.GetActiveLayerIDX: Word;
+begin
+  result := fDrawing.CADCmp2D.CurrentLayer;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerIDX(AValue: Word);
+begin
+  fDrawing.CADCmp2D.CurrentLayer := AValue;
+end;
+
+function   TComponentDrawing.GetActiveLayerPenColor: TColor;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Pen.Color;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerPenColor(AColor: TColor);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Pen.Color := AColor;
+end;
+
+function   TComponentDrawing.GetActiveLayerPenStyle: TPenStyle;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Pen.Style;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerPenStyle(APenStyle: TPenStyle);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Pen.Style := APenStyle;
+end;
+
+function   TComponentDrawing.GetActiveLayerPenWidth: word;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Pen.Width;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerPenWidth(AValue: word);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Pen.Width := AValue;
+end;
+
+function   TComponentDrawing.GetActiveLayerBrushColor: TColor;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Brush.Color;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerBrushColor(AColor: TColor);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Brush.Color := AColor;
+end;
+
+function   TComponentDrawing.GetActiveLayerBrushStyle: TBrushStyle;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Brush.Style;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerBrushStyle(ABrushStyle: TBrushStyle);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Brush.Style := ABrushStyle;
+end;
+
+function   TComponentDrawing.GetActiveLayerVisible: boolean;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Visible;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerVisible(AValue: boolean);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Visible := AValue;
+end;
+
+function   TComponentDrawing.GetActiveLayerTransparent: boolean;
+begin
+  result := not fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Opaque;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerTransparent(AValue: boolean);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Opaque := (not AValue);
+end;
+
+function   TComponentDrawing.GetActiveLayerStreamable:  boolean;
+begin
+  result := fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Streamable;
+end;
+
+procedure  TComponentDrawing.SetActiveLayerStreamable(AValue: boolean);
+begin
+  fDrawing.CADCmp2D.Layers[fDrawing.CADCmp2D.CurrentLayer].Streamable := AValue;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//TColorsIns //////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+constructor TColorsInsp.create(Aowner: TComponentDrawing);
+begin
+  fOwner := AOwner;
+end;
+
+destructor TColorsInsp.destroy;
+begin
+  inherited;
+end;
+
+function  TColorsInsp.GetBackgroundColor: TColor;
+begin
+  result := fOwner.BackgroundColor;
+end;
+
+procedure TColorsInsp.SetBackgroundColor(AColor: TColor);
+begin
+  fOwner.BackgroundColor := AColor;
+end;
+
+function  TColorsInsp.GetGridColor: TColor;
+begin
+  result := fOwner.GridColor;
+end;
+
+procedure TColorsInsp.SetGridColor(AColor: TColor);
+begin
+  fOwner.GridColor := AColor;
+end;
+
+function  TColorsInsp.GetCursorCrossColor: TColor;
+begin
+  result := fOwner.CrossCursorColor;
+end;
+
+procedure TColorsInsp.SetCursorCrossColor(AColor: TColor);
+begin
+  fOwner.CrossCursorColor := AColor;
+end;
+
+function  TColorsInsp.GetRubberColor: TColor;
+begin
+  result := fOwner.RubberColor;
+end;
+
+procedure TColorsInsp.SetRubberColor(AColor: TColor);
+begin
+  fOwner.RubberColor := AColor;
+end;
+
+function  TColorsInsp.GetDefaultLayersColor: TColor;
+begin
+  result := fOwner.DefaultLayersColor;
+end;
+
+procedure TColorsInsp.SetDefaultLayersColor(AColor: TColor);
+begin
+  fOwner.DefaultLayersColor := AColor;
+end;
+
+//TGridInsp/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+constructor TGridInsp.create(AOwner: TComponentDrawing);
+begin
+  fOwner := AOwner;
+end;
+
+destructor  TGridInsp.destroy;
+begin
+  inherited;
+end;
+
+function  TGridInsp.GetShowGrid: boolean;
+begin
+  result := fOwner.ShowGrid;
+end;
+
+procedure TGridInsp.SetShowGrid(AValue: boolean);
+begin
+  fOwner.ShowGrid := AValue;
+end;
+
+procedure TGridInsp.SetShowGridMainAxes(AValue: boolean);
+begin
+  fOwner.ShowGrid := AValue;
+end;
+
+function  TGridInsp.GetShowGridMainAxes: boolean;
+begin
+  result := fOwner.ShowGridMainAxes;
+end;
+
+function  TGridInsp.GetGridColor: TColor;
+begin
+  result := fOwner.GridColor;
+end;
+
+procedure TGridInsp.SetGridColor(AColor: TColor);
+begin
+  fOwner.GridColor := AColor;
+end;
+
+function  TGridInsp.GetGridDeltaX: TRealType;
+begin
+  result := fOwner.GridDeltaX;
+end;
+
+procedure TGridInsp.SetGridDeltaX(AValue: TRealType);
+begin
+  fOwner.GridDeltaX := AValue;
+end;
+
+function  TGridInsp.GetGridDeltaY: TRealType;
+begin
+  result := fOwner.GridDeltaY;
+end;
+
+procedure TGridInsp.SetGridDeltaY(AValue: TRealType);
+begin
+  fOwner.GridDeltaY := AValue;
+end;
+
+////////////////////////////////////////////////////////////////////////////////
+//TCmdsInsp = class/////////////////////////////////////////////////////////////
+constructor TCmdsInsp.create(AOwner: TComponentDrawing);
+begin
+  fOwner := AOwner;
+end;
+
+destructor  TCmdsInsp.destroy;
+begin
+  inherited;
+end;
+
+function  TCmdsInsp.GetUseOrto: boolean;
+begin
+  result := fOwner.UseOrto;
+end;
+
+procedure TCmdsInsp.SetUseOrto(AValue: boolean);
+begin
+  fOwner.UseOrto := AValue;
+end;
+
+function  TCmdsInsp.GetUseSnap: boolean;
+begin
+  result := fOwner.UseSnap;
+end;
+
+procedure TCmdsInsp.SetUseSnap(AValue: boolean);
+begin
+  fOwner.UseSnap := AValue;
+end;
+
+function  TCmdsInsp.GetXSnap: TRealType;
+begin
+  result := fOwner.XSnap;
+end;
+
+procedure TCmdsInsp.SetXSnap(AValue: TRealType);
+begin
+  fOwner.XSnap := AValue;
+end;
+
+function  TCmdsInsp.GetYSnap: TRealType;
+begin
+  result := fOwner.YSnap;
+end;
+
+procedure TCmdsInsp.SetYSnap(AValue: TRealType);
+begin
+  fOwner.YSnap := AValue;
+end;
+
+function  TCmdsInsp.GetShowDirection: boolean;
+begin
+  result := fOwner.ShowDirection;
+end;
+
+procedure TCmdsInsp.SetShowDirection(AValue: boolean);
+begin
+  fOwner.ShowDirection := AValue;
+end;
+
+function  TCmdsInsp.GetPolarTracking: boolean;
+begin
+  result := fOwner.PolarTracking;
+end;
+
+procedure TCmdsInsp.SetPolarTracking(AValue: boolean);
+begin
+  fOwner.PolarTracking := AValue;
+end;
+
+function  TCmdsInsp.GetPolarTrackingValue: TRealType;
+begin
+  result := fOwner.PolarTrackingValue;
+end;
+
+procedure TCmdsInsp.SetPolarTrackingValue(AValue: TRealType);
+begin
+  fOwner.PolarTrackingValue := AValue;
+end;
+
+function  TCmdsInsp.GetShowControlPoints: boolean;
+begin
+  result := fOwner.ShowControlPoints;
+end;
+
+procedure TCmdsInsp.SetShowControlPoints(AValue: boolean);
+begin
+  fOwner.ShowControlPoints := AValue;
+end;
+
+function  TCmdsInsp.GetEnableDragDrop: boolean;
+begin
+  result := fOwner.EnableDragDrop;
+end;
+
+procedure TCmdsInsp.SetEnableDragDrop(AValue: boolean);
+begin
+  fOwner.EnableDragDrop := AValue;
+end;
+
+////////////////////////////////////////////////////////////////////////////////
+//TLayerInsp////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+constructor TLayerInsp.create(AOwner: TComponentDrawing);
+begin
+  fOwner :=  AOwner;
+end;
+
+destructor TLayerInsp.destroy;
+begin
+  inherited;
+end;
+
+function   TLayerInsp.GetLayerName: TLayerName;
+begin
+  result := fOwner.ActiveLayerName;
+end;
+
+procedure  TLayerInsp.SetLayerName(ALayerName: TLayerName);
+begin
+  fOwner.ActiveLayerName := ALayerName;
+end;
+
+function   TLayerInsp.GetLayerIDX: Word;
+begin
+  result := fOwner.ActiveLayerIndex;
+end;
+
+procedure  TLayerInsp.SetLayerIDX(AValue: Word);
+begin
+  fOwner.ActiveLayerIndex := AValue;
+end;
+
+function   TLayerInsp.GetLayerPenColor: TColor;
+begin
+  result := fOwner.ActiveLayerPenColor;
+end;
+
+procedure  TLayerInsp.SetLayerPenColor(AColor: TColor);
+begin
+  fOwner.ActiveLayerPenColor := AColor;
+end;
+
+function   TLayerInsp.GetLayerPenStyle: TPenStyle;
+begin
+  result := fOwner.ActiveLayerPenStyle;
+end;
+
+procedure  TLayerInsp.SetLayerPenStyle(APenStyle: TPenStyle);
+begin
+  fOwner.ActiveLayerPenStyle := APenStyle;
+end;
+
+function   TLayerInsp.GetLayerPenWidth: word;
+begin
+  result := fOwner.ActiveLayerPenWidth;
+end;
+
+procedure  TLayerInsp.SetLayerPenWidth(AValue: word);
+begin
+  fOwner.ActiveLayerPenWidth := AValue;
+end;
+
+function   TLayerInsp.GetLayerBrushColor: TColor;
+begin
+  result := fOwner.ActiveLayerBrushColor;
+end;
+
+procedure  TLayerInsp.SetLayerBrushColor(AColor: TColor);
+begin
+  fOwner.ActiveLayerBrushColor := AColor;
+end;
+
+function   TLayerInsp.GetLayerBrushStyle: TBrushStyle;
+begin
+  result := fOwner.ActiveLayerBrushStyle;
+end;
+
+procedure  TLayerInsp.SetLayerBrushStyle(ABrushStyle: TBrushStyle);
+begin
+  fOwner.ActiveLayerBrushStyle := ABrushStyle;
+end;
+
+function   TLayerInsp.GetLayerVisible: boolean;
+begin
+  result := fOwner.ActiveLayerVisible;
+end;
+
+procedure  TLayerInsp.SetLayerVisible(AValue: boolean);
+begin
+  fOwner.ActiveLayerVisible := AValue;
+end;
+
+function   TLayerInsp.GetLayerTransparent: boolean;
+begin
+  result := fOwner.ActiveLayerTransparent;
+end;
+
+procedure  TLayerInsp.SetLayerTransparent(AValue: boolean);
+begin
+  fOwner.ActiveLayerTransparent := AValue;
+end;
+
+function   TLayerInsp.GetLayerStreamable:  boolean;
+begin
+  result := fOwner.ActiveLayerStreamable;
+end;
+
+procedure  TLayerInsp.SetLayerStreamable(AValue: boolean);
+begin
+  fOwner.ActiveLayerStreamable := AValue;
+end;
+
 ///////////////////////////////////////////////////////////////////////////////
 //TDrawing ////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -504,9 +1136,9 @@ begin
     6:  result := TPrimitive2D(AObj).BottomCenter;
     7:  result := TPrimitive2D(AObj).LeftBottom;
     8:  result := TPrimitive2D(AObj).LeftCenter;
-    9:  result := TPrimitive2D(AObj).CenterPoint;
-    10: result := TPrimitive2D(AObj).StartPoint;
-    11: result := TPrimitive2D(AObj).EndPoint;
+    9:  result := TPrimitive2D(AObj).MiddlePoint;
+    10: result := TSimplePrimitive2D(AObj).StartPoint;
+    11: result := TSimplePrimitive2D(AObj).EndPoint;
     12: begin //ProfilePoints
        if  AObj is TOutLine2D then
          if fSnapProfilePointsNr > TOutline2D(AObj).ProfilePoints.Count - 1   then
@@ -534,7 +1166,7 @@ begin
              TmpPointsSet.Add(TOutLine2D(AObj).LeftBottom);
              TmpPointsSet.Add(TOutLine2D(AObj).RightBottom);
              TmpPointsSet.Add(TOutLine2D(AObj).RightTop);
-             TmpPointsSet.Add(TOutLine2D(AObj).CenterPoint);
+             TmpPointsSet.Add(TOutLine2D(AObj).MiddlePoint);
              TmpPointsSet.Add(TOutLine2D(AObj).LeftCenter);
              TmpPointsSet.Add(TOutLine2D(AObj).BottomCenter);
              TmpPointsSet.Add(TOutLine2D(AObj).RightCenter);
@@ -567,7 +1199,7 @@ begin
              TmpPointsSet.Add(TPrimitive2D(AObj).LeftBottom);
              TmpPointsSet.Add(TPrimitive2D(AObj).RightBottom);
              TmpPointsSet.Add(TPrimitive2D(AObj).RightTop);
-             TmpPointsSet.Add(TPrimitive2D(AObj).CenterPoint);
+             TmpPointsSet.Add(TPrimitive2D(AObj).MiddlePoint);
              TmpPointsSet.Add(TPrimitive2D(AObj).LeftCenter);
              TmpPointsSet.Add(TPrimitive2D(AObj).BottomCenter);
              TmpPointsSet.Add(TPrimitive2D(AObj).RightCenter);
@@ -620,7 +1252,6 @@ begin
     exit;
   end;
 
-
   if fSnapOption = 0 then  //Grid
     exit;
 
@@ -652,6 +1283,7 @@ procedure TDrawing.CADPrg2DStartOperation(Sender: TObject;
   const Operation: TCADStateClass; const Param: TCADPrgParam);
 begin
   fChanged := true;
+  //frmMain.TIPropertyGrid1.TIObject := nil;
 end;
 
 procedure TDrawing.CADPrg2DDescriptionChanged(Sender: TObject);
@@ -661,11 +1293,9 @@ end;
 
 procedure TDrawing.CADCmp2DAddObject(Sender: TObject; Obj: TGraphicObject);
 begin
-  if Obj is TPrimitive2D then
-  begin
-    TPrimitive2D(Obj).ShowDirection :=  CADCmp2D.ShowDirection;
-    CADCmp2D.RedrawObject(TPrimitive2D(Obj));
-  end;
+  if Obj is TLine2D then
+    TLine2D(Obj).InitializeAngle;
+  //TObject2D(Obj).InitializeAngle;
 end;
 
 procedure TDrawing.CADCmp2DLoadProgress(Sender: TObject; ReadPercent: Byte);
@@ -675,10 +1305,8 @@ begin
   begin
     frmMain.ProgressBarMain.Position := 0;
   end;
-
   //frmMain.ProgressBarMain.Repaint;
   Application.ProcessMessages;
-
 end;
 
 procedure TDrawing.CADViewport2DEndRedraw(Sender: TObject);
@@ -721,11 +1349,11 @@ begin
   TmpObj := CADViewport2D.PickObject(TmpPt, 5, false, TmpN);
   if TmpObj <> nil then
   begin
-    Reverse(TPrimitive2D(TmpObj));
-    //CADViewport2D.Repaint;
-    //frmMain.TIPropertyGrid1.Repaint;
-  end;
-  CADViewport2D.PopupMenu := popupDrawing;
+    TSimplePrimitive2D(TmpObj).Reverse;
+    CADCmp2D.RepaintViewports;
+    //TmpObj.UpdateExtension(nil)
+  end else
+    CADViewport2D.PopupMenu := popupDrawing;
 end;
 
 procedure TDrawing.mnuInverseClick(Sender: TObject);
@@ -735,11 +1363,11 @@ begin
   TmpObj := CADViewport2D.PickObject(TmpPt, 5, false, TmpN);
   if TmpObj <> nil then
   begin
-    Inverse(TPrimitive2D(TmpObj));
-    //CADViewport2D.Repaint;
-    //frmMain.TIPropertyGrid1.Repaint;
-  end;
-  CADViewport2D.PopupMenu := popupDrawing;
+    TSimplePrimitive2D(TmpObj).Inverse;
+    CADCmp2D.RepaintViewports;
+    //TmpObj.UpdateExtension(nil)
+  end else
+    CADViewport2D.PopupMenu := popupDrawing;
 end;
 
 procedure TDrawing.pmnuAcceptClick(Sender: TObject);
@@ -846,7 +1474,6 @@ end;
 function  TDrawing.SaveBlockLibraryToFile(AFileName: string): boolean;
 var TmpStr: TFileStream;
 begin
-  AFileName := AFileName;
   result := false;
   TmpStr := TFileStream.Create(AFileName, fmCreate);
   try

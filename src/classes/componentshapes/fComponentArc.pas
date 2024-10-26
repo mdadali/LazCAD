@@ -12,60 +12,50 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcompdirectionalcurve2d;
 
   type
 
-    TCADSysEllipticalArc2D = class(TCADSysBaseComponent2D)
+    TCADSysEllipticalArc2D = class(TCADSysDirectionalCurve2D)
     private
       fEllipticalArc2D: TEllipticalArc2D;
-      function   GetEllipticalArc2D: TEllipticalArc2D;
-      procedure  SetEllipticalArc2D(AEllipticalArc2D: TEllipticalArc2D);
 
       function   GetStartAngle: single;
       function   GetEndAngle: single;
-      function   GetDirection: TArcDirection;
-
-      function   GetCurvePrecision: Word;
-      procedure  SetCurvePrecision(APrecision: Word);
 
       procedure  SetStartAngle(AValue: single);
       procedure  SetEndAngle(AValue: single);
-      procedure  SetDirection(AValue: TArcDirection);
 
+      function  GetGraphicObject: TGraphicObject; override;
+      procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
     public
       constructor Create;
-      property EllipticalArc2D: TEllipticalArc2D read GetEllipticalArc2D write SetEllipticalArc2D;
+      property GraphicObject;
      published
-       property Direction;
-      //property BrushColor;
-      //property BrushStyle;
-      //property Filled;
-      property StartAngle : single   read GetStartAngle     write SetStartAngle;
-      property EndAngle   : single   read GetEndAngle       write SetEndAngle;
-      property CurvePrecision: Word  read GetCurvePrecision write SetCurvePrecision;
-
+       property StartAngle : single   read GetStartAngle     write SetStartAngle;
+       property EndAngle   : single   read GetEndAngle       write SetEndAngle;
   end;
-
 
 
 implementation
 
+function  TCADSysEllipticalArc2D.GetGraphicObject: TGraphicObject;
+begin
+  result :=  fEllipticalArc2D;
+end;
+
+procedure TCADSysEllipticalArc2D.SetGraphicObject(AGraphicObject: TGraphicObject);
+begin
+  fEllipticalArc2D := TEllipticalArc2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
+end;
 
 constructor TCADSysEllipticalArc2D.create;
 begin
   inherited create;
-end;
-
-function TCADSysEllipticalArc2D.GetEllipticalArc2D: TEllipticalArc2D;
-begin
-  result := fEllipticalArc2D;
-end;
-
-procedure TCADSysEllipticalArc2D.SetEllipticalArc2D(AEllipticalArc2D: TEllipticalArc2D);
-begin
-  fEllipticalArc2D  := AEllipticalArc2D;
-  self.fPrimitive2D := fEllipticalArc2D ;
 end;
 
 function TCADSysEllipticalArc2D.GetStartAngle: single;
@@ -76,27 +66,6 @@ end;
 function TCADSysEllipticalArc2D.GetEndAngle: single;
 begin
   result := RadToDeg(fEllipticalArc2D.EndAngle);
-end;
-
-function TCADSysEllipticalArc2D.GetDirection: TArcDirection;
-begin
-  result := fEllipticalArc2D.Direction;
-end;
-
-procedure  TCADSysEllipticalArc2D.SetDirection(AValue: TArcDirection);
-begin
-  fEllipticalArc2D.Direction := AValue;
-end;
-
-function   TCADSysEllipticalArc2D.GetCurvePrecision: Word;
-begin
-  result := fEllipticalArc2D.CurvePrecision;
-end;
-
-procedure  TCADSysEllipticalArc2D.SetCurvePrecision(APrecision: Word);
-begin
-  fEllipticalArc2D.CurvePrecision := APrecision;
-  fEllipticalArc2D.UpdateExtension(self);
 end;
 
 procedure  TCADSysEllipticalArc2D.SetStartAngle(AValue: single);

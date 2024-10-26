@@ -10,7 +10,7 @@ uses
   Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls,  ExtCtrls, ComCtrls, GifAnim,
   CommonUtils,
-  applicationh;
+  applicationh, Types;
 
 type
 
@@ -47,10 +47,12 @@ type
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
+    Timer1: TTimer;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
   public
     { Public declarations }
@@ -67,6 +69,7 @@ end;
 
 procedure TfrmAbout.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  Timer1.Enabled := false;
   Action := caFree;
 end;
 
@@ -92,6 +95,15 @@ end;
 procedure TfrmAbout.FormShow(Sender: TObject);
 begin
   btnClose.SetFocus;
+  Timer1.Enabled := true;
+end;
+
+procedure TfrmAbout.Timer1Timer(Sender: TObject);
+begin
+  GifAnim1.Left := GifAnim1.Left + 7;
+  if  GifAnim1.Left > self.Width then
+    GifAnim1.Left := 0 - GifAnim1.Width;
+  //Application.ProcessMessages;
 end;
 
 end.

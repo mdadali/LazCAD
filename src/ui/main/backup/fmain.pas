@@ -9,7 +9,7 @@ uses
   ComCtrls, ExtCtrls, RTTIGrids, StdCtrls, ShellCtrls, ActnList, Buttons, Menus,
   ExtDlgs, SpkToolbar, spkt_Tab, spkt_Pane, spkt_Buttons, spkt_Appearance,
   spkt_Checkboxes, BCButtonFocus, AbUnzper, Interfaces, PropEdits,
-  ObjectInspector,
+  ObjectInspector, ClipBrd,
 
   CADSys4,
   CS4BaseTypes,
@@ -239,7 +239,7 @@ type
     acSnapBottomCenter: TAction;
     acSnapButtomRight: TAction;
     acSnapLeftCenter: TAction;
-    acSnapCenter: TAction;
+    acSnapMiddle: TAction;
     acSnapStartPoint: TAction;
     acSnapEndPoint: TAction;
     acSnapPolar: TAction;
@@ -265,6 +265,7 @@ type
     acDrawSector2D: TAction;
     acDrawSymetricSymbol2D: TAction;
     acDrawASymetricSymbol2D: TAction;
+    acFileCopyToClipboard: TAction;
     acToolsTTF2Vector: TAction;
     acToolsShowSimulator: TAction;
     ActionList: TActionList;
@@ -437,6 +438,8 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    mnuCopyToClipBoard: TMenuItem;
     mnuTemplate: TMenuItem;
     MenuItem8: TMenuItem;
     MenuItem9: TMenuItem;
@@ -860,6 +863,7 @@ type
     procedure acEditUndoExecute(Sender: TObject);
     procedure acExitProgramExecute(Sender: TObject);
     procedure acFileCloseExecute(Sender: TObject);
+    procedure acFileCopyToClipboardExecute(Sender: TObject);
     procedure acFileExitExecute(Sender: TObject);
     procedure acFileImportEssiExecute(Sender: TObject);
     procedure acFileNewExecute(Sender: TObject);
@@ -897,7 +901,7 @@ type
     procedure acSnapBottomLeftExecute(Sender: TObject);
     procedure acSnapBottomCenterExecute(Sender: TObject);
     procedure acSnapButtomRightExecute(Sender: TObject);
-    procedure acSnapCenterExecute(Sender: TObject);
+    procedure acSnapMiddleExecute(Sender: TObject);
     procedure acSnapEndPointExecute(Sender: TObject);
     procedure acSnapGridExecute(Sender: TObject);
     procedure acSnapLeftCenterExecute(Sender: TObject);
@@ -914,7 +918,8 @@ type
     procedure acToolsShowSimulatorExecute(Sender: TObject);
     procedure acToolsTTF2VectorExecute(Sender: TObject);
     procedure acZoomAreaExecute(Sender: TObject);
-    procedure acZoomEXTExecute(Sender: TObject);    procedure acZoomINExecute(Sender: TObject);
+    procedure acZoomEXTExecute(Sender: TObject);
+    procedure acZoomINExecute(Sender: TObject);
     procedure acZoomOutExecute(Sender: TObject);
     procedure acZoomPanExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -1025,7 +1030,7 @@ begin
   if  hDrawing = nil then exit;
 
   if Assigned(Obj) then
-   hDrawing.CADViewport2D.DrawObject2DWithRubber(Obj, True);
+    hDrawing.CADViewport2D.DrawObject2DWithRubber(Obj, True);
 end;
 
 function TfrmMain.GetDrawingFromPage(APage: TTabSheet): TDrawing;
@@ -1094,7 +1099,7 @@ begin
     hDrawing.CADCmp2D.ClearLayer(CAM_LAYER_ID_JUMPS);
     hDrawing.CADViewport2D.Repaint;
   end;
-  if hDrawing.CADPrg2D.IsBusy then exit;
+  //if hDrawing.CADPrg2D.IsBusy then exit;
 
   GlobalObject2D := nil;
   hDrawing.CADViewport2D.Repaint;
@@ -1239,85 +1244,115 @@ var hDrawing: TDrawing;
 begin
   if (TIPropertyGrid1 <> nil) then
   begin
-    if (AObject is TLine2D) then
+    {if (AObject is TLine2D) then
     begin
-      CADSysLine2D.Line2D := TLine2D(GlobalObject2D);
+      CADSysLine2D.GraphicObject := TLine2D(GlobalObject2D);
       TIPropertyGrid1.TIObject := nil;
       TIPropertyGrid1.Clear;
       TIPropertyGrid1.TIObject := (CADSysLine2D);
-      TIPropertyGrid1.Update;
-    end else
-    if (AObject is TPolyLine2D) then
-    begin
-      CADSysPLine2D.PolyLine2D := TPolyLine2D(GlobalObject2D);
-      TIPropertyGrid1.TIObject := nil;
-      TIPropertyGrid1.Clear;
-      TIPropertyGrid1.TIObject := (CADSysPLine2D);
-      TIPropertyGrid1.Update;
-    end else
-    if (AObject is TEllipse2D) then
-    begin
-      CADSysEllipse2D.Ellipse2D := TEllipse2D(GlobalObject2D);
-      TIPropertyGrid1.TIObject := nil;
-      TIPropertyGrid1.Clear;
-      TIPropertyGrid1.TIObject := (CADSysEllipse2D);
-      TIPropertyGrid1.Update;
+      //TIPropertyGrid1.Update;
     end else
     if (AObject is TEllipticalArc2D) then
     begin
-      CADSysEllipticalArc2D.EllipticalArc2D := TEllipticalArc2D(GlobalObject2D);
+      CADSysEllipticalArc2D.GraphicObject := TEllipticalArc2D(GlobalObject2D);
       TIPropertyGrid1.TIObject := nil;
       TIPropertyGrid1.Clear;
       TIPropertyGrid1.TIObject := (CADSysEllipticalArc2D);
-      TIPropertyGrid1.Update;
+      //TIPropertyGrid1.Update;
     end else
-    if (AObject is TCircularArc2D) then
+    if (AObject is TPolygon2D) then
     begin
-      CADSysCircularArc2D.CircularArc2D := TCircularArc2D(GlobalObject2D);
-      TIPropertyGrid1.TIObject := nil;
-      TIPropertyGrid1.Clear;
-      TIPropertyGrid1.TIObject := (CADSysCircularArc2D);
-      TIPropertyGrid1.Update;
-    end else
-    if (AObject is TCircle2D) then
-    begin
-      CADSysCircle2D.Circle2D := TCircle2D(GlobalObject2D);
-      TIPropertyGrid1.TIObject := nil;
-      TIPropertyGrid1.Clear;
-      TIPropertyGrid1.TIObject := (CADSysCircle2D);
-      TIPropertyGrid1.Update;
-    end else
-    if (AObject is TRectangle2D) then
-    begin
-      CADSysRectangle2D.Rectangle2D := TRectangle2D(GlobalObject2D);
-      TIPropertyGrid1.TIObject := nil;
-      TIPropertyGrid1.Clear;
-      TIPropertyGrid1.TIObject := (CADSysRectangle2D);
-      TIPropertyGrid1.Update;
-    end else
-    if (AObject is TFrame2D) then
-    begin
-      CADSysFrame2D.Frame2D := TFrame2D(GlobalObject2D);
-      TIPropertyGrid1.TIObject := nil;
-      TIPropertyGrid1.Clear;
-      TIPropertyGrid1.TIObject := (CADSysFrame2D);
-      TIPropertyGrid1.Update;
-    end else
-    if (AObject is TBSpline2D) then
-    begin
-      CADSysBSpline2D.BSpline2D := TBSpline2D(GlobalObject2D);
-      TIPropertyGrid1.TIObject := nil;
-      TIPropertyGrid1.Clear;
-      TIPropertyGrid1.TIObject := (CADSysBSpline2D);
-      TIPropertyGrid1.Update;
-    end else
-    if (AObject is TBSpline2D) then
-    begin
-      CADSysPolygon2D.Polygon2D := TPolygon2D(GlobalObject2D);
+      CADSysPolygon2D.GraphicObject := TPolygon2D(GlobalObject2D);
       TIPropertyGrid1.TIObject := nil;
       TIPropertyGrid1.Clear;
       TIPropertyGrid1.TIObject := (CADSysPolygon2D);
-      TIPropertyGrid1.Update;
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TPolyLine2D) then
+    begin
+      CADSysPLine2D.GraphicObject := TPolyLine2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysPLine2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TEllipse2D) then
+    begin
+      CADSysEllipse2D.GraphicObject := TEllipse2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysEllipse2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TCircularArc2D) then
+    begin
+      CADSysCircularArc2D.GraphicObject := TCircularArc2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysCircularArc2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TCircle2D) then
+    begin
+      CADSysCircle2D.GraphicObject := TCircle2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysCircle2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TRectangle2D) then
+    begin
+      CADSysRectangle2D.GraphicObject := TRectangle2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysRectangle2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TFrame2D) then
+    begin
+      CADSysFrame2D.GraphicObject := TFrame2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysFrame2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TBSpline2D) then
+    begin
+      CADSysBSpline2D.GraphicObject := TBSpline2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysBSpline2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TSector2D) then
+    begin
+      CADSysSectort2D.GraphicObject := TSector2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysSectort2D);
+    end else
+    if (AObject is TSegment2D) then
+    begin
+      CADSysSegment2D.GraphicObject := TSegment2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysSegment2D);
+    end else
+    if (AObject is TClosedCurve2D) then
+    begin
+      CADSysClosedCurve2D.GraphicObject := TClosedCurve2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysClosedCurve2D);
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TDirectionalCurve2D) then
+    begin
+      CADSysDirectionalCurve2D.DirectionalCurve2D := TDirectionalCurve2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysDirectionalCurve2D);
+      //TIPropertyGrid1.Update;
     end else
     if (AObject is TContainer2D) then
     begin
@@ -1325,7 +1360,30 @@ begin
       TIPropertyGrid1.TIObject := nil;
       TIPropertyGrid1.Clear;
       TIPropertyGrid1.TIObject := CADSysContainer2D;
-      TIPropertyGrid1.Update;
+      //TIPropertyGrid1.Update;
+    end else
+    if (AObject is TClosedPolyline2D) then
+    begin
+      CADSysClosedPolyline2D.ClosedPolyline2D := TClosedPolyline2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysClosedPolyline2D);
+      //TIPropertyGrid1.Update;
+    end else
+
+    if (AObject is TSimplePrimitive2D) then
+    begin
+      CADSysSimplePrimitive2D.GraphicObject := TSimplePrimitive2D(GlobalObject2D);
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := (CADSysSimplePrimitive2D);
+      //TIPropertyGrid1.Update;
+    end else}
+    if AObject is TGraphicObject then
+    begin
+      TIPropertyGrid1.TIObject := nil;
+      TIPropertyGrid1.Clear;
+      TIPropertyGrid1.TIObject := AObject;
     end else
 
     begin
@@ -1385,17 +1443,19 @@ begin
   case PageControl1.PageCount of
     0: exit;
     1: begin
+        hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
         acSettingsUnLockTemplateLayer.Checked := false;
         DisableControls;
         fActivePage := nil;
         APage.Free;
+        APage := nil;
       end
     else begin
+      hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
       PageControl1.ActivePage := PageControl1.Pages[PageControl1.PageCount - 1];
       PageControl1Change(nil);
       fActivePage := PageControl1.ActivePage;
       hDrawing := GetDrawingFromPage(fActivePage);
-
       if hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil then
         acSettingsUnLockTemplateLayer.Checked := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE].Active;
 
@@ -1413,6 +1473,26 @@ begin
   if PageControl1.PageCount > 0 then
     if CheckSave(fActivePage) then
       CloseCADFile(fActivePage);
+end;
+
+procedure TfrmMain.PageControl1CloseTabClicked(Sender: TObject);
+begin
+  acFileCloseExecute(nil);
+  {if PageControl1.PageCount > 0 then
+    if CheckSave(fActivePage) then
+      CloseCADFile(fActivePage);
+  }
+end;
+
+procedure TfrmMain.acFileCopyToClipboardExecute(Sender: TObject);
+var hDrawing: TDrawing;  TmpColor: TColor;
+begin
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if  hDrawing = nil then exit;
+  TmpColor :=  hDrawing.CADViewport2D.BackGroundColor;
+  hDrawing.CADViewport2D.BackGroundColor := clWhite;
+  hDrawing.CADViewport2D.CopyToClipboard(Clipboard);
+  hDrawing.CADViewport2D.BackGroundColor := TmpColor;
 end;
 
 procedure TfrmMain.acExitProgramExecute(Sender: TObject);
@@ -1519,7 +1599,7 @@ begin
 end;
 
 procedure TfrmMain.acDrawSegment2DExecute(Sender: TObject);
-var TmpSegment2D: TCircularArc2D;   hDrawing: TDrawing;
+var TmpSegment2D: TSegment2D;   hDrawing: TDrawing;
 begin
   if PageControl1.PageCount = 0 then exit;
   hDrawing := GetDrawingFromPage(fActivePage);
@@ -2424,26 +2504,22 @@ begin
   except
     result := false;
     TmpCADCmp2D.Free;
+    TmpCADCmp2D := nil;
     raise;
   end;
-  TmpCADCmp2D.Free;
+  if TmpCADCmp2D <> nil then
+    TmpCADCmp2D.Free;
 end;
 
 procedure TfrmMain.OpenCS4File(AFileName: string);
 var TabSheet: TTabSheet; hDrawing: TDrawing;
 begin
-  if TestCADSys4File(AFileName) then
-  begin
+  //if TestCADSys4File(AFileName) then
+  //begin
     TabSheet := CreateNewDrawing;
     fActivePage := TabSheet;
     TabSheet.Caption := ExtractFileName(AFileName);
     hDrawing := GetDrawingFromPage(TabSheet);
-    hDrawing.LoadFromFile(AFileName);
-    acSettingsUnLockTemplateLayer.Visible := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil;
-    hDrawing.FileName := AFileName;
-    hDrawing.CADViewport2D.ZoomToExtension;
-    ComponentDrawing.Drawing := hDrawing;
-    SetupInspector(ComponentDrawing);
 
     if  FileExists(applicationh.fDefaultBlockLibrary) then
       hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
@@ -2452,10 +2528,17 @@ begin
                    ' could be found.' + #13#10 +
                  'Please check the file paths in the LazCAD.ini file.', mtError, [mbOK], 0);
 
+    hDrawing.LoadFromFile(AFileName);
+    acSettingsUnLockTemplateLayer.Visible := hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil;
+    hDrawing.FileName := AFileName;
+    hDrawing.CADViewport2D.ZoomToExtension;
+    ComponentDrawing.Drawing := hDrawing;
+    SetupInspector(ComponentDrawing);
+
     if PageControl1.PageCount = 1 then
       EnableControls;
     hDrawing.UndoRedo.UndoSave;
-  end;
+  //end;
 end;
 
 procedure TfrmMain.LoadDXFFile(AFileName: string; ACADCmp: TCADCmp2D);
@@ -2489,7 +2572,7 @@ begin
     hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
   else
     MessageDlg('The DefaultLibrary file could not be found.' + #13#10 +
-               'Please check the file paths in the LazCAD.ini file.', mtWarning, [mbOK], 0);
+               'Please check the file paths in the Inifile.', mtWarning, [mbOK], 0);
 
   hDrawing.CADViewport2D.ZoomToExtension;
 
@@ -2539,15 +2622,10 @@ procedure TfrmMain.acFileOpenExecute(Sender: TObject);
 var hExt: string; hDrawing: TDrawing;
 begin
   OpenCADFileDialog.InitialDir := applicationh.GetAppDrawingsPath;
+
   if OpenCADFileDialog.Execute then
   begin
     IsEntityDragged := false;
-      //Save CurrentBlocklib
-    if PageControl1.PageCount > 0 then
-    begin
-      hDrawing := GetDrawingFromPage(PageControl1.ActivePage);
-      hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
-    end;
 
     ProgressBarMain.Position := 0;
     //ProgressBarMain.Visible := true;
@@ -2567,14 +2645,15 @@ end;
 procedure TfrmMain.acFileNewExecute(Sender: TObject);
 var TabSheet: TTabSheet;   hDrawing: TDrawing;
 begin
-  IsEntityDragged := false;
-
-  //Save CurrentBlocklib
+  //Save the Library
   if PageControl1.PageCount > 0 then
   begin
-    hDrawing := GetDrawingFromPage(PageControl1.ActivePage);
-    hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
+    hDrawing := GetDrawingFromPage(fActivePage);
+    if hDrawing <> nil then
+      hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
   end;
+
+  IsEntityDragged := false;
 
   SetupInspector(nil);
   TabSheet := CreateNewDrawing;
@@ -2583,6 +2662,7 @@ begin
   inc(fMDICount);
   TabSheet.Caption := TabSheet.Name;
   hDrawing := GetDrawingFromPage(TabSheet);
+  if hDrawing = nil then  exit;
 
   if  FileExists(applicationh.fDefaultBlockLibrary) then
     hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary)
@@ -2590,6 +2670,7 @@ begin
     MessageDlg('The default block library ' + applicationh.fDefaultBlockLibrary + ' does not exist.' + #13#10 +
            'Please change it or disable it' + #13#10 +
            'via the Settings/BlockLibrary menu.', mtWarning, [mbOK], 0);
+
 
   if LowerCase(applicationh.fUseTemplates) = 'yes' then
   begin
@@ -2711,9 +2792,9 @@ begin
   frmLayers := TfrmLayers.Create(Self);
   try
     frmLayers.Execute(hDrawing.CADCmp2D);
-    hDrawing.CADViewport2D.Repaint;
   finally
     frmLayers.Free;
+    hDrawing.CADViewport2D.Repaint;
   end;
 end;
 
@@ -2850,7 +2931,6 @@ begin
         TmpLine2D := TLine2D.Create(-1, P0, P1);
         TmpLine2D.Assign(TLine2D(TmpIter1.Current));
         hDrawing.CADCmp2D.AddObject(-1, TmpLine2D);
-        //TmpLine2D.Layer := CAM_LAYER_ID_JUMPS;
         TmpLine2D.ShowDirection := true;
         TmpIter1.Next;
       end;
@@ -3273,7 +3353,7 @@ begin
   SetSnapOption(5);//RightBottom
 end;
 
-procedure TfrmMain.acSnapCenterExecute(Sender: TObject);
+procedure TfrmMain.acSnapMiddleExecute(Sender: TObject);
 begin
   SetSnapOption(9);////CenterPoint
 end;
@@ -3534,7 +3614,9 @@ begin
   hDrawing := GetDrawingFromPage(fActivePage);
   if hDrawing <> nil then
   begin
-    hDrawing.LoadBlockLibraryFromFile(applicationh.fDefaultBlockLibrary);
+
+    hDrawing.LoadBlockLibraryFromFile (applicationh.fDefaultBlockLibrary);
+
     if hDrawing.CADCmp2D.Layers.LayerByName[LAYER_STR_TEMPLATE] <> nil then
     begin
       acSettingsUnLockTemplateLayer.Visible := true;
@@ -3545,7 +3627,6 @@ begin
       acSettingsUnLockTemplateLayer.Checked  := false;
     end;
   end;
-
   ComponentDrawing.Drawing := hDrawing;
   SetupInspector(ComponentDrawing);
   UpdateUserInterface;
@@ -3554,16 +3635,9 @@ end;
 procedure TfrmMain.PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
 var hDrawing: TDrawing;
 begin
-  fActivePage := PageControl1.ActivePage;
   hDrawing := GetDrawingFromPage(fActivePage);
-  if hDrawing <> nil then
+  if hDrawing <>  nil then
     hDrawing.SaveBlockLibraryToFile(applicationh.fDefaultBlockLibrary);
-end;
-
-procedure TfrmMain.PageControl1CloseTabClicked(Sender: TObject);
-begin
-  if CheckSave(TTabSheet(Sender)) then
-    CloseCADFile(TTabSheet(Sender));
 end;
 
 procedure TfrmMain.ChangeUserInterface;

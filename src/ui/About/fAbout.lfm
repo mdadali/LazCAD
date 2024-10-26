@@ -1,12 +1,13 @@
 object frmAbout: TfrmAbout
-  Left = 558
-  Height = 524
-  Top = 186
-  Width = 477
-  BorderStyle = bsDialog
+  Left = 577
+  Height = 514
+  Top = 260
+  Width = 496
+  BorderIcons = []
+  BorderStyle = bsNone
   Caption = 'LazCAD'
-  ClientHeight = 524
-  ClientWidth = 477
+  ClientHeight = 514
+  ClientWidth = 496
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = 12
@@ -18,31 +19,30 @@ object frmAbout: TfrmAbout
   LCLVersion = '2.2.6.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 524
+    Height = 464
     Top = 0
-    Width = 477
+    Width = 496
     ActivePage = TabSheet1
-    Align = alClient
     TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'LazCAD'
-      ClientHeight = 493
-      ClientWidth = 467
+      ClientHeight = 433
+      ClientWidth = 492
       object GifAnim1: TGifAnim
-        Left = 152
-        Height = 72
-        Top = 0
+        Left = -256
+        Height = 40
+        Top = 8
         Width = 256
         FileName = 'D:\daten\mustafa\entwicklung\lazarus\LazCAD_MDI\src\images\fpc_running_logo.gif'
       end
       object GroupBox1: TGroupBox
-        Left = 16
-        Height = 360
-        Top = 72
+        Left = 24
+        Height = 344
+        Top = 80
         Width = 440
-        ClientHeight = 358
-        ClientWidth = 438
+        ClientHeight = 340
+        ClientWidth = 436
         ParentBackground = False
         TabOrder = 0
         object lbVersion: TLabel
@@ -84,7 +84,7 @@ object frmAbout: TfrmAbout
           ParentFont = False
         end
         object Label3: TLabel
-          Left = 126
+          Left = 122
           Height = 18
           Top = 256
           Width = 38
@@ -96,9 +96,9 @@ object frmAbout: TfrmAbout
           ParentFont = False
         end
         object Label5: TLabel
-          Left = 16
+          Left = 32
           Height = 18
-          Top = 288
+          Top = 280
           Width = 55
           Caption = 'Based on'
           Font.Color = clWindowText
@@ -109,11 +109,11 @@ object frmAbout: TfrmAbout
         end
         object Label6: TLabel
           Cursor = crHandPoint
-          Left = 80
+          Left = 96
           Height = 54
-          Top = 288
-          Width = 290
-          Caption = '   CADSys 4, Copyright © 2001 by Piero Valagussa'#10'                            <pivalag@tin.it>.  '#10'                          All rights reserved.   '
+          Top = 280
+          Width = 307
+          Caption = '   CADSys 4.22, Copyright © 2001 by Piero Valagussa'#10'                       <pivalag@tin.it>.  '#10'                     All rights reserved.   '
           Font.Height = -13
           Font.Name = 'Tahoma'
           ParentColor = False
@@ -124,7 +124,7 @@ object frmAbout: TfrmAbout
         object Label4: TLabel
           Left = 152
           Height = 28
-          Top = 16
+          Top = 8
           Width = 75
           Caption = 'LazCAD'
           Font.Color = clBlack
@@ -255,25 +255,16 @@ object frmAbout: TfrmAbout
           ParentColor = False
         end
       end
-      object btnClose: TButton
-        Left = 168
-        Height = 32
-        Top = 448
-        Width = 104
-        Caption = 'Close'
-        OnClick = btnCloseClick
-        TabOrder = 1
-      end
     end
     object TabSheet4: TTabSheet
       Caption = 'License'
-      ClientHeight = 493
-      ClientWidth = 467
+      ClientHeight = 433
+      ClientWidth = 492
       object Memo3: TMemo
         Left = 0
-        Height = 493
+        Height = 433
         Top = 0
-        Width = 467
+        Width = 492
         Align = alClient
         Lines.Strings = (
           'MIT License'
@@ -304,13 +295,13 @@ object frmAbout: TfrmAbout
     end
     object TabSheet2: TTabSheet
       Caption = 'Credits'
-      ClientHeight = 493
-      ClientWidth = 467
+      ClientHeight = 433
+      ClientWidth = 492
       object Memo2: TMemo
         Left = 0
-        Height = 493
+        Height = 433
         Top = 0
-        Width = 467
+        Width = 492
         Align = alClient
         Lines.Strings = (
           'Very Important Note:'
@@ -428,25 +419,25 @@ object frmAbout: TfrmAbout
     end
     object TabSheet3: TTabSheet
       Caption = 'Components'
-      ClientHeight = 493
-      ClientWidth = 467
+      ClientHeight = 433
+      ClientWidth = 492
       object Memo1: TMemo
         Left = 0
-        Height = 493
+        Height = 433
         Top = 0
-        Width = 467
+        Width = 492
         Align = alClient
         Lines.Strings = (
           'Components:'
           '--------------------'
           ''
+          '--CADSys4.2'
           '--RTTI Controls'
           '--Abbrevia'
           '--BRGA Controls'
           '--SynEdit'
           '--PythonForLazarus'
           '--IndyLaz'
-          '--CADSys4.2'
           '--BGRA Controls'
           '--GifAnim'
           '--SpkToolbar'
@@ -458,5 +449,21 @@ object frmAbout: TfrmAbout
         TabOrder = 0
       end
     end
+  end
+  object btnClose: TButton
+    Left = 192
+    Height = 32
+    Top = 472
+    Width = 104
+    Caption = 'Close'
+    OnClick = btnCloseClick
+    TabOrder = 1
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 9
+    OnTimer = Timer1Timer
+    Left = 432
+    Top = 48
   end
 end

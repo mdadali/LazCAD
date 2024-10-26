@@ -8,13 +8,13 @@ interface
 uses
   EasyLazFreeType, TTObjs, TTTypes, Classes, SysUtils, FileUtil, Forms,
   Controls, Graphics, Dialogs, Spin, StdCtrls, ExtCtrls, ShellCtrls, ComCtrls,
-  ActnList, BCButtonFocus, GifAnim,
+  ActnList, ColorBox, BCButtonFocus, GifAnim,
   CADSys4,
   CS4Shapes,
   CS4BaseTypes,
   CS4Tasks,
   CS4DXFModule,
-  camh,
+  camh, fPenStyleComboBox, fBrushStyleComboBox,
 
   fAbout;
 
@@ -42,6 +42,7 @@ type
     BCButtonFocus8: TBCButtonFocus;
     BCButtonFocus80: TBCButtonFocus;
     BCButtonFocus83: TBCButtonFocus;
+    BrushStyleComboBox1: TBrushStyleComboBox;
     CADCmp2D1: TCADCmp2D;
     CADPrg2D1: TCADPrg2D;
     CADViewport2D1: TCADViewport2D;
@@ -51,6 +52,10 @@ type
     cboxBold: TCheckBox;
     cboxItalic: TCheckBox;
     cboxShowDirections: TCheckBox;
+    ColorBox1: TColorBox;
+    ColorBox2: TColorBox;
+    ColorDialog1: TColorDialog;
+    ColorDialog2: TColorDialog;
     fspeCharHeight: TFloatSpinEdit;
     fspeLineHeight: TFloatSpinEdit;
     grboxSettings: TGroupBox;
@@ -60,9 +65,14 @@ type
     ImageListClassic: TImageList;
     Label1: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
     Memo1: TMemo;
     Panel1: TPanel;
     Panel4: TPanel;
+    PenStyleComboBox1: TPenStyleComboBox;
     pnlBottom: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -86,17 +96,21 @@ type
     procedure acZoomOutExecute(Sender: TObject);
     procedure acZoomPanExecute(Sender: TObject);
     procedure acZoomWindowExecute(Sender: TObject);
+    procedure BrushStyleComboBox1Change(Sender: TObject);
     procedure CADViewport2D1Paint(Sender: TObject);
     procedure cboxBoldChange(Sender: TObject);
     procedure cboxItalicChange(Sender: TObject);
     procedure cboxShowControlpointsChange(Sender: TObject);
     procedure cboxShowDirectionsChange(Sender: TObject);
     procedure ChangeHinted(Sender: TObject);
+    procedure ColorBox1Change(Sender: TObject);
+    procedure ColorBox2Change(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure fspeCharHeightChange(Sender: TObject);
     procedure fspeLineHeightChange(Sender: TObject);
     procedure Memo1Change(Sender: TObject);
+    procedure PenStyleComboBox1Change(Sender: TObject);
     procedure ShellListView1Change(Sender: TObject; Item: TListItem;
       Change: TItemChange);
   private
@@ -194,6 +208,30 @@ procedure TfrmTTF2Vector.Memo1Change(Sender: TObject);
 begin
   if cboxAutoDraw.Checked then
     DrawGlyphs;
+end;
+
+procedure TfrmTTF2Vector.PenStyleComboBox1Change(Sender: TObject);
+begin
+  TmpPolygon2D.PenStyle   := PenStyleComboBox1.SelectedPenStyle;
+  DrawGlyphs;
+end;
+
+procedure TfrmTTF2Vector.ColorBox1Change(Sender: TObject);
+begin
+  TmpPolygon2D.PenColor := ColorBox1.Color;
+  DrawGlyphs;
+end;
+
+procedure TfrmTTF2Vector.BrushStyleComboBox1Change(Sender: TObject);
+begin
+  TmpPolygon2D.BrushStyle := BrushStyleComboBox1.SelectedBrushStyle;
+  DrawGlyphs;
+end;
+
+procedure TfrmTTF2Vector.ColorBox2Change(Sender: TObject);
+begin
+  TmpPolygon2D.BrushColor := ColorBox2.Color;
+  DrawGlyphs;
 end;
 
 procedure TfrmTTF2Vector.ShellListView1Change(Sender: TObject; Item: TListItem;
@@ -294,9 +332,18 @@ begin
       scy := y1;
       startcountur:=false;
       TmpPolygon2D := TPolygon2D.Create(-1, []);
+
+      TmpPolygon2D.PenSource   := psCustom;
+      TmpPolygon2D.PenStyle    := PenStyleComboBox1.SelectedPenStyle;
+      TmpPolygon2D.PenColor    := ColorBox1.Selected;
+
+      {TmpPolygon2D.BrushSource := bsCustom;
+      TmpPolygon2D.Brush.Style := BrushStyleComboBox1.SelectedBrushStyle;
+      TmpPolygon2D.Brush.Color := ColorBox2.Selected;}
+
       CADCmp2D1.AddObject(-1, TmpPolygon2D);
-      TmpPolygon2D.ReserveInt1 := ord(OuterContourCW);
-      TmpPolygon2D.LayerName   := CAM_LAYER_OUTER_CONTOUR_CW;
+      TmpPolygon2D.fReserveInt1 := ord(OuterContourCW);
+      TmpPolygon2D.LayerName    := CAM_LAYER_OUTER_CONTOUR_CW;
       FirstVertex := true;
     end else
     begin
@@ -306,7 +353,7 @@ begin
           lastoncurve:=lastoncurve;
         lastoncurve:=j;
       end;
-      AddPolygonVertex(x1,y1,x,y);
+      AddPolygonVertex(x1, y1, x, y);
       if j=_glyph^.outline.conEnds^[cends] then
       begin
         inc(cends);
@@ -314,6 +361,7 @@ begin
         lastoncurve:=j+1;
         FirstVertex := true;
         AddPolygonVertex(x1,y1,scx,scy);
+
         if cends=_glyph^.outline.n_contours then
           break;
       end;
@@ -335,18 +383,22 @@ begin
   y2 := y2 *  CharSize;
 
   y  := - y;
-  y2 := - y2;
+  y2 := -1 * y2;
 
   if FirstVertex then
   begin
     P0.X := x;  P0.Y := -y;  P0.W := 1;
     TmpPolygon2D.Points.Add(P0);
-    P1.X := x2; P1.Y := -y2; P1.W := 1;
+    P1.X := x2;
+    P1.Y := -1 * y2;
+    P1.W := 1;
     TmpPolygon2D.Points.Add(P1);
     FirstVertex := false;
   end else
   begin
-    P1.X := x2; P1.Y := -y2; P1.W := 1;
+    P1.X := x2;
+    P1.Y := -1 * y2;
+    P1.W := 1;
     TmpPolygon2D.Points.Add(P1);
   end;
 end;
@@ -402,7 +454,7 @@ begin
     begin
       if (TmpIter.Current.LayerName <> CAM_LAYER_STR_JUMPS) and (TmpIter.Current.LayerName <> LAYER_STR_TEMPLATE) then
       begin
-        TPrimitive2D(TmpIter.Current).ShowDirection := AValue;
+        //TPrimitive2D(TmpIter.Current).ShowDirection := AValue;
         CADCmp2D1.RedrawObject(TPrimitive2D(TmpIter.Current));
       end;
       TmpIter.Next;

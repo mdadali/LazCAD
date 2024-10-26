@@ -353,7 +353,7 @@ begin
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-//VCL///////////////////////////////////////////////////////////////////
+//LCL/VCL///////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 function cuOpenFileDialog(AFilter, AInitialDir: string): string;
 var OpenDialog: TOpenDialog;  hRet: string;
@@ -394,7 +394,7 @@ var
   vr: TVersionResource;
   rs: TResourceStream;
 begin
-  Result := 'Unbekannt';  // Fallback für den Fall, dass keine Versionsinfo vorhanden ist
+  Result := 'unknow';
   vr := TVersionResource.Create;
   try
     rs := TResourceStream.CreateFromID(HINSTANCE, 1, PChar(RT_VERSION));
@@ -428,7 +428,7 @@ var
   StringStream: TStringStream;
 begin
   if not FileExists(AFileName) then
-    raise Exception.CreateFmt('Datei "%s" nicht gefunden!', [AFileName]);
+    raise Exception.CreateFmt('File "%s" not found!', [AFileName]);
 
   FileStream := TFileStream.Create(AFileName, fmOpenRead or fmShareDenyNone);
   try
@@ -460,7 +460,6 @@ begin
         ReadLn(OSReleaseFile, Line);
         if Pos('PRETTY_NAME=', Line) = 1 then
         begin
-          // Entferne "PRETTY_NAME=" und umschließende Anführungszeichen
           OSVersion := Copy(Line, Pos('=', Line) + 1, Length(Line));
           OSVersion := StringReplace(OSVersion, '"', '', [rfReplaceAll]);
           Break;
@@ -472,7 +471,7 @@ begin
   end
   else if FileExists('/proc/version') then
   begin
-    // Fallback: Lesen von /proc/version, wenn /etc/os-release nicht vorhanden ist
+    // Fallback: read from /proc/version, if /etc/os-release don't exists
     OSVersion := Trim(StringReplace(ReadFileToString('/proc/version'), 'Linux version ', '', []));
   end;
   Result := OSVersion;
@@ -484,12 +483,10 @@ begin
   // Betriebssystem bestimmen
   {$IFDEF WINDOWS}
   OSName := 'Windows';
-  //OSVersion := GetEnvironmentVariable('OS'); // Liefert Windows-Version
-  // Abfrage der Umgebungsvariable 'OS'
   if GetEnvironmentVariable('OS', Buffer, SizeOf(Buffer)) > 0 then
     OSVersion := Buffer
   else
-    OSVersion := 'Unbekannt'; // Falls die Umgebungsvariable nicht gesetzt ist
+    OSVersion := 'unknow';
   {$ENDIF}
 
   {$IFDEF LINUX}
@@ -502,7 +499,7 @@ begin
   OSVersion := GetEnvironmentVariable('OSTYPE'); // Alternativ mit `uname -r` die Mac-Version auslesen
   {$ENDIF}
 
-  // 32-Bit oder 64-Bit erkennen
+  // 32-Bit or 64-Bit
   {$IFDEF CPU32}
   OSType := '32-bit';
   {$ENDIF}
@@ -510,8 +507,11 @@ begin
   OSType := '64-bit';
   {$ENDIF}
 
-  // Rückgabewert mit OS-Name, Version und Typ
-  Result := Format('OS: %s' + sLineBreak +
+  //Result := Format('OS: %s' + sLineBreak +
+  //                 '%s' + sLineBreak +
+  //                 'Architecture: %s', [OSName, OSVersion, OSType]);
+
+  Result := Format('%s' + sLineBreak +
                    '%s' + sLineBreak +
                    'Architecture: %s', [OSName, OSVersion, OSType]);
 end;
@@ -550,9 +550,8 @@ begin
   Result := 'Windows';
   {$ENDIF}
 
-  // Falls kein Widgetset erkannt wurde
   if Result = '' then
-    Result := 'Unbekanntes Widgetset';
+    Result := 'unknow Widgetset';
 end;
 
 end.

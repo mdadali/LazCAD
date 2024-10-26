@@ -11,24 +11,18 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcomponentSimplePrim2D;
 
 type
 
-TCADSysLine2D = class(TCADSysBaseComponent2D) //class(tpersistent)
-
-  private
-    fLine2D: TLine2D;
-    function   GetLine2D: TLine2D;
-    procedure  SetLine2D(ALine2D: TLine2D);
-    function   GetObjectLength: TRealType;
-    procedure  SetObjectLength(AValue: TRealType);
-  public
-    constructor Create;
-    property Line2D: TLine2D read GetLine2D write SetLine2D;
-  published
-    property ObjectLength read GetObjectLength write SetObjectLength;
-    property ObjectPosition2D;
+TCADSysLine2D = class(TCADSysSimplePrimitive2D)
+private
+  fLine: TLine2D;
+  function  GetGraphicObject: TGraphicObject; override;
+  procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
+public
+  constructor Create;
+published
 end;
 
 
@@ -37,30 +31,20 @@ implementation
 constructor TCADSysLine2D.create;
 begin
   inherited create;
-  self.fPrimitive2D := fLine2D;
 end;
 
-
-function TCADSysLine2D.GetLine2D: TLine2D;
+function  TCADSysLine2D.GetGraphicObject: TGraphicObject;
 begin
-  //result := fLine2D;
-  result := TLine2D(fPrimitive2D);
+  result := fLine;
 end;
 
-procedure TCADSysLine2D.SetLine2D(ALine2D: TLine2D);
+procedure TCADSysLine2D.SetGraphicObject(AGraphicObject: TGraphicObject);
 begin
-  fLine2D := ALine2D;
-  self.fPrimitive2D := fLine2D;
-end;
-
-function   TCADSysLine2D.GetObjectLength: TRealType;
-begin
-  result := fLine2D.ObjectLength;
-end;
-
-procedure  TCADSysLine2D.SetObjectLength(AValue: TRealType);
-begin
-  fLine2D.SetLength(AValue);
+  fLine := TLine2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
 end;
 
 end.

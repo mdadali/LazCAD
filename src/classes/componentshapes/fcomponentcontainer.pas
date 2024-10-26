@@ -8,25 +8,20 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcomponentobject2d;
 
   type
 
-    TCADSysContainer2D = class(TPersistent)
+    TCADSysContainer2D = class(TCADSysObject2D)
     private
       fContainer2D: TContainer2D;
       function   GetContainer2D: TContainer2D;
       procedure  SetContainer2D(AContainer2D: TContainer2D);
 
-      function GetClassName: string;
-      function GetEntityCount: integer;
-
     public
        constructor Create;
        property Container2D: TContainer2D read GetContainer2D write SetContainer2D;
      published
-       property ClassName: string read GetClassName;
-       property EntityCount: integer read GetEntityCount;
   end;
 
 
@@ -48,15 +43,6 @@ begin
   //self.fPrimitive2D := fContainer2D ;
 end;
 
-function TCADSysContainer2D.GetClassName: string;
-begin
-  result := fContainer2D.ClassName;
-end;
-
-function TCADSysContainer2D.GetEntityCount: integer;
-begin
-  result := fContainer2D.Objects.Count;
-end;
 
 
 

@@ -11,16 +11,12 @@ uses
   CADSys4,
   CS4BaseTypes,
   CS4Shapes,
-  fBaseComponent;
+  fcompdirectionalcurve2d;
 
 type
 
-  TCADSysCircularArc2D = class(TCADSysBaseComponent2D) //class(tpersistent)
+  TCADSysCircularArc2D = class(TCADSysDirectionalCurve2D) //class(tpersistent)
   private
-    fCircularArc2D: TCircularArc2D;
-    function   GetCircularArc2D: TCircularArc2D;
-    procedure  SetCircularArc2D(ACircularArc2D: TCircularArc2D);
-
     {function   GetStartPointX: TRealType;
     function   GetStartPointY: TRealType;
     function   GetEndPointX: TRealType;
@@ -44,9 +40,12 @@ type
     function   GetCurvePrecision: word;
     procedure  SetCurvePrecision(APrecision: word);
 
+    function  GetGraphicObject: TGraphicObject; override;
+    procedure SetGraphicObject(AGraphicObject: TGraphicObject); override;
   public
+    fCircularArc2D: TCircularArc2D;
     constructor Create;
-    property CircularArc2D: TCircularArc2D read GetCircularArc2D write SetCircularArc2D;
+    property GraphicObject;
 
   published
     property Radius:      TRealType      read GetRadius         write SetRadius;
@@ -60,12 +59,25 @@ type
     property EndPointY:   TRealType   read GetEndPointY      write SetEndPointY; }
     property CurvePrecision: word  read  GetCurvePrecision write SetCurvePrecision;
 
-
-    //property Visible;
 end;
 
 
 implementation
+
+function  TCADSysCircularArc2D.GetGraphicObject: TGraphicObject;
+begin
+  result :=  fCircularArc2D;
+end;
+
+procedure TCADSysCircularArc2D.SetGraphicObject(AGraphicObject: TGraphicObject);
+begin
+  fCircularArc2D := TCircularArc2D(AGraphicObject);
+  fSimplePrimitive2D := TSimplePrimitive2D(AGraphicObject);
+  fPrimitive2D := TPrimitive2D(AGraphicObject);
+  fObject2D := TObject2D(AGraphicObject);
+  fGraphicObject := AGraphicObject;
+end;
+
 
 function   TCADSysCircularArc2D.GetRadius: TRealType;
 begin
@@ -85,7 +97,7 @@ end;
 
 procedure  TCADSysCircularArc2D.SetDirection(D: TArcDirection);
 begin
-  if (D <> CircularArc2D.Direction) then
+  if (D <> fCircularArc2D.Direction) then
   begin
     fCircularArc2D.Direction := D;
     fCircularArc2D.UpdateExtension(nil);
@@ -108,20 +120,6 @@ constructor TCADSysCircularArc2D.create;
 begin
   inherited create;
   self.fPrimitive2D := fCircularArc2D;
-end;
-
-
-function TCADSysCircularArc2D.GetCircularArc2D: TCircularArc2D;
-begin
-  result := fCircularArc2D;
-  //result := TCIArc2D_CSE(fPrimitive2D);
-end;
-
-procedure TCADSysCircularArc2D.SetCircularArc2D(ACircularArc2D: TCircularArc2D);
-begin
-  fCircularArc2D := ACircularArc2D;
-  self.fPrimitive2D := fCircularArc2D;
-  //SetLayerIDX(self.LayerIndex);
 end;
 
 function   TCADSysCircularArc2D.GetStartAngle: TrealType;

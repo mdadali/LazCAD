@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
-  Left = 706
-  Height = 900
-  Top = 377
-  Width = 1600
+  Left = 534
+  Height = 689
+  Top = 182
+  Width = 1066
   Caption = 'LazCAD [Main]'
-  ClientHeight = 872
-  ClientWidth = 1600
+  ClientHeight = 660
+  ClientWidth = 1066
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
@@ -13,10 +13,10 @@ object frmMain: TfrmMain
   LCLVersion = '2.2.6.0'
   WindowState = wsMaximized
   object PageControl1: TPageControl
-    Left = 367
-    Height = 646
-    Top = 148
-    Width = 1201
+    Left = 377
+    Height = 434
+    Top = 147
+    Width = 657
     Align = alClient
     ScrollOpposite = True
     TabOrder = 0
@@ -27,41 +27,41 @@ object frmMain: TfrmMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 646
-    Top = 148
-    Width = 330
+    Height = 434
+    Top = 147
+    Width = 340
     Align = alLeft
     Caption = 'pnlLeft'
-    ClientHeight = 646
-    ClientWidth = 330
+    ClientHeight = 434
+    ClientWidth = 340
     TabOrder = 1
     Visible = False
     object Panel5: TPanel
       Left = 1
       Height = 34
       Top = 1
-      Width = 328
+      Width = 338
       Align = alTop
       TabOrder = 0
     end
     object PageControl2: TPageControl
       Left = 1
-      Height = 610
+      Height = 398
       Top = 35
-      Width = 328
+      Width = 338
       ActivePage = tsInspector
       Align = alClient
       TabIndex = 0
       TabOrder = 1
       object tsInspector: TTabSheet
         Caption = 'Inspector'
-        ClientHeight = 576
-        ClientWidth = 318
+        ClientHeight = 365
+        ClientWidth = 334
         object TIPropertyGrid1: TTIPropertyGrid
           Left = 0
-          Height = 576
+          Height = 365
           Top = 0
-          Width = 318
+          Width = 334
           Align = alClient
           BackgroundColor = clDefault
           CheckboxForBoolean = False
@@ -71,20 +71,20 @@ object frmMain: TfrmMain
           NameFont.Color = clWindowText
           OnClick = TIPropertyGrid1Click
           OnModified = TIPropertyGrid1Modified
-          PreferredSplitterX = 150
-          SplitterX = 150
+          PreferredSplitterX = 170
+          SplitterX = 170
           ValueFont.Color = clMaroon
         end
       end
       object tsShell: TTabSheet
         Caption = 'Shell'
-        ClientHeight = 576
-        ClientWidth = 318
+        ClientHeight = 365
+        ClientWidth = 334
         object ShellTreeView1: TShellTreeView
           Left = 0
-          Height = 576
+          Height = 365
           Top = 0
-          Width = 318
+          Width = 334
           Align = alClient
           FileSortType = fstNone
           ReadOnly = True
@@ -98,19 +98,19 @@ object frmMain: TfrmMain
   object pnlCMDLine: TPanel
     Left = 0
     Height = 21
-    Top = 829
-    Width = 1600
+    Top = 616
+    Width = 1066
     Align = alBottom
     Caption = 'pnlCMDLine'
     ClientHeight = 21
-    ClientWidth = 1600
+    ClientWidth = 1066
     TabOrder = 2
     Visible = False
     object Memo1: TMemo
       Left = 1
-      Height = 33
+      Height = 36
       Top = 1
-      Width = 1598
+      Width = 1064
       Align = alClient
       Lines.Strings = (
         '>>>'
@@ -119,29 +119,29 @@ object frmMain: TfrmMain
     end
   end
   object Splitter1: TSplitter
-    Left = 330
-    Height = 646
-    Top = 148
+    Left = 340
+    Height = 434
+    Top = 147
     Width = 5
   end
   object Splitter2: TSplitter
     Cursor = crVSplit
     Left = 0
     Height = 3
-    Top = 826
-    Width = 1600
+    Top = 613
+    Width = 1066
     Align = alBottom
     ResizeAnchor = akBottom
   end
   object pnlTop: TPanel
     Left = 0
     Height = 34
-    Top = 114
-    Width = 1600
+    Top = 113
+    Width = 1066
     Align = alTop
     BevelInner = bvRaised
     ClientHeight = 34
-    ClientWidth = 1600
+    ClientWidth = 1066
     TabOrder = 5
     object pnlFile: TPanel
       Left = 2
@@ -5522,11 +5522,11 @@ object frmMain: TfrmMain
   object pnlBottomToolBars: TPanel
     Left = 0
     Height = 32
-    Top = 794
-    Width = 1600
+    Top = 581
+    Width = 1066
     Align = alBottom
     ClientHeight = 32
-    ClientWidth = 1600
+    ClientWidth = 1066
     TabOrder = 6
     object pnlPgmCommands: TPanel
       Left = 0
@@ -7377,7 +7377,7 @@ object frmMain: TfrmMain
         Height = 28
         Top = 1
         Width = 28
-        Action = acSnapCenter
+        Action = acSnapMiddle
         Align = alLeft
         StateClicked.Background.Gradient1.StartColor = 15844240
         StateClicked.Background.Gradient1.EndColor = 15709297
@@ -9204,9 +9204,9 @@ object frmMain: TfrmMain
   end
   object SpkToolbar1: TSpkToolbar
     Left = 0
-    Height = 114
+    Height = 113
     Top = 0
-    Width = 1600
+    Width = 1066
     Style = spkMetroLight
     Appearance.Tab.TabHeaderFont.Color = 9787178
     Appearance.Tab.BorderColor = 13816015
@@ -9916,7 +9916,7 @@ object frmMain: TfrmMain
           ImageIndex = 152
         end
         object SpkSmallButton77: TSpkSmallButton
-          Action = acSnapCenter
+          Action = acSnapMiddle
           Caption = ' '
           ImageIndex = 153
         end
@@ -10615,9 +10615,9 @@ object frmMain: TfrmMain
   end
   object StatusBarMain: TStatusBar
     Left = 0
-    Height = 22
-    Top = 850
-    Width = 1600
+    Height = 23
+    Top = 637
+    Width = 1066
     Panels = <    
       item
         Width = 300
@@ -10631,12 +10631,12 @@ object frmMain: TfrmMain
     SimplePanel = False
   end
   object pnlLeftToolBars: TPanel
-    Left = 335
-    Height = 646
-    Top = 148
+    Left = 345
+    Height = 434
+    Top = 147
     Width = 32
     Align = alLeft
-    ClientHeight = 646
+    ClientHeight = 434
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -12869,114 +12869,9 @@ object frmMain: TfrmMain
       object BCButtonFocus115: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 344
-        Width = 28
-        Action = acDrawSegment2D
-        Align = alTop
-        StateClicked.Background.Gradient1.StartColor = 15844240
-        StateClicked.Background.Gradient1.EndColor = 15709297
-        StateClicked.Background.Gradient1.GradientType = gtLinear
-        StateClicked.Background.Gradient1.Point1XPercent = 0
-        StateClicked.Background.Gradient1.Point1YPercent = 0
-        StateClicked.Background.Gradient1.Point2XPercent = 0
-        StateClicked.Background.Gradient1.Point2YPercent = 100
-        StateClicked.Background.Gradient2.StartColor = 15773025
-        StateClicked.Background.Gradient2.EndColor = 15847059
-        StateClicked.Background.Gradient2.GradientType = gtLinear
-        StateClicked.Background.Gradient2.Point1XPercent = 0
-        StateClicked.Background.Gradient2.Point1YPercent = 0
-        StateClicked.Background.Gradient2.Point2XPercent = 0
-        StateClicked.Background.Gradient2.Point2YPercent = 100
-        StateClicked.Background.Gradient1EndPercent = 55
-        StateClicked.Background.Style = bbsGradient
-        StateClicked.Border.Color = 9394006
-        StateClicked.Border.LightColor = clGray
-        StateClicked.Border.LightOpacity = 100
-        StateClicked.Border.LightWidth = 1
-        StateClicked.Border.Style = bboSolid
-        StateClicked.FontEx.Color = clBlack
-        StateClicked.FontEx.FontQuality = fqSystemClearType
-        StateClicked.FontEx.Shadow = False
-        StateClicked.FontEx.ShadowRadius = 5
-        StateClicked.FontEx.ShadowOffsetX = 5
-        StateClicked.FontEx.ShadowOffsetY = 5
-        StateClicked.FontEx.Style = []
-        StateHover.Background.Gradient1.StartColor = 16573900
-        StateHover.Background.Gradient1.EndColor = 16372129
-        StateHover.Background.Gradient1.GradientType = gtLinear
-        StateHover.Background.Gradient1.Point1XPercent = 0
-        StateHover.Background.Gradient1.Point1YPercent = 0
-        StateHover.Background.Gradient1.Point2XPercent = 0
-        StateHover.Background.Gradient1.Point2YPercent = 100
-        StateHover.Background.Gradient2.StartColor = 16501391
-        StateHover.Background.Gradient2.EndColor = 16643535
-        StateHover.Background.Gradient2.GradientType = gtLinear
-        StateHover.Background.Gradient2.Point1XPercent = 0
-        StateHover.Background.Gradient2.Point1YPercent = 0
-        StateHover.Background.Gradient2.Point2XPercent = 0
-        StateHover.Background.Gradient2.Point2YPercent = 100
-        StateHover.Background.Gradient1EndPercent = 50
-        StateHover.Background.Style = bbsGradient
-        StateHover.Border.Color = 9394006
-        StateHover.Border.LightOpacity = 200
-        StateHover.Border.LightWidth = 1
-        StateHover.Border.Style = bboSolid
-        StateHover.FontEx.Color = clBlack
-        StateHover.FontEx.FontQuality = fqSystemClearType
-        StateHover.FontEx.Shadow = False
-        StateHover.FontEx.ShadowRadius = 5
-        StateHover.FontEx.ShadowOffsetX = 5
-        StateHover.FontEx.ShadowOffsetY = 5
-        StateHover.FontEx.Style = []
-        StateNormal.Background.Gradient1.StartColor = clWhite
-        StateNormal.Background.Gradient1.EndColor = 15987699
-        StateNormal.Background.Gradient1.GradientType = gtLinear
-        StateNormal.Background.Gradient1.Point1XPercent = 0
-        StateNormal.Background.Gradient1.Point1YPercent = 0
-        StateNormal.Background.Gradient1.Point2XPercent = 0
-        StateNormal.Background.Gradient1.Point2YPercent = 100
-        StateNormal.Background.Gradient2.StartColor = 15527148
-        StateNormal.Background.Gradient2.EndColor = 15722194
-        StateNormal.Background.Gradient2.GradientType = gtLinear
-        StateNormal.Background.Gradient2.Point1XPercent = 0
-        StateNormal.Background.Gradient2.Point1YPercent = 0
-        StateNormal.Background.Gradient2.Point2XPercent = 0
-        StateNormal.Background.Gradient2.Point2YPercent = 100
-        StateNormal.Background.Gradient1EndPercent = 50
-        StateNormal.Background.Style = bbsGradient
-        StateNormal.Border.Color = 10132122
-        StateNormal.Border.LightOpacity = 200
-        StateNormal.Border.LightWidth = 1
-        StateNormal.Border.Style = bboSolid
-        StateNormal.FontEx.Color = clBlack
-        StateNormal.FontEx.FontQuality = fqSystemClearType
-        StateNormal.FontEx.Shadow = False
-        StateNormal.FontEx.ShadowRadius = 5
-        StateNormal.FontEx.ShadowOffsetX = 5
-        StateNormal.FontEx.ShadowOffsetY = 5
-        StateNormal.FontEx.Style = []
-        Color = clNone
-        DropDownWidth = 16
-        DropDownArrowSize = 8
-        GlobalOpacity = 255
-        ParentColor = False
-        Rounding.RoundX = 3
-        Rounding.RoundY = 3
-        RoundingDropDown.RoundX = 1
-        RoundingDropDown.RoundY = 1
-        TextApplyGlobalOpacity = False
-        Images = ImageListClassic
-        ImageIndex = 168
-        ShowCaption = False
-        MemoryUsage = bmuHighF
-        TabOrder = 22
-      end
-      object BCButtonFocus124: TBCButtonFocus
-        Left = 1
-        Height = 28
         Top = 372
         Width = 28
-        Action = acDrawSector2D
+        Action = acDrawSegment2D
         Align = alTop
         StateClicked.Background.Gradient1.StartColor = 15844240
         StateClicked.Background.Gradient1.EndColor = 15709297
@@ -13074,6 +12969,111 @@ object frmMain: TfrmMain
         ImageIndex = 169
         ShowCaption = False
         MemoryUsage = bmuHighF
+        TabOrder = 22
+      end
+      object BCButtonFocus124: TBCButtonFocus
+        Left = 1
+        Height = 28
+        Top = 344
+        Width = 28
+        Action = acDrawSector2D
+        Align = alTop
+        StateClicked.Background.Gradient1.StartColor = 15844240
+        StateClicked.Background.Gradient1.EndColor = 15709297
+        StateClicked.Background.Gradient1.GradientType = gtLinear
+        StateClicked.Background.Gradient1.Point1XPercent = 0
+        StateClicked.Background.Gradient1.Point1YPercent = 0
+        StateClicked.Background.Gradient1.Point2XPercent = 0
+        StateClicked.Background.Gradient1.Point2YPercent = 100
+        StateClicked.Background.Gradient2.StartColor = 15773025
+        StateClicked.Background.Gradient2.EndColor = 15847059
+        StateClicked.Background.Gradient2.GradientType = gtLinear
+        StateClicked.Background.Gradient2.Point1XPercent = 0
+        StateClicked.Background.Gradient2.Point1YPercent = 0
+        StateClicked.Background.Gradient2.Point2XPercent = 0
+        StateClicked.Background.Gradient2.Point2YPercent = 100
+        StateClicked.Background.Gradient1EndPercent = 55
+        StateClicked.Background.Style = bbsGradient
+        StateClicked.Border.Color = 9394006
+        StateClicked.Border.LightColor = clGray
+        StateClicked.Border.LightOpacity = 100
+        StateClicked.Border.LightWidth = 1
+        StateClicked.Border.Style = bboSolid
+        StateClicked.FontEx.Color = clBlack
+        StateClicked.FontEx.FontQuality = fqSystemClearType
+        StateClicked.FontEx.Shadow = False
+        StateClicked.FontEx.ShadowRadius = 5
+        StateClicked.FontEx.ShadowOffsetX = 5
+        StateClicked.FontEx.ShadowOffsetY = 5
+        StateClicked.FontEx.Style = []
+        StateHover.Background.Gradient1.StartColor = 16573900
+        StateHover.Background.Gradient1.EndColor = 16372129
+        StateHover.Background.Gradient1.GradientType = gtLinear
+        StateHover.Background.Gradient1.Point1XPercent = 0
+        StateHover.Background.Gradient1.Point1YPercent = 0
+        StateHover.Background.Gradient1.Point2XPercent = 0
+        StateHover.Background.Gradient1.Point2YPercent = 100
+        StateHover.Background.Gradient2.StartColor = 16501391
+        StateHover.Background.Gradient2.EndColor = 16643535
+        StateHover.Background.Gradient2.GradientType = gtLinear
+        StateHover.Background.Gradient2.Point1XPercent = 0
+        StateHover.Background.Gradient2.Point1YPercent = 0
+        StateHover.Background.Gradient2.Point2XPercent = 0
+        StateHover.Background.Gradient2.Point2YPercent = 100
+        StateHover.Background.Gradient1EndPercent = 50
+        StateHover.Background.Style = bbsGradient
+        StateHover.Border.Color = 9394006
+        StateHover.Border.LightOpacity = 200
+        StateHover.Border.LightWidth = 1
+        StateHover.Border.Style = bboSolid
+        StateHover.FontEx.Color = clBlack
+        StateHover.FontEx.FontQuality = fqSystemClearType
+        StateHover.FontEx.Shadow = False
+        StateHover.FontEx.ShadowRadius = 5
+        StateHover.FontEx.ShadowOffsetX = 5
+        StateHover.FontEx.ShadowOffsetY = 5
+        StateHover.FontEx.Style = []
+        StateNormal.Background.Gradient1.StartColor = clWhite
+        StateNormal.Background.Gradient1.EndColor = 15987699
+        StateNormal.Background.Gradient1.GradientType = gtLinear
+        StateNormal.Background.Gradient1.Point1XPercent = 0
+        StateNormal.Background.Gradient1.Point1YPercent = 0
+        StateNormal.Background.Gradient1.Point2XPercent = 0
+        StateNormal.Background.Gradient1.Point2YPercent = 100
+        StateNormal.Background.Gradient2.StartColor = 15527148
+        StateNormal.Background.Gradient2.EndColor = 15722194
+        StateNormal.Background.Gradient2.GradientType = gtLinear
+        StateNormal.Background.Gradient2.Point1XPercent = 0
+        StateNormal.Background.Gradient2.Point1YPercent = 0
+        StateNormal.Background.Gradient2.Point2XPercent = 0
+        StateNormal.Background.Gradient2.Point2YPercent = 100
+        StateNormal.Background.Gradient1EndPercent = 50
+        StateNormal.Background.Style = bbsGradient
+        StateNormal.Border.Color = 10132122
+        StateNormal.Border.LightOpacity = 200
+        StateNormal.Border.LightWidth = 1
+        StateNormal.Border.Style = bboSolid
+        StateNormal.FontEx.Color = clBlack
+        StateNormal.FontEx.FontQuality = fqSystemClearType
+        StateNormal.FontEx.Shadow = False
+        StateNormal.FontEx.ShadowRadius = 5
+        StateNormal.FontEx.ShadowOffsetX = 5
+        StateNormal.FontEx.ShadowOffsetY = 5
+        StateNormal.FontEx.Style = []
+        Color = clNone
+        DropDownWidth = 16
+        DropDownArrowSize = 8
+        GlobalOpacity = 255
+        ParentColor = False
+        Rounding.RoundX = 3
+        Rounding.RoundY = 3
+        RoundingDropDown.RoundX = 1
+        RoundingDropDown.RoundY = 1
+        TextApplyGlobalOpacity = False
+        Images = ImageListClassic
+        ImageIndex = 168
+        ShowCaption = False
+        MemoryUsage = bmuHighF
         TabOrder = 23
       end
     end
@@ -13088,12 +13088,12 @@ object frmMain: TfrmMain
     end
   end
   object pnlRightToolBars: TPanel
-    Left = 1568
-    Height = 646
-    Top = 148
+    Left = 1034
+    Height = 434
+    Top = 147
     Width = 32
     Align = alRight
-    ClientHeight = 646
+    ClientHeight = 434
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -16485,14 +16485,14 @@ object frmMain: TfrmMain
       ImageIndex = 152
       OnExecute = acSnapLeftCenterExecute
     end
-    object acSnapCenter: TAction
+    object acSnapMiddle: TAction
       Category = 'Snap'
       AutoCheck = True
       Caption = 'Snap Center'
       GroupIndex = 2
-      Hint = 'Snap Center'
+      Hint = 'Snap Middle'
       ImageIndex = 153
-      OnExecute = acSnapCenterExecute
+      OnExecute = acSnapMiddleExecute
     end
     object acSnapStartPoint: TAction
       Category = 'Snap'
@@ -16911,14 +16911,14 @@ object frmMain: TfrmMain
       Category = 'Draw'
       Caption = 'Draw Segment'
       Hint = 'Segment'
-      ImageIndex = 168
+      ImageIndex = 169
       OnExecute = acDrawSegment2DExecute
     end
     object acDrawSector2D: TAction
       Category = 'Draw'
       Caption = 'Draw Sector'
       Hint = 'Sector'
-      ImageIndex = 169
+      ImageIndex = 168
       OnExecute = acDrawSector2DExecute
     end
     object acDrawSymetricSymbol2D: TAction
@@ -16934,6 +16934,13 @@ object frmMain: TfrmMain
       Hint = 'ASymetric Symbol'
       ImageIndex = 171
       OnExecute = acDrawASymetricSymbol2DExecute
+    end
+    object acFileCopyToClipboard: TAction
+      Category = 'File'
+      Caption = 'Copy Drawing to Clipboard'
+      Hint = 'Copy Drawing to Clipboard'
+      ImageIndex = 20
+      OnExecute = acFileCopyToClipboardExecute
     end
   end
   object ImageListClassic: TImageList
@@ -17511,6 +17518,13 @@ object frmMain: TfrmMain
       end
       object SaveAs1: TMenuItem
         Action = acFileSaveAs
+      end
+      object mnuCopyToClipBoard: TMenuItem
+        Caption = 'Copy to ClipBoard'
+        Hint = 'Copy to ClipBoard'
+        object MenuItem7: TMenuItem
+          Action = acFileCopyToClipboard
+        end
       end
       object N2: TMenuItem
         Caption = '-'

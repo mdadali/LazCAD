@@ -6,8 +6,8 @@ object Drawing: TDrawing
   ClientHeight = 464
   ClientWidth = 862
   TabOrder = 0
-  DesignLeft = 357
-  DesignTop = 131
+  DesignLeft = 487
+  DesignTop = 163
   object PageControl1: TPageControl
     Left = 0
     Height = 464
@@ -20,18 +20,18 @@ object Drawing: TDrawing
     TabPosition = tpBottom
     object tsModel: TTabSheet
       Caption = 'Model'
-      ClientHeight = 430
-      ClientWidth = 852
+      ClientHeight = 431
+      ClientWidth = 858
       PopupMenu = popupSpaces
       object pnlBottom: TPanel
         Left = 0
         Height = 52
-        Top = 378
-        Width = 852
+        Top = 379
+        Width = 858
         Align = alBottom
         Caption = 'pnlBottom'
         ClientHeight = 52
-        ClientWidth = 852
+        ClientWidth = 858
         TabOrder = 0
         object pnlCorner: TPanel
           Left = 1
@@ -52,7 +52,7 @@ object Drawing: TDrawing
           Left = 61
           Height = 50
           Top = 1
-          Width = 790
+          Width = 796
           Align = alClient
           LinkedViewport = CADViewport2D
           Color = clSilver
@@ -63,9 +63,9 @@ object Drawing: TDrawing
       end
       object CADViewport2D: TCADViewport2D
         Left = 62
-        Height = 378
+        Height = 379
         Top = 0
-        Width = 790
+        Width = 796
         Align = alClient
         PopupMenu = popupDrawing
         AspectRatio = 1
@@ -84,16 +84,16 @@ object Drawing: TDrawing
       end
       object pnlLeft: TPanel
         Left = 0
-        Height = 378
+        Height = 379
         Top = 0
         Width = 62
         Align = alLeft
-        ClientHeight = 378
+        ClientHeight = 379
         ClientWidth = 62
         TabOrder = 2
         object RulerLeft: TRuler
           Left = 1
-          Height = 376
+          Height = 377
           Top = 1
           Width = 60
           HelpType = htKeyword

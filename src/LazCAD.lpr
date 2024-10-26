@@ -10,14 +10,10 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  runtimetypeinfocontrols, crt, Forms, pkg_gifanim, indylaz, abbrevia, fSplash,
-  fAbout, FiguresAsComponents, fBaseComponent, fComponentArc, fComponentBSpline,
-  fComponentEllipse, fComponentFrame, fComponentLine, fComponentPLine,
-  fComponentPolygon, fComponentRect, fcomponentcirculararc, fMain, fDrawing,
-  fcomponentcircle, fLibraryBlocks, fLayers, applicationh, CADDocument, camh,
-  cImportEssi, fSimulation, fTTF2Vector,
-  fCADSys4ClipperInterface, fComponentGraphicObj, fComponentContainer, contours,
-  UndoRedo, fobjectposition;
+  runtimetypeinfocontrols, lazopenglcontext, crt, Forms, pkg_gifanim, indylaz,
+  abbrevia, fSplash, fAbout, fMain, fDrawing, fLibraryBlocks, fLayers,
+  applicationh, CADDocument, camh, FiguresAsComponents, cImportEssi,
+  fSimulation, fTTF2Vector, fCADSys4ClipperInterface, UndoRedo;
 
 {$R *.res}
 
@@ -39,15 +35,14 @@ begin
   frmSplash.Update;
 
   Application.CreateForm(TfrmMain, frmMain);
-  frmSplash.ProgressBar1.StepIt;
-  Delay(500);
-  Application.ProcessMessages;
+  //frmSplash.ProgressBar1.StepIt;
+  //Delay(500);
+  //Application.ProcessMessages;
 
   for i := 0 to  99999 do //3999 do
   begin
     frmSplash.ProgressBar1.StepIt;
     Application.ProcessMessages;
-    //Delay(10);
   end;
 
   frmSplash.Hide;
