@@ -41,7 +41,7 @@ type
    and speed efficency.
 }
 
-  TRealType = Single;  //original
+  TRealType = Single;
 
 {: This type is the result information of a clipping method. The
    clipping functions are used internally by the library and you

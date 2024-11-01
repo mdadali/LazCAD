@@ -10,10 +10,11 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  runtimetypeinfocontrols, lazopenglcontext, crt, Forms, pkg_gifanim, indylaz,
-  abbrevia, fSplash, fAbout, fMain, fDrawing, fLibraryBlocks, fLayers,
-  applicationh, CADDocument, camh, FiguresAsComponents, cImportEssi,
-  fSimulation, fTTF2Vector, fCADSys4ClipperInterface, UndoRedo;
+  runtimetypeinfocontrols, lazopenglcontext, pascalscript, pascalscriptfcl, crt,
+  Forms, pkg_gifanim, indylaz, abbrevia, fSplash, fAbout, fMain, fDrawing,
+  fLibraryBlocks, fLayers, applicationh, CADDocument, CADScripInterface2D, camh,
+  FiguresAsComponents, cImportEssi, fSimulation, fTTF2Vector, ide_editor,
+  fCADSys4ClipperInterface, UndoRedo;
 
 {$R *.res}
 
@@ -35,6 +36,8 @@ begin
   frmSplash.Update;
 
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TIDE, IDE);
+
   //frmSplash.ProgressBar1.StepIt;
   //Delay(500);
   //Application.ProcessMessages;
@@ -47,6 +50,8 @@ begin
 
   frmSplash.Hide;
   Application.Run;
+  IDE.Free;
   frmSplash.Free;
+
 end.
 

@@ -17,9 +17,11 @@ uses
   CS4Tasks,
 
   CS4DXFModule,
+
   cImportEssi,
 
   applicationh,
+  CADDocument,
   FiguresAsComponents,
   fAbout,
   fLibraryBlocks,
@@ -27,6 +29,7 @@ uses
   fSimulation,
   fDrawing,
   fttf2vector,
+  ide_editor,
   camh;
 
 type
@@ -172,7 +175,7 @@ type
     acModifySplit: TAction;
     acModifyTrim: TAction;
     acOpenCloseTraceWindow: TAction;
-    acOrder: TAction;
+    acOrderSequentiel: TAction;
     acOrderBingForward: TAction;
     acOrderSendToBack: TAction;
     acOrderBringToFront: TAction;
@@ -266,6 +269,7 @@ type
     acDrawSymetricSymbol2D: TAction;
     acDrawASymetricSymbol2D: TAction;
     acFileCopyToClipboard: TAction;
+    acModifyRotateEx: TAction;
     acToolsTTF2Vector: TAction;
     acToolsShowSimulator: TAction;
     ActionList: TActionList;
@@ -386,6 +390,7 @@ type
     BCButtonFocus61: TBCButtonFocus;
     BCButtonFocus62: TBCButtonFocus;
     BCButtonFocus63: TBCButtonFocus;
+    BCButtonFocus64: TBCButtonFocus;
     BCButtonFocus65: TBCButtonFocus;
     BCButtonFocus66: TBCButtonFocus;
     BCButtonFocus67: TBCButtonFocus;
@@ -840,6 +845,7 @@ type
     procedure acCMDSingleSelectionModeExecute(Sender: TObject);
     procedure acCMDUseOrthoExecute(Sender: TObject);
     procedure acCMDUseSnapExecute(Sender: TObject);
+    procedure acDimLinExecute(Sender: TObject);
     procedure acDrawASymetricSymbol2DExecute(Sender: TObject);
     procedure acDrawCircle0Execute(Sender: TObject);
     procedure acDrawCircularArc2DExecute(Sender: TObject);
@@ -885,12 +891,14 @@ type
     procedure acModifyOffsetExecute(Sender: TObject);
     procedure acModifyReverseExecute(Sender: TObject);
     procedure acModifyRotateExecute(Sender: TObject);
+    procedure acModifyRotateExExecute(Sender: TObject);
     procedure acModifyScaleExecute(Sender: TObject);
     procedure acOrderBingForwardExecute(Sender: TObject);
     procedure acOrderBringBackwardExecute(Sender: TObject);
-    procedure acOrderExecute(Sender: TObject);
+    procedure acOrderSequentielExecute(Sender: TObject);
     procedure acOrderSendToBackExecute(Sender: TObject);
     procedure acOrderBringToFrontExecute(Sender: TObject);
+    procedure acOrderSwapExecute(Sender: TObject);
     procedure acPrinterSetupExecute(Sender: TObject);
     procedure acChangeUserInterfaceExecute(Sender: TObject);
     procedure acRequestPwdExecute(Sender: TObject);
@@ -915,6 +923,7 @@ type
     procedure acSnapTopRightExecute(Sender: TObject);
     procedure acTestsTestLayersExecute(Sender: TObject);
     procedure acDrawSymetricSymbol2DExecute(Sender: TObject);
+    procedure acToolsScripterExecute(Sender: TObject);
     procedure acToolsShowSimulatorExecute(Sender: TObject);
     procedure acToolsTTF2VectorExecute(Sender: TObject);
     procedure acZoomAreaExecute(Sender: TObject);
@@ -940,6 +949,8 @@ type
 
     ComponentDrawing: TComponentDrawing;
     fActivePage: TTabSheet;
+
+    procedure RegisterDocument;
     procedure ChangeUserInterface;
     function  CreateNewDrawing: TTabSheet;
     function  GetDrawingFromPage(APage: TTabSheet): TDrawing;
@@ -999,6 +1010,16 @@ implementation
 type
   EFileNotFound = class(Exception);
 
+
+procedure TfrmMain.RegisterDocument;
+var hDrawing: TDrawing;
+begin
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if  hDrawing <> nil then
+    CADDocument.RegisterDocument(hDrawing.CADPrg2D, hDrawing.CADCmp2D, hDrawing.CADViewport2D, ProgressBarMain, TIPropertyGrid1)
+  else
+    CADDocument.RegisterDocument(nil, nil, nil, nil, nil);
+end;
 
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -1099,7 +1120,8 @@ begin
     hDrawing.CADCmp2D.ClearLayer(CAM_LAYER_ID_JUMPS);
     hDrawing.CADViewport2D.Repaint;
   end;
-  //if hDrawing.CADPrg2D.IsBusy then exit;
+
+  if hDrawing.CADPrg2D.IsBusy then exit;
 
   GlobalObject2D := nil;
   hDrawing.CADViewport2D.Repaint;
@@ -1219,6 +1241,7 @@ begin
 
   AObject.Transform(Translate2D(diffX, diffY) );
   MoveBasePoint := hDrawing.CADPrg2D.CurrentViewportSnappedPoint;
+
   TIPropertyGrid1.Update;
   TIPropertyGrid1.Repaint;
   //IsEntityDragged := true;
@@ -1473,6 +1496,7 @@ begin
   if PageControl1.PageCount > 0 then
     if CheckSave(fActivePage) then
       CloseCADFile(fActivePage);
+  RegisterDocument;
 end;
 
 procedure TfrmMain.PageControl1CloseTabClicked(Sender: TObject);
@@ -1633,6 +1657,11 @@ begin
   end;
 end;
 
+procedure TfrmMain.acToolsScripterExecute(Sender: TObject);
+begin
+  IDE.Visible := acToolsScripter.Checked;
+end;
+
 procedure TfrmMain.acDrawASymetricSymbol2DExecute(Sender: TObject);
 var TmpASymetricSymbol2D: TASymetricSymbol2D;   hDrawing: TDrawing;
 begin
@@ -1665,16 +1694,11 @@ begin
   if (not FontDialog1.Execute) then
     exit;
 
-  //if not InputQuery('Add Text', 'Height', TmpStr) then
-   //Exit;
-  //TmpH := StrToFloat(TmpStr);
+  TmpStr := 'String' + #13#10 + 'Test';
   if not InputQuery('Add Text', 'String', TmpStr) then
    Exit;
 
   TmpText := TText2D.Create(0, Rect2D(1, 70, 99, 99), FontDialog1.Font.Height, TmpStr);
-  TmpText.DrawBox := False;
-  TmpText.AutoSize := true;
-  TmpText.ClippingFlags := DT_CENTER;
   TmpText.LogFont.FaceName := FontDialog1.Font.Name;
   TmpText.LogFont.Height   := FontDialog1.Font.Height;
 
@@ -1682,26 +1706,17 @@ begin
     TmpText.LogFont.Italic := 1;
   if (fsStrikeOut in FontDialog1.Font.Style) then
     TmpText.LogFont.StrikeOut := 1;
- if (fsUnderline in FontDialog1.Font.Style) then
+  if (fsUnderline in FontDialog1.Font.Style) then
     TmpText.LogFont.Underline := 1;
 
- if (fsBold in FontDialog1.Font.Style) then
-    TmpText.LogFont.Weight := 700;
+  if (fsBold in FontDialog1.Font.Style) then
+    TmpText.LogFont.Weight := 700
+  else
+    TmpText.LogFont.Weight := 400;
 
-  //FontDialog1.Font.Color;
- //TmpText.LogFont.
- //hDrawing.CADViewport2D.Canvas.Font.Color := clRed;
-
- //Bold missing???
-
-
- //TmpText.LogFont.Underline := 1;
- //TmpText.LogFont.StrikeOut := 1;
-
-  hDrawing.CADPrg2D.StartOperation(TCAD2DPositionObject,
+    hDrawing.CADPrg2D.StartOperation(TCAD2DPositionObject,
          TCAD2DPositionObjectParam.Create(nil, TmpText));
 
-  //hDrawing.CADCmp2D.AddObject(-1, TmpText);
 end;
 
 procedure TfrmMain.acDrawSplineExecute(Sender: TObject);
@@ -2388,6 +2403,26 @@ begin
   TIPropertyGrid1.Repaint;
 end;
 
+procedure TfrmMain.acDimLinExecute(Sender: TObject);
+var TmpDimLine2D: TDimension2D;   hDrawing: TDrawing;
+begin
+  if PageControl1.PageCount = 0 then exit;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing <> nil then
+  begin
+    with hDrawing.CADPrg2D do
+    begin
+      if IsBusy then
+        StopOperation;
+      //fCurrentOpBtn := InsertLineBtn;
+       TmpDimLine2D := TDimension2D.Create(-1, Point2D(0, 0), Point2D(0, 0));
+       StartOperation(TCAD2DDrawSizedPrimitive, TCAD2DDrawSizedPrimitiveParam.Create(nil,
+          TmpDimLine2D, 0, True));
+       //SetDefaultObjEntitys(TmpLine2D);
+    end;
+  end;
+end;
+
 procedure TfrmMain.acCMDPolarTrackingExecute(Sender: TObject);
 var hDrawing: TDrawing;
 begin
@@ -2639,6 +2674,7 @@ begin
     Application.ProcessMessages;
     ProgressBarMain.Position := 0;
     UpdateUserInterface;
+    RegisterDocument;
   end;
 end;
 
@@ -2699,6 +2735,7 @@ begin
   hDrawing.UndoRedo.UndoSave;
 
   UpdateUserInterface;
+  RegisterDocument;
 end;
 
 procedure SaveCS4File(var ADrawing: TDrawing;  AFileName: string);
@@ -2975,9 +3012,11 @@ begin
     end;
     smExtendet: begin
       // single is temporary. extended is being implemented
+
       TmpPar := TCAD2DSelectObjectsParam.Create(5, TCAD2DDeleteObjects);
       TCAD2DSelectObjectsParam(TmpPar).OnObjectSelected := @OnSelectObj;
-      hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar);
+      //hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar);
+      hDrawing.CADPrg2D.StartOperation(TCAD2DExtendedSelectObjects, TmpPar);
     end;
   end;
 end;
@@ -3187,6 +3226,27 @@ begin
    end;
 end;
 
+procedure TfrmMain.acModifyRotateExExecute(Sender: TObject);
+var TmpPar: TCADPrgParam; hDrawing: TDrawing;
+begin
+  if PageControl1.PageCount = 0 then exit;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing = nil then exit;
+
+  if acCMDAreaSelectionMode.Checked then
+   begin
+     TmpPar := TCAD2DSelectObjectsInAreaParam.Create(gmAllInside, TCAD2DRotateExSelectedObjects);
+     with hDrawing.CADPrg2D do
+       StartOperation(TCAD2DSelectObjectsInArea, TmpPar);
+   end else
+   begin
+     TmpPar := TCAD2DSelectObjectsParam.Create(5, TCAD2DRotateExSelectedObjects);
+     TCAD2DSelectObjectsParam(TmpPar).OnObjectSelected := @OnSelectObj;
+     with hDrawing.CADPrg2D do
+      StartOperation(TCAD2DSelectObjects, TmpPar);
+   end;
+end;
+
 procedure TfrmMain.acOrderBingForwardExecute(Sender: TObject);
 var hDrawing: TDrawing;  TmpPar: TCADPrgParam;
 begin
@@ -3225,7 +3285,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.acOrderExecute(Sender: TObject);
+procedure TfrmMain.acOrderSequentielExecute(Sender: TObject);
 var hDrawing: TDrawing;  TmpPar: TCADPrgParam;
 begin
   if PageControl1.PageCount = 0 then exit;
@@ -3270,6 +3330,25 @@ begin
   end else
   begin
     TmpPar := TCAD2DSelectObjectsParam.Create(5, TCAD2DBringToFront);
+    TCAD2DSelectObjectsParam(TmpPar).OnObjectSelected := @OnSelectObj;
+    hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar);
+  end;
+end;
+
+procedure TfrmMain.acOrderSwapExecute(Sender: TObject);
+var hDrawing: TDrawing;  TmpPar: TCADPrgParam;
+begin
+  if PageControl1.PageCount = 0 then exit;
+  hDrawing := GetDrawingFromPage(fActivePage);
+  if hDrawing = nil then exit;
+  if acCMDAreaSelectionMode.Checked then
+  begin
+    TmpPar := TCAD2DSelectObjectsInAreaParam.Create(gmAllInside, TCAD2DSwapObjects);
+    TCAD2DSelectObjectsInAreaParam(TmpPar).OnObjectSelected := @OnSelectObj;
+    hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjectsInArea, TmpPar);
+  end else
+  begin
+    TmpPar := TCAD2DSelectObjectsParam.Create(5, TCAD2DSwapObjects);
     TCAD2DSelectObjectsParam(TmpPar).OnObjectSelected := @OnSelectObj;
     hDrawing.CADPrg2D.StartOperation(TCAD2DSelectObjects, TmpPar);
   end;
@@ -3560,7 +3639,12 @@ begin
       CloseAction := caNone;
       exit;
     end;
-  ComponentDrawing.Free;
+
+  if GlobalObject2D <> nil then
+    GlobalObject2D := nil;
+
+  if ComponentDrawing <> nil then
+    ComponentDrawing := nil;
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
@@ -3630,6 +3714,7 @@ begin
   ComponentDrawing.Drawing := hDrawing;
   SetupInspector(ComponentDrawing);
   UpdateUserInterface;
+  RegisterDocument;
 end;
 
 procedure TfrmMain.PageControl1Changing(Sender: TObject; var AllowChange: Boolean);

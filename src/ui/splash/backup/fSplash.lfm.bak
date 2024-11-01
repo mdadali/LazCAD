@@ -44,6 +44,8 @@ object frmSplash: TfrmSplash
       Align = alTop
       ClientHeight = 216
       ClientWidth = 828
+      Color = clSilver
+      ParentColor = False
       TabOrder = 0
       OnClick = Panel3Click
       object Label4: TLabel
@@ -670,6 +672,8 @@ object frmSplash: TfrmSplash
       Align = alClient
       ClientHeight = 181
       ClientWidth = 828
+      Color = clSilver
+      ParentColor = False
       TabOrder = 1
       OnClick = Panel4Click
       object Label1: TLabel
@@ -748,7 +752,7 @@ object frmSplash: TfrmSplash
         Height = 54
         Top = 112
         Width = 307
-        Caption = '   CADSys 4.22, Copyright © 2001 by Piero Valagussa'#10'                       <pivalag@tin.it>.  '#10'                     All rights reserved.   '
+        Caption = '   CADSys 4.22, Copyright © 2001 by Piero Valagussa'#10'                                 <pivalag@tin.it>.  '#10'                              All rights reserved.   '
         Font.Height = -13
         Font.Name = 'Tahoma'
         ParentColor = False
@@ -757,7 +761,7 @@ object frmSplash: TfrmSplash
         ShowHint = True
       end
       object labelBasedOn: TLabel
-        Left = 344
+        Left = 352
         Height = 18
         Top = 88
         Width = 55

@@ -95,7 +95,11 @@ finalization
   CADSysSectort2D.Free;
   }
 
-  GlobalObject2D.Free;
+  if GlobalObject2D <> nil then
+  begin
+    GlobalObject2D := nil;
+  end;
+
 end.
 
 

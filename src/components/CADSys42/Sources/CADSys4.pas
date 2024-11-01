@@ -2696,6 +2696,7 @@ end;
     procedure SendToBack(const IDOrigin: LongInt);
     procedure BringForward(const IDOrigin: LongInt);
     procedure SendBackwards(const IDOrigin: LongInt);
+    procedure SwapObjects(AFirstID, ASecondID: LongInt);
 
     procedure ClearLayer(ALayerID: word);
 
@@ -4123,9 +4124,9 @@ end;
     property  WritableBox: TRect2D read fBox write fBox;
   public
 
-    procedure Reverse; virtual; abstract;
-    procedure Inverse; virtual; abstract;
-    procedure Explode; virtual; Abstract;
+    procedure Reverse; virtual;
+    procedure Inverse; virtual;
+    procedure Explode(ADeleteSource: boolean); virtual;
     procedure InitializeAngle;  virtual;
     constructor Create(ID: LongInt);
     destructor Destroy; override;
@@ -4375,7 +4376,24 @@ end;
     property Object2D: TObject2DInsp read fObject2DInsp write fObject2DInsp;
   end;
 
+  TGroupedObjects2D = class(TObject2D)
+  public
+    constructor create(ID: LongInt);
+    destructor  destroy; override;
+    procedure   InitializeAngle; override;
+  end;
+
   TObject2DClass = class of TObject2D;
+
+  TContainer2DInsp = class
+    fOwner: TContainer2D;
+    function GetObjectCount: integer;
+  public
+    constructor create(AOwner: TContainer2D);
+    destructor  destroy; override;
+  published
+    property ObjectCount: integer read GetObjectCount;
+  end;
 
   {: This class defines a group of 2D objects, that is a close set
      of objects that share the same model transform.
@@ -4391,8 +4409,10 @@ end;
      <See Class=TSourceBlock2D> class.
   }
   TContainer2D = class(TObject2D)
+    fContainer2DInsp: TContainer2DInsp;
   private
     { List of objects in the container. }
+    fControlPoint0: TPoint2D;
     fObjects: TGraphicObjList;
   protected
     procedure _UpdateExtension; override;
@@ -4414,11 +4434,14 @@ end;
        itself and will be freed when the container is deleted. So it
        isn't possible to share objects between containers.
     }
-    procedure Explode; override;
+    procedure   SetControlPoint0(Pt: TPoint2D);
+    procedure   DrawControlPoints(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const Width: Integer); override;
+    procedure   Explode(ADeleteSource: boolean); override;
+    procedure   InitializeAngle;   override;
     constructor Create(ID: LongInt; const Objs: array of TObject2D);
-    destructor Destroy; override;
+    destructor  Destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
-    procedure SaveToStream(const Stream: TStream); override;
+    procedure   SaveToStream(const Stream: TStream); override;
     procedure Assign(const Obj: TGraphicObject); override;
     {: This method updates the references of the source blocks
        that are used in the container.
@@ -4438,7 +4461,6 @@ end;
     }
     procedure UpdateSourceReferences(const BlockList: TGraphicObjIterator);
     procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
-    procedure DrawControlPoints(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const Width: Integer); override;
     function  OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
     {: This property contains the list that contians the object in the container.
 
@@ -4446,6 +4468,12 @@ end;
        this property to manage these objects.
     }
     property Objects: TGraphicObjList read fObjects;
+
+    //added
+    property ControlPoint0: TPoint2D read fControlPoint0 write SetControlPoint0;
+
+  published
+    property Container2D: TContainer2DInsp read fContainer2DInsp write fContainer2DInsp;
   end;
 
   {: This class defines a group of 2D objects that can be placed
@@ -4557,7 +4585,8 @@ end;
        <I=Source> is the source block that is used to define
        the instance.
     }
-    procedure   Explode; override;
+    procedure   Explode(ADeleteSource: boolean); override;
+    procedure   InitializeAngle; override;
     constructor Create(ID: LongInt; const Source: TSourceBlock2D);
     destructor Destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
@@ -6551,6 +6580,7 @@ end;
      <LI=<I=S> is the mapping matrix used to map the clipped line to the screen.>
   }
   function DrawLine2D(const Cnv: TDecorativeCanvas; P1, P2: TPoint2D; const Clip: TRect2D; const S: TTransf2D): Boolean;
+
   {: This function can be used to draw a bounding box onto
      a canvas.
 
@@ -6973,6 +7003,7 @@ begin
   BaseAngle := AngleFromPoints2D(P0, P1);
   Angle1    := BaseAngle + 180 - AArrowAngle;
   c := AArrowLength;
+
   a := c * cos(BaseAngle + 170);
   b := c * sin(BaseAngle + 170);
   TmpPoint2D.W := 1.0;
@@ -10873,6 +10904,12 @@ begin
     MoveObject(TmpID, IDOrigin);
 end;
 
+procedure TCADCmp.SwapObjects(AFirstID, ASecondID: LongInt);
+begin
+  MoveObject(AFirstID, ASecondID);
+  MoveObject(ASecondID, AFirstID);
+end;
+
 procedure TCADCmp.ClearLayer(ALayerID: word);
 var TmpIter: TExclusiveGraphicObjIterator; i: integer;
     IDArray: array of integer;
@@ -12108,6 +12145,7 @@ end;
 // =====================================================================
 // TObject2D
 // =====================================================================
+
 procedure TObject2D.InitializeAngle;
 begin
   fAngle := 0;
@@ -12119,16 +12157,31 @@ begin
 end;
 
 procedure TObject2D.SetAngle(AAngle: TRealType);
-var relativeAngle: TRealType;  TmpPoint0, TmpPoint1: TPoint2D;
+var relativeAngle: TRealType;  ToPt, DragPt: TPoint2D;
 begin
   self.Visible := false;
-  TmpPoint0 := self.MiddlePoint;
+  ToPt := self.MiddlePoint;
   relativeAngle := DegToRad(AAngle) - fAngle;
   fAngle := DegToRad(AAngle);
   self.Transform(Rotate2D(relativeAngle));
-  TmpPoint1 := self.MiddlePoint;
-  self.MoveTo(TmpPoint0, TmpPoint1);
+  DragPt := self.MiddlePoint;
+  self.MoveTo(ToPt, DragPt);
   self.Visible := true;
+end;
+
+procedure TObject2D.Reverse;
+begin
+
+end;
+
+procedure TObject2D.Inverse;
+begin
+
+end;
+
+procedure TObject2D.Explode(ADeleteSource: boolean);
+begin
+
 end;
 
 constructor TObject2D.Create(ID: LongInt);
@@ -12468,11 +12521,43 @@ begin
   ToPt   := Point2D(self.GetMiddlePointX, AValue);
   self.MoveTo(ToPt, DragPt);
 end;
-//End-Object Position
+//End TObject2D
 
-// =====================================================================
-// TContainer2D
-// =====================================================================
+
+//TGroupedObjects2D/////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+constructor TGroupedObjects2D.create(ID: LongInt);
+begin
+  inherited create(ID);
+end;
+
+destructor TGroupedObjects2D.destroy;
+begin
+  inherited;
+end;
+
+procedure TGroupedObjects2D.InitializeAngle;
+begin
+  fAngle := 0;
+end;
+
+
+//TContainer2DInsp.
+constructor TContainer2DInsp.create(AOwner: TContainer2D);
+begin
+  fOwner := AOwner;
+end;
+
+function TContainer2DInsp.GetObjectCount: integer;
+begin
+  result := fOwner.Objects.Count;
+end;
+
+destructor  TContainer2DInsp.destroy;
+begin
+  inherited;
+end;
+
 
 function StringToBlockName(const Str: String): TSourceBlockName;
 var
@@ -12495,8 +12580,10 @@ begin
     result := result + ABlockName[i];
 end;
 
-//TContainer2D
-procedure TContainer2D.Explode;
+// =====================================================================
+// TContainer2D
+// =====================================================================
+procedure TContainer2D.Explode(ADeleteSource: boolean);
 var TmpIter: TExclusiveGraphicObjIterator;
     TmpObj: TObject2D;
 begin
@@ -12606,16 +12693,16 @@ begin
         TBlock2D(TmpObj).Assign(TBlock2D(TmpIter.Current));
       end else
 
-      if (TmpObj is TContainer2D) then
+      if (TmpIter.Current is TContainer2D) then
       begin
         TmpObj := TContainer2D.Create(TmpIter.Current.ID, [nil]);
         TContainer2D(TmpObj).Assign(TContainer2D(TmpIter.Current));
-        if TmpObj is TBlock2D then
-          ShowMessage('Block');
       end;
 
       TmpObj.Transform(ModelTransform);
-      OwnerCAD.AddObject(TmpObj.ID, TmpObj);
+
+      if OwnerCAD <> nil then
+        OwnerCAD.AddObject(TmpObj.ID, TmpObj);
 
     until TmpIter.Next = nil;
   finally
@@ -12623,11 +12710,75 @@ begin
   end;
 end;
 
+procedure TContainer2D.Assign(const Obj: TGraphicObject);
+var
+  TmpIter: TGraphicObjIterator;
+  TmpClass: TGraphicObjectClass;
+  TmpObj: TGraphicObject;
+begin
+  if (Obj = Self) then
+   Exit;
+  inherited;
+  if Obj is TContainer2D then
+   begin
+     if fObjects = nil then
+      begin
+        fObjects := TGraphicObjList.Create;
+        fObjects.FreeOnClear := True;
+      end
+     else
+      fObjects.Clear;
+     // Copia creando gli oggetti contenuti.
+     if TContainer2D(Obj).fObjects.HasExclusiveIterators then
+      Raise ECADListBlocked.Create('TContainer2D.Assign: The list has an exclusive iterator.');
+     // Alloca un iterator locale
+     TmpIter := TContainer2D(Obj).fObjects.GetIterator;
+     TmpIter.First;
+     try
+      repeat
+        TmpClass := TGraphicObjectClass(TmpIter.Current.ClassType);
+        TmpObj := TmpClass.Create(TmpIter.Current.ID);
+        TmpObj.Assign(TmpIter.Current);
+        fObjects.Add(TmpObj);
+      until TmpIter.Next = nil;
+      self.Angle := TContainer2D(Obj).Angle;
+     finally
+      TmpIter.Free;
+     end;
+   end;
+end;
+
+procedure TContainer2D.InitializeAngle;
+begin
+  fAngle := 0;
+end;
+
+procedure TContainer2D.DrawControlPoints(const VT: TTransf2D; const Cnv: TDecorativeCanvas;
+                                     const ClipRect2D: TRect2D; const Width: Integer);
+var
+  TmpPt1: TPoint2D;
+begin
+  inherited;
+  if HasTransform then
+   TmpPt1 := TransformPoint2D(TransformPoint2D(fControlPoint0, ModelTransform), VT)
+  else
+   TmpPt1 := TransformPoint2D(fControlPoint0, VT);
+  with Point2DToPoint(TmpPt1) do
+   DrawPlaceHolder(Cnv, X, Y, Width);
+end;
+
+procedure TContainer2D.SetControlPoint0(Pt: TPoint2D);
+begin
+  fControlPoint0 := Pt;
+  UpdateExtension(Self);
+end;
+
 constructor TContainer2D.Create(ID: LongInt; const Objs: array of TObject2D);
 var
   Cont: Word;
 begin
   inherited Create(ID);
+  fContainer2DInsp := TContainer2DInsp.create(self);
 
   fObjects := TGraphicObjList.Create;
   fObjects.FreeOnClear := True;
@@ -12661,6 +12812,7 @@ end;
 
 destructor TContainer2D.Destroy;
 begin
+  fContainer2DInsp.Free;
   fObjects.Free;
   inherited Destroy;
 end;
@@ -12704,6 +12856,7 @@ var
   TmpWord: Word;
 begin
   inherited;
+  fContainer2DInsp := TContainer2DInsp.create(self);
   with Stream do
    begin
      { Read the number of objects in the container. }
@@ -12724,42 +12877,6 @@ begin
      end;
    end;
   UpdateExtension(Self);
-end;
-
-procedure TContainer2D.Assign(const Obj: TGraphicObject);
-var
-  TmpIter: TGraphicObjIterator;
-  TmpClass: TGraphicObjectClass;
-  TmpObj: TGraphicObject;
-begin
-  if (Obj = Self) then
-   Exit;
-  inherited;
-  if Obj is TContainer2D then
-   begin
-     if fObjects = nil then
-      begin
-        fObjects := TGraphicObjList.Create;
-        fObjects.FreeOnClear := True;
-      end
-     else
-      fObjects.Clear;
-     // Copia creando gli oggetti contenuti.
-     if TContainer2D(Obj).fObjects.HasExclusiveIterators then
-      Raise ECADListBlocked.Create('TContainer2D.Assign: The list has an exclusive iterator.');
-     // Alloca un iterator locale
-     TmpIter := TContainer2D(Obj).fObjects.GetIterator;
-     try
-      repeat
-        TmpClass := TGraphicObjectClass(TmpIter.Current.ClassType);
-        TmpObj := TmpClass.Create(TmpIter.Current.ID);
-        TmpObj.Assign(TmpIter.Current);
-        fObjects.Add(TmpObj);
-      until TmpIter.Next = nil;
-     finally
-      TmpIter.Free;
-     end;
-   end;
 end;
 
 procedure TContainer2D.UpdateSourceReferences(const BlockList: TGraphicObjIterator);
@@ -12855,7 +12972,6 @@ begin
       Cnv.Canvas.Brush.Style  := TmpBrushStyle;
     end;
 
-
   end;
 end;
 
@@ -12895,12 +13011,12 @@ begin
    end;
 end;
 
-procedure TContainer2D.DrawControlPoints(const VT: TTransf2D; const Cnv: TDecorativeCanvas;
+{procedure TContainer2D.DrawControlPoints(const VT: TTransf2D; const Cnv: TDecorativeCanvas;
                                          const ClipRect2D: TRect2D; const Width: Integer);
 begin
   if fObjects.Count > 0 then
    inherited;
-end;
+end; }
 
 // =====================================================================
 // TSourceBlock2D
@@ -12968,13 +13084,14 @@ begin
    end;
 end;
 
+
 procedure TBlock2D.SetOriginPoint(Pt: TPoint2D);
 begin
   fOriginPoint := Pt;
   UpdateExtension(Self);
 end;
 
-procedure  TBlock2D.Explode;
+procedure  TBlock2D.Explode(ADeleteSource: boolean);
 var TmpIter: TExclusiveGraphicObjIterator;
     TmpObj: TObject2D;
 begin
@@ -12989,7 +13106,15 @@ begin
   finally
     TmpIter.Free;
   end;
-  TContainer2D(self.fSourceBlock).Explode;
+  if ADeleteSource then
+    TContainer2D(self.fSourceBlock).Explode(true)
+  else
+    TContainer2D(self.fSourceBlock).Explode(false);
+end;
+
+procedure TBlock2D.InitializeAngle;
+begin
+  fAngle := 0;
 end;
 
 constructor TBlock2D.Create(ID: LongInt; const Source: TSourceBlock2D);
@@ -14785,6 +14910,8 @@ initialization
 
   CADSysRegisterClass(23, TCircle2D);
   CADSysRegisterClass(24, TCircularArc2D);
+
+  CADSysRegisterClass(25, TDimension2D);
 
   //CADClipboard2D := TContainer2D.Create(-1, [nil]);
   CADClipboard2D := nil;

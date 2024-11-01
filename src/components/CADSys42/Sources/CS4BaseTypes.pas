@@ -14,6 +14,7 @@ uses Classes, Graphics, Types, LCLIntf;
 
 type
 
+  TColorSource = (csByLayer, csByBlock, csCustom);
   TPenSource   = (psByLayer, psByBlock, psCustom);
   TBrushSource = (bsByLayer, bsByBlock, bsCustom);
   TFrameStartCorner = (fsLeftTop, fsLeftBottom, fsRightBottom, fsRightTop);

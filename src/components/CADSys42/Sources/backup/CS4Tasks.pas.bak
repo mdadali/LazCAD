@@ -3,6 +3,7 @@
 
    These classes are defined in the CS4Tasks unit file
    that you must include in the <B=uses> clause in all of your units
+
    that access the types mentioned here.
 
    See also <See Class=TCADPrg><BR>
@@ -56,7 +57,6 @@ procedure Reverse(APrimitive2D: TPrimitive2D);
 procedure ReverseEllipticalArc2D(var AArcD: TEllipticalArc2D);
 procedure ReverseLine2D(ALine2D: TLine2D);
 procedure ReverseOutLine2D(AOutLine2D: TOutLine2D);
-
 
 type
 
@@ -116,6 +116,11 @@ public
 end;
 
 TCAD2DSendBackwards = class(TCADState)
+public
+  constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
+end;
+
+TCAD2DSwapObjects = class(TCADState)
 public
   constructor Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
 end;
@@ -1323,6 +1328,12 @@ type
     constructor Create(const CADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
   end;
 
+  TCAD2DRotateExSelectedObjects = class(TCADState)
+  public
+    constructor Create(const CADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass); override;
+  end;
+
+
   {: This class implements the <I=edit primitive task>.
 
      This task may be used to move the control points of a
@@ -1932,6 +1943,9 @@ begin
        Viewport2D.DrawObject2DWithRubber(fObject, True);
       fObject.MoveTo(CurrPoint2D, fObject.Box.FirstEdge);
       Viewport2D.DrawObject2DWithRubber(fObject, True);
+      //added
+      //if (fObject = TBitmap2D) then
+        //Viewport2D.Repaint;
     end;
     cePaint: if not IsSameTransform2D(fObject.ModelTransform, IdentityTransf2D) then
      Viewport2D.DrawObject2DWithRubber(fObject, True);
@@ -2025,6 +2039,10 @@ begin
          TmpBool := Viewport2D.CADCmp2D.DrawOnAdd;
          Viewport2D.CADCmp2D.DrawOnAdd := True;
          try
+          // ADDITIONAL CODE
+                    //if fprimObject.ClassName = 'TDimension2D' then
+                     //Viewport2D.CADCmp2D.AddObject(fPrimObject.ID, (fprimObject as TDimension2D).txt);
+          // ADDITIONAL CODE END
           Viewport2D.CADCmp2D.AddObject(fPrimObject.ID, fPrimObject);
          finally
            Viewport2D.CADCmp2D.DrawOnAdd := TmpBool;
@@ -2582,9 +2600,9 @@ begin
          finally
           IgnoreEvents := False;
          end;
-         // Controlla se il tasto del mouse è premuto.
+         // Check if the mouse button is pressed
          if Key <> VK_SHIFT then
-          begin // No allora si comporta come selezione di un solo oggetto.
+          begin // No, then it behaves like selecting a single object.
             if Removed then
              fSelectedObjs.Add(TmpObj);
             IgnoreEvents := True;
@@ -2991,6 +3009,44 @@ begin
   NextState := TCAD2DTransformObjects;
 end;
 
+constructor TCAD2DRotateExSelectedObjects.Create(const CADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass);
+var TmpStr: String; TmpIter: TExclusiveGraphicObjIterator;
+begin
+  inherited;
+  if Param is TCAD2DSelectObjectsParam then
+   with TCAD2DSelectObjectsParam(Param), TCADCmp2D(CADPrg.Viewport.CADCmp) do
+    begin
+      TmpIter := SelectedObjects.GetExclusiveIterator;
+      if  TmpIter.Count = 0 then
+      begin
+        NextState := CADPrg.DefaultState;
+        Param.Free;
+        Param := nil;
+        Exit;
+      end;
+      if (not InputQuery('Rotate', 'Angle', TmpStr) ) then
+       begin
+         NextState := CADPrg.DefaultState;
+         Param.Free;
+         Param := nil;
+         Exit;
+       end;
+      try
+        TmpIter.First;
+        while TmpIter.Current <> nil do
+         begin
+           TObject2D(TmpIter.Current).Angle := StrToFloat(TmpStr);
+           TmpIter.Next;
+         end;
+      finally
+        TmpIter.Free;
+      end;
+      CADPrg.RepaintAfterOperation;
+    end;
+  NextState := CADPrg.DefaultState;
+  Param.Free;
+  Param := nil;
+end;
 
 constructor TCAD2DEditPrimitiveParam.Create(Prim: TPrimitive2D; ApertureSize: Word);
 begin
@@ -3625,8 +3681,9 @@ begin
          begin
            if not (TmpIter.Current is TLine2D) then
            begin
-             TPrimitive2D(TmpIter.Current).Explode;
-             TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.DeleteObject(TmpIter.Current.ID);
+             TObject2D(TmpIter.Current).Explode(true);
+             if (not (TObject2D(TmpIter.Current) is TBitmap2D)) and (not (TObject2D(TmpIter.Current) is TJustifiedVectText2D))
+             then TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.DeleteObject(TmpIter.Current.ID);
            end;
            TmpIter.Next;
          end;
@@ -3890,8 +3947,9 @@ begin
         TmpIter.First;
         while TmpIter.Current <> nil do
          begin
-           if  (TmpIter.Current is TSimplePrimitive2D) then
-             TSimplePrimitive2D(TmpIter.Current).Reverse;
+           //if  (TmpIter.Current is TSimplePrimitive2D) then
+             //TSimplePrimitive2D(TmpIter.Current).Reverse;
+           TPrimitive2D(TmpIter.Current).Reverse;
            TmpIter.Next;
          end;
       finally
@@ -4011,6 +4069,36 @@ begin
      TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.SendBackwards(StrToInt(TmpStrList[i]));
   end;
   TmpStrList.Free;
+  Param.Free;
+  Param := nil;
+  NextState := CADPrg.DefaultState;
+end;
+
+constructor TCAD2DSwapObjects.Create(const ACADPrg: TCADPrg; const StateParam: TCADPrgParam; var NextState: TCADStateClass);
+var TmpIter: TExclusiveGraphicObjIterator;  TmpFirstID, TmpSecondID: LongInt; TmpOwnerCAD: TCADCmp;
+begin
+  inherited;
+  if Param is TCAD2DSelectObjectsParam then
+   with TCAD2DSelectObjectsParam(Param) do
+   begin
+     TmpIter := SelectedObjects.GetExclusiveIterator;
+     try
+       if TmpIter.Count < 2 then
+       begin
+         Param.Free;
+         Param := nil;
+         NextState := CADPrg.DefaultState;
+
+         exit;
+       end;
+       TmpFirstID  := TmpIter.First.ID;
+       TmpSecondID := TmpIter.Next.ID;
+       TmpOwnerCAD := TGraphicObject(TmpIter.First).OwnerCAD;
+     finally
+       TmpIter.Free;
+       TmpOwnerCAD.SwapObjects(TmpFirstID, TmpSecondID);
+     end;
+  end;
   Param.Free;
   Param := nil;
   NextState := CADPrg.DefaultState;
@@ -4576,7 +4664,7 @@ begin
         while TmpIter.Current <> nil do
         begin
            TmpClass := TGraphicObjectClass(TmpIter.Current.ClassType);
-           TmpObj := TmpClass.Create(TmpIter.Current.ID);
+           TmpObj := TmpClass.Create(-1);
            TmpObj.Assign(TmpIter.Current);
            TmpContainer.Objects.Add(TmpObj);
            TCADPrg2D(CADPrg).Viewport2D.CADCmp2D.DeleteObject(TmpIter.Current.ID);
@@ -4621,8 +4709,6 @@ begin
   Param := nil;
   NextState := CADPrg.DefaultState;
 end;
-
-
 
 initialization
 

@@ -20,7 +20,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="112"/>
+      <BuildNr Value="114"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -41,6 +41,12 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="pascalscriptfcl"/>
+      </Item>
+      <Item>
+        <PackageName Value="pascalscript"/>
+      </Item>
       <Item>
         <PackageName Value="PenBrushStyles"/>
       </Item>
@@ -184,6 +190,17 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="FiguresAsComponents"/>
       </Unit>
+      <Unit>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="IDE"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="common\CADScripInterface2D.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -194,7 +211,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes"/>
+      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE"/>
       <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
     </SearchPaths>
     <CodeGeneration>

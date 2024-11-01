@@ -10,7 +10,7 @@ uses
   Classes, SysUtils,
   CADSys4,
   CS4BaseTypes,
-  CS4Shapes,
+  CS4Shapes;
 
   {fComponentLine,
   fComponentArc,
@@ -54,7 +54,7 @@ uses
 implementation
 
 initialization
-  CADSysLine2D          := TCADSysLine2D.Create;
+  {CADSysLine2D          := TCADSysLine2D.Create;
   CADSysEllipticalArc2D := TCADSysEllipticalArc2D.Create;
   CADSysCircularArc2D   := TCADSysCircularArc2D.Create;
   CADSysCircle2D        := TCADSysCircle2D.Create;
@@ -71,11 +71,12 @@ initialization
 
   CADSysSegment2D          := TCADSysSegment2D.Create;
   CADSysSectort2D          := TCADSysSector2D.Create;
+  }
 
   GlobalObject2D := nil;
 
 finalization
-  CADSysLine2D.Free;
+  {CADSysLine2D.Free;
   CADSysEllipticalArc2D.Free;
   CADSysCircularArc2D.Free;
   CADSysCircle2D.Free;
@@ -92,9 +93,14 @@ finalization
 
   CADSysSegment2D.Free;
   CADSysSectort2D.Free;
+  }
 
+  if GlobalObject2D <> nil then
+  begin
+    //GlobalObject2D.Free;
+    GlobalObject2D := nil;
+  end;
 
-  GlobalObject2D.Free;
 end.
 
 

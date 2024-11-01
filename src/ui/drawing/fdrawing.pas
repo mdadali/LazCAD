@@ -219,18 +219,20 @@ type
     procedure SetPolarTrackingValue(AValue: TRealType);
     function  GetEnableDragDrop: boolean;
     procedure SetEnableDragDrop(AValue: boolean);
+
   public
     constructor create(AOwner: TComponentDrawing);
     destructor  destroy; override;
   published
-    property UseOrto: boolean              read  GetUseOrto            write SetUseOrto;
-    property UseSnap: boolean              read  GetUseSnap            write SetUseSnap;
-    property XSnap: TRealType              read  GetXSnap              write SetXSnap;
-    property YSnap: TRealType              read  GetYSnap              write SetYSnap;
-    property ShowDirection: boolean        read  GetShowDirection      write SetShowDirection;
-    property PolarTracking: boolean        read  GetPolarTracking      write SetPolarTracking;
+    property UseOrto: boolean              read  GetUseOrto             write SetUseOrto;
+    property UseSnap: boolean              read  GetUseSnap             write SetUseSnap;
+    property XSnap: TRealType              read  GetXSnap               write SetXSnap;
+    property YSnap: TRealType              read  GetYSnap               write SetYSnap;
+    property ShowDirection: boolean        read  GetShowDirection       write SetShowDirection;
+    property PolarTracking: boolean        read  GetPolarTracking       write SetPolarTracking;
     property PolarTrackingValue: TRealType read  GetPolarTrackingValue  write SetPolarTrackingValue;
     property EnableDragDrop: boolean       read  GetEnableDragDrop      write SetEnableDragDrop;
+    property ShowControlPoints:  boolean   read  GetShowControlPoints   write SetShowControlPoints;
   end;
 
   TLayerInsp = class
@@ -1283,7 +1285,7 @@ procedure TDrawing.CADPrg2DStartOperation(Sender: TObject;
   const Operation: TCADStateClass; const Param: TCADPrgParam);
 begin
   fChanged := true;
-  //frmMain.TIPropertyGrid1.TIObject := nil;
+  frmMain.TIPropertyGrid1.TIObject := nil;
 end;
 
 procedure TDrawing.CADPrg2DDescriptionChanged(Sender: TObject);
@@ -1293,9 +1295,10 @@ end;
 
 procedure TDrawing.CADCmp2DAddObject(Sender: TObject; Obj: TGraphicObject);
 begin
-  if Obj is TLine2D then
-    TLine2D(Obj).InitializeAngle;
-  //TObject2D(Obj).InitializeAngle;
+  fChanged := true;
+  TObject2D(Obj).InitializeAngle;
+  if Obj is TSimplePrimitive2D then
+    TSimplePrimitive2D(Obj).ShowDirection := CADCmp2D.ShowDirection;
 end;
 
 procedure TDrawing.CADCmp2DLoadProgress(Sender: TObject; ReadPercent: Byte);

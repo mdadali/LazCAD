@@ -1,7 +1,7 @@
 object frmSplash: TfrmSplash
-  Left = 438
+  Left = 397
   Height = 511
-  Top = 146
+  Top = 194
   Width = 828
   BorderIcons = []
   BorderStyle = bsNone
@@ -44,6 +44,8 @@ object frmSplash: TfrmSplash
       Align = alTop
       ClientHeight = 216
       ClientWidth = 828
+      Color = clSilver
+      ParentColor = False
       TabOrder = 0
       OnClick = Panel3Click
       object Label4: TLabel
@@ -181,9 +183,9 @@ object frmSplash: TfrmSplash
         ParentFont = False
       end
       object Image1: TImage
-        Left = 664
+        Left = 24
         Height = 90
-        Top = 56
+        Top = 16
         Width = 90
         Picture.Data = {
           0A544A706567496D616765BC3A0000FFD8FFE000104A46494600010101006000
@@ -670,6 +672,8 @@ object frmSplash: TfrmSplash
       Align = alClient
       ClientHeight = 181
       ClientWidth = 828
+      Color = clSilver
+      ParentColor = False
       TabOrder = 1
       OnClick = Panel4Click
       object Label1: TLabel

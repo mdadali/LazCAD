@@ -14,6 +14,15 @@ uses SysUtils, Classes, Graphics,  LCLType, LCLIntf, FPCanvas,
      CADSys4, CS4BaseTypes;
 
 type
+
+  TSimplePrimitive2D  = class;
+  TDirectionalCurve2D = class;
+  TClosedCurve2D      = class;
+  TFrame2D = class;
+  TBSpline2D = class;
+  TText2D = class;
+  TBitmap2D = class;
+
   {: This type defines the type used to specify the name of
      a <I=font type face> (like Times New Roman).
   }
@@ -28,11 +37,6 @@ type
      <See Class=TJustifiedVectText3D>.
   }
 
-  TSimplePrimitive2D  = class;
-  TDirectionalCurve2D = class;
-  TClosedCurve2D      = class;
-  TFrame2D = class;
-  TBSpline2D = class;
 
   TExtendedFont = class(TObject)
   private
@@ -47,6 +51,8 @@ type
     function GetWidth: Word;
     procedure SetEscapement(Value: Word);
     function GetEscapement: Word;
+    procedure SetOrientation(Value: Word);
+    function  GetOrientation: Word;
     procedure SetWeight(Value: Word);
     function GetWeight: Word;
     procedure SetItalic(Value: Byte);
@@ -115,6 +121,7 @@ type
        <Code=TLOGFONT> structure.
     }
     property Handle: HFONT read FHandle;
+  published
     {: This property specifies the <I=lfHeight> field of <Code=TLOGFONT>.
     }
     property Height: Word read GetHeight write SetHeight;
@@ -125,6 +132,12 @@ type
        <Code=TLOGFONT>.
     }
     property Escapement: Word read GetEscapement write SetEscapement;
+
+    {: This property specifies the <I=lfOrientation> field of
+       <Code=TLOGFONT>.
+    }
+    property Orientation: Word  read GetOrientation write SetOrientation;
+
     {: This property specifies the <I=lfWeight> field of
        <Code=TLOGFONT>.
     }
@@ -482,13 +495,27 @@ type
 
   TPrimitive2D = class(TObject2D)
   private
-     fPrim2DInsp: TPrim2DInsp;
      fPoints: TPointsSet2D;
+
+     function  GetPenSource: TPenSource;  override;
+     procedure SetPenSource(APenSource: TPenSource); override;
+
+     function  GetPenColor: TColor;  override;
+     procedure SetPenColor(APenColor: TColor); override;
+
+     function  GetPenStyle: TPenStyle;  override;
+     procedure SetPenStyle(APenStyle: TPenStyle); override;
+
+     function  GetPenWidth: word;  override;
+     procedure SetPenWidth(AValue: word); override;
+
   protected
-    fPenSource: TPenSource;
-    fPenColor:  TColor;
-    fPenStyle:  TPenStyle;
-    fPenWidth:  word;
+    fPrim2DInsp: TPrim2DInsp;
+    fPenSource:  TPenSource;
+    fPenColor:   TColor;
+    fPenStyle:   TPenStyle;
+    fPenWidth:   word;
+
     procedure _UpdateExtension; override;
     {: This method allows you to change the type of the set
        of points used to store the <I=control points> of the
@@ -509,7 +536,7 @@ type
        first step to create a <I=path shape> that draw arc
        segment as well as straight lines.
     }
-    function CreateVect(const Size: Integer): TPointsSet2D; dynamic;
+    function  CreateVect(const Size: Integer): TPointsSet2D; dynamic;
 
     function  GetStartPoint: TPoint2D;           virtual; abstract;
     function  GetStartPointX: TRealType;         virtual; abstract;
@@ -556,22 +583,10 @@ type
         primitive can store without growing the vector.>
     }
     constructor Create(ID: LongInt; NPts: Integer);
-    destructor Destroy; override;
+    destructor  Destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure Assign(const Obj: TGraphicObject); override;
     procedure SaveToStream(const Stream: TStream); override;
-
-    function  GetPenSource: TPenSource;  override;
-    procedure SetPenSource(APenSource: TPenSource); override;
-
-    function  GetPenColor: TColor;  override;
-    procedure SetPenColor(APenColor: TColor); override;
-
-    function  GetPenStyle: TPenStyle;  override;
-    procedure SetPenStyle(APenStyle: TPenStyle); override;
-
-    function  GetPenWidth: word;  override;
-    procedure SetPenWidth(AValue: word); override;
 
     {: This property contains the set of <I=control points> used
        to define the shape of the entity.
@@ -589,8 +604,9 @@ type
     property  PenStyle:  TPenStyle   read GetPenStyle  write SetPenStyle;
     property  PenWidth:  word        read GetPenWidth  write SetPenWidth;
 
+    property  Primitive2D: TPrim2DInsp  read fPrim2DInsp write  fPrim2DInsp;
   published
-    property Primitive2D: TPrim2DInsp  read fPrim2DInsp write  fPrim2DInsp;
+    //property  Primitive2D: TPrim2DInsp  read fPrim2DInsp write  fPrim2DInsp;
   end;
 
   TSimplePrim2DInsp = class
@@ -622,7 +638,6 @@ type
 
     function  GetLength: TRealType;
 
-
     function  GetStartPoint: TPoint2D;            override;
     function  GetStartPointX: TRealType;          override;
     function  GetStartPointY: TRealType;          override;
@@ -636,10 +651,12 @@ type
     procedure SetEndPointY(AValue:TRealType);     override;
 
   protected
+
   public
     procedure   Reverse; override; //added
     procedure   Inverse; override; //adedd
-    procedure   Explode; override; //added
+    procedure   Explode(ADeleteSource: boolean); override; //added
+    procedure   InitializeAngle; override; //added
     constructor create(ID: LongInt; NPts: Integer);
     destructor  destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
@@ -648,6 +665,7 @@ type
 
     property ShowDirection: boolean read fShowDirection write fShowDirection;
   published
+    property Primitive2D;
     property SimplePrimitive2D: TSimplePrim2DInsp read fSimplePrim2DInsp write fSimplePrim2DInsp;
   end;
 
@@ -949,7 +967,7 @@ type
     fBrushColor:  TColor;
     fBrushStyle:  TBrushStyle;
   public
-    procedure   Explode; override;
+    procedure   Explode(ADeleteSource: boolean); override;
     constructor Create(ID: LongInt; NPts: Integer; CurvePrec: Word);
     destructor  destroy; override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
@@ -998,7 +1016,7 @@ type
         construction phase by using the method of
         <See Property=TPrimitive2D@Points>.>
     }
-    procedure  Explode; override;
+    procedure  Explode(ADeleteSource: boolean); override;
     constructor Create(ID: LongInt; const Pts: array of TPoint2D);
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     destructor  destroy; override;
@@ -1037,7 +1055,7 @@ type
     function GetArea: TRealType;
   protected
   public
-    procedure  Explode; override;
+    procedure  Explode(ADeleteSource: boolean); override;
     constructor Create(ID: LongInt; const Pts: array of TPoint2D);
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure SaveToStream(const Stream: TStream); override;
@@ -1370,7 +1388,7 @@ type
       function    PopulateCurvePoints(N: Word): TRect2D; override;
     public
       procedure   Inverse; override;
-      procedure   Explode; override;
+      procedure   Explode(ADeleteSource: boolean); override;
       constructor Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
       destructor  destroy; override;
       procedure   Assign(const Obj: TGraphicObject); override;
@@ -1407,7 +1425,7 @@ type
       function  PopulateCurvePoints(N: Word): TRect2D; override;
     public
       procedure   Inverse; override;
-      procedure   Explode; override;
+      procedure   Explode(ADeleteSource: boolean); override;
       constructor Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
       destructor destroy; override;
       procedure Assign(const Obj: TGraphicObject); override;
@@ -1562,24 +1580,89 @@ type
       still have to use this kind of Text object.
   }
 
-
-  {TText2DInsp = class
+  TText2DInsp = class
   private
-    fOwnner: TText2D;
+    fOwner: TText2D;
+    function   GetText: TStringList;
+    procedure  SetText(ATextList: TStringList);
+    function   GetHeight: TRealType;
+    procedure  SetHeight(AValue: TRealType);
+    function   GetColorSource: TColorSource;
+    procedure  SetColorSource(AColorSource: TColorSource);
+    function   GetColor: TColor;
+    procedure  SetColor(AColor: TColor);
+    function   GetClippingFlags: integer;
+    procedure  SetClippingFlags(AClippingFlags: integer);
+    function   GetAutoSize: boolean;
+    procedure  SetAutoSize(AValue: boolean);
+    function   GetDrawBox: boolean;
+    procedure  SetDrawBox(AValue: boolean);
+    function   GetFaceName: TFaceName;
+    procedure  SetFaceName(AFaceName: TFaceName);
+    function   GetItalic: boolean;
+    procedure  SetItalic(AValue: boolean);
+    function   GetStrikeout: boolean;
+    procedure  SetStrikeout(AValue: boolean);
+    function   GetUnderline: boolean;
+    procedure  SetUnderline(AValue: boolean);
+    function   GetBold: boolean;
+    procedure  SetBold(AValue: boolean);
+
+    function  GetTextLines: TStringList;
+    procedure SetTextLines(AStringList: TStringList);
+
   public
     constructor create(AOwner: TText2D);
     destructor  destroy; override;
   published
+    //property Text:          AnsiString    read  GetText          write SetText;
+    property Height:        TRealType     read  GetHeight        write SetHeight;
+    property ColorSource:   TColorSource  read  GetColorSource   write SetColorSource;
+    property Color:         TColor        read  GetColor         write SetColor;
+    //property ClippingFlags: integer       read  GetClippingFlags write SetClippingFlags;
+    property AutoSize:      boolean       read  GetAutoSize      write SetAutoSize;
+    property DrawBox:       boolean       read  GetDrawBox       write SetDrawBox;
+    property Italic:        boolean       read  GetItalic        write SetItalic;
+    property Strikeout:     boolean       read  GetStrikeout     write SetStrikeout;
+    property Underline:     boolean       read  GetUnderline     write SetUnderline;
+    property Bold:          boolean       read  GetBold          write SetBold;
+    property FaceName:      TFaceName     read  GetFaceName      write SetFaceName;
 
-  end; }
+    property TextList: TStringList read GetTextLines write SetTextLines;
+  end;
 
   TText2D = class(TPrimitive2D)
   private
+    fText2DInsp: TText2DInsp;
+    fTextList: TStringList;
     fText: AnsiString;
     fHeight: TRealType;
     fExtFont: TExtendedFont;
     fDrawBox, fRecalcBox: Boolean;
     fClippingFlags: Integer; // Win32s DrawText flags.
+    //added
+    fColorSource: TColorSource;
+    fColor: TColor;
+    fAutoSize,
+    fItalic,
+    fStrikeout,
+    fUnderline,
+    fBold: boolean;
+    fFaceName: TFaceName;
+
+    function   GetFaceName: TFaceName;
+    procedure  SetFaceName(AFaceName: TFaceName);
+    function   GetItalic: boolean;
+    procedure  SetItalic(AValue: boolean);
+    function   GetStrikeout: boolean;
+    procedure  SetStrikeout(AValue: boolean);
+    function   GetUnderline: boolean;
+    procedure  SetUnderline(AValue: boolean);
+    function   GetBold: boolean;
+    procedure  SetBold(AValue: boolean);
+
+    function  GetTextLines: TStringList;
+    procedure SetTextLines(AStringList: TStringList);
   public
     {: Create a new text entity in the rectangle <I=Rect1>, with
        the given <I=Height> and <I=Text>.
@@ -1597,13 +1680,17 @@ type
        The rectangle will be drawed in the current brush and pen
        if <See Property=TText2D@DrawBox> property is <B=True>.
     }
+    procedure   Reverse; override; //added
+    procedure   Inverse; override; //adedd
+    procedure   InitializeAngle; override;
+    procedure   SetAngle(AAngle: TRealType); override;
     constructor Create(ID: LongInt; Rect1: TRect2D; Height: TRealType; Txt: AnsiString);
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
-    destructor Destroy; override;
-    procedure Assign(const Obj: TGraphicObject); override;
-    procedure SaveToStream(const Stream: TStream); override;
-    procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
-    function OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
+    destructor  Destroy; override;
+    procedure   Assign(const Obj: TGraphicObject); override;
+    procedure   SaveToStream(const Stream: TStream); override;
+    procedure   Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+    function    OnMe(Pt: TPoint2D; Aperture: TRealType; var Distance: TRealType): Integer; override;
     {: This property contains the heigth of the text in world
        units.
 
@@ -1635,13 +1722,27 @@ type
        You may include more than one line of text simply
        adding <Code=#10#13> beetwen lines.
     }
-    property Text: AnsiString read FText write FText;
+    //property Text: AnsiString read FText write FText;
     {: This property contains the <I=clipping flags> used
        by drawing the text with the <I=DrawText> API function.
 
        By default the are setted to <I=DT_NOCLIP>.
     }
     property ClippingFlags: Integer read FClippingFlags write FClippingFlags;
+
+    //added
+    property ColorSource: TColorSource  read fColorSource   write fColorSource;
+    property Color: TColor              read fColor         write fColor;
+    property Italic: boolean            read GetItalic      write SetItalic;
+    property Strikeout: boolean         read GetStrikeout   write SetStrikeout;
+    property Underline: boolean         read GetUnderline   write SetUnderline;
+    property Bold: boolean              read GetBold        write SetBold;
+    property FaceName: TFaceName        read GetFaceName    write SetFaceName;
+
+    property Text: AnsiString read fText write fText;
+    property TextList: TStringList read GetTextLines write SetTextLines;
+  published
+    property Text2D: TText2DInsp read fText2DInsp write fText2DInsp;
   end;
 
   {: This class rapresents a scalable raster bitmap.
@@ -1658,8 +1759,27 @@ type
      object by using this class as a blueprint for your
      specific bitmap entity.
   }
+
+  TBitmap2DInsp = class
+    fOwner: TBitmap2D;
+    function  GetScaleFactor: TRealType;
+    procedure SetScaleFactor(SF: TRealType);
+    function  GetAspectRatio: TRealType;
+    procedure SetAspectRatio(AR: TRealType);
+    function  GetCopyMode: TCopyMode;
+    procedure SetCopyMode(ACopyMode: TCopyMode);
+  public
+    constructor create(AOwner: TBitmap2D);
+    destructor  destroy; override;
+  published
+    property ScaleFactor: TRealType read GetScaleFactor write SetScaleFactor;
+    property AspectRatio: TRealType read GetAspectRatio write SetAspectRatio;
+    property CopyMode:    TCopyMode read GetCopyMode write SetCopyMode;
+  end;
+
   TBitmap2D = class(TPrimitive2D)
   private
+    fBitmap2DInsp: TBitmap2DInsp;
     fBitmap: TBitmap;
     fScaleFactor: TRealType;
     fAspectRatio: TRealType;
@@ -1679,6 +1799,7 @@ type
 
        <B=Note>: The bitmap cannot be rotated !
     }
+    procedure InitializeAngle; override;
     constructor Create(ID: LongInt; const P1, P2: TPoint2D; Bmp: TBitmap);
     destructor Destroy; override;
     procedure Assign(const Obj: TGraphicObject); override;
@@ -1721,6 +1842,8 @@ type
        bitmap.
     }
     property CopyMode: TCopyMode read fCopyMode write fCopyMode;
+  published
+    property Bitmap2D: TBitmap2DInsp  read fBitmap2DInsp write fBitmap2DInsp;
   end;
 
   {: This class defines a 2D/3D vectorial char as a set of
@@ -1982,6 +2105,7 @@ type
        <LI=<I=Height> is the size of the font in world units.>
        <LI=<I=Txt> is the text to be drawed.>
     }
+    procedure InitializeAngle; override;
     constructor Create(ID: LongInt; FontVect: TVectFont; TextBox: TRect2D; Height: TRealType; Txt: AnsiString);
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure Assign(const Obj: TGraphicObject); override;
@@ -2101,6 +2225,25 @@ const
   }
   MAX_REGISTERED_FONTS = 512;
 
+
+type
+  TArrowType = (atArrow, arThick);
+
+TDimension2D = class(TPrimitive2D)
+private
+  FArrowlength: double;
+  FArrowheight: Double;
+  FArrowType: TArrowType;
+public
+ txt :TText2D;
+ constructor Create(ID: LongInt; const P1, P2: TPoint2D);
+ procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
+ property ArrowLength :Double read FArrowlength write FArrowLength;
+ property ArrowHeight :Double read FArrowheight write Farrowheight;
+ property ArrowType :TArrowType read FArrowType write FArrowType;
+end;
+
+
 implementation
 
 uses Math, Dialogs;
@@ -2111,6 +2254,89 @@ var
   _DefaultFont: TVectFont;
   _DefaultHandler2D: TPrimitive2DHandler;
 
+
+
+
+  { TDimension }
+  constructor TDimension2D.Create(ID: Integer; const P1, P2: TPoint2D);
+  begin
+    inherited Create(ID, 2);
+    Points.DisableEvents := True;
+    try
+      Points.Add(P1);
+      Points.Add(P2);
+      Points.GrowingEnabled := True;
+    finally
+      Points.DisableEvents := False;
+      UpdateExtension(Self);
+    end;
+    txt := TText2D.Create(0,REct2D(0,0,0,0),5,'Temp String');
+    txt.ClippingFlags := $100; //dt_left and dt_bottom;
+    txt.Height := 20;
+    //fSubObject:= 1;
+    ArrowHeight := 2;
+    ArrowLength:= 8;
+    ArrowType:= atArrow;
+  end;
+
+  procedure TDimension2D.Draw(const VT: TTransf2D;  const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D;  const DrawMode: Integer);
+  var
+   pt1, pt2 :TPointsSet2D;
+   p1:TPoint2D;
+   testang, ang, angB, deltaX, deltaY, arr :Double;
+   tmpRect2D:TRect2D;
+   Rect :TRect;
+  begin
+    //inherited;
+    Pt1 := TPointsSet2D.Create(3);
+    Pt2 := TPointsSet2D.Create(3);
+    if not HasTransform then
+     DrawLine2D(Cnv, Points[0], Points[1], ClipRect2D, VT)
+    else
+     DrawLine2D(Cnv, Points[0], Points[1], ClipRect2D, MultiplyTransform2D(ModelTransform, VT));
+
+    Pt1.Add(Points[0]); p1 := points[0];
+
+    deltaX := Points[1].X-Points[0].X;   deltaY := Points[1].Y-POints[0].Y;
+    if deltaX <> 0 then ang := arctan(deltaY/deltaX);
+    if arrowLength <> 0 then AngB := Arctan( ArrowHeight/ArrowLength);
+    arr := sqrt(power(arrowheight,2)+power(arrowlength,2));
+
+    Pt1.Add(Point2D((p1.X+cos(ang-angB)*arr),(p1.Y+sin(ang-angB)*arr)));
+    pt1.Add(Point2D((p1.X+cos(ang+angB)*arr),(p1.Y+sin(ang+angB)*arr)));
+    Cnv.Canvas.Brush.Color := clBlue;
+    Pt1.DrawAsPolygon(cnv,ClipRect2D,Box,VT);
+
+    Pt2.Add(Points[1]);
+    Pt2.Add(Point2D(Points[1].X-cos(ang+angB)*arr,Points[1].Y-sin(ang+angB)*arr));
+    Pt2.Add(Point2D(Points[1].X-cos(-ang+angB)*arr,Points[1].Y+sin(-ang+angB)*arr));
+    Pt2.DrawAsPolygon(Cnv,ClipREct2D,Box,VT);
+
+    testang := RadToDEg(ang);
+
+    if ang >=0 then
+     TmpRect2D:= Rect2D( (Points[0].X+Points[1].X)/2-cos(pi/2-ang)*5,(Points[0].Y+Points[1].Y)/2,(Points[0].X+Points[1].X)/2+1,(Points[0].Y+Points[1].Y)/2+sin(pi/2-ang)*txt.Height);
+    if ang < 0 then
+     TmpRect2D:= Rect2D((Points[0].X+Points[1].X)/2+cos(pi/2+ang)*txt.Height,(Points[0].Y+Points[1].Y)/2,(Points[0].X+Points[1].X)/2,(Points[0].Y+Points[1].Y)/2+sin(pi/2+ang)*txt.Height);
+
+    Pt2.Clear;
+    Pt2.Add(Point2D(TmpREct2d.Left,TmpRect2D.Top));
+    Pt2.Add(Point2D(TmpREct2d.Left,TmpRect2D.Bottom));
+    Pt2.Add(Point2D(TmpREct2d.Right,TmpRect2D.Bottom));
+    Pt2.Add(Point2D(TmpREct2d.Right,TmpRect2D.Top));
+    Pt2.DrawAsPolyline(Cnv,ClipRect2D,Box,VT);
+
+    txt.WritableBox := TmpRect2D;
+    if ang <0 then ang := 2*pi+ang;
+    //txt.LogFont.Escapement := Round(RadToDeg(ang)*10);
+    txt.Angle := Round(RadToDeg(ang));;
+    txt.Text := FloatTostr(RoundTo(sqrt(power(DeltaY,2)+power(DeltaX,2)),-2));
+
+    if not HasTransform then
+     //DrawText2D(Cnv, Points[0], Points[1], ClipRect2D, VT, txt)
+    else
+     //DrawText2D(Cnv, Points[0], Points[1], ClipRect2D, MultiplyTransform2D(ModelTransform, VT), txt);
+  end;
 
 //TCoordPoints2DInsp////////////////////////////////////////////////////////////
 constructor TCoordPoints2DInsp.create(AOwner: TGraphicObject);
@@ -2957,9 +3183,14 @@ begin
   self.Points.Reverse;
 end;
 
-procedure TSimplePrimitive2D.Explode;
+procedure TSimplePrimitive2D.Explode(ADeleteSource: boolean);
 begin
   //
+end;
+
+procedure TSimplePrimitive2D.InitializeAngle;
+begin
+  fAngle := 0;
 end;
 
 constructor TSimplePrimitive2D.create(ID: LongInt; NPts: Integer);
@@ -3002,7 +3233,6 @@ begin
   fSimplePrim2DInsp := TSimplePrim2DInsp.create(self);
   with Stream do
    begin
-     Read(TmpReal, SizeOf(TmpReal));
      Read(TmpBoolean, SizeOf(TmpBoolean));
      fShowDirection := TmpBoolean;
    end;
@@ -3020,7 +3250,6 @@ begin
   inherited SaveToStream(Stream);
   with Stream do
    begin
-     Write(TmpReal, SizeOf(TmpReal));
      TmpBoolean :=  fShowDirection;
      Write(TmpBoolean, SizeOf(TmpBoolean));
    end;
@@ -3188,17 +3417,15 @@ end;
 
 
 //TClosedCurve2D
-procedure   TClosedCurve2D.Explode;
+procedure   TClosedCurve2D.Explode(ADeleteSource: boolean);
 var TmpPolygon2D: TPolygon2D;  i: integer;
 begin
   BeginUseProfilePoints;
   TmpPolygon2D := TPolygon2D.Create(-1, []);
   TmpPolygon2D.Assign(self);
-  //for i := 0   to ProfilePoints.Count - 2 do    //Assign
-    //TmpPolygon2D.Points.Add(ProfilePoints[i]);
   TmpPolygon2D.Transform(ModelTransform);
-  TCADCmp2D(OwnerCAD).AddObject(-1, TmpPolygon2D);
   EndUseProfilePoints;
+  TCADCmp2D(OwnerCAD).AddObject(-1, TmpPolygon2D);
 end;
 
 constructor TClosedCurve2D.Create(ID: LongInt; NPts: Integer; CurvePrec: Word);
@@ -3409,7 +3636,7 @@ begin
 end;
 
 //TClosedPolyline2D
-procedure   TClosedPolyline2D.Explode;
+procedure   TClosedPolyline2D.Explode(ADeleteSource: boolean);
 var TmpPolyline2D: TPolyline2D;  i: integer;
 begin
   BeginUseProfilePoints;
@@ -3419,8 +3646,8 @@ begin
     //TmpPolyline2D.Points.Add(ProfilePoints[i]);
   TmpPolyline2D.Points.Add(TmpPolyline2D.Points[0]);
   TmpPolyline2D.Transform(ModelTransform);
-  TCADCmp2D(OwnerCAD).AddObject(-1, TmpPolyline2D);
   EndUseProfilePoints;
+  TCADCmp2D(OwnerCAD).AddObject(-1, TmpPolyline2D);
 end;
 
 constructor TClosedPolyline2D.Create(ID: LongInt; const Pts: array of TPoint2D);
@@ -3536,6 +3763,17 @@ begin
   Result := LogFont.lfEscapement;
 end;
 
+procedure TExtendedFont.SetOrientation(Value: Word);
+begin
+  LogFont.lfOrientation := Value;
+  SetNewValue;
+end;
+
+function  TExtendedFont.GetOrientation: Word;
+begin
+  Result := LogFont.lfOrientation;
+end;
+
 procedure TExtendedFont.SetWeight(Value: Word);
 begin
   LogFont.lfWeight := Value;
@@ -3582,7 +3820,8 @@ end;
 
 procedure TExtendedFont.SetCharSet(Value: Byte);
 begin
-  LogFont.lfCharSet := Value;
+  LogFont.lfCharSet := ARABIC_CHARSET;
+  //LogFont.lfCharSet := Value;
   SetNewValue;
 end;
 
@@ -4201,7 +4440,7 @@ begin
   fSimplePrim2DInsp := TSimplePrim2DInsp.create(self);
 end;
 
-procedure TPolyLine2D.Explode;
+procedure TPolyLine2D.Explode(ADeleteSource: boolean);
 var TmpLine2D: TLine2D; i: integer;
 begin
   for i := 0   to ProfilePoints.Count - 2 do
@@ -4211,9 +4450,8 @@ begin
     TmpLine2D.PenColor    := PenColor;
     TmpLine2D.PenStyle    := PenStyle;
     TmpLine2D.PenWidth    := PenWidth;
-
     TmpLine2D.Transform(ModelTransform);
-    TCADCmp2D(OwnerCAD).AddObject(TmpLine2D.ID, TmpLine2D);
+    TCADCmp2D(OwnerCAD).AddObject(-1, TmpLine2D);
   end;
 end;
 
@@ -5401,9 +5639,9 @@ begin
   UpdateExtension(self);
 end;
 
-procedure TSector2D.Explode;
+procedure TSector2D.Explode(ADeleteSource: boolean);
 begin
-  inherited;
+  inherited Explode(ADeleteSource);
 end;
 
 { Angles are in radiants. }
@@ -5679,9 +5917,9 @@ begin
   UpdateExtension(self);
 end;
 
-procedure TSegment2D.Explode;
+procedure TSegment2D.Explode(ADeleteSource: boolean);
 begin
-  inherited;
+  inherited Explode(ADeleteSource);
 end;
 
 { Angles are in radiants. }
@@ -5814,7 +6052,7 @@ procedure OutText2D(ACADViewport2D: TCADViewport2D; APoint2D: TPoint2D; AText: s
 var TmpText2D: TText2D;
 begin
   TmpText2D := TText2D.Create(-1, Rect2D(APoint2D.X, APoint2D.Y, APoint2D.X+100, APoint2D.Y+100), 10, AText);
-  TmpText2D.Text   := AText;
+  //TmpText2D.Text   := AText;
   TmpText2D.Left   := APoint2D.X;
   TmpText2D.Top    := APoint2D.Y;
   TmpText2D.Right  := TmpText2D.Left;;
@@ -6619,26 +6857,199 @@ begin
    end;
 end;
 
+////////////////////////////////////////////////////////////////////////////////
+//TText2DInsp///////////////////////////////////////////////////////////////////
+function TText2DInsp.GetTextLines: TStringList;
+begin
+  result := fOwner.TextList;
+end;
+
+procedure TText2DInsp.SetTextLines(AStringList: TStringList);
+begin
+  fOwner.TextList := AStringList;
+end;
+
+constructor TText2DInsp.create(AOwner: TText2D);
+begin
+  fOwner := AOwner;
+end;
+
+destructor  TText2DInsp.destroy;
+begin
+  inherited;
+end;
+
+function   TText2DInsp.GetText: TStringList;
+begin
+  result := fOwner.TextList;
+end;
+
+procedure  TText2DInsp.SetText(ATextList: TStringList);
+begin
+  fOwner.TextList := ATextList;
+end;
+
+function   TText2DInsp.GetHeight: TRealType;
+begin
+  result := fOwner.Height;
+end;
+
+procedure  TText2DInsp.SetHeight(AValue: TRealType);
+begin
+  fOwner.Height := AValue;
+end;
+
+function   TText2DInsp.GetColorSource: TColorSource;
+begin
+  result := fOwner.ColorSource;
+end;
+
+procedure  TText2DInsp.SetColorSource(AColorSource: TColorSource);
+begin
+  fOwner.ColorSource := AColorSource;
+end;
+
+function   TText2DInsp.GetColor: TColor;
+begin
+  result := fOwner.Color;
+end;
+
+procedure  TText2DInsp.SetColor(AColor: TColor);
+begin
+  fOwner.Color := AColor;
+end;
+
+function   TText2DInsp.GetClippingFlags: integer;
+begin
+  result := fOwner.ClippingFlags;
+end;
+
+procedure  TText2DInsp.SetClippingFlags(AClippingFlags: integer);
+begin
+  fOwner.ClippingFlags := AClippingFlags;
+end;
+
+function   TText2DInsp.GetAutoSize: boolean;
+begin
+  result := fOwner.AutoSize;
+end;
+
+procedure  TText2DInsp.SetAutoSize(AValue: boolean);
+begin
+  fOwner.AutoSize := AValue;
+end;
+
+function   TText2DInsp.GetDrawBox: boolean;
+begin
+  result := fOwner.DrawBox;
+end;
+
+procedure  TText2DInsp.SetDrawBox(AValue: boolean);
+begin
+  fOwner.DrawBox := AValue;
+end;
+
+function   TText2DInsp.GetFaceName: TFaceName;
+begin
+  result := fOwner.FaceName;
+end;
+
+procedure  TText2DInsp.SetFaceName(AFaceName: TFaceName);
+begin
+  fOwner.FaceName := AFaceName;
+end;
+
+function   TText2DInsp.GetItalic: boolean;
+begin
+  result := boolean(fOwner.Italic);
+end;
+
+procedure  TText2DInsp.SetItalic(AValue: boolean);
+begin
+  fOwner.Italic := AValue;
+end;
+
+function   TText2DInsp.GetStrikeout: boolean;
+begin
+  result := boolean(fOwner.StrikeOut);
+end;
+
+procedure  TText2DInsp.SetStrikeout(AValue: boolean);
+begin
+  fOwner.StrikeOut := AValue;
+end;
+
+function   TText2DInsp.GetUnderline: boolean;
+begin
+  result := boolean(fOwner.Underline);
+end;
+
+procedure  TText2DInsp.SetUnderline(AValue: boolean);
+begin
+  fOwner.Underline := AValue;
+end;
+
+function   TText2DInsp.GetBold: boolean;
+begin
+  result := fOwner.Bold;
+end;
+
+procedure  TText2DInsp.SetBold(AValue: boolean);
+begin
+  fOwner.Bold := AValue;
+end;
+
 // =====================================================================
 // TText2D
 // =====================================================================
+
+procedure TText2D.InitializeAngle;
+begin
+  fAngle := 0;
+end;
+
+procedure TText2D.SetAngle(AAngle: TRealType);
+var relativeAngle: TRealType;  ToPt, DragPt: TPoint2D;
+begin
+  fAngle := DegToRad(AAngle);
+  self.LogFont.Escapement := round(AAngle * 10.0);
+  //UpdateExtension(Self);
+end;
+
+procedure  TText2D.Reverse; //added
+var TmpStr: string; i: integer;
+begin
+  TmpStr := '';
+  for i := Length(self.fText) downto 1 do
+    TmpStr := TmpStr + self.fText[i];
+  self.fText := TmpStr;
+end;
+
+procedure  TText2D.Inverse; //adedd
+begin
+  self.Reverse;
+end;
 
 constructor TText2D.Create(ID: LongInt; Rect1: TRect2D; Height: TRealType;
                            Txt: AnsiString);
 begin
   inherited Create(ID, 2);
+  fTextList := TStringList.Create;
+  fText2DInsp := TText2DInsp.create(self);
   Points.DisableEvents := True;
   try
+    fAutoSize := true;
     fHeight := Height;
     fText := Txt;
     fRecalcBox := False;
     fDrawBox := False;
     fExtFont := TExtendedFont.Create;
     WritableBox := Rect1;
-    fClippingFlags := 0;
+    fClippingFlags := $100;
     Points.Add(Rect1.FirstEdge);
     Points.Add(Rect1.SecondEdge);
     Points.GrowingEnabled := False;
+    fColor := clSilver;
   finally
     Points.DisableEvents := False;
     UpdateExtension(Self);
@@ -6647,8 +7058,26 @@ end;
 
 destructor TText2D.Destroy;
 begin
+  fTextList.Free;
+  fText2DInsp.Free;
+
   fExtFont.Free;
   inherited Destroy;
+end;
+
+function TText2D.GetTextLines: TStringList;
+begin
+  fTextList.Clear;
+  fTextList.Add(fText);
+  fTextList.Text := fText;
+  result := fTextList;
+end;
+
+procedure TText2D.SetTextLines(AStringList: TStringList);
+begin
+  fText     := AStringList.Text;
+  UpdateExtension(nil);
+  OwnerCAD.Viewports[0].Repaint;
 end;
 
 procedure TText2D.Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer);
@@ -6657,6 +7086,7 @@ var
   TmpHeight: Integer;
   TmpRect: TRect;
   TmpTransf: TTransf2D;
+  TmpColor: TColor;
 begin
   { Find the correct size. }
   TmpBox.FirstEdge := Point2D(0, 0);
@@ -6668,7 +7098,27 @@ begin
   { Build up the DrawText rect. }
   TmpRect := Rect2DToRect(TransformRect2D(Box, VT));
   FExtFont.Canvas := Cnv.Canvas;
-  FExtFont.Canvas.Font.Color := clRed;
+
+  TmpColor := FExtFont.Canvas.Font.Color;
+
+  case fColorSource of
+    csCustom: begin
+      FExtFont.Canvas.Font.Color := self.fColor;
+    end;
+    csByLayer: begin
+      if self.OwnerCAD <> nil then
+        FExtFont.Canvas.Font.Color := self.OwnerCAD.Layers[self.OwnerCAD.CurrentLayer].Pen.Color
+      else begin
+        FExtFont.Canvas.Font.Color := self.fColor;
+        fColorSource := csCustom;
+      end;
+    end;
+    csByBlock: begin
+      FExtFont.Canvas.Font.Color := self.fColor;
+      fColorSource := csCustom;
+    end;
+  end;
+
   try
     FExtFont.Height := TmpHeight;
     if fRecalcBox then
@@ -6710,6 +7160,8 @@ var
 begin
   { Load the standard properties }
   inherited;
+  fTextList := TStringList.Create;
+  fText2DInsp := TText2DInsp.create(self);
   with Stream do
    begin
      Read(TmpInt, SizeOf(TmpInt));
@@ -6719,7 +7171,16 @@ begin
      FExtFont.LoadFromStream(Stream);
      Read(FClippingFlags, SizeOf(FClippingFlags));
      Read(FDrawBox, SizeOf(FDrawBox));
-     Read(fHeight, SizeOf(fHeight))
+     Read(fHeight, SizeOf(fHeight));
+
+     Read(fColorSource, SizeOf(fColorSource));
+     Read(fColor, SizeOf(fColor));
+     Read(fAutoSize, SizeOf(fAutoSize));
+     Read(fItalic, SizeOf(fItalic));
+     Read(fStrikeout, SizeOf(fStrikeout));
+     Read(fUnderline, SizeOf(fUnderline));
+     Read(fBold, SizeOf(fBold));
+     Read(fFaceName, SizeOf(fFaceName));
    end;
 end;
 
@@ -6738,6 +7199,15 @@ begin
      Write(FClippingFlags, SizeOf(FClippingFlags));
      Write(FDrawBox, SizeOf(FDrawBox));
      Write(fHeight, SizeOf(fHeight));
+
+     Write(fColorSource, SizeOf(fColorSource));
+     Write(fColor, SizeOf(fColor));
+     Write(fAutoSize, SizeOf(fAutoSize));
+     Write(fItalic, SizeOf(fItalic));
+     Write(fStrikeout, SizeOf(fStrikeout));
+     Write(fUnderline, SizeOf(fUnderline));
+     Write(fBold, SizeOf(fBold));
+     Write(fFaceName, SizeOf(fFaceName));
    end;
 end;
 
@@ -6762,6 +7232,101 @@ begin
      Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
      Points.GrowingEnabled := False;
    end;
+end;
+
+function   TText2D.GetFaceName: TFaceName;
+begin
+  result := fExtFont.FaceName;
+end;
+
+procedure  TText2D.SetFaceName(AFaceName: TFaceName);
+begin
+  fExtFont.FaceName := AFaceName;
+end;
+
+function   TText2D.GetItalic: boolean;
+begin
+  result := boolean(fExtFont.Italic);
+end;
+
+procedure  TText2D.SetItalic(AValue: boolean);
+begin
+  fExtFont.Italic := word(AValue);
+end;
+
+function   TText2D.GetStrikeout: boolean;
+begin
+  result := boolean(fExtFont.StrikeOut);
+end;
+
+procedure  TText2D.SetStrikeout(AValue: boolean);
+begin
+  fExtFont.StrikeOut := word(AValue);
+end;
+
+function   TText2D.GetUnderline: boolean;
+begin
+  result := boolean(fExtFont.Underline);
+end;
+
+procedure  TText2D.SetUnderline(AValue: boolean);
+begin
+  fExtFont.Underline := word(AValue);
+end;
+
+function   TText2D.GetBold: boolean;
+begin
+  result := fExtFont.Weight = 700;
+end;
+
+procedure  TText2D.SetBold(AValue: boolean);
+begin
+  if AValue then
+    fExtFont.Weight := 700
+  else
+    fExtFont.Weight := 400;
+end;
+
+////////////////////////////////////////////////////////////////////////////////
+//TBitmap2DInsp/////////////////////////////////////////////////////////////////
+constructor TBitmap2DInsp.create(AOwner: TBitmap2D);
+begin
+  fOwner := AOwner;
+end;
+
+destructor  TBitmap2DInsp.destroy;
+begin
+  inherited;
+end;
+
+function  TBitmap2DInsp.GetScaleFactor: TRealType;
+begin
+  result := fOwner.ScaleFactor;
+end;
+
+procedure TBitmap2DInsp.SetScaleFactor(SF: TRealType);
+begin
+  fOwner.ScaleFactor := SF;
+end;
+
+function  TBitmap2DInsp.GetAspectRatio: TRealType;
+begin
+  result := fOwner.AspectRatio;
+end;
+
+procedure TBitmap2DInsp.SetAspectRatio(AR: TRealType);
+begin
+  fOwner.AspectRatio := AR;
+end;
+
+function  TBitmap2DInsp.GetCopyMode: TCopyMode;
+begin
+  result := fOwner.CopyMode;
+end;
+
+procedure TBitmap2DInsp.SetCopyMode(ACopyMode: TCopyMode);
+begin
+  fOwner.CopyMode := ACopyMode;
 end;
 
 // =====================================================================
@@ -6808,12 +7373,28 @@ begin
    end;
 end;
 
+procedure TBitmap2D.InitializeAngle;
+begin
+  fAngle := 0;
+end;
+
+
+{Bitmap.CopyModes:
+cmBlackness:  Draws everything in black.
+cmWhiteness:  Draws everything in white.
+cmSrcCopy:    Copies the source image unchanged onto the destination surface (default mode).
+cmSrcInvert:  Inverts the colors of the source image.
+cmMergeCopy:  Combines the source and destination images in a specific way.
+cmMergePaint: Another painting method that blends the source and destination images.
+}
 constructor TBitmap2D.Create(ID: LongInt; const P1, P2: TPoint2D; Bmp: TBitmap);
 begin
   inherited Create(ID, 2);
+  fBitmap2DInsp := TBitmap2DInsp.create(self);
   fScaleFactor := 0.0;
   fAspectRatio := 0.0;
-  fCopyMode := cmSrcCopy;
+  //fCopyMode := cmSrcCopy;  //original;
+  fCopyMode := cmSrcInvert;
   Points.DisableEvents := True;
   try
     fBitmap := TBitmap.Create;
@@ -6830,22 +7411,28 @@ end;
 procedure TBitmap2D.Assign(const Obj: TGraphicObject);
 begin
   if (Obj = Self) then
-   Exit;
+    Exit;
   inherited;
   if (Obj is TBitmap2D) or (Obj is TFrame2D) then
-   begin
-     fScaleFactor := TBitmap2D(Obj).ScaleFactor;
-     fAspectRatio := TBitmap2D(Obj).AspectRatio;
-     fCopyMode := TBitmap2D(Obj).CopyMode;
-     if Obj is TBitmap2D then
+  begin
+    fScaleFactor := TBitmap2D(Obj).ScaleFactor;
+    fAspectRatio := TBitmap2D(Obj).AspectRatio;
+    fCopyMode := TBitmap2D(Obj).CopyMode;
+    if Obj is TBitmap2D then
+    begin
+      if fBitmap = nil then  //added
+        fBitmap := TBitmap.Create;  //added
       fBitmap.Assign(TBitmap2D(Obj).fBitmap);
-     Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
-     Points.GrowingEnabled := True;
-   end;
+    end;
+    Points.Copy(TPrimitive2D(Obj).Points, 0, 1);
+    Points.GrowingEnabled := True;
+  end;
 end;
 
 destructor TBitmap2D.Destroy;
 begin
+  fBitmap2DInsp.Free;
+
   fBitmap.Free;
   inherited Destroy;
 end;
@@ -6854,6 +7441,7 @@ constructor TBitmap2D.CreateFromStream(const Stream: TStream; const Version: TCA
 begin
   { Load the standard properties }
   inherited;
+  fBitmap2DInsp := TBitmap2DInsp.create(self);
   fBitmap := TBitmap.Create;
   fBitmap.LoadFromStream(Stream);
   if( Version >= 'CAD422' ) then
@@ -7340,6 +7928,12 @@ begin
     DrawTextLine(CurrBasePt, TmpStr, TmpTransf);
   finally
   end;
+end;
+
+
+procedure TJustifiedVectText2D.InitializeAngle;
+begin
+  fAngle := 0;
 end;
 
 constructor TJustifiedVectText2D.Create(ID: LongInt; FontVect: TVectFont; TextBox: TRect2D; Height: TRealType; Txt: AnsiString);
