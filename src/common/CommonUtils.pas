@@ -2,8 +2,7 @@ unit CommonUtils;
 
 interface
 
-uses  Classes, SysUtils, Forms, Math, Dialogs, {$IFDEF WINDOWS} Windows, {$ENDIF}
-
+uses  Classes, SysUtils, Forms, Math, Dialogs, Graphics, {$IFDEF WINDOWS} Windows, {$ENDIF}
       LCLType, LCLVersion, versiontypes, versionresource,
       interfaces, LCLPlatformDef;
 
@@ -11,14 +10,16 @@ const ErrStrToInt         = -999999;
 const ErrCharIdxNotFound  = -500;
 const ErrSubStr           = 'SubStringError';
 
-type
-  str255 = string[255];
+////////////////////////////////////////////////////////////////////////////////
+//Colors////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+function  cuRGBToColor(R, G, B: byte): TColor;
 
 ////////////////////////////////////////////////////////////////////////////////
 //StringUtils///////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-function  cuEncodeStr(AStr: str255): str255;
-function  cuDecodeStr(AStr: str255): str255;
+function  cuEncodeStr(AStr: string): string;
+function  cuDecodeStr(AStr: string): string;
 function  cuStrToWChar(ASource: string): PWideChar;
 function  cuFileIsNamed(AFileName, InvalidFileName: string): boolean;
 function  cuSubString(AStr : string; startPos, endPos: integer): string;
@@ -77,17 +78,24 @@ function GetLCLWidgetSet: string;
 implementation
 
 ////////////////////////////////////////////////////////////////////////////////
+//Colors////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+function  cuRGBToColor(R, G, B: byte): TColor;
+begin
+  result := RGBToColor(R, G, B);
+end;
+////////////////////////////////////////////////////////////////////////////////
 //StringUtils///////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-function cuEncodeStr(AStr: str255): str255;
+function cuEncodeStr(AStr: string): string;
 var c: array[0..255] of Byte absolute AStr; i: Integer;
 begin
-  for i := 1 to Ord(AStr[0]) do
+  for i := 1 to Ord(AStr[1]) do
     c[i] := 23 xor c[i];
   result := AStr;
 end;
 
-function cuDecodeStr(AStr: str255): str255;
+function cuDecodeStr(AStr: string): string;
 var c: array[0..255] of Byte absolute AStr; i: Integer;
 begin
   for i := 1 to Length(AStr) do AStr[i] := AnsiChar(23 xor Ord(c[i]));

@@ -44,6 +44,7 @@ var
   fIniFileName: string;
 
   fLeftPanelVisible : boolean;
+  fShowRulerMarker: boolean;
   SimulationIsStarted: boolean = false;
   CancelCloseAction:   boolean = false;
 
@@ -84,6 +85,10 @@ function GetAppImagesPath: string;
 function GetAppBlockLibrarysPath: string;
 function GetAppProjectsPath: string;
 
+function GetAppDocPath: string;
+
+function GetAppPascalScriptsPath: string;
+
 
 implementation
 
@@ -118,7 +123,7 @@ end;
 
 function FirstRun: boolean;
 begin
-  result := not FileExists(GetAppDataPath);
+  result := not DirectoryExists(GetAppDataPath);
 end;
 
 procedure ReadIniFile;
@@ -130,6 +135,7 @@ begin
   fIniFile     := TIniFile.Create(fIniFileName);
 
   try
+    fShowRulerMarker     := fIniFile.ReadString('Application', 'ShowRulerMarker', 'no') = 'yes';
     fUseTemplates        := fIniFile.ReadString('Application', 'UseTemplates', 'yes');
     fStdTemplate         := fIniFile.ReadString('Application', 'DefaultTemplate',     GetAppTemplatesPath + 'cnc.cs4');
     fGifAnimFile         := fIniFile.ReadString('UserInterface', 'GifAnimFile',       GetAppImagesPath + 'fpc_running_logo.gif');
@@ -148,7 +154,7 @@ begin
     fLeftPanelVisible    := fIniFile.ReadBool('OnAppStart',    'LeftPanelVisible', false);
     fTraceON             := fIniFile.ReadString('Admin',  'TraceON', '1');
     fTraceFileName       := fIniFile.ReadString('Admin',  'TraceFileName', GetAppSystemPath + '');
-    fLanguage            := fIniFile.ReadString('UserInterface',  'Language', 'default');
+    fLanguage            := fIniFile.ReadString('UserInterface',  'Language', 'en');
   finally
     fIniFile.Free;
     fIniFile := nil;
@@ -161,6 +167,10 @@ begin
   fIniFileName := ChangeFileExt(Application.ExeName, '.ini');
   fIniFile := TIniFile.Create(fIniFileName);
   try
+    if fShowRulerMarker then
+      fIniFile.WriteString('Application',   'ShowRulerMarker', 'yes')
+    else
+      fIniFile.WriteString('Application',   'ShowRulerMarker', 'no');
     fIniFile.WriteString('Application',   'UseTemplates',        fUseTemplates);
     fIniFile.WriteString('Application',   'DefaultTemplate',     fStdTemplate);
     fIniFile.WriteString('Application',   'DefaultBlockLibrary', fDefaultBlockLibrary);
@@ -209,6 +219,15 @@ begin
   {$ENDIF}
 end;
 
+function GetAppPascalScriptsPath: string;
+begin
+  {$IFDEF WINDOWS}
+    result      := GetAppDataPath + 'PascalScripts\';
+  {$ELSE}
+    result      := GetAppDataPath + 'PascalScripts/';
+  {$ENDIF}
+end;
+
 function GetAppApplicationsPath: string;
 begin
   {$IFDEF WINDOWS}
@@ -225,6 +244,15 @@ begin
     result      := GetAppDataPath + 'db\';
   {$ELSE}
     result := GetAppDataPath + 'db/';
+  {$ENDIF}
+end;
+
+function GetAppDocPath: string;
+begin
+  {$IFDEF WINDOWS}
+    result      := GetAppDataPath + 'doc\';
+  {$ELSE}
+    result := GetAppDataPath + 'doc/';
   {$ENDIF}
 end;
 
@@ -357,8 +385,12 @@ begin
 end;
 
 initialization
+  //fIniFileName := ChangeFileExt(Application.ExeName, '.ini');
+  //fIniFile     := TIniFile.Create(fIniFileName);
   ReadIniFile;
 
 finalization
   WriteIniFile;
+  //fIniFile.Free;
+  //fIniFile := nil;
 end.

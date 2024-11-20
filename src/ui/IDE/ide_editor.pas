@@ -7,12 +7,12 @@ unit ide_editor;
 interface
 
 uses
-  {Windows,} LCLType, LCLIntf, LMessages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, ExtCtrls, StdCtrls, ComCtrls,
-  SynEdit, SynEditTypes, SynHighlighterPas,
-  SynEditSearch, SynEditMiscClasses, SynEditHighlighter, SynGutterBase,
-  SynGutterMarks, SynGutterLineNumber, SynGutterChanges, SynGutter,
-  SynGutterCodeFolding, SynEditMarkupSpecialLine,  SynEditRegexSearch,
+  {$IFDEF Windows} Windows, {$ENDIF} LCLType, LCLIntf, LMessages, SysUtils,
+  Classes, Graphics, Controls, Forms, Dialogs, Menus, ExtCtrls, StdCtrls,
+  ComCtrls, ActnList, SynEdit, SynEditTypes, SynHighlighterPas, SynEditSearch,
+  SynEditMiscClasses, SynEditHighlighter, SynGutterBase, SynGutterMarks,
+  SynGutterLineNumber, SynGutterChanges, SynGutter, SynGutterCodeFolding,
+  SynEditMarkupSpecialLine, SynEditRegexSearch, PrintersDlgs, BCButtonFocus,
 
   uPSComponent_COM,
   uPSComponent_StdCtrls,
@@ -39,21 +39,81 @@ uses
   uPSR_dll,
   uPSC_dll,
 
-  CADDocument,
-  CADScripInterface2D;
+  MainScriptinterface,
+
+  applicationh,
+  CADDocument, SynEditMarks;
 
 type
 
   { TIDE }
 
   TIDE = class(TForm)
+    acFileNew: TAction;
+    acFileOpen: TAction;
+    acFileSave: TAction;
+    acFileSaveAs: TAction;
+    acFileExit: TAction;
+    acFilePrint: TAction;
+    acFileRecent: TAction;
+    acEditUndo: TAction;
+    acEditRedo: TAction;
+    acEditCopy: TAction;
+    acEditCut: TAction;
+    acEditPaste: TAction;
+    acDebugSyntaxCheck: TAction;
+    acDebugDecompile: TAction;
+    acDebugStepOver: TAction;
+    acDebugStepInto: TAction;
+    acDebugPause: TAction;
+    acDebugReset: TAction;
+    acDebugRun: TAction;
+    acDebugBreakPoint: TAction;
+    ActionList1: TActionList;
+    BCButtonFocus1: TBCButtonFocus;
+    BCButtonFocus10: TBCButtonFocus;
+    BCButtonFocus11: TBCButtonFocus;
+    BCButtonFocus12: TBCButtonFocus;
+    BCButtonFocus13: TBCButtonFocus;
+    BCButtonFocus14: TBCButtonFocus;
+    BCButtonFocus16: TBCButtonFocus;
+    BCButtonFocus17: TBCButtonFocus;
+    BCButtonFocus18: TBCButtonFocus;
+    BCButtonFocus19: TBCButtonFocus;
+    BCButtonFocus2: TBCButtonFocus;
+    BCButtonFocus20: TBCButtonFocus;
+    BCButtonFocus21: TBCButtonFocus;
+    BCButtonFocus22: TBCButtonFocus;
+    BCButtonFocus23: TBCButtonFocus;
+    BCButtonFocus24: TBCButtonFocus;
+    BCButtonFocus25: TBCButtonFocus;
+    BCButtonFocus26: TBCButtonFocus;
+    BCButtonFocus27: TBCButtonFocus;
+    BCButtonFocus28: TBCButtonFocus;
+    BCButtonFocus3: TBCButtonFocus;
+    BCButtonFocus4: TBCButtonFocus;
+    BCButtonFocus5: TBCButtonFocus;
+    BCButtonFocus6: TBCButtonFocus;
+    BCButtonFocus8: TBCButtonFocus;
+    BCButtonFocus9: TBCButtonFocus;
     ce: TPSScriptDebugger;
     IFPS3DllPlugin1: TPSDllPlugin;
+    ImageListClassic: TImageList;
+    pnlEdit: TPanel;
+    pnlEdit1: TPanel;
+    pnlEditGrip: TPanel;
+    pnlEditGrip1: TPanel;
+    pnlFile: TPanel;
+    pnlFile1: TPanel;
+    pnlFileGrip: TPanel;
+    pnlFileGrip1: TPanel;
+    pnlTop: TPanel;
     pashighlighter: TSynPasSyn;
     PopupMenu1: TPopupMenu;
     BreakPointMenu: TMenuItem;
     MainMenu1: TMainMenu;
     File1: TMenuItem;
+    PrintDialog1: TPrintDialog;
     PSCustomPlugin1: TPSCustomPlugin;
     PSImport_Controls1: TPSImport_Controls;
     PSImport_DB1: TPSImport_DB;
@@ -101,33 +161,54 @@ type
     SynLeftGutterPartList1: TSynGutterPartList;
     Syntaxcheck1: TMenuItem;
 
+    procedure acDebugBreakPointExecute(Sender: TObject);
+    procedure acDebugDecompileExecute(Sender: TObject);
+    procedure acDebugPauseExecute(Sender: TObject);
+    procedure acDebugResetExecute(Sender: TObject);
+    procedure acDebugRunExecute(Sender: TObject);
+    procedure acDebugStepIntoExecute(Sender: TObject);
+    procedure acDebugStepOverExecute(Sender: TObject);
+    procedure acDebugSyntaxCheckExecute(Sender: TObject);
+    procedure acEditCopyExecute(Sender: TObject);
+    procedure acEditCutExecute(Sender: TObject);
+    procedure acEditPasteExecute(Sender: TObject);
+    procedure acEditRedoExecute(Sender: TObject);
+    procedure acEditUndoExecute(Sender: TObject);
+    procedure acFileExitExecute(Sender: TObject);
+    procedure acFileNewExecute(Sender: TObject);
+    procedure acFileOpenExecute(Sender: TObject);
+    procedure acFilePrintExecute(Sender: TObject);
+    procedure acFileRecentExecute(Sender: TObject);
+    procedure acFileSaveExecute(Sender: TObject);
+    procedure acFileSaveAsExecute(Sender: TObject);
+    procedure ceCompImport(Sender: TObject; x: TPSPascalCompiler);
+    procedure ceExecImport(Sender: TObject; se: TPSExec;
+      x: TPSRuntimeClassImporter);
+    procedure edClick(Sender: TObject);
+    procedure edGutterClick(Sender: TObject; X, Y, Line: integer;
+      mark: TSynEditMark);
+    procedure edQuadClick(Sender: TObject);
     procedure edSpecialLineColors(Sender: TObject; Line: Integer; var Special: Boolean; var FG, BG: TColor);
     procedure BreakPointMenuClick(Sender: TObject);
     procedure ceLineInfo(Sender: TObject; const FileName: String; Position, Row, Col: Cardinal);
-    procedure Exit1Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
-    procedure StepOver1Click(Sender: TObject);
-    procedure StepInto1Click(Sender: TObject);
-    procedure Reset1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure ceIdle(Sender: TObject);
     procedure Run2Click(Sender: TObject);
     procedure ceExecute(Sender: TPSScript);
     procedure ceAfterExecute(Sender: TPSScript);
     procedure ceCompile(Sender: TPSScript);
-    procedure New1Click(Sender: TObject);
-    procedure Open1Click(Sender: TObject);
-    procedure Save1Click(Sender: TObject);
-    procedure Saveas1Click(Sender: TObject);
     procedure edStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure Decompile1Click(Sender: TObject);
-    function ceNeedFile(Sender: TObject; const OrginFileName: String; var FileName, Output: String): Boolean;
+    function  ceNeedFile(Sender: TObject; const OrginFileName: String; var FileName, Output: String): Boolean;
     procedure ceBreakpoint(Sender: TObject; const FileName: String; Position, Row, Col: Cardinal);
-    procedure Pause1Click(Sender: TObject);
     procedure messagesDblClick(Sender: TObject);
     procedure Gotolinenumber1Click(Sender: TObject);
     procedure Find1Click(Sender: TObject);
     procedure Searchagain1Click(Sender: TObject);
     procedure Replace1Click(Sender: TObject);
+    procedure StepInto1Click(Sender: TObject);
+    procedure StepOver1Click(Sender: TObject);
     procedure Syntaxcheck1Click(Sender: TObject);
     procedure edDropFiles(Sender: TObject; X, Y: Integer;
       AFiles: TStrings);
@@ -136,6 +217,7 @@ type
     FActiveLine: Longint;
     FResume: Boolean;
     FActiveFile: string;
+    procedure RemoveComments(const SourceLines: TStrings; DestLines: TStringList );
     function Compile: Boolean;
     function Execute: Boolean;
 
@@ -148,6 +230,7 @@ type
 
     property aFile: string read FActiveFile write SetActiveFile;
   public
+    procedure edMyPaint(Sender: TObject; ACanvas: TCanvas);
     function SaveCheck: Boolean;
   end;
 
@@ -167,6 +250,18 @@ uses
 
 const
   isRunningOrPaused = [isRunning, isPaused];
+
+  //added
+  debugger_no_source_line = 24;
+  debugger_source_line = 25;
+  debugger_current_line = 26;
+  debugger_current_line_breakpoint = 27;
+  debugger_current_line_disabled_breakpoint = 28;
+  debugger_InactiveBreakPoint = 29;
+  debugger_InvalidBreakPoint = 30;
+  debugger_InvalidDisabledBreakPoint = 31;
+  degugger_UnknowBreakpoint = 32;
+
 
 // options - to be saved to the registry
 var
@@ -188,15 +283,76 @@ resourcestring
   STR_SUCCESSFULLY_COMPILED = 'Successfully compiled';
   STR_SUCCESSFULLY_EXECUTED = 'Successfully executed';
   STR_RUNTIME_ERROR='[Runtime error] %s(%d:%d), bytecode(%d:%d): %s'; //Birb
-  STR_FORM_TITLE = 'Editor';
-  STR_FORM_TITLE_RUNNING = 'Editor - Running';
+  STR_FORM_TITLE = 'LazCAD IDE ';
+  STR_FORM_TITLE_RUNNING = 'LazCAD IDE  - Running';
   STR_INPUTBOX_TITLE = 'Script';
   STR_DEFAULT_PROGRAM = 'Program test;'#13#10'begin'#13#10'end.';
   STR_NOTSAVED = 'File has not been saved, save now?';
 
-procedure TIDE.DoSearchReplaceText(AReplace: boolean; ABackwards: boolean);
+
+procedure TIDE.edMyPaint(Sender: TObject; ACanvas: TCanvas);
 var
-  Options: TSynSearchOptions;
+  Line, ImgIndex, Y: Integer;
+  HasCode, HasBreakpoint, BreakpointUnknown: Boolean;
+begin
+  // Verwende ACanvas anstelle von ed.Canvas
+  for Line := 1 to ed.Lines.Count do
+  begin
+    // Prüfen, ob die Zeile Code enthält oder einen Breakpoint hat
+    //HasCode := ce.Exec.HasCode(ce.MainFileName, Line);
+    {$IFDEF Linux} HasCode := ce.Exec.HasCode(ce.MainFileName, Line); {$ENDIF}
+
+    HasBreakpoint := ce.HasBreakPoint(ce.MainFileName, Line);
+
+    // Überprüfen, ob der Breakpoint vor dem Start der Anwendung gesetzt wurde und noch keine Debug-Infos existieren
+    BreakpointUnknown := (HasBreakpoint and not (ce.Exec.Status = isRunning));  // Wenn Breakpoint gesetzt, aber das Skript noch nicht läuft
+
+    // Bestimme den Bildindex basierend auf dem Zustand der Zeile
+    if Line = FActiveLine then
+    begin
+      if HasBreakpoint then
+        ImgIndex := debugger_current_line_breakpoint   // Breakpoint und aktuelle Zeile
+      else
+        ImgIndex := debugger_current_line;  // Nur aktuelle Zeile
+    end
+    else if HasCode then
+    begin
+      if HasBreakpoint then
+        ImgIndex := debugger_source_line  // Gültiger Breakpoint
+      else
+        ImgIndex := debugger_no_source_line;  // Zeile enthält Code
+    end
+    else
+    begin
+      if BreakpointUnknown then
+        ImgIndex := degugger_UnknowBreakpoint  // Breakpoint ohne Debug-Infos (vor Start der Anwendung)
+      else if HasBreakpoint then
+        ImgIndex := debugger_InvalidBreakPoint  // Ungültiger Breakpoint
+      else
+        ImgIndex := -1; // Keine Markierung
+    end;
+
+    // Wenn ein Bild zu zeichnen ist, berechne Y-Position und zeichne es im Gutter
+    if (ImgIndex >= 0) and Assigned(ImageListClassic) then
+    begin
+      Y := (Line - ed.TopLine) * ed.LineHeight; // Y-Position berechnen
+      ImageListClassic.Draw(ACanvas, 4, Y, ImgIndex); // Zeichne Bild in Gutter-Bereich
+    end;
+  end;
+end;
+
+procedure TIDE.FormCreate(Sender: TObject);
+begin
+  ed.OnPaint := edMyPaint;
+
+  caption := 'LazCAD IDE';
+
+  OpenDialog1.InitialDir := GetAppPascalScriptsPath;
+  SaveDialog1.InitialDir := GetAppPascalScriptsPath;
+end;
+
+procedure TIDE.DoSearchReplaceText(AReplace: boolean; ABackwards: boolean);
+var Options: TSynSearchOptions;
 begin
   Statusbar.SimpleText := '';
   if AReplace then
@@ -288,6 +444,26 @@ begin
   end;}
 end;
 
+//added
+function IsCodeLine(LineText: String): Boolean;
+begin
+  // Entferne führende und nachfolgende Leerzeichen
+  LineText := Trim(LineText);
+  // Prüfe, ob die Zeile leer ist oder mit einem Kommentar beginnt (Pascal-Kommentarsyntax)
+  Result := (LineText <> '') and (not LineText.StartsWith('//')) and
+            (not LineText.StartsWith('{')) and (not LineText.EndsWith('}'));
+end;
+
+function IsCommentLine(LineText: String): Boolean;
+begin
+  // Entferne führende und nachfolgende Leerzeichen
+  LineText := Trim(LineText);
+  // Prüfe, ob die Zeile mit '//' oder '{' beginnt und mit '}' endet
+  Result := LineText.StartsWith('//') or
+            (LineText.StartsWith('{') and LineText.EndsWith('}'));
+end;
+
+
 procedure TIDE.edSpecialLineColors(Sender: TObject; Line: Integer;
   var Special: Boolean; var FG, BG: TColor);
 begin
@@ -312,24 +488,12 @@ begin
   end else Special := False;
 end;
 
-procedure TIDE.BreakPointMenuClick(Sender: TObject);
-var
-  Line: Longint;
-begin
-  Line := Ed.CaretY;
-  if ce.HasBreakPoint(ce.MainFileName, Line) then
-    ce.ClearBreakPoint(ce.MainFileName, Line)
-  else
-    ce.SetBreakPoint(ce.MainFileName, Line);
-  ed.Refresh;
-end;
-
 procedure TIDE.ceLineInfo(Sender: TObject; const FileName: String; Position, Row,
   Col: Cardinal);
 begin
   if ce.Exec.DebugMode <> dmRun then
   begin
-    FActiveLine := Row;
+    FActiveLine := Row;  //orig
     if (FActiveLine < ed.TopLine +2) or (FActiveLine > Ed.TopLine + Ed.LinesInWindow -2) then
     begin
       Ed.TopLine := FActiveLine - (Ed.LinesInWindow div 2);
@@ -343,38 +507,121 @@ begin
     Application.ProcessMessages;
 end;
 
-procedure TIDE.Exit1Click(Sender: TObject);
+procedure TIDE.BreakPointMenuClick(Sender: TObject);
+begin
+
+end;
+
+procedure TIDE.acFileNewExecute(Sender: TObject);
+begin
+  if SaveCheck then //check if script changed and not yet saved
+  begin
+    ed.ClearAll;
+    ed.Lines.Text := STR_DEFAULT_PROGRAM;
+    ed.Modified := False;
+    aFile := '';
+  end;
+end;
+
+procedure TIDE.acFileExitExecute(Sender: TObject);
 begin
   close;
 end;
 
-procedure TIDE.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+procedure TIDE.acEditUndoExecute(Sender: TObject);
 begin
- Reset1Click(nil); //terminate any running script
- if SaveCheck then //check if script changed and not yet saved
- begin
-   CloseAction := caHide;
-   frmMain.acToolsScripter.Checked := false;
- end
- else
-   CloseAction := caNone;
+  ed.Undo;
 end;
 
-procedure TIDE.StepOver1Click(Sender: TObject);
+procedure TIDE.acEditRedoExecute(Sender: TObject);
 begin
-  if ce.Exec.Status in isRunningOrPaused then
-    ce.StepOver
-  else
+  ed.Redo;
+end;
+
+procedure TIDE.acEditCopyExecute(Sender: TObject);
+begin
+  ed.CopyToClipboard;
+end;
+
+procedure TIDE.acDebugSyntaxCheckExecute(Sender: TObject);
+begin
+  Compile;
+  acDebugSyntaxCheck.Checked := false;
+end;
+
+procedure TIDE.acDebugDecompileExecute(Sender: TObject);
+var s: string;
+begin
+  if Compile then
   begin
-    if Compile then
-    begin
-      ce.StepInto;
-      Execute;
-    end;
+    ce.GetCompiled(s);
+    IFPS3DataToText(s, s);
+    //debugoutput.output.Lines.Text := s;
+    //debugoutput.visible := true;
+    Messages.Items.Add(S);
+  end;
+  acDebugDecompile.Checked := false;
+end;
+
+procedure TIDE.acDebugBreakPointExecute(Sender: TObject);
+var Line: Longint;
+begin
+  Line := Ed.CaretY;
+  if ce.HasBreakPoint(ce.MainFileName, Line) then
+    ce.ClearBreakPoint(ce.MainFileName, Line)
+  else
+    ce.SetBreakPoint(ce.MainFileName, Line);
+  ed.Refresh;
+end;
+
+procedure TIDE.acDebugPauseExecute(Sender: TObject);
+begin
+  if not acDebugPause.Checked then
+  begin
+    acDebugRun.Execute;
+    acDebugRun.Checked := true;
+  end;
+  if ce.Exec.Status = isRunning then
+  begin
+    ce.Pause;
+    //if acDebugRun.Checked then
+      //acDebugRun.Checked := false;
+    //ce.StepInto;
+    exit;
+  end;
+
+  if ce.Exec.Status = isPaused then
+  begin
+    ce.Resume;
+    exit;
   end;
 end;
 
-procedure TIDE.StepInto1Click(Sender: TObject);
+procedure TIDE.acDebugResetExecute(Sender: TObject);
+begin
+  if ce.Exec.Status in isRunningOrPaused then
+    ce.Stop;
+  if acDebugPause.Checked then
+    acDebugPause.Checked := false;
+end;
+
+procedure TIDE.acDebugRunExecute(Sender: TObject);
+begin
+  if acDebugPause.Checked then
+    acDebugPause.Checked := false;
+
+  if CE.Running then
+  begin
+    FResume := True
+  end else
+  begin
+    if Compile then
+      Execute;
+  end;
+  acDebugRun.Checked := false;
+end;
+
+procedure TIDE.acDebugStepIntoExecute(Sender: TObject);
 begin
   if ce.Exec.Status in isRunningOrPaused then
     ce.StepInto
@@ -388,22 +635,229 @@ begin
   end;
 end;
 
-procedure TIDE.Pause1Click(Sender: TObject);
-begin
- if ce.Exec.Status = isRunning then
-   begin
-   ce.Pause;
-   ce.StepInto;
-   end;
-end;
-
-procedure TIDE.Reset1Click(Sender: TObject);
+procedure TIDE.acDebugStepOverExecute(Sender: TObject);
 begin
   if ce.Exec.Status in isRunningOrPaused then
-    ce.Stop;
+    ce.StepOver
+  else
+  begin
+    if Compile then
+    begin
+      ce.StepInto;
+      Execute;
+    end;
+  end;
+end;
+
+procedure TIDE.acEditCutExecute(Sender: TObject);
+begin
+  ed.CutToClipboard;
+end;
+
+procedure TIDE.acEditPasteExecute(Sender: TObject);
+begin
+  ed.PasteFromClipboard(false);
+end;
+
+procedure TIDE.acFileOpenExecute(Sender: TObject);
+begin
+  if SaveCheck then //check if script changed and not yet saved
+  begin
+    if OpenDialog1.Execute then
+    begin
+      ed.ClearAll;
+      ed.Lines.LoadFromFile(OpenDialog1.FileName);
+      ed.Modified := False;
+      aFile := OpenDialog1.FileName;
+    end;
+  end;
+  acFileOpen.Checked := false;
+end;
+
+procedure TIDE.acFilePrintExecute(Sender: TObject);
+begin
+  //
+  acFilePrint.Checked := false;
+end;
+
+procedure TIDE.acFileRecentExecute(Sender: TObject);
+begin
+  //
+  acFileRecent.Checked := false;
+end;
+
+procedure TIDE.acFileSaveExecute(Sender: TObject);
+begin
+  if aFile <> '' then
+  begin
+    ed.Lines.SaveToFile(aFile);
+    ed.Modified := False;
+  end else
+    acFileSaveAsExecute(nil);
+  acFileSave.Checked := false;
+end;
+
+procedure TIDE.acFileSaveAsExecute(Sender: TObject);
+begin
+  if SaveDialog1.Execute then
+  begin
+    aFile := SaveDialog1.FileName;
+    ed.Lines.SaveToFile(aFile);
+    ed.Modified := False;
+  end;
+  acFileSaveAs.Checked := false;
+end;
+
+procedure TIDE.ceCompile(Sender: TPSScript);
+begin
+  Sender.AddMethod(Self, @TIDE.Writeln, 'procedure writeln(s: string)');
+  Sender.AddMethod(Self, @TIDE.Readln, 'procedure readln(var s: string)');
+  Sender.AddRegisteredVariable('Self', 'TForm');
+  Sender.AddRegisteredVariable('Application', 'TApplication');
+end;
+
+procedure TIDE.ceCompImport(Sender: TObject; x: TPSPascalCompiler);
+begin
+  SIRegister_MainScriptInterface(x);
+end;
+
+procedure TIDE.ceExecImport(Sender: TObject; se: TPSExec;
+  x: TPSRuntimeClassImporter);
+begin
+  RIRegister_MainScriptInterface_Routines(se);
+end;
+
+procedure TIDE.edClick(Sender: TObject);
+begin
+
+end;
+
+procedure TIDE.edGutterClick(Sender: TObject; X, Y, Line: integer;
+  mark: TSynEditMark);
+begin
+  ed.CaretXY := Point(1, Line);
+  //hier soll caret auf X gesetzt werden und dan wird dort breakpoint gesetzt oder gelöscht
+  acDebugBreakPointExecute(nil);
+end;
+
+procedure TIDE.edQuadClick(Sender: TObject);
+begin
+
+end;
+
+procedure TIDE.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+ acDebugResetExecute(nil); //terminate any running script
+ if SaveCheck then //check if script changed and not yet saved
+ begin
+   CloseAction := caHide;
+   frmMain.acToolsScripter.Checked := false;
+ end
+ else
+   CloseAction := caNone;
+end;
+
+procedure TIDE.RemoveComments(const SourceLines: TStrings; DestLines: TStringList );
+var
+  i, j: Integer;
+  line, tempLine: string;
+  inBlockComment, inString: Boolean;
+begin
+  inBlockComment := False;
+  for i := 0 to SourceLines.Count - 1 do
+  begin
+    line := SourceLines[i];
+    tempLine := '';
+    inString := False;
+
+    j := 1;
+    while j <= Length(line) do
+    begin
+      // Zeichenfolge innerhalb von Anführungszeichen erkennen
+      if line[j] = '''' then
+      begin
+        tempLine := tempLine + line[j];
+        Inc(j);
+        while (j <= Length(line)) and (line[j] <> '''') do
+        begin
+          tempLine := tempLine + line[j];
+          Inc(j);
+        end;
+        if j <= Length(line) then
+          tempLine := tempLine + line[j];
+        Inc(j);
+        Continue;
+      end;
+
+      // Blockkommentar beenden
+      if inBlockComment then
+      begin
+        if (j < Length(line)) and (line[j] = '}') then
+        begin
+          inBlockComment := False;
+          Inc(j);
+        end
+        else if (j < Length(line) - 1) and (line[j] = '*') and (line[j + 1] = ')') then
+        begin
+          inBlockComment := False;
+          Inc(j, 2);
+        end
+        else
+          Inc(j);
+        Continue;
+      end;
+
+      // Einzeiliger Kommentar "//"
+      if (line[j] = '/') and (j < Length(line)) and (line[j + 1] = '/') then
+        Break // Beende die Zeilenverarbeitung für einzeilige Kommentare
+
+      // Blockkommentar starten
+      else if (line[j] = '{') then
+      begin
+        inBlockComment := True;
+        Inc(j);
+      end
+      else if (j < Length(line) - 1) and (line[j] = '(') and (line[j + 1] = '*') then
+      begin
+        inBlockComment := True;
+        Inc(j, 2);
+      end
+      else
+      begin
+        tempLine := tempLine + line[j];
+        Inc(j);
+      end;
+    end;
+
+    DestLines.Add(TrimRight(tempLine)); // Leere Zeilen werden beibehalten
+  end;
 end;
 
 function TIDE.Compile: Boolean;
+var
+  tempLines: TStringList;
+  i: Integer;
+  TmpString: string;
+begin
+  tempLines := TStringList.Create;
+  try
+    RemoveComments(ed.Lines, tempLines);
+
+    ce.Script.Assign(tempLines);
+    Result := ce.Compile;
+    messages.Clear;
+    for i := 0 to ce.CompilerMessageCount - 1 do
+    begin
+      Messages.Items.Add(ce.CompilerMessages[i].MessageToString);
+    end;
+    if Result then
+      Messages.Items.Add(STR_SUCCESSFULLY_COMPILED);
+  finally
+    tempLines.Free;
+  end;
+end;
+
+{function TIDE.Compile: Boolean;
 var
   i: Longint;
 begin
@@ -417,6 +871,7 @@ begin
   if Result then
     Messages.Items.Add(STR_SUCCESSFULLY_COMPILED);
 end;
+}
 
 procedure TIDE.ceIdle(Sender: TObject);
 begin
@@ -432,14 +887,7 @@ end;
 
 procedure TIDE.Run2Click(Sender: TObject);
 begin
-  if CE.Running then
-  begin
-    FResume := True
-  end else
-  begin
-    if Compile then
-      Execute;
-  end;
+
 end;
 
 procedure TIDE.ceExecute(Sender: TPSScript);
@@ -477,65 +925,9 @@ begin
   Messages.Items.Add(S);
 end;
 
-procedure TIDE.ceCompile(Sender: TPSScript);
-begin
-  Sender.AddMethod(Self, @TIDE.Writeln, 'procedure writeln(s: string)');
-  Sender.AddMethod(Self, @TIDE.Readln, 'procedure readln(var s: string)');
-  Sender.AddRegisteredVariable('Self', 'TForm');
-  Sender.AddRegisteredVariable('Application', 'TApplication');
-
-  Sender.AddMethod(self, @CADScripInterface2D.I_DrawLine,
-                    'procedure I_DrawLine(AX, AY, BX, BY: single);');
-end;
-
 procedure TIDE.Readln(var s: string);
 begin
   s := InputBox(STR_INPUTBOX_TITLE, '', '');
-end;
-
-procedure TIDE.New1Click(Sender: TObject);
-begin
-  if SaveCheck then //check if script changed and not yet saved
-  begin
-    ed.ClearAll;
-    ed.Lines.Text := STR_DEFAULT_PROGRAM;
-    ed.Modified := False;
-    aFile := '';
-  end;
-end;
-
-procedure TIDE.Open1Click(Sender: TObject);
-begin
-  if SaveCheck then //check if script changed and not yet saved
-  begin
-    if OpenDialog1.Execute then
-    begin
-      ed.ClearAll;
-      ed.Lines.LoadFromFile(OpenDialog1.FileName);
-      ed.Modified := False;
-      aFile := OpenDialog1.FileName;
-    end;
-  end;
-end;
-
-procedure TIDE.Save1Click(Sender: TObject);
-begin
-  if aFile <> '' then
-  begin
-    ed.Lines.SaveToFile(aFile);
-    ed.Modified := False;
-  end else
-    SaveAs1Click(nil);
-end;
-
-procedure TIDE.Saveas1Click(Sender: TObject);
-begin
-  if SaveDialog1.Execute then
-  begin
-    aFile := SaveDialog1.FileName;
-    ed.Lines.SaveToFile(aFile);
-    ed.Modified := False;
-  end;
 end;
 
 //check if script changed and not yet saved//
@@ -546,7 +938,7 @@ begin
     case MessageDlg(STR_NOTSAVED, mtConfirmation, mbYesNoCancel, 0) of
       idYes:
         begin
-          Save1Click(nil);
+          acFileSaveAsExecute(nil);
           Result := aFile <> '';
         end;
       IDNO: Result := True;
@@ -563,18 +955,10 @@ begin
 end;
 
 procedure TIDE.Decompile1Click(Sender: TObject);
-var
-  s: string;
 begin
-  if Compile then
-  begin
-    ce.GetCompiled(s);
-    IFPS3DataToText(s, s);
-    //debugoutput.output.Lines.Text := s;
-    //debugoutput.visible := true;
-    Messages.Items.Add(S);
-  end;
+
 end;
+
 
 function TIDE.ceNeedFile(Sender: TObject; const OrginFileName: String;
   var FileName, Output: String): Boolean;
@@ -624,7 +1008,7 @@ begin
     Ce.MainFileName := STR_UNNAMED;
 end;
 
-{function GetErrorRowCol(const inStr: string): TBufferCoord;
+function GetErrorRowCol(const inStr: string): TPoint;
 var
   Row:string;
   Col:string;
@@ -637,21 +1021,21 @@ begin
   begin
     Row := Copy(inStr, p1+1,p2-p1-1);
     Col := Copy(inStr, p2+1,p3-p2-1);
-    Result.Char := StrToInt(Trim(Col));
-    Result.Line := StrToInt(Trim(Row));
+    Result.X := StrToInt(Trim(Col));
+    Result.Y := StrToInt(Trim(Row));
   end
   else
   begin
-    Result.Char := 1;
-    Result.Line := 1;
+    Result.X := 1;
+    Result.Y:= 1;
   end
-end;}
+end;
 
 procedure TIDE.messagesDblClick(Sender: TObject);
 begin
   //if Copy(messages.Items[messages.ItemIndex],1,7)= '[Error]' then
   //begin
-    //ed.CaretXY := GetErrorRowCol(messages.Items[messages.ItemIndex]);
+    ed.CaretXY := GetErrorRowCol(messages.Items[messages.ItemIndex]);
     ed.SetFocus;
   //end;
 end;
@@ -664,7 +1048,7 @@ begin
     Line := ed.CaretY;
     ShowModal;
     if ModalResult = mrOK then
-      //ed.CaretXY := CaretXY;
+      ed.CaretXY := CaretXY;
   finally
     Free;
     ed.SetFocus;
@@ -686,9 +1070,19 @@ begin
   ShowSearchReplaceDialog(TRUE);
 end;
 
+procedure TIDE.StepInto1Click(Sender: TObject);
+begin
+  acDebugStepIntoExecute(nil);
+end;
+
+procedure TIDE.StepOver1Click(Sender: TObject);
+begin
+
+end;
+
 procedure TIDE.Syntaxcheck1Click(Sender: TObject);
 begin
- Compile;
+
 end;
 
 procedure TIDE.edDropFiles(Sender: TObject; X, Y: Integer;

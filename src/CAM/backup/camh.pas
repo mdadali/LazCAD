@@ -62,7 +62,7 @@ type
 
   TCAMSide       = (csNone, csInside, csOutside);
 
-  TKerfType      =  (None, InnerContourCW, InnerContourCCW, OuterContourCW, OuterContourCCW);
+  TKerfType      =  (ktNone, ktInnerContourCW, ktInnerContourCCW, ktOuterContourCW, ktOuterContourCCW);
 
   TCNCCommand    = (ccNone, ccPgmStart, ccPgmStop, ccPgmEnd, ccRapidMoveON, ccRapidMoveOFF, ccToolDown, ccToolUp,
                     ccKerfInsideRight, ccKerfInsideLeft, ccKerfOutsideRight, ccKerfOutsideLeft, ccKerfOFF,
@@ -132,7 +132,7 @@ implementation
 function  CAM_GetFigureDirection(AhEntity: integer): TArcDirection;
 var hRes: TArcDirection;  hLayerName: string;
 begin
-  result := CounterClockwise;
+  result := adCounterClockwise;
 end;
 
 procedure CAM_AddCamLayers(ADocument: integer);

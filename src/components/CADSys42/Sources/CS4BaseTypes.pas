@@ -89,8 +89,9 @@ type
    the <See Type=TVector2D> type is used instead.
 }
   TPoint2D = record
-   X, Y, W: TRealType;
+    X, Y, W: TRealType;
   end;
+
 
 {: This type defines a 2D vector or direction.
 
@@ -250,6 +251,8 @@ const
   POINT_CODE_START_POINT  = -1;
   POINT_CODE_END_POINT    = -2;
   POINT_CODE_MIDDLE_POINT = -3;
+  POINT_CODE_BASE_POINT   = -4;
+
 
   TWOPI = 2 * Pi;
   SQRT2 = 1.414213562373;

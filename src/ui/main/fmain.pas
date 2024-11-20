@@ -5,11 +5,13 @@ unit fMain;
 interface
 
 uses
+  {$IFDEF WINDOWS} Windows, ShellAPI, {$ENDIF}
   LCLType, Classes, SysUtils, Forms, Types, Controls, Graphics, Dialogs,
   ComCtrls, ExtCtrls, RTTIGrids, StdCtrls, ShellCtrls, ActnList, Buttons, Menus,
   ExtDlgs, SpkToolbar, spkt_Tab, spkt_Pane, spkt_Buttons, spkt_Appearance,
   spkt_Checkboxes, BCButtonFocus, AbUnzper, Interfaces, PropEdits,
   ObjectInspector, ClipBrd,
+  IniFiles,
 
   CADSys4,
   CS4BaseTypes,
@@ -30,7 +32,8 @@ uses
   fDrawing,
   fttf2vector,
   ide_editor,
-  camh;
+  camh,
+  fHelpHtml;
 
 type
 
@@ -155,7 +158,7 @@ type
     acFormatTextstyles: TAction;
     acFormatUnits: TAction;
     acHelpAbout: TAction;
-    acHelpContents: TAction;
+    acHelpHtml: TAction;
     acInsertRasterImage: TAction;
     acLoadRuntimeApps: TAction;
     acModifyBreak: TAction;
@@ -439,6 +442,7 @@ type
     HiResImages: TImageList;
     MenuItem10: TMenuItem;
     MenuItem11: TMenuItem;
+    MenuItem12: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
@@ -878,6 +882,7 @@ type
     procedure acFileSaveExecute(Sender: TObject);
     procedure acFormatLayersExecute(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
+    procedure acHelpHtmlExecute(Sender: TObject);
     procedure acInsertRasterImageExecute(Sender: TObject);
     procedure acCAMShowHideJumpsExecute(Sender: TObject);
     procedure acModifyEditExecute(Sender: TObject);
@@ -950,6 +955,10 @@ type
     ComponentDrawing: TComponentDrawing;
     fActivePage: TTabSheet;
 
+    FMiddleMouseDown,
+    FRightMouseDown,
+    FLeftMouseDown: boolean;
+
     procedure RegisterDocument;
     procedure ChangeUserInterface;
     function  CreateNewDrawing: TTabSheet;
@@ -961,14 +970,15 @@ type
     procedure DisableControls;
     procedure EnableControls;
 
-    procedure OnViewportMouseDown(Sender: TObject;
+    procedure OnViewport2DMouseDown2D(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
-    procedure CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
-    procedure CADViewport2D1MouseUp2D(Sender: TObject;
+    procedure OnViewport2DMouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
+    procedure OnViewport2DMouseUp2D(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
 
-    procedure OnViewportMouseWheel(Sender: TObject; Shift: TShiftState;
+    procedure OnViewport2DMouseWheel(Sender: TObject; Shift: TShiftState;
         WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+
     procedure OnSelectObj(Sender: TCAD2DSelectObjectsParam; Obj: TObject2D; CtrlPt: Integer; Added: Boolean);
 
     procedure MoveObject(AObject: TObject2D);
@@ -1024,6 +1034,10 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  FMiddleMouseDown := false;
+  FRightMouseDown  := false;
+  FLeftMouseDown   := false;
+
   IsEntityDragged := false;
   fMDICount := 1;
 
@@ -1078,10 +1092,11 @@ begin
   hDrawing.Parent := TabSheet;
   hDrawing.Align := alClient;
 
-  hDrawing.CADViewport2D.OnMouseDown2D := @OnViewportMouseDown;
-  hDrawing.CADViewport2D.OnMouseMove2D := @CADViewport2D1MouseMove2D;
-  hDrawing.CADViewport2D.OnMouseUp2D   := @CADViewport2D1MouseUp2D;
-  hDrawing.CADViewport2D.OnMouseWheel  := @OnViewportMouseWheel;
+  hDrawing.CADViewport2D.OnMouseDown2D := @OnViewport2DMouseDown2D;
+  hDrawing.CADViewport2D.OnMouseUp2D   := @OnViewport2DMouseUp2D;
+  hDrawing.CADViewport2D.OnMouseMove2D := @OnViewport2DMouseMove2D;
+  hDrawing.CADViewport2D.OnMouseWheel  := @OnViewport2DMouseWheel;
+
   //TabSheet.OnMouseWheel                := @OnTabSeetModelMouseWheel;
 
   //hDrawing.LoadBlockLibraryFromFile(hDrawing.CADCmp2D.CurrentBlockLibrary);
@@ -1090,10 +1105,14 @@ begin
   result := TabSheet;
 end;
 
-procedure TfrmMain.CADViewport2D1MouseUp2D(Sender: TObject;
+procedure TfrmMain.OnViewport2DMouseUp2D(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
 var hDrawing: TDrawing;
 begin
+  FMiddleMouseDown := false;
+  FRightMouseDown  := false;
+  FLeftMouseDown   := false;
+
   hDrawing := GetDrawingFromPage(fActivePage);
   if  hDrawing = nil then exit;
 
@@ -1107,12 +1126,28 @@ begin
   end;
 end;
 
-procedure TfrmMain.OnViewportMouseDown(Sender: TObject;
+procedure TfrmMain.OnViewport2DMouseDown2D(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
 var hDrawing: TDrawing; TmpPar   : TCADPrgParam; TmpPt: TPoint2D; TmpObj: TObject2D; TmpN: Integer;
 begin
   hDrawing := GetDrawingFromPage(fActivePage);
   if hDrawing = nil then exit;
+
+  case Button of
+    mbMiddle:begin
+      FMiddleMouseDown := True;
+        MoveBasePoint    := hDrawing.CADPrg2D.CurrentViewportSnappedPoint;
+        MoveBasePoint    := hDrawing.CADViewport2D.ViewportToScreen(MoveBasePoint);
+    end;
+    mbRight:begin
+      FRightMouseDown  := True;
+    end;
+    mbLeft:begin
+      FLeftMouseDown   := True;
+    end
+  else
+    // mbExtra1, mbExtra2
+  end;
 
   if frmMain.acCAMShowHideJumps.Checked then
   begin
@@ -1153,19 +1188,46 @@ begin
   end;
 end;
 
-procedure TfrmMain.CADViewport2D1MouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
-var TmpPt: TPoint2D; TmpObj: TObject2D; TmpN: Integer; hDrawing: TDrawing; TmpSnapOpt: integer;
+procedure TfrmMain.OnViewport2DMouseMove2D(Sender: TObject; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
+var TmpPt, TmpPt1: TPoint2D; TmpObj: TObject2D; TmpN: Integer; hDrawing: TDrawing; TmpSnapOpt: integer;
+    DeltaX, DeltaY, NewStartX, NewStartY: TRealType;
 begin
   hDrawing := GetDrawingFromPage(fActivePage);
   if  hDrawing = nil then exit;
 
   TmpPt := hDrawing.CADPrg2D.CurrentViewportSnappedPoint;
 
+  if FMiddleMouseDown  then
+  begin
+    TmpPt  :=  hDrawing.CADViewport2D.ViewportToScreen(TmpPt);
+    DeltaX :=  MoveBasePoint.X - TmpPt.X;
+    DeltaY :=  MoveBasePoint.Y - TmpPt.Y;
+
+    NewStartX := CADViewport2D.VisualRect.Left   + DeltaX;
+    NewStartY := CADViewport2D.VisualRect.Bottom - DeltaY;
+
+    NewStartX :=  NewStartX - (0.0008 * NewStartX);
+    NewStartY :=  NewStartY - (0.0008 * NewStartY);
+
+    hDrawing.CADViewport2D.MoveWindow(NewStartX, NewStartY);
+    MoveBasePoint := TmpPt; //hDrawing.CADPrg2D.CurrentViewportSnappedPoint;
+    exit;
+  end;
+
   StatusBarMain.Panels[0].Text := Format('X: %6.3f   Y: %6.3f', [TmpPt.X, TmpPt.Y]);
-  //StatusBarMain.Repaint;
-  //Application.ProcessMessages;
-  hDrawing.RulerLeft.SetMark(TmpPt.Y);
-  hDrawing.RulerBottom.SetMark(TmpPt.X);
+
+  TmpPt1 := hDrawing.CADViewport2D.ViewportToScreen(TmpPt);
+  if hDrawing.RulerLeft.ShowMarker then
+  begin
+    hDrawing.RulerLeft.MarkerPosition := TmpPt1.Y;  // Vertikale Position für die linke Ruler
+    hDrawing.RulerLeft.Repaint;
+  end;
+  if hDrawing.RulerBottom.ShowMarker then
+  begin
+    hDrawing.RulerBottom.MarkerPosition := TmpPt1.X;  // Horizontale Position für die untere Ruler
+    hDrawing.RulerBottom.Repaint;
+  end;
+
 
   if GlobalObject2D = nil then exit;
 
@@ -1229,10 +1291,9 @@ begin
 end;
 
 procedure TfrmMain.MoveObject(AObject: TObject2D);
-var i: Integer; diffX, diffY: TRealType; TmpPrimitive2D: TPrimitive2D;
-     PointsCount: word;   TmpPoint2D: TPoint2D; hDrawing: TDrawing;
+var  hDrawing: TDrawing;  diffX, diffY: TRealType;
 begin
-  //if (AObJect = nil) then exit;
+  if (AObJect = nil) then exit;
   hDrawing := GetDrawingFromPage(fActivePage);
   if  hDrawing = nil then exit;
 
@@ -1244,10 +1305,9 @@ begin
 
   TIPropertyGrid1.Update;
   TIPropertyGrid1.Repaint;
-  //IsEntityDragged := true;
 end;
 
-procedure TfrmMain.OnViewportMouseWheel(Sender: TObject; Shift: TShiftState;
+procedure TfrmMain.OnViewport2DMouseWheel(Sender: TObject; Shift: TShiftState;
   WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
 var hDrawing: TDrawing;
 begin
@@ -2842,6 +2902,56 @@ begin
   frmAbout.ShowModal;
 end;
 
+procedure TfrmMain.acHelpHtmlExecute(Sender: TObject);
+var frmHelpHtml: TfrmHelpHtml; HtmlIndexFile: string;
+begin
+  fIniFile := TIniFile.Create(fIniFileName);
+  applicationh.fLanguage := applicationh.fIniFile.ReadString('UserInterface',  'Language', 'en');
+  HtmlIndexFile := applicationh.GetAppDocPath + applicationh.fLanguage + '/help/html/index.html';
+  try
+    if not FileExists(HtmlIndexFile) then
+    begin
+      ShowMessage('The file "' + HtmlIndexFile + '" was not found. Please check your installation.');
+      Exit;
+    end;
+
+    {$IFDEF WINDOWS}
+    try
+      ShellExecute(0, 'open', PChar(HtmlIndexFile), nil, nil, SW_SHOWNORMAL);
+    except
+      ShowMessage('Failed to open the browser. Please ensure a default browser is installed and configured.');
+    end;
+    {$ELSE}
+    if FileExists('/usr/bin/xdg-open') then
+    begin
+      try
+        ExecuteProcess('/usr/bin/xdg-open', [HtmlIndexFile], []);
+      except
+        ShowMessage('Failed to open the browser. Please ensure a default browser is installed and configured.');
+      end;
+    end
+    {$IFDEF DARWIN}
+    else if FileExists('/usr/bin/open') then
+    begin
+      try
+        ExecuteProcess('/usr/bin/open', [HtmlIndexFile], []);
+      except
+        ShowMessage('Failed to open the browser. Please ensure a default browser is installed and configured.');
+      end;
+    end
+    {$ENDIF}
+    else
+    begin
+      ShowMessage('No browser detected. Please ensure a default browser is installed and configured.');
+    end;
+    {$ENDIF}
+  finally
+    //frmHelpHtml.Free;
+    fIniFile.Free;
+    fIniFile := nil;
+  end;
+end;
+
 procedure TfrmMain.acInsertRasterImageExecute(Sender: TObject);
 var hDrawing: TDrawing; TmpBmp: TBitmap; TmpObject2D: TObject2D;
 begin
@@ -2853,7 +2963,7 @@ begin
      TmpBmp := TBitmap.Create;
      try
        TmpBmp.LoadFromFile(OpenPictureDialog1.FileName);
-       TmpObject2D := TBitmap2D.Create(0, Point2D(0, 0), Point2D(100, 100), TmpBmp);
+       TmpObject2D := TBitmap2D.Create(-1, Point2D(0, 0), Point2D(100, 100), TmpBmp);
        hDrawing.CADPrg2D.StartOperation(TCAD2DPositionObject, TCAD2DPositionObjectParam.Create(nil, TmpObject2D));
        hDrawing.CADViewport2D.Repaint;
      finally

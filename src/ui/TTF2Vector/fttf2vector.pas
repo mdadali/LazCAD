@@ -342,7 +342,7 @@ begin
       TmpPolygon2D.Brush.Color := ColorBox2.Selected;}
 
       CADCmp2D1.AddObject(-1, TmpPolygon2D);
-      TmpPolygon2D.fReserveInt1 := ord(OuterContourCW);
+      TmpPolygon2D.fReserveInt1 := ord(ktOuterContourCW);
       TmpPolygon2D.LayerName    := CAM_LAYER_OUTER_CONTOUR_CW;
       FirstVertex := true;
     end else

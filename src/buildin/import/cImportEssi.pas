@@ -240,15 +240,15 @@ begin
     if (hStr <> '') then
     begin
       if (hStr = fESSICmdKerfOFF) then
-        fLastKerfInfo := ord(None)
+        fLastKerfInfo := ord(ktNone)
       else if (hStr = fESSICmdKerfInsRight) then
-        fLastKerfInfo := ord(InnerContourCW)
+        fLastKerfInfo := ord(ktInnerContourCW)
       else if (hStr = fESSICmdKerfInsLeft) then
-        fLastKerfInfo := ord(InnerContourCCW)
+        fLastKerfInfo := ord(ktInnerContourCCW)
       else if (hStr = fESSICmdKerfOutsRight) then
-        fLastKerfInfo := ord(OuterContourCW)
+        fLastKerfInfo := ord(ktOuterContourCW)
       else if (hStr = fESSICmdKerfOutsLeft) then
-        fLastKerfInfo := ord(OuterContourCCW)
+        fLastKerfInfo := ord(ktOuterContourCCW)
       else if (hStr = fESSICmdRapidMoveON) then
         RapidMoveON := true
       else if (hStr = fESSICmdRapidMoveOFF) then

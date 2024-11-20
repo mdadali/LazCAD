@@ -224,13 +224,13 @@ end;
 
 procedure TfrmTTF2Vector.BrushStyleComboBox1Change(Sender: TObject);
 begin
-  TmpPolygon2D.Brush.Style := BrushStyleComboBox1.SelectedBrushStyle;
+  TmpPolygon2D.BrushStyle := BrushStyleComboBox1.SelectedBrushStyle;
   DrawGlyphs;
 end;
 
 procedure TfrmTTF2Vector.ColorBox2Change(Sender: TObject);
 begin
-  TmpPolygon2D.Brush.Color := ColorBox2.Color;
+  TmpPolygon2D.BrushColor := ColorBox2.Color;
   DrawGlyphs;
 end;
 

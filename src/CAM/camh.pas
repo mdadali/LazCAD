@@ -36,7 +36,9 @@ Y_VALUE = 2;
 I_VALUE = 3;
 J_VALUE = 4;
 
-INVALID_FLOAT_VALUE = -99999999.9;
+INVALID_FLOAT_VALUE   = -99999999.9;
+INVALID_INTEGER_VALUE = -999999999;
+
 COORDS_SEPARATOR  = ' ';
 
 
@@ -62,7 +64,7 @@ type
 
   TCAMSide       = (csNone, csInside, csOutside);
 
-  TKerfType      =  (None, InnerContourCW, InnerContourCCW, OuterContourCW, OuterContourCCW);
+  TKerfType      =  (ktNone, ktInnerContourCW, ktInnerContourCCW, ktOuterContourCW, ktOuterContourCCW);
 
   TCNCCommand    = (ccNone, ccPgmStart, ccPgmStop, ccPgmEnd, ccRapidMoveON, ccRapidMoveOFF, ccToolDown, ccToolUp,
                     ccKerfInsideRight, ccKerfInsideLeft, ccKerfOutsideRight, ccKerfOutsideLeft, ccKerfOFF,

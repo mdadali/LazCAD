@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/home/maurog/Programme/Lazarus/2.2.6/fpc/bin/x86_64-linux/fpc.sh" Date="1728975991"/>
+  <Params Value=" -Twin64 -MObjFPC -Scghi -O1 -g -gl -l -vewnibq -vh- -Fu/home/maurog/Programme/Lazarus/2.2.6/lazarus/components/PascalScript/Source/ -FU/home/maurog/Programme/Lazarus/2.2.6/lazarus/components/PascalScript/Source/lib/fcl/x86_64-win64/ pascalscriptfcl.pas"/>
+</CONFIG>

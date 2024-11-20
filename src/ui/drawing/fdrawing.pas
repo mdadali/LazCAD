@@ -39,9 +39,12 @@ type
     procedure SetFileName(AFileName: string);
     function  GetDrawingChanged: boolean;
     procedure SetDrawingChanged(AChanged: boolean);
+
+    //Viewport
+    function  GetShowRulerMarker: boolean;
+    procedure SetShowRulerMarker(AValue: boolean);
     function  GetBackgroundColor: TColor;
     procedure SetBackgroundColor(AColor: TColor);
-
     function  GetShowGrid: boolean;
     function  GetShowGridMainAxes: boolean;
     procedure SetShowGridMainAxes(AValue: boolean);
@@ -142,12 +145,15 @@ type
     property ActiveLayerVisible:     boolean      read GetActiveLayerVisible     write SetActiveLayerVisible;
     property ActiveLayerTransparent: boolean      read GetActiveLayerTransparent write SetActiveLayerTransparent;
     property ActiveLayerStreamable:  boolean      read GetActiveLayerStreamable  write SetActiveLayerStreamable;
+    property ShowRulerMarker:        boolean      read GetShowRulerMarker        write SetShowRulerMarker;
+
   published
     property FileName: string             read GetFileName; // write SetFileName;
     property Colors:      TColorsInsp     read fColorsInsp    write fColorsInsp;
     property Grid:        TGridInsp       read fGridInsp      write fGridInsp;
     property Commands:    TCmdsInsp       read fCmdsInsp      write fCmdsInsp;
     property ActiveLayer: TLayerInsp      read fLayerInsp     write fLayerInsp;
+
   end;
 
   TColorsInsp = class
@@ -219,7 +225,8 @@ type
     procedure SetPolarTrackingValue(AValue: TRealType);
     function  GetEnableDragDrop: boolean;
     procedure SetEnableDragDrop(AValue: boolean);
-
+    function  GetShowRulerMarker: boolean;
+    procedure SetShowRulerMarker(AValue: boolean);
   public
     constructor create(AOwner: TComponentDrawing);
     destructor  destroy; override;
@@ -233,6 +240,7 @@ type
     property PolarTrackingValue: TRealType read  GetPolarTrackingValue  write SetPolarTrackingValue;
     property EnableDragDrop: boolean       read  GetEnableDragDrop      write SetEnableDragDrop;
     property ShowControlPoints:  boolean   read  GetShowControlPoints   write SetShowControlPoints;
+    property ShowRulerMarker:    boolean   read  GetShowRulerMarker     write SetShowRulerMarker;
   end;
 
   TLayerInsp = class
@@ -313,8 +321,12 @@ type
     procedure CADPrg2DStopOperation(Sender: TObject;
       const Operation: TCADStateClass; const Param: TCADPrgParam);
     procedure CADViewport2DEndRedraw(Sender: TObject);
+    procedure CADViewport2DMouseDown2D(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
     procedure CADViewport2DMouseMove2D(Sender: TObject; Shift: TShiftState; WX,
       WY: TRealType; X, Y: Integer);
+    procedure CADViewport2DMouseUp2D(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
     procedure CADViewport2DPaint(Sender: TObject);
     procedure mnuModifyReverseClick(Sender: TObject);
     procedure mnuInverseClick(Sender: TObject);
@@ -463,6 +475,23 @@ begin
   fDrawing.CADCmp2D.BackGroundColor      := AColor;
   fDrawing.CADViewport2D.BackGroundColor := AColor;
   fDrawing.Changed := true;
+end;
+
+function  TComponentDrawing.GetShowRulerMarker: boolean;
+begin
+  result := applicationh.fShowRulerMarker;
+end;
+
+procedure TComponentDrawing.SetShowRulerMarker(AValue: boolean);
+begin
+  applicationh.fShowRulerMarker := AValue;
+  self.fDrawing.RulerLeft.ShowMarker := AValue;
+  self.fDrawing.RulerBottom.ShowMarker := AValue;
+
+  if applicationh.fShowRulerMarker then
+    fIniFile.WriteString('Application',   'ShowRulerMarker', 'yes')
+  else
+    applicationh.fIniFile.WriteString('Application',   'ShowRulerMarker', 'no');
 end;
 
 function  TComponentDrawing.GetShowGrid: boolean;
@@ -981,6 +1010,16 @@ begin
   fOwner.EnableDragDrop := AValue;
 end;
 
+function  TCmdsInsp.GetShowRulerMarker: boolean;
+begin
+  result := fOwner.ShowRulerMarker;
+end;
+
+procedure TCmdsInsp.SetShowRulerMarker(AValue: boolean);
+begin
+  fOwner.ShowRulerMarker := AValue;
+end;
+
 ////////////////////////////////////////////////////////////////////////////////
 //TLayerInsp////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1317,6 +1356,12 @@ begin
   //frmMain.TIPropertyGrid1.Update;
 end;
 
+procedure TDrawing.CADViewport2DMouseDown2D(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
+begin
+
+end;
+
 procedure TDrawing.CADViewport2DMouseMove2D(Sender: TObject;
   Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
 begin
@@ -1326,6 +1371,12 @@ begin
     RulerLeft.SetMark(Y);
     RulerBottom.SetMark(X);
   end; }
+end;
+
+procedure TDrawing.CADViewport2DMouseUp2D(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
+begin
+
 end;
 
 procedure TDrawing.CADViewport2DPaint(Sender: TObject);
@@ -1413,7 +1464,8 @@ constructor TDrawing.Create(TheOwner: TComponent);
 var TmpStream: TFileStream;
 begin
   inherited;
-
+  RulerLeft.ShowMarker   := applicationh.fShowRulerMarker;
+  RulerBottom.ShowMarker := applicationh.fShowRulerMarker;
   fFileName := '';
   fChanged  := false;
 

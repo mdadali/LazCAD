@@ -699,7 +699,7 @@ type
   TObject2D = class;
   TGraphicObjList = class;
   TGraphicObject = class;
-
+  TBlock2D = class;
   TContainer2D = class; //added
 
 {: This type defines a message handler function that is called
@@ -1186,7 +1186,7 @@ type
 }
 
 //The Object will be moved
-TPoint2DInsp = class
+TMiddePoint2DInsp = class
   fOwner: TGraphicObject;
   fPointNr: word;
   function  GetX: TRealType;
@@ -1194,7 +1194,7 @@ TPoint2DInsp = class
   function  GetY: TRealType;
   procedure SetY(AValue: TRealType);
 public
-  constructor create(AOwner: TGraphicObject; APointNr: word); // 0 = MiddlePoint
+  constructor create(AOwner: TGraphicObject);
 published
   property  X: TRealType read GetX  write SetX;
   property  Y: TRealType read GetY  write SetY;
@@ -1202,7 +1202,7 @@ end;
 
 TPosition2DInsp = class(TPersistent)
   fOwner: TGraphicObject;
-  fMiddlePoint: TPoint2DInsp;
+  fMiddlePoint: TMiddePoint2DInsp;
   function  GetTop: TRealType;
   procedure SetTop(ATop: TRealType);
   function  GetLeft: TRealType;
@@ -1219,7 +1219,7 @@ published
   property Left:   TRealType read GetLeft    write SetLeft;
   property Bottom: TRealType read GetBottom  write SetBottom;
   property Right:  TRealType read GetRight   write SetRight;
-  property MiddlePoint: TPoint2DInsp  read fMiddlePoint write fMiddlePoint;
+  property MiddlePoint: TMiddePoint2DInsp  read fMiddlePoint write fMiddlePoint;
 end;
 
 TGrObjectInsp = class(TPersistent)
@@ -3815,13 +3815,17 @@ end;
      <LI=<I=OnMouseMove> is used to update the mark position on the
      ruler <See Method=TRuler@SetMark>.>
   }
+
   TRuler = class(TCustomControl)
   private
+    fOffscreenBitmap: TBitmap; //added Offscreen-Buffer für Double-Buffering
     fOwnerView: TCADViewport;
     fStepSize: TRealType;
     fFontSize, fSize, fStepDivisions: Integer;
     fOrientation: TRulerOrientationType;
     fTicksColor: TColor;
+    fHasMarker: Boolean;  // Neues Feld für die Markierungsanzeige
+    fMarkerPosition: TRealType; // Speichert die aktuelle Marker-Position
 
     procedure SetTicksColor(C: TColor);
     procedure SetOwnerView(V: TCADViewport);
@@ -3830,85 +3834,30 @@ end;
     procedure SetFontSize(S: Integer);
     procedure SetStepSize(S: TRealType);
     procedure SetStepDivisions(D: Integer);
+    procedure SetShowMarker(Value: Boolean);  // Setter für ShowMarker-Property
   protected
     procedure WMEraseBkgnd(var Message: TLMEraseBkgnd); message LM_ERASEBKGND;
   public
-    {: This is the constructor of the control.
-
-       It creates a vertical white ruler with size of 20 and
-       a step division of 5.
-    }
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure Paint; override;
-    {: This method is used to move the position marker of the ruler.
-
-       A ruler may have a position marker that is used to show the
-       current viewport position on the ruler.
-
-       <I=Value> is the position on the ruler of the mouse in view
-       plane reference coordinate. The value to be passed depends
-       on the orientation of the ruler. For example a vertical ruler
-       may want to show the Y coordinates of the current mouse
-       position on the view plane.
-    }
     procedure SetMark(Value: TRealType);
+
+    // Neue öffentliche Eigenschaft zur Einstellung der Markerposition
+    property MarkerPosition: TRealType read fMarkerPosition write fMarkerPosition;
   published
     property Align;
-    {: This property contains the linked viewport used for the alignment
-       of the ruler
-
-       The ruler adjust its range by using the <See Property=TCADViewport@VisualRect>
-       property.
-    }
     property LinkedViewport: TCADViewport read fOwnerView write SetOwnerView;
-    {: This property contains the background color used to paint the
-       ruler background.
-
-       By default its value is clWhite.
-    }
     property Color default clWhite;
-    {: This property contains the color of the thick mark used to
-       show the step division of the ruler.
-
-       By default it is clBlack.
-    }
     property TicksColor: TColor read fTicksColor write SetTicksColor default clBlack;
-    {: This property contains the orientation of the ruler.
-
-       See <See Type=TRulerOrientationType> for details.
-
-       By default it is <I=otVertical>.
-    }
     property Orientation: TRulerOrientationType read fOrientation write SetOrientation default otVertical;
-    {: This property contains the step between two ticks. If the
-       zoom is too close, this value is automatically adjusted so the
-       ticks are always visible.
-
-       By default it is 20.
-    }
     property StepSize: TRealType read fStepSize write SetStepSize;
-    {: This property defines the division on the ruler. The
-       division are showed with a large tick and with the number of
-       its value.
-
-       By default it is 5.
-    }
     property StepDivisions: Integer read fStepDivisions write SetStepDivisions default 5;
-    {: This property contains the width (height) of the vertical
-       (horizontal) ruler.
-
-       If the value is small it will be difficulty to read the values
-       of the divisions.
-
-       By default it is 20.
-    }
     property Size: Integer read fSize write SetSize default 20;
-    {: This property contains the size of the font used to show
-       the values of the divisions.
-
-       By default it is 6.
-    }
     property FontSize: Integer read fFontSize write SetFontSize default 6;
+
+    // Neue Property, um die Anzeige des Markers zu steuern
+    property ShowMarker: Boolean read fHasMarker write SetShowMarker default False;
   end;
 
   {: This class defines an object that can be used to extend the handling function
@@ -4084,6 +4033,7 @@ end;
     function  GetMiddlePointY: TRealType;
     function  GetMiddlePointX: TRealType;
     function  GetMiddlePoint: TPoint2D;
+    procedure SetMiddlePoint(APoint2D: TPoint2D);
 
 
     function  GetAngle: TRealType;          virtual;
@@ -4358,7 +4308,7 @@ end;
     property Top:    TRealType    read  GetTop        write SetTop;
 
     //property Angle:  TRealType read  GetAngle write SetAngle;
-    property MiddLePoint: TPoint2D   read GetMiddlePoint;
+    property MiddLePoint: TPoint2D   read GetMiddlePoint write SetMiddlePoint;
     property MiddLePointX: TRealType read GetMiddlePointX write SetMiddlePointX;
     property MiddLePointY: TRealType read GetMiddlePointY write SetMiddlePointY;
 
@@ -4557,6 +4507,38 @@ end;
     property IsLibraryBlock: Boolean read fLibraryBlock write fLibraryBlock;
   end;
 
+  TPoint2DInsp = class
+    fOwner: ^TPoint2D;
+    fX, fY, fW: TRealType;
+    function  GetX: TRealType;
+    procedure SetX(AValue: TRealType);
+    function  GetY: TRealType;
+    procedure SetY(AValue: TRealType);
+    function  GetW: TRealType;
+    procedure SetW(AValue: TRealType);
+  public
+    constructor create(var AOwner: TPoint2D);
+    destructor destroy; override;
+  published
+    property X: TRealType read GetX write SetX;
+    property Y: TRealType read GetY write SetY;
+    property W: TRealType read GetW write SetW;
+  end;
+
+  TBlock2DInsp = class
+    fOwner: TBlock2D;
+    fOriginPoint: TPoint2DInsp;
+    function  GetOriginPoint: TPoint2D;
+    procedure SetOriginPoint(APoint2D: TPoint2D);
+    function  GetSourceName: string;
+  public
+    constructor create(AOwner: TBlock2D);
+    destructor  destroy; override;
+  published
+    property SourceName: string read GetSourceName;
+    property OriginPoint: TPoint2DInsp read fOriginPoint write fOriginPoint;
+  end;
+
   {: This class defines an instance of a <See Class=TSourceBlock2D>.
 
      A block is an istance of a source block, namely a copy of the
@@ -4569,6 +4551,7 @@ end;
   }
   TBlock2D = class(TObject2D)
   private
+    fBlock2DInsp: TBlock2DInsp;
     { Reference to the source block. }
     fSourceBlock: TSourceBlock2D;
     fSourceName: TSourceBlockName;
@@ -4630,6 +4613,8 @@ end;
        block is loaded back.
     }
     property SourceName: TSourceBlockName read fSourceName;
+  published
+    property Block2D: TBlock2DInsp read fBlock2DInsp write fBlock2DInsp;
   end;
 
   {: This class defines a specialization of a <See Class=TCADCmp>
@@ -4963,7 +4948,12 @@ end;
     property OnMouseUp2D: TMouseEvent2D read FOnMouseUp2D write FOnMouseUp2D;
 
     //added
-    property OnMouseWheel; // TMouseWheelEvent read  FMouseWheelEvent write FMouseWheelEvent;
+    property OnMouseWheel;
+    property OnMouseWheelDown;
+    property OnMouseWheelUp;
+    property OnMouseWheelHorz;
+    property OnMouseWheelLeft;
+    property OnMouseWheelRight;
   end;
 
 { -----===== Starting Cs4CADPrgClass.pas =====----- }
@@ -8890,43 +8880,30 @@ begin
 end;
 
 
-//TPoint2DInsp//////////////////////////////////////////////////////////////////
-constructor TPoint2DInsp.create(AOwner: TGraphicObject; APointNr: word); // 0 = MiddlePoint
+//TMiddePoint2DInsp/////////////////////////////////////////////////////////////
+constructor TMiddePoint2DInsp.create(AOwner: TGraphicObject);
 begin
   fOwner   := AOwner;
-  fPointNr := APointNr;
 end;
 
-function  TPoint2DInsp.GetX: TRealType;
+function  TMiddePoint2DInsp.GetX: TRealType;
 begin
-  case  fPointNr of
-   0: result := TObject2D(fOwner).GetMiddlePointX;
-   1: ; //.........
-  end;
+  result := TObject2D(fOwner).GetMiddlePointX;
 end;
 
-procedure TPoint2DInsp.SetX(AValue: TRealType);
+procedure TMiddePoint2DInsp.SetX(AValue: TRealType);
 begin
-  case  fPointNr of
-   0: TObject2D(fOwner).SetMiddlePointX(AValue);
-   1: ; //.........
-  end;
+   TObject2D(fOwner).SetMiddlePointX(AValue);
 end;
 
-function  TPoint2DInsp.GetY: TRealType;
+function  TMiddePoint2DInsp.GetY: TRealType;
 begin
-  case  fPointNr of
-   0: result := TObject2D(fOwner).GetMiddlePointY;
-   1: ; //.........
-  end;
+   result := TObject2D(fOwner).GetMiddlePointY;
 end;
 
-procedure TPoint2DInsp.SetY(AValue: TRealType);
+procedure TMiddePoint2DInsp.SetY(AValue: TRealType);
 begin
-  case  fPointNr of
-   0: TObject2D(fOwner).SetMiddlePointY(AValue);
-   1: ; //.........
-  end;
+  TObject2D(fOwner).SetMiddlePointY(AValue);
 end;
 
 ///////////////////////////////////////////////////////
@@ -8935,7 +8912,7 @@ constructor TPosition2DInsp.create(AOwner: TGraphicObject);
 begin
   inherited create;
   fOwner := AOwner;
-  fMiddlePoint := TPoint2DInsp.create(fOwner, 0);  // 0 = MiddlePoint
+  fMiddlePoint := TMiddePoint2DInsp.create(fOwner);
 end;
 
 destructor TPosition2DInsp.destroy;
@@ -11973,6 +11950,12 @@ end;
 constructor TRuler.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+
+  //added
+  fOffscreenBitmap := TBitmap.Create; // Initialisierung des Offscreen-Buffer
+  fOffscreenBitmap.SetSize(Width, Height);
+  //
+
   fOwnerView := nil;
   fSize := 20;
   fFontSize := 6;
@@ -11986,6 +11969,169 @@ begin
   Height := fSize * 4;
 end;
 
+destructor TRuler.Destroy;
+begin
+  fOffscreenBitmap.Free; //added Buffer freigeben
+  inherited Destroy;
+end;
+
+procedure TRuler.SetShowMarker(Value: Boolean);
+begin
+  if fHasMarker <> Value then
+  begin
+    fHasMarker := Value;
+    Invalidate;  // Neuzeichnen der Ruler anfordern
+  end;
+end;
+
+procedure TRuler.Paint;
+var
+  TmpStep, TmpVal: TRealType;
+  TmpPt: TPoint;
+  LastPt, MinSize: Integer;
+begin
+  if fOwnerView = nil then
+    Exit;
+
+  // Erstellen des Offscreen-Buffer-Bildes, falls nicht vorhanden oder Größe sich geändert hat
+  if (fOffscreenBitmap = nil) or (fOffscreenBitmap.Width <> Width) or (fOffscreenBitmap.Height <> Height) then
+  begin
+    if fOffscreenBitmap <> nil then
+      fOffscreenBitmap.Free;
+    fOffscreenBitmap := TBitmap.Create;
+    fOffscreenBitmap.SetSize(Width, Height);
+  end;
+
+  with fOffscreenBitmap.Canvas do
+  begin
+    Font.Size := fFontSize;
+    Font.Color := fTicksColor;
+    Brush.Color := Color;
+    Pen.Color := fTicksColor;
+    Pen.Width := 1;
+    FillRect(ClientRect);  // Hintergrund löschen
+
+    case fOrientation of
+      otOrizontal: begin
+        TmpVal := Trunc(fOwnerView.VisualRect.Left / fStepSize) * fStepSize;
+        TmpStep := fStepSize;
+        MinSize := TextWidth(Format('%12.2f', [TmpVal]));
+
+        // Berechne den optimalen Schritt (Step)
+        TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(TmpVal - fStepSize, 0)));
+        LastPt := TmpPt.X;
+        while TmpVal <= fOwnerView.VisualRect.Right do
+        begin
+          TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(TmpVal, 0)));
+          if Abs(TmpPt.X - LastPt) > MinSize then
+            Break;
+          TmpVal := TmpVal + TmpStep;
+          TmpStep := TmpStep * 2.0;
+        end;
+
+        // Zeichne die Haupt-Markierungen und Zahlen auf der Ruler
+        TmpVal := Trunc(fOwnerView.VisualRect.Left / TmpStep) * TmpStep;
+        if TmpStep / fOwnerView.VisualRect.Right < 0.01 then
+          Exit;
+
+        while TmpVal <= fOwnerView.VisualRect.Right do
+        begin
+          TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(TmpVal, 0)));
+          MoveTo(TmpPt.X, ClientRect.Top);
+          LineTo(TmpPt.X, ClientRect.Bottom);
+          TextOut(TmpPt.X, ClientRect.Bottom - Font.Size - 2, Format('%6.2f', [TmpVal]));
+          TmpVal := TmpVal + TmpStep;
+        end;
+
+        // Unterteilungen (Subdivisions)
+        if fStepDivisions > 0 then
+        begin
+          TmpStep := TmpStep / fStepDivisions;
+          TmpVal := Trunc(fOwnerView.VisualRect.Left / TmpStep) * TmpStep;
+          while TmpVal <= fOwnerView.VisualRect.Right do
+          begin
+            TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(TmpVal, 0)));
+            MoveTo(TmpPt.X, ClientRect.Top);
+            LineTo(TmpPt.X, ClientRect.Top + fSize div 2);
+            TmpVal := TmpVal + TmpStep;
+          end;
+        end;
+      end;
+
+      otVertical: begin
+        TmpVal := Trunc(fOwnerView.VisualRect.Bottom / fStepSize) * fStepSize;
+        TmpStep := fStepSize;
+        MinSize := 2 * Font.Size;
+
+        // Berechne den optimalen Schritt (Step)
+        TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(0, TmpVal - fStepSize)));
+        LastPt := TmpPt.Y;
+        while TmpVal <= fOwnerView.VisualRect.Top do
+        begin
+          TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(0, TmpVal)));
+          if Abs(TmpPt.Y - LastPt) > MinSize then
+            Break;
+          TmpVal := TmpVal + TmpStep;
+          TmpStep := TmpStep * 2.0;
+        end;
+
+        // Zeichne die Haupt-Markierungen und Zahlen auf der Ruler
+        TmpVal := Trunc(fOwnerView.VisualRect.Bottom / TmpStep) * TmpStep;
+        if TmpStep / fOwnerView.VisualRect.Right < 0.01 then
+          Exit;
+
+        while TmpVal <= fOwnerView.VisualRect.Top do
+        begin
+          TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(0, TmpVal)));
+          MoveTo(ClientRect.Left, TmpPt.Y);
+          LineTo(ClientRect.Right, TmpPt.Y);
+          TextOut(ClientRect.Left + fSize div 2, TmpPt.Y, Format('%-6.2f', [TmpVal]));
+          TmpVal := TmpVal + TmpStep;
+        end;
+
+        // Unterteilungen (Subdivisions)
+        if fStepDivisions > 0 then
+        begin
+          TmpStep := TmpStep / fStepDivisions;
+          TmpVal := Trunc(fOwnerView.VisualRect.Bottom / TmpStep) * TmpStep;
+          while TmpVal <= fOwnerView.VisualRect.Top do
+          begin
+            TmpPt := Point2DToPoint(fOwnerView.ViewportToScreen(Point2D(0, TmpVal)));
+            MoveTo(ClientRect.Left, TmpPt.Y);
+            LineTo(ClientRect.Left + fSize div 2, TmpPt.Y);
+            TmpVal := TmpVal + TmpStep;
+          end;
+        end;
+      end;
+    end;
+
+    // Markierung für die aktuelle Position zeichnen
+    if fHasMarker then
+    begin
+      Pen.Width := 3;
+      Pen.Color := clBlack;
+      case fOrientation of
+        otOrizontal:
+          begin
+            MoveTo(round(fMarkerPosition), ClientRect.Top);
+            LineTo(round(fMarkerPosition), ClientRect.Bottom);
+          end;
+        otVertical:
+          begin
+            MoveTo(ClientRect.Left, round(fMarkerPosition));
+            LineTo(ClientRect.Right, round(fMarkerPosition));
+          end;
+      end;
+      // Stift zurücksetzen
+      Pen.Width := 1;
+      Pen.Color := fTicksColor;
+    end;
+  end;
+  // Kopiere den Offscreen-Buffer auf die sichtbare Canvas der Komponente
+  Canvas.Draw(0, 0, fOffscreenBitmap);
+end;
+
+{
 procedure TRuler.Paint;
 var
   TmpStep, TmpVal: TRealType;
@@ -12089,8 +12235,9 @@ begin
      end;
    end;
 end;
+}
 
-procedure TRuler.SetMark(Value: TRealType);
+{procedure TRuler.SetMark(Value: TRealType);
 var
   TmpPt: TPoint;
 begin
@@ -12115,7 +12262,28 @@ begin
      end;
    end;
 end;
+}
+procedure TRuler.SetMark(Value: TRealType);
+begin
+  // Lösche den Offscreen-Buffer
+  fOffscreenBitmap.Canvas.FillRect(fOffscreenBitmap.Canvas.ClipRect);
 
+  // Zeichne die Markierung im Offscreen-Buffer
+  fOffscreenBitmap.Canvas.Pen.Color := clRed;
+  if fOrientation = otVertical then
+  begin
+    fOffscreenBitmap.Canvas.MoveTo(0, Round(Value));
+    fOffscreenBitmap.Canvas.LineTo(fSize, Round(Value));
+  end
+  else
+  begin
+    fOffscreenBitmap.Canvas.MoveTo(Round(Value), 0);
+    fOffscreenBitmap.Canvas.LineTo(Round(Value), fSize);
+  end;
+
+  // Invalidate, um die Paint-Methode auszulösen
+  Invalidate;
+end;
 // =====================================================================
 // TObject2DHandler
 // =====================================================================
@@ -12521,6 +12689,15 @@ begin
   ToPt   := Point2D(self.GetMiddlePointX, AValue);
   self.MoveTo(ToPt, DragPt);
 end;
+
+procedure TObject2D.SetMiddlePoint(APoint2D: TPoint2D);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := self.GetMiddlePoint;
+  ToPt   := APoint2D;
+  self.MoveTo(ToPt, DragPt);
+end;
+
 //End TObject2D
 
 
@@ -13120,7 +13297,7 @@ end;
 constructor TBlock2D.Create(ID: LongInt; const Source: TSourceBlock2D);
 begin
   inherited Create(ID);
-
+  fBlock2DInsp := TBlock2DInsp.create(self);
   if not Assigned(Source) then
    Raise Exception.Create('TBlock2D.Create: Invalid parameter');
   fOriginPoint := Point2D(0, 0);
@@ -13134,6 +13311,7 @@ end;
 
 destructor TBlock2D.Destroy;
 begin
+  fBlock2DInsp.Free;
   if Assigned(fSourceBlock) and (fSourceBlock.fNReference > 0) then
    Dec(fSourceBlock.fNReference);
   inherited Destroy;
@@ -13143,6 +13321,7 @@ constructor TBlock2D.CreateFromStream(const Stream: TStream; const Version: TCAD
 begin
   { Load the standard properties }
   inherited;
+  fBlock2DInsp := TBlock2DInsp.create(self);
   with Stream do
    begin
      { TCADCmp will use the value of FSourceName to find out the reference of the source block. }
@@ -13253,6 +13432,88 @@ begin
       TmpPt := Pt;
      Result := FSourceBlock.OnMe(TmpPt, Aperture, Distance);
    end;
+end;
+
+
+//TPoint2DInsp//////////////////////////////////////////////////////////////////
+constructor TPoint2DInsp.create(var AOwner: TPoint2D);
+begin
+  fOwner := @AOwner;
+end;
+
+destructor  TPoint2DInsp.destroy;
+begin
+  inherited;
+end;
+
+function  TPoint2DInsp.GetX: TRealType;
+begin
+  result := fOwner.X;
+end;
+
+procedure TPoint2DInsp.SetX(AValue: TRealType);
+var TmpPoint2D: TPoint2D;
+begin
+  TmpPoint2D.X := AValue;
+  TmpPoint2D.Y := fOwner.Y;
+  TmpPoint2D.W := fOwner.W;
+  fOwner^ := TmpPoint2D;
+end;
+
+function  TPoint2DInsp.GetY: TRealType;
+begin
+  result := fOwner.Y;
+end;
+
+procedure TPoint2DInsp.SetY(AValue: TRealType);
+var TmpPoint2D: TPoint2D;
+begin
+  TmpPoint2D.X := fOwner.X;
+  TmpPoint2D.Y := AValue;
+  TmpPoint2D.W := fOwner.W;
+  fOwner^ := TmpPoint2D;
+end;
+
+function  TPoint2DInsp.GetW: TRealType;
+begin
+  result := fOwner.W;
+end;
+
+procedure TPoint2DInsp.SetW(AValue: TRealType);
+var TmpPoint2D: TPoint2D;
+begin
+  TmpPoint2D.X := fOwner.X;
+  TmpPoint2D.Y := fOwner.Y;
+  TmpPoint2D.W := AValue;
+  fOwner^ := TmpPoint2D;
+end;
+
+//TBlock2DInsp//////////////////////////////////////////////////////////////////
+constructor TBlock2DInsp.create(AOwner: TBlock2D);
+begin
+  fOwner := AOwner;
+  self.fOriginPoint := TPoint2DInsp.create(fOwner.fOriginPoint);
+end;
+
+destructor  TBlock2DInsp.destroy;
+begin
+  fOriginPoint.Free;
+  inherited;
+end;
+
+function  TBlock2DInsp.GetOriginPoint: TPoint2D;
+begin
+  result := fOwner.OriginPoint;
+end;
+
+procedure TBlock2DInsp.SetOriginPoint(APoint2D: TPoint2D);
+begin
+  fOwner.OriginPoint := APoint2D;
+end;
+
+function TBlock2DInsp.GetSourceName: string;
+begin
+  result := fOwner.SourceName;
 end;
 
 // =====================================================================

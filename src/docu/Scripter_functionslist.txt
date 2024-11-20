@@ -1,0 +1,425 @@
+Also auf Scripter-IDE formular sind folgende komponenten schon plaziert:
+PlugIn,
+ComObj,
+DateUtils,
+Std,
+StdCtrls,
+DB,
+Controls,
+Forms.
+
+Diese komponenten musst Du als erklärung nicht auflösen,
+einfach hinzugügen. Ein Scriptentwickler sollte schon wissen, wofür diese komponenten gut sind. 
+Du kannst einfach so ähnlich formulieren: 
+Somit alle funktionen die diese komponenten zur verfügung stellen sind in scripter erreicbar.
+
+Zusatlich haben wir mit dir zusammen folgende units erstellt:
+
+unit MathScriptInterface enthält folgende funktionen:
+  function Tan(X: TRealType): TRealType;
+  function ArcSin(X: TRealType): TRealType';
+  function ArcCos(X: TRealType): TRealType;
+  function ArcTan(X: ValReal): ValReal;
+  function ArcTanHelper(X: Extended): Extended;
+  function ArcTan2(Y, X: TRealType): TRealType;
+
+  function IntPower(Base: Extended; Exponent: Integer): Extended;
+  function Ldexp(X: Extended; Exponent: Integer): Extended;
+  function LnXp1(X: Extended): Extended;
+  function Log10(X: Extended): Extended;
+  function Log2(X: Extended): Extended;
+  function LogN(Base: Extended; X: Extended): Extended;
+  function Power(Base: Extended; Exponent: Extended;
+
+  function DegToRad(Degrees: TRealType;
+  function RadToDeg(Radians: TRealType;
+
+  function Factorial(X: Integer);
+  function RoundTo(Value: TRealType; Decimals: Integer);
+  function RandomRange(Min, Max: Integer);
+
+  function AngleBetweenPoints2D(P1, P2: TPoint2D);
+  procedure SwapPoints2D(var P1, P2: TPoint2D);
+  function DistanceBetweenPoints2D(P1, P2: TPoint2D);
+  function MidpointBetweenPoints2D(P1, P2: TPoint2D);
+
+unit DialogsScriptInterface:
+
+  function OpenFileDialog(const Title, InitialDir, Filter: string);
+  function SaveFileDialog(const Title, InitialDir, Filter: string);
+  function SelectDirectoryDialog(const Title, InitialDir: string);
+  function FontDialog: string;
+  function ColorDialog: TColor;
+  function ColorButtonDialog: TColor;
+  function PrintDialog: Boolean;
+  function PrinterSetupDialog: Boolean;
+  function PageSetupDialog: Boolean;
+  function OpenPictureDialog: string;
+  function SavePictureDialog: string;
+  function CalendarDialog: TDateTime;
+  function CalculatorDialog: Double;
+
+und schlisslich unit CAD2Scripinterface:
+
+procedure GetActiveDocument;
+
+function CAD_Rect2D(var Left, Bottom, Right, Top: TRealType): TRect2D;
+
+procedure CAD_Regen;
+procedure CAD_Repaint;
+procedure CAD_Clear;
+procedure CAD_ZoomToExtentions;
+
+function CAD_DrawLine2D(AID: longint;  var P0, P1: TPoint2D): integer;
+function CAD_DrawEllipticalArc2D(AID: longint; var P0, P1: TPoint2D; SA, EA: TRealType; ADirection: TArcDirection): longint;
+function CAD_DrawCircularArc2D(AID: longint; var CP: TPoint2D; R, SA, EA: TRealType; ADirection: TArcDirection): longint;
+function CAD_DrawCircle2D(AID: longint; var CP: TPoint2D; R, SA: TRealType; ADirection: TArcDirection): longint;
+function CAD_DrawPolyline2D(AID: longint): longint;
+function CAD_DrawFrame2D(AID: longint; var P0, P1: TPoint2D; ADirection: TArcDirection): longint;
+function CAD_DrawPolygon2D(AID: longint; var ADirection: TArcDirection): longint;
+function CAD_DrawBSPline2D(AID: longint): longInt;
+function CAD_DrawEllipse2D(AID: longint; var P0, P1: TPoint2D; ACurvePrecision: word; ADirection: TArcDirection): longint;
+function CAD_DrawSector2D(AID:  longint; var CP: TPoint2D; R, SA, EA: TRealType; ACurvePrecision: word; ADirection: TArcDirection): longint;
+function CAD_DrawSegment2D(AID: longint; var CP: TPoint2D; R, SA, EA: TRealType; ACurvePrecision: word; ADirection: TArcDirection): longint;
+function CAD_DrawSymetricSymbol2D(AID:  longint; var CP: TPoint2D; R, SA: TRealType; ACurvePrecision: word; ADirection: TArcDirection): longint;
+function CAD_DrawASymetricSymbol2D(AID: longint; var P0, P1: TPoint2D; R, SA: TRealType; ACurvePrecision: word; ADirection: TArcDirection): longint;
+function CAD_DrawText2D(AID: longint; var ARect2D: TRect2D; AHeight: TrealType; AStr: String): longint;
+function CAD_DrawJustifiedVectText2D(AID: longint; AFontIndex: word; var ARect2D: TRect2D; AHeight: TrealType; AStr: string): longint;
+function CAD_DrawBitmap2D(AID: longint; var P0, P1: TPoint2D; AFileName: string): longInt;
+
+//MakeBlock2D
+
+function CAD_Polyline2DAddPoint2D(AIDX: longint; var APoint2D: TPoint2D): longint;
+function CAD_Polygon2DAddPoint2D(AIDX: longint; var APoint2D: TPoint2D): longint;
+function CAD_BSpline2DAddPoint2D(AIDX: longint; var APoint2D: TPoint2D): longint;
+
+//Brush
+function CAD_GetBrushSource(AID: longint): TBrushSource;
+function CAD_SetBrushSource(AID: longint; AValue: TBrushSource): boolean;
+function CAD_GetBrushColor(AID: longint): TColor;
+function CAD_SetBrushColor(AID: longint; AValue: TColor): boolean;
+function CAD_GetBrushStyle(AID: longint): TBrushStyle;
+function CAD_SetBrushStyle(AID: longint; AValue: TBrushStyle): boolean;
+
+//TGraphicObject////////////////////////////////////////////////////////////////
+function CAD_GrObjGetClassName(AID: longint): string;
+function CAD_GrObjGetEnabled(AID: longint): boolean;
+function CAD_GrObjSetEnabled(AID: longint; AValue: boolean): boolean;
+function CAD_GrObjGetVisible(AID: longint): boolean;
+function CAD_GrObjSetVisible(AID: longint; AValue: boolean): boolean;
+function CAD_GrObjGetLayerIndex(AID: longint): word;
+function CAD_GrObjSetLayerIndex(AID: longint; AValue: word): boolean;
+function CAD_GrObjGetLayerName(AID: longint): string;
+function CAD_GrObjSetLayerName(AID: longint; AValue: string): boolean;
+function CAD_GrObjGetTag(AID: longint): integer;
+function CAD_GrObjSetTag(AID: longint; AValue: integer): boolean;
+
+//TObject2//////////////////////////////////////////////////////////////////////
+function CAD_Obj2DGetAngle(AID: longint): TRealType;
+function CAD_Obj2DSetAngle(AID: longint; AValue: TRealType): boolean;
+
+function CAD_Obj2DGetBottom(AID: longint): TRealType;
+function CAD_Obj2DSetBottom(AID: longint; var AValue: TRealType): boolean;
+function CAD_Obj2DGetLeft(AID: longint): TRealType;
+function CAD_Obj2DSetLeft(AID: longint; var AValue: TRealType): boolean;
+function CAD_Obj2DGetRight(AID: longint): TRealType;
+function CAD_Obj2DSetRight(AID: longint; var AValue: TRealType): boolean;
+function CAD_Obj2DGetTop(AID: longint): TRealType;
+function CAD_Obj2DSetTop(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Obj2DGetMiddlePoint2D(AID: longint): TPoint2D;
+function CAD_Obj2DSetMiddlePoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_Obj2DGetMiddlePoint2DX(AID: longint): TRealType;
+function CAD_Obj2DSetMiddlePoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_Obj2DGetMiddlePoint2DY(AID: longint): TRealType;
+function CAD_Obj2DSetMiddlePoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_Obj2DGetMiddlePoint2DW(AID: longint): TRealType;
+function CAD_Obj2DSetMiddlePoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+
+//TPrimitive2D//////////////////////////////////////////////////////////////////
+function CAD_Prim2DGetPenSource(AID: longint): TPenSource;
+function CAD_Prim2DSetPenSource(AID: longint; AValue: TPenSource): boolean;
+function CAD_Prim2DSetPenColor(AID:integer; AColor: TColor): boolean;
+function CAD_Prim2DGetPenColor(AID: longint): TColor;
+function CAD_Prim2DSetPenWidth(AID:integer; AValue: word): boolean;
+function CAD_Prim2DGetPenWidth(AID: longint): word;
+function CAD_Prim2DSetPenStyle(AID:integer; AValue: TPenStyle): boolean;
+function CAD_Prim2DGetPenStyle(AID: longint): TPenStyle;
+
+//TSimplePrimitive2D////////////////////////////////////////////////////////////
+function CAD_SimplePrim2DGetStartPoint2D(AID: longint): TPoint2D;
+function CAD_SimplePrim2DSetStartPoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_SimplePrim2DGetStartPoint2DX(AID: longint): TRealType;
+function CAD_SimplePrim2DSetStartPoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_SimplePrim2DGetStartPoint2DY(AID: longint): TRealType;
+function CAD_SimplePrim2DSetStartPoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_SimplePrim2DGetStartPoint2DW(AID: longint): TRealType;
+function CAD_SimplePrim2DSetStartPoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_SimplePrim2DGetEndPoint2D(AID: longint): TPoint2D;
+function CAD_SimplePrim2DSetEndPoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_SimplePrim2DGetEndPoint2DX(AID: longint): TRealType;
+function CAD_SimplePrim2DSetEndPoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_SimplePrim2DGetEndPoint2DY(AID: longint): TRealType;
+function CAD_SimplePrim2DSetEndPoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_SimplePrim2DGetEndPoint2DW(AID: longint): TRealType;
+function CAD_SimplePrim2DSetEndPoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_SimplePrim2DGetShowDirection(AID: longint): boolean;
+function CAD_SimplePrim2DSetShowDirection(AID: longint; var AValue: boolean): boolean;
+
+function CAD_SimplePrim2DGetObjectLength(AID: longint): TRealType;
+
+
+//TCircularArc2D////////////////////////////////////////////////////////////////
+function CAD_CircularArc2DGetStartAngle(AID: longint): TRealType;
+function CAD_CircularArc2DSetStartAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_CircularArc2DGetEndAngle(AID: longint): TRealType;
+function CAD_CircularArc2DSetEndAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_CircularArc2DGetArcAngle(AID: longint): TRealType;
+function CAD_CircularArc2DSetArcAngle(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_CircularArc2DGetCenterPoint2D(AID: longint): TPoint2D;
+function CAD_CircularArc2DSetCenterPoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_CircularArc2DGetCenterPoint2DX(AID: longint): TRealType;
+function CAD_CircularArc2DSetCenterPoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_CircularArc2DGetCenterPoint2DY(AID: longint): TRealType;
+function CAD_CircularArc2DSetCenterPoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_CircularArc2DGetCenterPoint2DW(AID: longint): TRealType;
+function CAD_CircularArc2DSetCenterPoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_CircularArc2DGetRadius(AID: longint): TRealType;
+function CAD_CircularArc2DSetRadius(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_CircularArc2DGetDirection(AID: longint): TArcDirection;
+function CAD_CircularArc2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_CircularArc2DGetCurvePrecision(AID: longint): word;
+function CAD_CircularArc2DSetCurvePrecision(AID: longint; var AValue: word): boolean;
+
+
+//TEllipticalArc2D//////////////////////////////////////////////////////////////
+function CAD_ElliArc2DGetStartAngle(AID: longint): TRealType;
+function CAD_ElliArc2DSetStartAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_ElliArc2DGetEndAngle(AID: longint): TRealType;
+function CAD_ElliArc2DSetEndAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_ElliArc2DGetArcAngle(AID: longint): TRealType;
+function CAD_ElliArc2DSetArcAngle(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_ElliArc2DGetCurvePrecision(AID: longint): word;
+function CAD_ElliArc2DSetCurvePrecision(AID: longint; var AValue: word): boolean;
+
+function CAD_ElliArc2DGetDirection(AID: longint): TArcDirection;
+function CAD_ElliArc2DSetDirection(AID: longint; var ADirection: TArcDirection): boolean;
+
+
+//TClosedCurve2D & TClosedPolyline2D////////////////////////////////////////////
+//Brush implementiert
+function CAD_ClosedCurve2DGetArea(AID: longint): TRealType;
+function CAD_ClosedPolyline2DGetArea(AID: longint): TRealType;
+
+//TCircle2D/////////////////////////////////////////////////////////////////////
+function CAD_Circle2DGetStartAngle(AID: longint): TRealType;
+function CAD_Circle2DSetStartAngle(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Circle2DGetCenterPoint2D(AID: longint): TPoint2D;
+function CAD_Circle2DSetCenterPoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_Circle2DGetCenterPoint2DX(AID: longint): TRealType;
+function CAD_Circle2DSetCenterPoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_Circle2DGetCenterPoint2DY(AID: longint): TRealType;
+function CAD_Circle2DSetCenterPoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_Circle2DGetCenterPoint2DW(AID: longint): TRealType;
+function CAD_Circle2DSetCenterPoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Circle2DGetRadius(AID: longint): TRealType;
+function CAD_Circle2DSetRadius(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Circle2DGetDirection(AID: longint): TArcDirection;
+function CAD_Circle2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_Circle2DGetCurvePrecision(AID: longint): word;
+function CAD_Circle2DSetCurvePrecision(AID: longint; var AValue: word): boolean;
+
+//Polyline2D////////////////////////////////////////////////////////////////////
+function CAD_Polyline2DGetPointsCount(AID: longint): integer;
+
+//Polygon2D/////////////////////////////////////////////////////////////////////
+function CAD_Polygon2DGetPointsCount(AID: longint): integer;
+
+//Bspline2D/////////////////////////////////////////////////////////////////////
+function CAD_BSpline2DGetPointsCount(AID: longint): integer;
+
+//Frame2D/////////////////////////////////////////////////////////////////////
+function CAD_Frame2DGetDirection(AID: longint): TArcDirection;
+function CAD_Frame2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_Frame2DGetHeight(AID: longint): TRealType;
+function CAD_Frame2DSetHeight(AID: longint; var AValue: TRealType): boolean;
+function CAD_Frame2DGetWidth(AID: longint): TRealType;
+function CAD_Frame2DSetWidth(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Frame2DGetStartCorner(AID: longint): TFrameStartCorner;
+function CAD_Frame2DSetStartCorner(AID: longint; var AValue: TFrameStartCorner): boolean;
+
+
+//Ellipse2D/////////////////////////////////////////////////////////////////////
+function CAD_Ellipse2DGetDirection(AID: longint): TArcDirection;
+function CAD_Ellipse2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_Ellipse2DGetHeight(AID: longint): TRealType;
+function CAD_Ellipse2DSetHeight(AID: longint; var AValue: TRealType): boolean;
+function CAD_Ellipse2DGetWidth(AID: longint): TRealType;
+function CAD_Ellipse2DSetWidth(AID: longint; var AValue: TRealType): boolean;
+
+//TSector2D/////////////////////////////////////////////////////////////////////
+function CAD_Sector2DGetStartAngle(AID: longint): TRealType;
+function CAD_Sector2DSetStartAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_Sector2DGetEndAngle(AID: longint): TRealType;
+function CAD_Sector2DSetEndAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_Sector2DGetArcAngle(AID: longint): TRealType;
+function CAD_Sector2DSetArcAngle(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Sector2DGetCenterPoint2D(AID: longint): TPoint2D;
+function CAD_Sector2DSetCenterPoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_Sector2DGetCenterPoint2DX(AID: longint): TRealType;
+function CAD_Sector2DSetCenterPoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_Sector2DGetCenterPoint2DY(AID: longint): TRealType;
+function CAD_Sector2DSetCenterPoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_Sector2DGetCenterPoint2DW(AID: longint): TRealType;
+function CAD_Sector2DSetCenterPoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Sector2DGetRadius(AID: longint): TRealType;
+function CAD_Sector2DSetRadius(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Sector2DGetDirection(AID: longint): TArcDirection;
+function CAD_Sector2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_Sector2DGetCurvePrecision(AID: longint): word;
+function CAD_Sector2DSetCurvePrecision(AID: longint; var AValue: word): boolean;
+
+//Segment2D////////////////////////////////////////////////////////////////////
+function CAD_Segment2DGetStartAngle(AID: longint): TRealType;
+function CAD_Segment2DSetStartAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_Segment2DGetEndAngle(AID: longint): TRealType;
+function CAD_Segment2DSetEndAngle(AID: longint; var AValue: TRealType): boolean;
+function CAD_Segment2DGetArcAngle(AID: longint): TRealType;
+function CAD_Segment2DSetArcAngle(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Segment2DGetCenterPoint2D(AID: longint): TPoint2D;
+function CAD_Segment2DSetCenterPoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_Segment2DGetCenterPoint2DX(AID: longint): TRealType;
+function CAD_Segment2DSetCenterPoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_Segment2DGetCenterPoint2DY(AID: longint): TRealType;
+function CAD_Segment2DSetCenterPoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_Segment2DGetCenterPoint2DW(AID: longint): TRealType;
+function CAD_Segment2DSetCenterPoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Segment2DGetRadius(AID: longint): TRealType;
+function CAD_Segment2DSetRadius(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_Segment2DGetDirection(AID: longint): TArcDirection;
+function CAD_Segment2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_Segment2DGetCurvePrecision(AID: longint): word;
+function CAD_Segment2DSetCurvePrecision(AID: longint; var AValue: word): boolean;
+
+//TSymetricSymbol2D/////////////////////////////////////////////////////////////
+function CAD_SymSymbol2DGetStartAngle(AID: longint): TRealType;
+function CAD_SymSymbol2DSetStartAngle(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_SymSymbol2DGetCenterPoint2D(AID: longint): TPoint2D;
+function CAD_SymSymbol2DSetCenterPoint2D(AID: longint;  var APoint2D: TPoint2D): boolean;
+function CAD_SymSymbol2DGetCenterPoint2DX(AID: longint): TRealType;
+function CAD_SymSymbol2DSetCenterPoint2DX(AID: longint; var AValue: TRealType): boolean;
+function CAD_SymSymbol2DGetCenterPoint2DY(AID: longint): TRealType;
+function CAD_SymSymbol2DSetCenterPoint2DY(AID: longint; var AValue: TRealType): boolean;
+function CAD_SymSymbol2DGetCenterPoint2DW(AID: longint): TRealType;
+function CAD_SymSymbol2DSetCenterPoint2DW(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_SymSymbol2DGetRadius(AID: longint): TRealType;
+function CAD_SymSymbol2DSetRadius(AID: longint; var AValue: TRealType): boolean;
+
+function CAD_SymSymbol2DGetDirection(AID: longint): TArcDirection;
+function CAD_SymSymbol2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_SymSymbol2DGetCurvePrecision(AID: longint): word;
+function CAD_SymSymbol2DSetCurvePrecision(AID: longint; var AValue: word): boolean;
+
+//ASymetricSymbol2D/////////////////////////////////////////////////////////////
+function CAD_ASymSymbol2DGetDirection(AID: longint): TArcDirection;
+function CAD_ASymSymbol2DSetDirection(AID: longint; var AValue: TArcDirection): boolean;
+
+function CAD_ASymSymbol2DGetHeight(AID: longint): TRealType;
+function CAD_ASymSymbol2DSetHeight(AID: longint; var AValue: TRealType): boolean;
+function CAD_ASymSymbol2DGetWidth(AID: longint): TRealType;
+function CAD_ASymSymbol2DSetWidth(AID: longint; var AValue: TRealType): boolean;
+
+//Text2D////////////////////////////////////////////////////////////////////////
+function CAD_Text2DGetText(AID: longint): string;
+function CAD_Text2DSetTex(AID: longint; AValue: string): boolean;
+
+function CAD_Text2DGetFaceName(AID: longint): string;
+function CAD_Text2DSetFaceName(AID: longint; AValue: string): boolean;
+
+function CAD_Text2DGetAutoSize(AID: longint): boolean;
+function CAD_Text2DSetAutoSize(AID: longint; AValue: boolean): boolean;
+function CAD_Text2DGetBold(AID: longint): boolean;
+function CAD_Text2DSetBold(AID: longint; AValue: boolean): boolean;
+function CAD_Text2DGetUnderline(AID: longint): boolean;
+function CAD_Text2DSetUnderline(AID: longint; AValue: boolean): boolean;
+function CAD_Text2DGetStrikeout(AID: longint): boolean;
+function CAD_Text2DSetStrikeout(AID: longint; AValue: boolean): boolean;
+function CAD_Text2DGetItalic(AID: longint): boolean;
+function CAD_Text2DSetItalic(AID: longint; AValue: boolean): boolean;
+function CAD_Text2DGetDrawBox(AID: longint): boolean;
+function CAD_Text2DSetDrawBox(AID: longint; AValue: boolean): boolean;
+function CAD_Text2DGetHeight(AID: longint): TRealType;
+function CAD_Text2DSetHeight(AID: longint; AValue: TRealType): boolean;
+
+function CAD_Text2DGetColorSource(AID: longint): TColorSource;
+function CAD_Text2DSetColorSource(AID: longint; AValue: TColorSource): boolean;
+function CAD_Text2DGetColor(AID: longint): TColor;
+function CAD_Text2DSetColor(AID: longint; AValue: TColor): boolean;
+
+//TBitmap2D/////////////////////////////////////////////////////////////////////
+function CAD_Bitmap2DGetScaleFactor(AID: longint): TRealType;
+function CAD_Bitmap2DSetScaleFactor(AID: longint; AValue: TRealType): boolean;
+
+function CAD_Bitmap2DGetAspectRatio(AID: longint): TRealType;
+function CAD_Bitmap2DSetAspectRatio(AID: longint; AValue: TRealType): boolean;
+
+function CAD_Bitmap2DGetCopyMode(AID: longint): TCopyMode;
+function CAD_Bitmap2DSetCopyMode(AID: longint; AValue: TCopyMode): boolean;
+
+//JustifiedVectText2D///////////////////////////////////////////////////////////
+function CAD_JVectText2DGetBasePoint(AID: longint): TPoint2D;
+function CAD_JVectText2DSetBasePoint(AID: longint; var APoint2D: TPoint2D): boolean;
+function CAD_JVectText2DGetCharSpace(AID: longint): TRealType;
+function CAD_JVectText2DSetCharSpace(AID: longint; AValue: TRealType): boolean;
+function CAD_JVectText2DGetDrawBox(AID: longint): boolean;
+function CAD_JVectText2DSetDrawBox(AID: longint; AValue: boolean): boolean;
+
+function CAD_JVectText2DGetHeight(AID: longint): TRealType;
+function CAD_JVectText2DSetHeight(AID: longint; AValue: TRealType): boolean;
+
+function CAD_JVectText2DGetHJustification(AID: longint): THJustification;
+function CAD_JVectText2DSetHJustification(AID: longint; AValue: THJustification): boolean;
+function CAD_JVectText2DGetVJustification(AID: longint): TVJustification;
+function CAD_JVectText2DSetVJustification(AID: longint; AValue: TVJustification): boolean;
+
+function CAD_JVectText2DGetInterline(AID: longint): TRealType;
+function CAD_JVectText2DSetInterline(AID: longint; AValue: TRealType): boolean;
+
+function CAD_JVectText2DGetText(AID: longint): string;
+function CAD_JVectText2DSetText(AID: longint; AValue: string): boolean;
+
+//Block2D///////////////////////////////////////////////////////////////////////
+function CAD_Block2DGetOriginPoint(AID: longint): TPoint2D;
+function CAD_Block2DSetOriginPoint(AID: longint; var APoint2D: TPoint2D): boolean;
+function CAD_Block2DGetSourceName(AID: longint): string;
+
+in dieser Unit, rückgabe werte von setter's sind boolean und melden ob die operation erfolgreich war
+                rückgabe werte von getter's sind eben erwünschte werte (functionsnamen sind selbst erklärend).
+                
+                

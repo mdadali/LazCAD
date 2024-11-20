@@ -22,6 +22,7 @@ type
   TBSpline2D = class;
   TText2D = class;
   TBitmap2D = class;
+  TJustifiedVectText2D = class;
 
   {: This type defines the type used to specify the name of
      a <I=font type face> (like Times New Roman).
@@ -614,12 +615,14 @@ type
      fCoordPoints2DInsp: TCoordPoints2DInsp;
      function   GetShowDirection: boolean;
      procedure  SetShowDirection(AValue: boolean);
+     function   GetObjectLength: TRealType;
   public
     constructor create(AOwner: TGraphicObject);
     destructor  destroy; override;
   published
     property CoordPoints: TCoordPoints2DInsp read fCoordPoints2DInsp write fCoordPoints2DInsp;
     property ShowDirection: boolean read GetShowDirection write SetShowDirection;
+    property ObjectLength: TRealType read GetObjectLength;
   end;
 
   TLine2DInsp = class
@@ -636,6 +639,10 @@ type
 
     fShowDirection: boolean;
 
+  protected
+
+  public
+
     function  GetLength: TRealType;
 
     function  GetStartPoint: TPoint2D;            override;
@@ -650,9 +657,6 @@ type
     procedure SetEndPointX(AValue:TRealType);     override;
     procedure SetEndPointY(AValue:TRealType);     override;
 
-  protected
-
-  public
     procedure   Reverse; override; //added
     procedure   Inverse; override; //adedd
     procedure   Explode(ADeleteSource: boolean); override; //added
@@ -664,6 +668,7 @@ type
     procedure   SaveToStream(const Stream: TStream); override;
 
     property ShowDirection: boolean read fShowDirection write fShowDirection;
+    property ObjectLength: TRealType read GetLength;
   published
     property Primitive2D;
     property SimplePrimitive2D: TSimplePrim2DInsp read fSimplePrim2DInsp write fSimplePrim2DInsp;
@@ -1275,6 +1280,10 @@ type
 
     function  GetCenterPoint: TPoint2D;
     procedure SetCenterPoint(APoint2D: TPoint2D);
+    function  GetCenterPointX: TRealType;
+    procedure SetCenterPointX(AValue: TRealType);
+    function  GetCenterPointY: TRealType;
+    procedure SetCenterPointY(AValue: TRealType);
 
   protected
     procedure GetArcPoints(PP: TPointsSet2D; NPts: Word);
@@ -1309,7 +1318,11 @@ type
     procedure Assign(const Obj: TGraphicObject); override;
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
     procedure SaveToStream(const Stream: TStream); override;
-    property CenterPoint2D: TPoint2D read  GetCenterPoint write  SetCenterPoint;
+
+    property CenterPoint2D:  TPoint2D  read  GetCenterPoint   write  SetCenterPoint;
+    property CenterPoint2DX: TRealType read  GetCenterPointX  write  SetCenterPointX;
+    property CenterPoint2DY: TRealType read  GetCenterPointY  write  SetCenterPointY;
+
     property Radius:       TRealType read fRadius         write SetRadius;
     property StartAngle:   TRealType read GetStartAngle   write SetStartAngle;
     property EndAngle:     TRealType read GetEndAngle     write SetEndAngle;
@@ -1332,9 +1345,10 @@ type
     procedure SetRadius(AValue: TRealType);
 
     function  GetCenterPoint: TPoint2D;
+    procedure SetCenterPoint(APoint2D: TPoint2D);
     function  GetCenterPointX: TRealType;
-    function  GetCenterPointY: TRealType;
     procedure SetCenterPointX(AValue: TRealType);
+    function  GetCenterPointY: TRealType;
     procedure SetCenterPointY(AValue: TRealType);
 
   protected
@@ -1352,7 +1366,11 @@ type
 
     property Radius:     TRealType read  fRadius       write  SetRadius;
     property StartAngle: TRealType read  GetStartAngle write  SetStartAngle;
-    property HasBrush;
+
+    property CenterPoint2D:  TPoint2D  read  GetCenterPoint   write  SetCenterPoint;
+    property CenterPoint2DX: TRealType read  GetCenterPointX  write  SetCenterPointX;
+    property CenterPoint2DY: TRealType read  GetCenterPointY  write  SetCenterPointY;
+
   published
     {: This property contains the starting angle of the arc in radiants.
 
@@ -1387,6 +1405,13 @@ type
       procedure   GetArcPoints(PP: TPointsSet2D; NPts: Word);
       function    PopulateCurvePoints(N: Word): TRect2D; override;
     public
+      function  GetCenterPoint: TPoint2D;
+      procedure SetCenterPoint(APoint2D: TPoint2D);
+      function  GetCenterPointX: TRealType;
+      procedure SetCenterPointX(AValue: TRealType);
+      function  GetCenterPointY: TRealType;
+      procedure SetCenterPointY(AValue: TRealType);
+
       procedure   Inverse; override;
       procedure   Explode(ADeleteSource: boolean); override;
       constructor Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
@@ -1394,6 +1419,10 @@ type
       procedure   Assign(const Obj: TGraphicObject); override;
       constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
       procedure   SaveToStream(const Stream: TStream); override;
+
+      property CenterPoint2D:  TPoint2D  read  GetCenterPoint   write  SetCenterPoint;
+      property CenterPoint2DX: TRealType read  GetCenterPointX  write  SetCenterPointX;
+      property CenterPoint2DY: TRealType read  GetCenterPointY  write  SetCenterPointY;
 
       property StartAngle: TRealType read GetStartAngle write SetStartAngle;
       property EndAngle:   TRealType read GetEndAngle   write SetEndAngle;
@@ -1424,6 +1453,13 @@ type
       procedure GetArcPoints(PP: TPointsSet2D; NPts: Word);
       function  PopulateCurvePoints(N: Word): TRect2D; override;
     public
+      function  GetCenterPoint: TPoint2D;
+      procedure SetCenterPoint(APoint2D: TPoint2D);
+      function  GetCenterPointX: TRealType;
+      procedure SetCenterPointX(AValue: TRealType);
+      function  GetCenterPointY: TRealType;
+      procedure SetCenterPointY(AValue: TRealType);
+
       procedure   Inverse; override;
       procedure   Explode(ADeleteSource: boolean); override;
       constructor Create(ID: Longint; const CP: TPoint2D; R, SA, EA: TRealType);
@@ -1431,6 +1467,10 @@ type
       procedure Assign(const Obj: TGraphicObject); override;
       constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
       procedure SaveToStream(const Stream: TStream); override;
+
+      property CenterPoint2D:  TPoint2D  read  GetCenterPoint   write  SetCenterPoint;
+      property CenterPoint2DX: TRealType read  GetCenterPointX  write  SetCenterPointX;
+      property CenterPoint2DY: TRealType read  GetCenterPointY  write  SetCenterPointY;
 
       property StartAngle: TRealType read GetStartAngle write SetStartAngle;
       property EndAngle:   TRealType read GetEndAngle   write SetEndAngle;
@@ -1784,7 +1824,6 @@ type
     fScaleFactor: TRealType;
     fAspectRatio: TRealType;
     fCopyMode: TCopyMode;
-
     procedure SetScaleFactor(SF: TRealType);
     procedure SetAspectRatio(AR: TRealType);
   public
@@ -2062,6 +2101,41 @@ type
   }
   TVJustification = (jvTop, jvBottom, jvCenter);
 
+
+  TJustifiedVectText2DInsp = class
+    fOwner: TJustifiedVectText2D;
+    fBasePoint: TCoordPoint2DInsp;
+    function  GetCharSpace: TRealType;
+    procedure SetCharSpace(AValue: TRealType);
+    function  GetDrawBox: boolean;
+    procedure SetDrawBox(AValue: boolean);
+    function  GetHeight: TRealType;
+    procedure SetHeight(AValue: TRealType);
+    function  GetHJustification: THJustification;
+    procedure SetHJustification(AValue: THJustification);
+    function  GetVJustification: TVJustification;
+    procedure SetVJustification(AValue: TVJustification);
+    function  GetInterline: TRealType;
+    procedure SetInterline(AValue: TRealType);
+    function  GetText: string;
+    procedure SetText(AValue: string);
+    function  GetFontIndex: word;
+    procedure SetFontIndex(AValue: word);
+  public
+    constructor create(AOwner: TJustifiedVectText2D);
+    destructor  destroy; override;
+  published
+    //property BasePoint: TCoordPoint2DInsp read fBasePoint write fBasePoint; ????
+    property CharSpace: TRealType  read GetCharSpace write SetCharSpace;
+    property DrawBox: boolean read GetDrawBox  write SetDrawBox;
+    property Height: TRealType read GetHeight write SetHeight;
+    property HJustification: THJustification read GetHJustification write SetHJustification;
+    property VJustification: TVJustification read GetVJustification write SetVJustification;
+    property Interline: TRealType read GetInterline write SetInterline;
+    property Text: string read GetText write SetText;
+    property FontIndex: word read  GetFontIndex write SetFontIndex;
+  end;
+
   {: This class defines the 2D vectorial text.
 
      The text may be multilines and justified. It uses an
@@ -2070,6 +2144,7 @@ type
   }
   TJustifiedVectText2D = class(TPrimitive2D)
   private
+    fJustifiedVectText2DInsp: TJustifiedVectText2DInsp;
     fVectFont: TVectFont;
     fText: AnsiString;
     fHJustification: THJustification;
@@ -2084,6 +2159,11 @@ type
     procedure SetText(T: String);
     function GetTextExtension: TRect2D;
     procedure DrawText(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const DrawMode: Integer);
+
+    //added
+    function  GetFontIndex: word;
+    procedure SetFontIndex(AValue: word);
+
   protected
     procedure _UpdateExtension; override;
   public
@@ -2108,6 +2188,7 @@ type
     procedure InitializeAngle; override;
     constructor Create(ID: LongInt; FontVect: TVectFont; TextBox: TRect2D; Height: TRealType; Txt: AnsiString);
     constructor CreateFromStream(const Stream: TStream; const Version: TCADVersion); override;
+    destructor destroy; override;
     procedure Assign(const Obj: TGraphicObject); override;
     procedure SaveToStream(const Stream: TStream); override;
     procedure Draw(const VT: TTransf2D; const Cnv: TDecorativeCanvas; const ClipRect2D: TRect2D; const DrawMode: Integer); override;
@@ -2146,7 +2227,15 @@ type
     {: This property specifies the vertical justification.
     }
     property VerticalJust: TVJustification read fVJustification write fVJustification;
+
+    property BasePoint: TPoint2D  read fBasePoint write fBasePoint;
+
+    property FontIndex: word read GetFontIndex write SetFontIndex;
+
+  published
+    property JustifiedVectText2D: TJustifiedVectText2DInsp read fJustifiedVectText2DInsp write fJustifiedVectText2DInsp;
   end;
+
 
   {: This procedure sets the default font.
   }
@@ -2352,7 +2441,7 @@ end;
 
 destructor TCoordPoints2DInsp.destroy;
 begin
-  //fStartPoint.Free;
+  fStartPoint.Free;
   fEndPoint.Free;
   inherited;
 end;
@@ -2372,6 +2461,10 @@ begin
     POINT_CODE_START_POINT:   result := TPrimitive2D(fOwner).StartPointX;
     POINT_CODE_END_POINT:     result := TPrimitive2D(fOwner).EndPointX;
     POINT_CODE_MIDDLE_POINT:  result := TPrimitive2D(fOwner).MiddlePoint.X;
+    POINT_CODE_BASE_POINT: begin
+      if (fOwner is TBlock2D) then result := TBlock2D(fOwner).OriginPoint.X
+      else if (fOwner is TJustifiedVectText2D) then result := TJustifiedVectText2D(fOwner).BasePoint.X
+    end
     else result := TPrimitive2D(fOwner).Points[fPointCode].X;
   end;
 end;
@@ -2382,6 +2475,10 @@ begin
     POINT_CODE_START_POINT:   result := TPrimitive2D(fOwner).StartPointY;
     POINT_CODE_END_POINT:     result := TPrimitive2D(fOwner).EndPointY;
     POINT_CODE_MIDDLE_POINT:  result := TPrimitive2D(fOwner).MiddlePoint.Y;
+    POINT_CODE_BASE_POINT: begin
+      if (fOwner is TBlock2D) then result := TBlock2D(fOwner).OriginPoint.X
+      else if (fOwner is TJustifiedVectText2D) then result := TJustifiedVectText2D(fOwner).BasePoint.Y
+    end
     else result := TPrimitive2D(fOwner).Points[fPointCode].Y;
   end;
 end;
@@ -2393,6 +2490,10 @@ begin
     POINT_CODE_START_POINT:  TPrimitive2D(fOwner).StartPointX   := AValue;
     POINT_CODE_END_POINT:    TPrimitive2D(fOwner).EndPointX     := AValue;
     POINT_CODE_MIDDLE_POINT: TPrimitive2D(fOwner).MiddlePointX  := AValue;
+    POINT_CODE_BASE_POINT: begin
+      if (fOwner is TBlock2D) then TBlock2D(fOwner).OriginPoint := Point2D(AValue, TBlock2D(fOwner).OriginPoint.Y)
+      else if (fOwner is TJustifiedVectText2D) then TJustifiedVectText2D(fOwner).BasePoint := Point2D(AValue, TJustifiedVectText2D(fOwner).BasePoint.Y)
+    end
     else PVectPoints2D(TPrimitive2D(fOwner).Points.PointsReference)^[fPointCode].X := AValue;
   end;
   TPrimitive2D(fOwner).Points.DisableEvents := false;
@@ -2406,6 +2507,10 @@ begin
     POINT_CODE_START_POINT:  TPrimitive2D(fOwner).StartPointY   := AValue;
     POINT_CODE_END_POINT:    TPrimitive2D(fOwner).EndPointY     := AValue;
     POINT_CODE_MIDDLE_POINT: TPrimitive2D(fOwner).MiddlePointY  := AValue;
+    POINT_CODE_BASE_POINT: begin
+      if (fOwner is TBlock2D) then TBlock2D(fOwner).OriginPoint := Point2D(TBlock2D(fOwner).OriginPoint.X, AValue)
+      else if (fOwner is TJustifiedVectText2D) then TJustifiedVectText2D(fOwner).BasePoint := Point2D(TJustifiedVectText2D(fOwner).BasePoint.X, AValue)
+    end
     else PVectPoints2D(TPrimitive2D(fOwner).Points.PointsReference)^[fPointCode].Y := AValue;
   end;
   TPrimitive2D(fOwner).Points.DisableEvents := false;
@@ -2626,6 +2731,11 @@ end;
 procedure  TSimplePrim2DInsp.SetShowDirection(AValue: boolean);
 begin
   TSimplePrimitive2D(fOwner).ShowDirection := AValue;
+end;
+
+function   TSimplePrim2DInsp.GetObjectLength: TRealType;
+begin
+  result := TSimplePrimitive2D(fOwner).ObjectLength;
 end;
 
 //TLine2DInsp.
@@ -5465,10 +5575,36 @@ begin
 end;
 
 procedure TCircularArc2D.SetCenterPoint(APoint2D: TPoint2D);
-var TmpPoint2D: TPoint2D;
 begin
-  self.Points.Delete(0);
-  self.Points.Insert(0, APoint2D);
+  Points[0] := APoint2D;
+end;
+
+function  TCircularArc2D.GetCenterPointX: TRealType;
+begin
+  result := self.Points[0].X;
+end;
+
+procedure TCircularArc2D.SetCenterPointX(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt := Point2D(AValue, Points[0].Y);
+  ToPt := WorldToObject(ToPt);
+  MoveTo(ToPt, DragPt);
+end;
+
+function  TCircularArc2D.GetCenterPointY: TRealType;
+begin
+  result := self.Points[0].Y;
+end;
+
+procedure TCircularArc2D.SetCenterPointY(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt := Point2D(Points[0].X, AValue);
+  ToPt := WorldToObject(ToPt);
+  MoveTo(ToPt, DragPt);
 end;
 
 //=====================================================================
@@ -5749,6 +5885,44 @@ begin
     Write(fRadius, SizeOf(fRadius));
 end;
 
+function  TSector2D.GetCenterPoint: TPoint2D;
+begin
+  result := self.Points[0];
+end;
+
+procedure TSector2D.SetCenterPoint(APoint2D: TPoint2D);
+begin
+  Points[0] := APoint2D;
+end;
+
+function  TSector2D.GetCenterPointX: TRealType;
+begin
+  result := self.Points[0].X;
+end;
+
+procedure TSector2D.SetCenterPointX(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt := Point2D(AValue, Points[0].Y);
+  ToPt := WorldToObject(ToPt);
+  MoveTo(ToPt, DragPt);
+end;
+
+function  TSector2D.GetCenterPointY: TRealType;
+begin
+  result := self.Points[0].Y;
+end;
+
+procedure TSector2D.SetCenterPointY(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt := Point2D(Points[0].X, AValue);
+  ToPt := WorldToObject(ToPt);
+  MoveTo(ToPt, DragPt);
+end;
+
 //=====================================================================
 // TSegment2D
 //=====================================================================
@@ -6012,6 +6186,43 @@ begin
     Write(fRadius, SizeOf(fRadius));
 end;
 
+function  TSegment2D.GetCenterPoint: TPoint2D;
+begin
+  result := self.Points[0];
+end;
+
+procedure TSegment2D.SetCenterPoint(APoint2D: TPoint2D);
+begin
+  Points[0] := APoint2D;
+end;
+
+function  TSegment2D.GetCenterPointX: TRealType;
+begin
+  result := self.Points[0].X;
+end;
+
+procedure TSegment2D.SetCenterPointX(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt := Point2D(AValue, Points[0].Y);
+  ToPt := WorldToObject(ToPt);
+  MoveTo(ToPt, DragPt);
+end;
+
+function  TSegment2D.GetCenterPointY: TRealType;
+begin
+  result := self.Points[0].Y;
+end;
+
+procedure TSegment2D.SetCenterPointY(AValue: TRealType);
+var ToPt, DragPt: TPoint2D;
+begin
+  DragPt := Points[0];
+  ToPt := Point2D(Points[0].X, AValue);
+  ToPt := WorldToObject(ToPt);
+  MoveTo(ToPt, DragPt);
+end;
 
 // =====================================================================
 // TCircle2D
@@ -6157,6 +6368,13 @@ end;
 function  TCircle2D.GetCenterPoint: TPoint2D;
 begin
   result := Points[0];
+end;
+
+procedure TCircle2D.SetCenterPoint(APoint2D: TPoint2D);
+var TmpPoint2D: TPoint2D;
+begin
+  self.Points.Delete(0);
+  self.Points.Insert(0, APoint2D);
 end;
 
 function  TCircle2D.GetCenterPointX: TRealType;
@@ -7387,6 +7605,7 @@ cmSrcInvert:  Inverts the colors of the source image.
 cmMergeCopy:  Combines the source and destination images in a specific way.
 cmMergePaint: Another painting method that blends the source and destination images.
 }
+
 constructor TBitmap2D.Create(ID: LongInt; const P1, P2: TPoint2D; Bmp: TBitmap);
 begin
   inherited Create(ID, 2);
@@ -7821,6 +8040,102 @@ begin
 end;
 
 // =====================================================================
+// TJustifiedVectText2DInsp
+// =====================================================================
+constructor TJustifiedVectText2DInsp.create(AOwner: TJustifiedVectText2D);
+begin
+  inherited create;
+  fOwner :=  AOwner;
+  fBasePoint := TCoordPoint2DInsp.create(fOwner, POINT_CODE_BASE_POINT);
+end;
+
+destructor  TJustifiedVectText2DInsp.destroy;
+begin
+  fBasePoint.Free;
+  inherited;
+end;
+
+function  TJustifiedVectText2DInsp.GetCharSpace: TRealType;
+begin
+  result := fOwner.CharSpace;
+end;
+
+procedure TJustifiedVectText2DInsp.SetCharSpace(AValue: TRealType);
+begin
+  fOwner.CharSpace := AValue;
+end;
+
+function  TJustifiedVectText2DInsp.GetDrawBox: boolean;
+begin
+  result := fOwner.DrawBox;
+end;
+
+procedure TJustifiedVectText2DInsp.SetDrawBox(AValue: boolean);
+begin
+  fOwner.DrawBox := AValue;
+end;
+
+function  TJustifiedVectText2DInsp.GetHeight: TRealType;
+begin
+  result := fOwner.Height;
+end;
+
+procedure TJustifiedVectText2DInsp.SetHeight(AValue: TRealType);
+begin
+  fOwner.Height := AValue;
+end;
+
+function  TJustifiedVectText2DInsp.GetHJustification: THJustification;
+begin
+  result := fOwner.HorizontalJust;
+end;
+
+procedure TJustifiedVectText2DInsp.SetHJustification(AValue: THJustification);
+begin
+  fOwner.HorizontalJust := AValue;
+end;
+
+function  TJustifiedVectText2DInsp.GetVJustification: TVJustification;
+begin
+  result := fOwner.VerticalJust;
+end;
+
+procedure TJustifiedVectText2DInsp.SetVJustification(AValue: TVJustification);
+begin
+  fOwner.VerticalJust := AValue;
+end;
+
+function  TJustifiedVectText2DInsp.GetInterline: TRealType;
+begin
+  result := fOwner.InterLine;
+end;
+
+procedure TJustifiedVectText2DInsp.SetInterline(AValue: TRealType);
+begin
+  fOwner.InterLine := AValue;
+end;
+
+function  TJustifiedVectText2DInsp.GetText: string;
+begin
+  result := fOwner.Text;
+end;
+
+procedure TJustifiedVectText2DInsp.SetText(AValue: string);
+begin
+  fOwner.Text := AValue;
+end;
+
+function  TJustifiedVectText2DInsp.GetFontIndex: word;
+begin
+  result := fOwner.FontIndex;
+end;
+
+procedure TJustifiedVectText2DInsp.SetFontIndex(AValue: word);
+begin
+  fOwner.FontIndex := AValue;
+end;
+
+// =====================================================================
 // TJustifiedVectText2D
 // =====================================================================
 
@@ -7931,6 +8246,17 @@ begin
 end;
 
 
+//added
+function  TJustifiedVectText2D.GetFontIndex: word;
+begin
+  result := CADSysFindFontIndex(self.fVectFont)
+end;
+
+procedure TJustifiedVectText2D.SetFontIndex(AValue: word);
+begin
+  self.fVectFont := CADSysFindFontByIndex(AValue);
+end;
+
 procedure TJustifiedVectText2D.InitializeAngle;
 begin
   fAngle := 0;
@@ -7939,6 +8265,7 @@ end;
 constructor TJustifiedVectText2D.Create(ID: LongInt; FontVect: TVectFont; TextBox: TRect2D; Height: TRealType; Txt: AnsiString);
 begin
   inherited Create(ID, 2);
+  fJustifiedVectText2DInsp := TJustifiedVectText2DInsp.create(self);
   Points.DisableEvents := True;
   try
     Points.Add(TextBox.FirstEdge);
@@ -7960,12 +8287,19 @@ begin
   UpdateExtension(Self);
 end;
 
+destructor TJustifiedVectText2D.destroy;
+begin
+  fJustifiedVectText2DInsp.Free;
+  inherited;
+end;
+
 constructor TJustifiedVectText2D.CreateFromStream(const Stream: TStream; const Version: TCADVersion);
 var
   TmpInt: Integer;
 begin
   { Load the standard properties }
   inherited;
+  fJustifiedVectText2DInsp := TJustifiedVectText2DInsp.create(self);
   with Stream do
    begin
      Read(TmpInt, SizeOf(TmpInt));

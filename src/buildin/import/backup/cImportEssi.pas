@@ -480,8 +480,8 @@ end;
 procedure TImportEssi.DrawArc(AX1, AY1, AX2, AY2, AStartAngle, AEndAngle: single; ADirection: string);
 var Arc2D: TEllipticalArc2D;
 begin
-  if (AStartAngle = 0) then  AStartAngle := 0.0;
-  if (AEndAngle = 0)   then  AEndAngle   := 0.0;
+  if (AStartAngle = 0) then  AStartAngle := 0.001;
+  if (AEndAngle = 0)   then  AEndAngle   := 0.001;
   Arc2D := TEllipticalArc2D.Create(-1, Point2D(AX1, AY1),  Point2D(AX2, AY2), RadToDeg(AStartAngle), RadToDeg(AEndAngle));
   //Arc2D.ReserveInt1 := fLastKerfInfo;
   if (ADirection = '-') then

@@ -1,0 +1,10 @@
+object frmHelpHtml: TfrmHelpHtml
+  Left = 455
+  Height = 521
+  Top = 132
+  Width = 994
+  Caption = 'Html Help'
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '2.2.6.0'
+end
