@@ -12,7 +12,7 @@ uses
   ComCtrls, ActnList, SynEdit, SynEditTypes, SynHighlighterPas, SynEditSearch,
   SynEditMiscClasses, SynEditHighlighter, SynGutterBase, SynGutterMarks,
   SynGutterLineNumber, SynGutterChanges, SynGutter, SynGutterCodeFolding,
-  SynEditMarkupSpecialLine, SynEditRegexSearch, PrintersDlgs, BCButtonFocus,
+  SynEditMarkupSpecialLine, SynEditRegexSearch, SynEditMarks, PrintersDlgs, BCButtonFocus,
 
   uPSComponent_COM,
   uPSComponent_StdCtrls,
@@ -42,7 +42,7 @@ uses
   MainScriptinterface,
 
   applicationh,
-  CADDocument, SynEditMarks;
+  CADDocument;
 
 type
 

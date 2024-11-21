@@ -2906,7 +2906,7 @@ procedure TfrmMain.acHelpHtmlExecute(Sender: TObject);
 var frmHelpHtml: TfrmHelpHtml; HtmlIndexFile: string;
 begin
   fIniFile := TIniFile.Create(fIniFileName);
-  applicationh.fLanguage := applicationh.fIniFile.ReadString('UserInterface',  'Language', 'fr');
+  applicationh.fLanguage := applicationh.fIniFile.ReadString('UserInterface',  'Language', 'en');
   HtmlIndexFile := applicationh.GetAppDocPath + applicationh.fLanguage + '/help/html/index.html';
   try
     if not FileExists(HtmlIndexFile) then

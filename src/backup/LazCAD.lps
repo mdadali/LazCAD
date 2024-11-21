@@ -3,7 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="Debug_Win64_win">
+    <BuildModes Active="Debug_Linux64_gtk2">
       <Item Name="Debug_Win32_gtk2">
         <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="gtk2"/>
@@ -237,9 +237,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="2914"/>
+        <TopLine Value="2909"/>
         <CursorPos X="95" Y="2909"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -252,10 +251,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="fDrawing"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1455"/>
-        <CursorPos X="29" Y="1468"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="1386"/>
+        <CursorPos X="3" Y="1388"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\splash\fSplash.pas"/>
@@ -294,11 +296,10 @@
       <Unit>
         <Filename Value="common\applicationh.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="115"/>
         <CursorPos X="55" Y="152"/>
         <UsageCount Value="202"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="common\CADDocument.pas"/>
@@ -358,11 +359,10 @@
       <Unit>
         <Filename Value="CAM\camh.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="76"/>
         <CursorPos X="41" Y="92"/>
         <UsageCount Value="203"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="libs\StellaUndoRedo\UndoRedo.pas"/>
@@ -398,25 +398,24 @@
         <ComponentName Value="IDE"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="451"/>
-        <CursorPos X="54" Y="11"/>
+        <EditorIndex Value="6"/>
+        <CursorPos X="49" Y="15"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="common\cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="3462"/>
-        <CursorPos X="63" Y="3473"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="8" Y="18"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\upsi_cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="369"/>
         <CursorPos Y="376"/>
         <UsageCount Value="212"/>
@@ -434,7 +433,7 @@
         <Filename Value="ui\IDE\Imports\upsi_mathscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSI_MathScriptinterface"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="70"/>
         <CursorPos X="60" Y="83"/>
         <UsageCount Value="162"/>
@@ -443,7 +442,7 @@
       <Unit>
         <Filename Value="ui\IDE\Imports\mainscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="104" Y="19"/>
         <UsageCount Value="158"/>
         <Loaded Value="True"/>
@@ -705,10 +704,11 @@
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="15143"/>
-        <CursorPos X="48" Y="15167"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="11966"/>
+        <CursorPos Y="11982"/>
         <UsageCount Value="99"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -804,11 +804,10 @@
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSDebugger.pas"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="93" Y="29"/>
         <UsageCount Value="51"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\ide\lazarus.pp"/>
@@ -859,11 +858,10 @@
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\config_lazarus\onlinepackagemanager\packages\HtmlViewer\source\framview.pas"/>
         <UnitName Value="FramView"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="36"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
         <CursorPos X="51" Y="49"/>
         <UsageCount Value="16"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -873,122 +871,136 @@
         <CursorPos Y="305"/>
         <UsageCount Value="11"/>
       </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSRuntime.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="39" Y="28"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
     <OtherDefines Count="1">
       <Define0 Value="TTF2VECTOR_EMBEDDED"/>
     </OtherDefines>
-    <JumpHistory HistoryIndex="27">
+    <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="2949" Column="49" TopLine="2939"/>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <Caret Line="618" Column="15" TopLine="598"/>
       </Position>
       <Position>
-        <Filename Value="ui\IDE\Imports\upsi_mathscriptinterface.pas"/>
-        <Caret Line="6" Column="81"/>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <Caret Line="630" Column="15" TopLine="610"/>
       </Position>
       <Position>
-        <Filename Value="ui\IDE\Imports\upsi_mathscriptinterface.pas"/>
-        <Caret Line="81" Column="40" TopLine="65"/>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <Caret Line="644" Column="15" TopLine="624"/>
       </Position>
       <Position>
-        <Filename Value="ui\IDE\Imports\upsi_mathscriptinterface.pas"/>
-        <Caret Line="109" Column="49" TopLine="89"/>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <Caret Line="711" Column="54" TopLine="697"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="353" Column="25" TopLine="338"/>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <Caret Line="719" Column="65" TopLine="699"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="2749" TopLine="2739"/>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <Caret Line="248" Column="44" TopLine="243"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="2750" TopLine="2739"/>
-      </Position>
-      <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="2751" TopLine="2739"/>
+        <Filename Value="ui\IDE\ide_editor.pas"/>
+        <Caret Line="26" Column="18" TopLine="16"/>
       </Position>
       <Position>
         <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="2752" TopLine="2749"/>
+        <Caret Line="18" Column="8"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="2754" TopLine="2749"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="2755" TopLine="2749"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="80" Column="20" TopLine="59"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="2757" TopLine="2749"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="266" Column="19" TopLine="245"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3431" Column="21" TopLine="3426"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="585" Column="71" TopLine="564"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="434" Column="15" TopLine="422"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="597" Column="9" TopLine="576"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3432" Column="36" TopLine="3426"/>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="1467" Column="16" TopLine="1458"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="434" Column="18" TopLine="422"/>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="1468" Column="25" TopLine="1458"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3452" Column="18" TopLine="3443"/>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="488" Column="37" TopLine="475"/>
       </Position>
       <Position>
-        <Filename Value="ui\IDE\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="376" TopLine="369"/>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="489" Column="39" TopLine="475"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3419" TopLine="3413"/>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="1467" Column="23" TopLine="1446"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3420" TopLine="3413"/>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="1468" Column="25" TopLine="1447"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3421" TopLine="3413"/>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="489" Column="12" TopLine="475"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3422" TopLine="3413"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="3861" Column="46" TopLine="3845"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3447" Column="5" TopLine="3425"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="3837" Column="24" TopLine="3826"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3468" Column="10" TopLine="3456"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="3860" Column="69" TopLine="3840"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3434" Column="10" TopLine="3422"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="11975" Column="35" TopLine="11966"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="3468" Column="18" TopLine="3456"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="11983" TopLine="11966"/>
       </Position>
       <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="433" Column="54" TopLine="421"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="11985" TopLine="11966"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="11" Column="30" TopLine="4"/>
+        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Caret Line="11982" TopLine="11966"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="491" Column="31" TopLine="478"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="9" Column="36" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\drawing\fdrawing.pas"/>
+        <Caret Line="493" Column="7" TopLine="478"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -1002,6 +1014,15 @@
     </HistoryLists>
   </ProjectSession>
   <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="components\CADSys42\Sources\CADSys4.pas"/>
+        <Line Value="11982"/>
+      </Item>
+    </BreakPoints>
     <Watches>
       <Item>
         <Expression Value="fCurrentBlockLibrary"/>

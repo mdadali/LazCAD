@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, Dialogs, Graphics, ComCtrls,
-  Menus, StdCtrls, Types,
+  Menus, StdCtrls, Types, IniFiles,
   UndoRedo,
   applicationh,
   camh,
@@ -484,14 +484,18 @@ end;
 
 procedure TComponentDrawing.SetShowRulerMarker(AValue: boolean);
 begin
-  applicationh.fShowRulerMarker := AValue;
-  self.fDrawing.RulerLeft.ShowMarker := AValue;
-  self.fDrawing.RulerBottom.ShowMarker := AValue;
-
-  if applicationh.fShowRulerMarker then
-    fIniFile.WriteString('Application',   'ShowRulerMarker', 'yes')
-  else
-    applicationh.fIniFile.WriteString('Application',   'ShowRulerMarker', 'no');
+  fIniFile := TIniFile.create(applicationh.fIniFileName);
+  try
+    applicationh.fShowRulerMarker := AValue;
+    self.fDrawing.RulerLeft.ShowMarker := AValue;
+    self.fDrawing.RulerBottom.ShowMarker := AValue;
+    if applicationh.fShowRulerMarker then
+      fIniFile.WriteString('Application',   'ShowRulerMarker', 'yes')
+    else
+      applicationh.fIniFile.WriteString('Application',   'ShowRulerMarker', 'no');
+  finally
+     fIniFile.Free;
+  end;
 end;
 
 function  TComponentDrawing.GetShowGrid: boolean;

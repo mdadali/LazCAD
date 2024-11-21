@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, Dialogs, Graphics, ComCtrls,
-  Menus, StdCtrls, Types,
+  Menus, StdCtrls, Types, IniFiles,
   UndoRedo,
   applicationh,
   camh,
@@ -325,6 +325,8 @@ type
       Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
     procedure CADViewport2DMouseMove2D(Sender: TObject; Shift: TShiftState; WX,
       WY: TRealType; X, Y: Integer);
+    procedure CADViewport2DMouseUp2D(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
     procedure CADViewport2DPaint(Sender: TObject);
     procedure mnuModifyReverseClick(Sender: TObject);
     procedure mnuInverseClick(Sender: TObject);
@@ -482,14 +484,18 @@ end;
 
 procedure TComponentDrawing.SetShowRulerMarker(AValue: boolean);
 begin
-  applicationh.fShowRulerMarker := AValue;
-  self.fDrawing.RulerLeft.ShowMarker := AValue;
-  self.fDrawing.RulerBottom.ShowMarker := AValue;
-
-  if applicationh.fShowRulerMarker then
-    fIniFile.WriteString('Application',   'ShowRulerMarker', 'yes')
-  else
-    applicationh.fIniFile.WriteString('Application',   'ShowRulerMarker', 'no');
+  fIniFile := TIniFile.create(applicationh.fIniFileName);
+  try
+    applicationh.fShowRulerMarker := AValue;
+    self.fDrawing.RulerLeft.ShowMarker := AValue;
+    self.fDrawing.RulerBottom.ShowMarker := AValue;
+    if applicationh.fShowRulerMarker then
+      fIniFile.WriteString('Application',   'ShowRulerMarker', 'yes')
+    else
+      applicationh.fIniFile.WriteString('Application',   'ShowRulerMarker', 'no');
+  finally
+     fIniFile.Free;
+  end;
 end;
 
 function  TComponentDrawing.GetShowGrid: boolean;
@@ -1369,6 +1375,12 @@ begin
     RulerLeft.SetMark(Y);
     RulerBottom.SetMark(X);
   end; }
+end;
+
+procedure TDrawing.CADViewport2DMouseUp2D(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; WX, WY: TRealType; X, Y: Integer);
+begin
+
 end;
 
 procedure TDrawing.CADViewport2DPaint(Sender: TObject);

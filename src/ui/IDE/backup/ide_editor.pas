@@ -12,7 +12,7 @@ uses
   ComCtrls, ActnList, SynEdit, SynEditTypes, SynHighlighterPas, SynEditSearch,
   SynEditMiscClasses, SynEditHighlighter, SynGutterBase, SynGutterMarks,
   SynGutterLineNumber, SynGutterChanges, SynGutter, SynGutterCodeFolding,
-  SynEditMarkupSpecialLine, SynEditRegexSearch, PrintersDlgs, BCButtonFocus,
+  SynEditMarkupSpecialLine, SynEditRegexSearch, SynEditMarks, PrintersDlgs, BCButtonFocus,
 
   uPSComponent_COM,
   uPSComponent_StdCtrls,
@@ -42,7 +42,7 @@ uses
   MainScriptinterface,
 
   applicationh,
-  CADDocument, SynEditMarks;
+  CADDocument;
 
 type
 
@@ -299,8 +299,9 @@ begin
   for Line := 1 to ed.Lines.Count do
   begin
     // Prüfen, ob die Zeile Code enthält oder einen Breakpoint hat
-    //{$IFDEF Linux} HasCode := ce.Exec.HasCode(ce.MainFileName, Line); {$ENDIF}
-    HasCode := ce.Exec.HasCode(ce.MainFileName, Line);
+    //HasCode := ce.Exec.HasCode(ce.MainFileName, Line);
+    {$IFDEF Linux} HasCode := ce.Exec.HasCode(ce.MainFileName, Line); {$ENDIF}
+
     HasBreakpoint := ce.HasBreakPoint(ce.MainFileName, Line);
 
     // Überprüfen, ob der Breakpoint vor dem Start der Anwendung gesetzt wurde und noch keine Debug-Infos existieren
