@@ -1,7 +1,7 @@
 object IDE: TIDE
   Left = 456
   Height = 585
-  Top = 144
+  Top = 132
   Width = 877
   Caption = 'LazCAD IDE'
   ClientHeight = 585
@@ -59,7 +59,6 @@ object IDE: TIDE
     ParentColor = False
     ParentFont = False
     TabOrder = 3
-    OnClick = edClick
     OnQuadClick = edQuadClick
     Gutter.Width = 57
     Gutter.MouseActions = <>

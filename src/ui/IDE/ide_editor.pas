@@ -2,7 +2,8 @@
 
 unit ide_editor;
 
-{$MODE Delphi}
+//{$MODE Delphi}
+{$mode ObjFPC}{$H+}
 
 interface
 
@@ -184,13 +185,12 @@ type
     procedure ceCompImport(Sender: TObject; x: TPSPascalCompiler);
     procedure ceExecImport(Sender: TObject; se: TPSExec;
       x: TPSRuntimeClassImporter);
-    procedure edClick(Sender: TObject);
     procedure edGutterClick(Sender: TObject; X, Y, Line: integer;
       mark: TSynEditMark);
     procedure edQuadClick(Sender: TObject);
     procedure edSpecialLineColors(Sender: TObject; Line: Integer; var Special: Boolean; var FG, BG: TColor);
     procedure BreakPointMenuClick(Sender: TObject);
-    procedure ceLineInfo(Sender: TObject; const FileName: String; Position, Row, Col: Cardinal);
+    procedure ceLineInfo(Sender: TObject; const FileName: String; APosition, Row, Col: Cardinal);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure ceIdle(Sender: TObject);
@@ -201,7 +201,7 @@ type
     procedure edStatusChange(Sender: TObject; Changes: TSynStatusChanges);
     procedure Decompile1Click(Sender: TObject);
     function  ceNeedFile(Sender: TObject; const OrginFileName: String; var FileName, Output: String): Boolean;
-    procedure ceBreakpoint(Sender: TObject; const FileName: String; Position, Row, Col: Cardinal);
+    procedure ceBreakpoint(Sender: TObject; const FileName: String; APosition, Row, Col: Cardinal);
     procedure messagesDblClick(Sender: TObject);
     procedure Gotolinenumber1Click(Sender: TObject);
     procedure Find1Click(Sender: TObject);
@@ -343,7 +343,7 @@ end;
 
 procedure TIDE.FormCreate(Sender: TObject);
 begin
-  ed.OnPaint := edMyPaint;
+  ed.OnPaint := @edMyPaint;
 
   caption := 'LazCAD IDE';
 
@@ -488,7 +488,7 @@ begin
   end else Special := False;
 end;
 
-procedure TIDE.ceLineInfo(Sender: TObject; const FileName: String; Position, Row,
+procedure TIDE.ceLineInfo(Sender: TObject; const FileName: String; APosition, Row,
   Col: Cardinal);
 begin
   if ce.Exec.DebugMode <> dmRun then
@@ -719,17 +719,19 @@ end;
 procedure TIDE.ceCompImport(Sender: TObject; x: TPSPascalCompiler);
 begin
   SIRegister_MainScriptInterface(x);
+  with x.AddClassN(x.FindClass('TControl'), 'TButton') do
+  begin
+    RegisterMethod('procedure Click');
+    RegisterProperty('Caption', 'string', iptrw);
+    RegisterProperty('OnClick', 'TNotifyEvent', iptrw);
+    x.AddTypeS('TNotifyEvent', 'procedure(Sender: TObject)');
+  end;
 end;
 
 procedure TIDE.ceExecImport(Sender: TObject; se: TPSExec;
   x: TPSRuntimeClassImporter);
 begin
   RIRegister_MainScriptInterface_Routines(se);
-end;
-
-procedure TIDE.edClick(Sender: TObject);
-begin
-
 end;
 
 procedure TIDE.edGutterClick(Sender: TObject; X, Y, Line: integer;
@@ -986,7 +988,7 @@ begin
   Result := True;
 end;
 
-procedure TIDE.ceBreakpoint(Sender: TObject; const FileName: String; Position, Row,
+procedure TIDE.ceBreakpoint(Sender: TObject; const FileName: String; APosition, Row,
   Col: Cardinal);
 begin
   FActiveLine := Row;
