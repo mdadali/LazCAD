@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 896
+  Left = 262
   Height = 722
-  Top = 289
+  Top = 149
   Width = 1338
   Caption = 'LazCAD [Main]'
   ClientHeight = 693
@@ -15167,7 +15167,7 @@ object frmMain: TfrmMain
   end
   object ActionList: TActionList
     Images = ImageListClassic
-    Left = 144
+    Left = 152
     Top = 248
     object acDrawPoint: TAction
       Category = 'Draw'

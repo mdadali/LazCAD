@@ -519,7 +519,6 @@ function  TwoVectorsAngle2(X1, Y1, X2, Y2: TRealType): TRealType;
 function  TwoPointsAngle(P0, P1: TPoint2D): TRealType;
 function  VectorAngle(const V: TVector2D): TRealType;
 function  VectorAngle2(const X, Y: TRealType): TRealType;
-procedure MakePolarPoint2D(LastPt: TPoint2D; var CurrSnappedPt: TPoint2D; AAngle: TRealType);
 procedure Make45_2D(LastPt: TPoint2D; var CurrSnappedPt: TPoint2D);
 function  ShiftPoint(const P: TPoint2D; const V: TVector2D): TPoint2D;
 function  PointSegmentProj2D(const P, P0, P1: TPoint2D): TPoint2D;

@@ -1301,10 +1301,11 @@ begin
     exit;
 
   TmpPt  := CADPrg2D.CurrentViewportPoint;
-  if fSnapOption = 14 then //AngularSnap
+  if fSnapOption = 30 then //AngularSnap
   begin
+    if  not CADPrg2D.IsBusy then exit;
     CurrPt := CADPrg2D.CurrentViewportPoint;
-    Make45_2D(LastPt, CurrPt);
+    MakePolarPoint2D(LastPt, CurrPt, CADCmp2D.PolarTrackingValue);
     CurrSnappedPt := CurrPt;
     exit;
   end;

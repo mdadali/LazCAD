@@ -3527,29 +3527,10 @@ begin
   applicationh.WriteIniFile;
 end;
 
-procedure TfrmMain.acSnapBottomLeftExecute(Sender: TObject);
-begin
-   SetSnapOption(7);//LeftBottom
-end;
-
-procedure TfrmMain.acSnapBottomCenterExecute(Sender: TObject);
-begin
-  SetSnapOption(6);//BottomCenter
-end;
 
 procedure TfrmMain.acSnapButtomRightExecute(Sender: TObject);
 begin
   SetSnapOption(5);//RightBottom
-end;
-
-procedure TfrmMain.acSnapMiddleExecute(Sender: TObject);
-begin
-  SetSnapOption(9);////CenterPoint
-end;
-
-procedure TfrmMain.acSnapEndPointExecute(Sender: TObject);
-begin
-  SetSnapOption(11);//EndPoint
 end;
 
 procedure TfrmMain.acSnapGridExecute(Sender: TObject);
@@ -3557,24 +3538,18 @@ begin
   SetSnapOption(0); //Grid
 end;
 
-procedure TfrmMain.acSnapLeftCenterExecute(Sender: TObject);
+procedure TfrmMain.acSnapTopLeftExecute(Sender: TObject);
 begin
-  SetSnapOption(8);//LeftCenter
+  SetSnapOption(1); //LeftTop
+end;
+procedure TfrmMain.acSnapTopCenterExecute(Sender: TObject);
+begin
+  SetSnapOption(2); //TopCenter
 end;
 
-procedure TfrmMain.acSnapNaerestExecute(Sender: TObject);
+procedure TfrmMain.acSnapTopRightExecute(Sender: TObject);
 begin
-  SetSnapOption(13);//Naerest
-end;
-
-procedure TfrmMain.acSnapPolarExecute(Sender: TObject);
-begin
-  SetSnapOption(10);//StartPoint
-end;
-
-procedure TfrmMain.acSnapRightButtomExecute(Sender: TObject);
-begin
-  SetSnapOption(5);//RightBottom
+  SetSnapOption(3); //RightTop
 end;
 
 procedure TfrmMain.acSnapRightCenterExecute(Sender: TObject);
@@ -3582,24 +3557,50 @@ begin
   SetSnapOption(4); //RightCenter
 end;
 
+procedure TfrmMain.acSnapRightButtomExecute(Sender: TObject);
+begin
+  SetSnapOption(5);//RightBottom
+end;
+
+procedure TfrmMain.acSnapBottomCenterExecute(Sender: TObject);
+begin
+  SetSnapOption(6);//BottomCenter
+end;
+
+procedure TfrmMain.acSnapBottomLeftExecute(Sender: TObject);
+begin
+   SetSnapOption(7);//LeftBottom
+end;
+
+procedure TfrmMain.acSnapLeftCenterExecute(Sender: TObject);
+begin
+  SetSnapOption(8);//LeftCenter
+end;
+
+procedure TfrmMain.acSnapMiddleExecute(Sender: TObject);
+begin
+  SetSnapOption(9);////CenterPoint
+end;
+
 procedure TfrmMain.acSnapStartPointExecute(Sender: TObject);
 begin
   SetSnapOption(10);//StartPoint
 end;
 
-procedure TfrmMain.acSnapTopCenterExecute(Sender: TObject);
+procedure TfrmMain.acSnapEndPointExecute(Sender: TObject);
 begin
-  SetSnapOption(2); //TopCenter
+  SetSnapOption(11);//EndPoint
 end;
 
-procedure TfrmMain.acSnapTopLeftExecute(Sender: TObject);
+procedure TfrmMain.acSnapNaerestExecute(Sender: TObject);
 begin
-  SetSnapOption(1); //LeftTop
+  SetSnapOption(13);//Naerest
 end;
 
-procedure TfrmMain.acSnapTopRightExecute(Sender: TObject);
+
+procedure TfrmMain.acSnapPolarExecute(Sender: TObject);
 begin
-  SetSnapOption(3); //RightTop
+  SetSnapOption(30);//AngularSnap
 end;
 
 procedure TfrmMain.acTestsTestLayersExecute(Sender: TObject);
