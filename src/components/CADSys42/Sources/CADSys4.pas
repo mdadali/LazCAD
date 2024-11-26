@@ -4308,7 +4308,6 @@ end;
     property Right:  TRealType    read  GetRight      write SetRight;
     property Top:    TRealType    read  GetTop        write SetTop;
 
-    //property Angle:  TRealType read  GetAngle write SetAngle;
     property MiddLePoint: TPoint2D   read GetMiddlePoint write SetMiddlePoint;
     property MiddLePointX: TRealType read GetMiddlePointX write SetMiddlePointX;
     property MiddLePointY: TRealType read GetMiddlePointY write SetMiddlePointY;

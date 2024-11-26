@@ -1136,7 +1136,7 @@ begin
   case Button of
     mbMiddle:begin
       FMiddleMouseDown := True;
-        MoveBasePoint    := hDrawing.CADPrg2D.CurrentViewportSnappedPoint;
+        //MoveBasePoint    := hDrawing.CADPrg2D.CurrentViewportSnappedPoint;
         MoveBasePoint    := hDrawing.CADViewport2D.ViewportToScreen(MoveBasePoint);
     end;
     mbRight:begin
@@ -1262,6 +1262,8 @@ begin
       begin
         hDrawing.CADViewport2D.Cursor := crSize;
         EditObject(GlobalObject2D, FPickPosition);
+        if GlobalObject2D is TLine2D then
+           TLine2D(GlobalObject2D).InitializeAngle;
         IsEntityDragged := true;
         hDrawing.CADViewport2D.Repaint;
         hDrawing.CadViewport2D.DrawObject2DWithRubber(GlobalObject2D, true);
@@ -3600,7 +3602,7 @@ end;
 
 procedure TfrmMain.acSnapPolarExecute(Sender: TObject);
 begin
-  SetSnapOption(15);//PolarSnap
+  SetSnapOption(30);//AngularSnap
 end;
 
 procedure TfrmMain.acTestsTestLayersExecute(Sender: TObject);

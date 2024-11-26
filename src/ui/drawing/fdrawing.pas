@@ -17,8 +17,6 @@ uses
 
 type
 
-
-
   { TDrawing }
 
    TDrawing    = class;

@@ -1305,7 +1305,7 @@ begin
   begin
     if  not CADPrg2D.IsBusy then exit;
     CurrPt := CADPrg2D.CurrentViewportPoint;
-    MakePolarPoint2D(LastPt, CurrPt, fDrawing.CADCmp2D.PolarTrackingValue);
+    MakePolarPoint2D(LastPt, CurrPt, CADCmp2D.PolarTrackingValue);
     CurrSnappedPt := CurrPt;
     exit;
   end;
