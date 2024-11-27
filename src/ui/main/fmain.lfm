@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 846
+  Left = 354
   Height = 722
-  Top = 172
+  Top = 207
   Width = 1338
   Caption = 'LazCAD [Main]'
   ClientHeight = 693
@@ -15743,7 +15743,6 @@ object frmMain: TfrmMain
     end
     object acDimLin: TAction
       Category = 'Dimension'
-      AutoCheck = True
       Caption = 'Linear'
       GroupIndex = 1
       OnExecute = acDimLinExecute
@@ -18007,8 +18006,7 @@ object frmMain: TfrmMain
     object mnuDimensions: TMenuItem
       Caption = 'D&imensions'
       object Linear1: TMenuItem
-        Action = acDimLin
-        AutoCheck = True
+        Caption = 'Linear'
       end
       object Aligned1: TMenuItem
         Action = acDimAli

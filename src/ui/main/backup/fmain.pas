@@ -2468,7 +2468,7 @@ end;
 procedure TfrmMain.acDimLinExecute(Sender: TObject);
 var TmpDimLine2D: TDimension2D;   hDrawing: TDrawing;
 begin
-  if PageControl1.PageCount = 0 then exit;
+  {if PageControl1.PageCount = 0 then exit;
   hDrawing := GetDrawingFromPage(fActivePage);
   if hDrawing <> nil then
   begin
@@ -2482,7 +2482,7 @@ begin
           TmpDimLine2D, 0, True));
        //SetDefaultObjEntitys(TmpLine2D);
     end;
-  end;
+  end;}
 end;
 
 procedure TfrmMain.acCMDPolarTrackingExecute(Sender: TObject);
