@@ -1,7 +1,7 @@
 object IDE: TIDE
-  Left = 456
+  Left = 423
   Height = 585
-  Top = 132
+  Top = 78
   Width = 877
   Caption = 'LazCAD IDE'
   ClientHeight = 585
@@ -19,7 +19,7 @@ object IDE: TIDE
     Cursor = crVSplit
     Left = 0
     Height = 3
-    Top = 559
+    Top = 558
     Width = 877
     Align = alBottom
     ResizeAnchor = akBottom
@@ -27,7 +27,7 @@ object IDE: TIDE
   object messages: TListBox
     Left = 0
     Height = 149
-    Top = 410
+    Top = 409
     Width = 877
     Align = alBottom
     ItemHeight = 0
@@ -37,8 +37,8 @@ object IDE: TIDE
   end
   object StatusBar: TStatusBar
     Left = 0
-    Height = 23
-    Top = 562
+    Height = 24
+    Top = 561
     Width = 877
     Panels = <    
       item
@@ -48,7 +48,7 @@ object IDE: TIDE
   end
   inline ed: TSynEdit
     Left = 0
-    Height = 373
+    Height = 372
     Top = 32
     Width = 877
     Align = alClient
@@ -608,7 +608,7 @@ object IDE: TIDE
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 405
+    Top = 404
     Width = 877
     Align = alBottom
     ResizeAnchor = akBottom

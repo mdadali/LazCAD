@@ -12,6 +12,7 @@ interface
 
  
 uses
+   StdCtrls,
    SysUtils
   ,Classes
   ,uPSComponent
@@ -47,7 +48,12 @@ uses
   ,applicationh
   ,cad2dscripinterface
   ;
- 
+
+
+procedure SetButtonOnClick(Button: TButton; handler: TNotifyEvent);
+begin
+  Button.OnClick := handler;  // Setzt das OnClick-Ereignis des Buttons auf den Handler
+end;
 
 (* === compile-time registration functions === *)
 (*----------------------------------------------------------------------------*)
@@ -75,7 +81,7 @@ begin
  CL.AddDelphiFunction('function Point2D(X: TRealType; Y: TRealType): TPoint2D');
  CL.AddDelphiFunction('function CAD_Rect2D(var Left, Bottom, Right, Top: TRealType): TRect2D');
 
-
+ CL.AddDelphiFunction('procedure SetButtonOnClick(Button: TButton; handler: TNotifyEvent);');
  //LazCAD
 
   CL.AddDelphiFunction('Procedure GetActiveDocument');
@@ -83,6 +89,8 @@ begin
   CL.AddDelphiFunction('procedure CAD_Clear');
   CL.AddDelphiFunction('procedure CAD_ZoomToExtentions');
 
+  CL.AddDelphiFunction('function CAD_ImportDXF(AFileName: string): boolean');
+  CL.AddDelphiFunction('function CAD_ExportDXF(AFileName: string): boolean');
   CL.AddDelphiFunction('function CAD_ImportESSI(AFileName: string): boolean');
 
   CL.AddDelphiFunction('Function CAD_DrawLine2D( AID : longint; var P0, P1 : TPoint2D) : integer');
@@ -372,8 +380,11 @@ begin
  S.RegisterDelphiFunction(@CAD_Clear,                   'CAD_Clear', cdRegister);
  S.RegisterDelphiFunction(@CAD_ZoomToExtentions,        'CAD_ZoomToExtentions', cdRegister);
 
+ S.RegisterDelphiFunction(@CAD_ImportDXF, 'CAD_ImportDXF', cdRegister);
+ S.RegisterDelphiFunction(@CAD_ExportDXF, 'CAD_ExportDXF', cdRegister);
  S.RegisterDelphiFunction(@CAD_ImportESSI, 'CAD_ImportESSI', cdRegister);
 
+ S.RegisterDelphiFunction(@SetButtonOnClick, 'SetButtonOnClick', cdRegister);
 
  S.RegisterDelphiFunction(@CAD_DrawLine2D, 'CAD_DrawLine2D', cdRegister);
  S.RegisterDelphiFunction(@CAD_DrawEllipticalArc2D, 'CAD_DrawEllipticalArc2D', cdRegister);

@@ -527,6 +527,7 @@ function  ShiftPointScale(const P: TPoint2D; const V: TVector2D; const S: TRealT
 procedure Make45_2D_V(var V: TVector2D);
 
 const MAX_LAYER_NUMBER = 255;
+      MIN_FIGURE_DISTANCE = 0.001;
 
 type
 
@@ -1250,17 +1251,24 @@ TGrObjectInsp = class(TPersistent)
       property Tag:         LongInt     read GetTag       write SetTag;
 end;
 
-TObject2DInsp = class
+TObject2DInsp = class(TPersistent)
+   fGrObjectInsp: TGrObjectInsp;
    fPosition2D: TPosition2DInsp;
-   fOwner:   TGraphicObject;
+   fOwner:   TObject2D;
    function  GetAngle: TRealType;
    procedure SetAngle(AValue: TRealType);
+   function  GetDrawBBox: boolean;
+   procedure SetDrawBBox(AValue: boolean);
+   function  GetGrObject: TGrObjectInsp;
+   procedure SetGrObject(AGrObjectInsp: TGrObjectInsp);
  public
-   constructor create(AOwner: TGraphicObject);
+   constructor create(AOwner: TObject2D);
    destructor  destroy; override;
  published
+   property GraphicObject: TGrObjectInsp read GetGrObject write SetGrObject;
    property Position2D: TPosition2DInsp read fPosition2D   write fPosition2D;
    property Angle: TRealType  read  GetAngle  write  SetAngle;
+   property DrawBoundingBox: boolean read GetDrawBBox write SetDrawBBox;
 end;
 
   //TGraphicObject = class(TInterfacedObject)
@@ -4002,7 +4010,7 @@ end;
 
   TObject2D = class(TGraphicObject)
   private
-    fObject2DInsp: TObject2DInsp;
+    //fObject2DInsp: TObject2DInsp;
     fSavedTransform, fModelTransform: ^TTransf2D;
     fDrawBoundingBox: Boolean;
     fBox: TRect2D;
@@ -4074,7 +4082,7 @@ end;
     }
     property  WritableBox: TRect2D read fBox write fBox;
   public
-
+    fObject2DInsp: TObject2DInsp;
     procedure Reverse; virtual;
     procedure Inverse; virtual;
     procedure Explode(ADeleteSource: boolean); virtual;
@@ -9059,10 +9067,11 @@ begin
 end;
 
 //TObject2DInsp/////////////////////////////////////////////////////////////////
-constructor TObject2DInsp.create(AOwner: TGraphicObject);
+constructor TObject2DInsp.create(AOwner: TObject2D);
 begin
-  inherited create;
+  inherited create; //(AOwner);
   fOwner := AOwner;
+  fGrObjectInsp := TGrObjectInsp.create(AOwner);
   fPosition2D   := TPosition2DInsp.create(fOwner);
 end;
 
@@ -9080,6 +9089,26 @@ end;
 procedure TObject2DInsp.SetAngle(AValue: TRealType);
 begin
   TObject2D(fOwner).Angle := AValue;
+end;
+
+function  TObject2DInsp.GetDrawBBox: boolean;
+begin
+  result := TObject2D(fOwner).DrawBoundingBox;
+end;
+
+procedure TObject2DInsp.SetDrawBBox(AValue: boolean);
+begin
+  TObject2D(fOwner).DrawBoundingBox :=  AValue;
+end;
+
+function  TObject2DInsp.GetGrObject: TGrObjectInsp;
+begin
+  result := fGrObjectInsp;
+end;
+
+procedure TObject2DInsp.SetGrObject(AGrObjectInsp: TGrObjectInsp);
+begin
+  fGrObjectInsp := AGrObjectInsp;
 end;
 
 // =====================================================================

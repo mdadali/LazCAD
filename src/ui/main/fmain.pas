@@ -32,8 +32,7 @@ uses
   fDrawing,
   fttf2vector,
   ide_editor,
-  camh,
-  fHelpHtml;
+  camh;
 
 type
 
@@ -1469,6 +1468,7 @@ begin
       TIPropertyGrid1.TIObject := nil;
       TIPropertyGrid1.Clear;
       TIPropertyGrid1.TIObject := AObject;
+      //TIPropertyGrid1.TIObject := AObject.fObject2DInsp;
     end else
 
     begin
@@ -2075,10 +2075,10 @@ begin
   for Count := 0 to Round(L) do
   begin
     if CancelEmulation then exit;
-    //ACanvas.Pixels[Round(X-1), Round(Y-1)] := AColor;
-    //ACanvas.Pixels[Round(X), Round(Y)] := AColor;
+    ACanvas.Pixels[Round(X-1), Round(Y-1)] := AColor;
+    ACanvas.Pixels[Round(X), Round(Y)] := AColor;
     ACanvas.Ellipse(Round(X-hConst), Round(Y-hConst), Round(X+hConst), Round(Y+hConst));
-    //ACanvas.Pixels[Round(X+1), Round(Y+1)] := AColor;
+    ACanvas.Pixels[Round(X+1), Round(Y+1)] := AColor;
     if ASleepTime > 0 then
     begin
       //ACanvas.Ellipse(Round(X-hConst), Round(Y-hConst), Round(X+hConst), Round(Y+hConst));
@@ -2142,10 +2142,13 @@ begin
     TmpIter.First;
     while TmpIter.Current <> nil do
     begin
-      if (TmpIter.Current.LayerName <> CAM_LAYER_STR_JUMPS) and (TmpIter.Current.LayerName <> LAYER_STR_TEMPLATE) then
-      begin
+      if (TmpIter.Current.LayerName <> CAM_LAYER_STR_JUMPS) and (TmpIter.Current.LayerName <> LAYER_STR_TEMPLATE)
+         and  (not (TmpIter.Current is TContainer2D)) and  (not (TmpIter.Current is TBlock2D))
+         and  (not (TmpIter.Current is TText2D))  and (not (TmpIter.Current is TJustifiedVectText2D))
+      then begin
+        ////////////////////////////////////////////////////////////////////////
         if TmpIter.Current is TLine2D then
-          P1 := TLine2D(TmpIter.Current).Points[0]
+            P1 := TLine2D(TmpIter.Current).Points[0]
         else
           P1 := TOutline2D(TmpIter.Current).ProfilePoints[0];
         P1 := hDrawing.CADViewport2D.ViewportToScreen(TransformPoint2D(P1, TObject2D(TmpIter.Current).ModelTransform));
@@ -2905,9 +2908,9 @@ begin
 end;
 
 procedure TfrmMain.acHelpHtmlExecute(Sender: TObject);
-var frmHelpHtml: TfrmHelpHtml; HtmlIndexFile: string;
+//var frmHelpHtml: TfrmHelpHtml; HtmlIndexFile: string;
 begin
-  fIniFile := TIniFile.Create(fIniFileName);
+{  fIniFile := TIniFile.Create(fIniFileName);
   applicationh.fLanguage := applicationh.fIniFile.ReadString('UserInterface',  'Language', 'en');
   HtmlIndexFile := applicationh.GetAppDocPath + applicationh.fLanguage + '/help/html/index.html';
   try
@@ -2952,6 +2955,7 @@ begin
     fIniFile.Free;
     fIniFile := nil;
   end;
+}
 end;
 
 procedure TfrmMain.acInsertRasterImageExecute(Sender: TObject);

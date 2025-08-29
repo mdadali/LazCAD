@@ -20,7 +20,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="120"/>
+      <BuildNr Value="124"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -35,7 +35,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -60,6 +60,37 @@
           </Other>
         </CompilerOptions>
       </Item>
+      <Item Name="Debug_Linux32_gtk2">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <Target>
+            <Filename Value="../i386-linux/gtk2/debug/LazCAD/LazCAD-i386-linux-gtk2"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ui/main;ui/drawing;ui/splash;ui/About;ui/library_blocks;common;ui/layers;ui/simulation;libs/clipper4.8.4/Delphi;buildin/import;CAM;libs/StellaUndoRedo;ui/TTF2Vector;classes/componentshapes;ui/IDE;ui/IDE/Imports"/>
+            <UnitOutputDirectory Value="../lib/i386-linux/gtk2/debug"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <TargetProcessor Value="80386"/>
+            <TargetCPU Value="i386"/>
+            <TargetOS Value="linux"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf3"/>
+            </Debugging>
+          </Linking>
+          <Other>
+            <CustomOptions Value="-dTTF2VECTOR_EMBEDDED -dLCL -dLCLgtk2"/>
+            <OtherDefines Count="3">
+              <Define0 Value="TTF2VECTOR_EMBEDDED"/>
+              <Define1 Value="LCL"/>
+              <Define2 Value="LCLgtk2"/>
+            </OtherDefines>
+          </Other>
+        </CompilerOptions>
+      </Item>
       <SharedMatrixOptions Count="4">
         <Item1 ID="820756939067" Type="IDEMacro" MacroName="LCLWidgetType" Value="win32"/>
         <Item2 ID="579898267453" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
@@ -76,9 +107,6 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="FrameViewer09"/>
-      </Item>
-      <Item>
         <PackageName Value="PascalScriptFCL"/>
       </Item>
       <Item>
@@ -89,9 +117,6 @@
       </Item>
       <Item>
         <PackageName Value="PenBrushStyles"/>
-      </Item>
-      <Item>
-        <PackageName Value="LazOpenGLContext"/>
       </Item>
       <Item>
         <PackageName Value="Abbrevia"/>
@@ -113,9 +138,6 @@
       </Item>
       <Item>
         <PackageName Value="python4lazarus_package"/>
-      </Item>
-      <Item>
-        <PackageName Value="indylaz"/>
       </Item>
       <Item>
         <PackageName Value="pkg_gifanim"/>
@@ -263,14 +285,6 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSI_DialogsScriptInterface"/>
       </Unit>
-      <Unit>
-        <Filename Value="ui\HelpHtml\fhelphtml.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmHelpHtml"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="fHelpHtml"/>
-      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -281,7 +295,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
       <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
     </SearchPaths>
     <CodeGeneration>

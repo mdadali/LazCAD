@@ -337,9 +337,9 @@ begin
       TmpPolygon2D.PenStyle    := PenStyleComboBox1.SelectedPenStyle;
       TmpPolygon2D.PenColor    := ColorBox1.Selected;
 
-      {TmpPolygon2D.BrushSource := bsCustom;
-      TmpPolygon2D.Brush.Style := BrushStyleComboBox1.SelectedBrushStyle;
-      TmpPolygon2D.Brush.Color := ColorBox2.Selected;}
+      TmpPolygon2D.BrushSource := bsCustom;
+      TmpPolygon2D.BrushStyle := BrushStyleComboBox1.SelectedBrushStyle;
+      TmpPolygon2D.BrushColor := ColorBox2.Selected;
 
       CADCmp2D1.AddObject(-1, TmpPolygon2D);
       TmpPolygon2D.fReserveInt1 := ord(ktOuterContourCW);
@@ -454,7 +454,7 @@ begin
     begin
       if (TmpIter.Current.LayerName <> CAM_LAYER_STR_JUMPS) and (TmpIter.Current.LayerName <> LAYER_STR_TEMPLATE) then
       begin
-        //TPrimitive2D(TmpIter.Current).ShowDirection := AValue;
+        TSimplePrimitive2D(TmpIter.Current).ShowDirection := AValue;
         CADCmp2D1.RedrawObject(TPrimitive2D(TmpIter.Current));
       end;
       TmpIter.Next;

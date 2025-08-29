@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Lazarus Version="4.99"/>
-  <Compiler Value="/home/maurog/Programme/Lazarus/399/fpc/bin/x86_64-linux/fpc.sh" Date="1728827178"/>
-  <Params Value="-MObjFPC -Scghi -Cg -O1 -g -gl -l -vewnibq -vh- -Fu/home/maurog/Programme/LazCAD_git/LazCAD/src/components/PascalScript/Source/ -Fu/home/maurog/Programme/Lazarus/399/lazarus/packager/units/x86_64-linux -Fu/home/maurog/Programme/Lazarus/399/lazarus/components/lazutils/lib/x86_64-linux -Fu/home/maurog/Programme/Lazarus/399/lazarus/components/freetype/lib/x86_64-linux -Fu/home/maurog/Programme/Lazarus/399/lazarus/lcl/units/x86_64-linux -Fu/home/maurog/Programme/Lazarus/399/lazarus/lcl/units/x86_64-linux/gtk2 -FU/home/maurog/Programme/LazCAD_git/LazCAD/src/components/PascalScript/Source/lib/x86_64-linux/ -dLCL -dLCLgtk2 pascalscript.pas"/>
+  <Compiler Value="/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/fpc/bin/x86_64-linux/fpc.sh" Date="1747655176"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -g -gl -l -vewnibq -vh- -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/packager/units/x86_64-linux -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/components/lazutils/lib/x86_64-linux -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/components/freetype/lib/x86_64-linux -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/lcl/units/x86_64-linux -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/lcl/units/x86_64-linux/gtk2 -Fu/home/maurog/daten/mustafa/entwicklung/linux/lazarus/LazCAD_git/LazCAD/src/components/PascalScript/Source/ -FU/home/maurog/daten/mustafa/entwicklung/linux/lazarus/LazCAD_git/LazCAD/src/components/PascalScript/Source/lib/x86_64-linux/ -dLCL -dLCLgtk2 pascalscript.pas"/>
 </CONFIG>

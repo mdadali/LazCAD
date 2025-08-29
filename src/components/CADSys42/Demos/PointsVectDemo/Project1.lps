@@ -3,36 +3,47 @@
   <ProjectSession>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="Project1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="Unit1.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
-        <IsVisibleTab Value="True"/>
+        <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="120"/>
-        <CursorPos X="56" Y="139"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="323"/>
+        <CursorPos X="34" Y="335"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="../../Sources/CADSys4.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="5844"/>
-        <CursorPos X="12" Y="5863"/>
-        <UsageCount Value="10"/>
+        <TopLine Value="7293"/>
+        <CursorPos X="43" Y="7318"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="../../Sources/CS4BaseTypes.pas"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="273"/>
+        <CursorPos X="44" Y="283"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit3>
     </Units>
-    <JumpHistory Count="2" HistoryIndex="1">
+    <JumpHistory Count="10" HistoryIndex="9">
       <Position1>
         <Filename Value="Unit1.pas"/>
         <Caret Line="146" Column="37" TopLine="128"/>
@@ -41,6 +52,38 @@
         <Filename Value="Unit1.pas"/>
         <Caret Line="83" Column="36" TopLine="80"/>
       </Position2>
+      <Position3>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="328" Column="21" TopLine="323"/>
+      </Position3>
+      <Position4>
+        <Filename Value="../../Sources/CADSys4.pas"/>
+        <Caret Line="937" Column="23" TopLine="929"/>
+      </Position4>
+      <Position5>
+        <Filename Value="../../Sources/CADSys4.pas"/>
+        <Caret Line="8834" Column="59" TopLine="8830"/>
+      </Position5>
+      <Position6>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="335" Column="34" TopLine="323"/>
+      </Position6>
+      <Position7>
+        <Filename Value="../../Sources/CADSys4.pas"/>
+        <Caret Line="6127" Column="56" TopLine="6105"/>
+      </Position7>
+      <Position8>
+        <Filename Value="../../Sources/CADSys4.pas"/>
+        <Caret Line="6033" Column="32" TopLine="6026"/>
+      </Position8>
+      <Position9>
+        <Filename Value="../../Sources/CADSys4.pas"/>
+        <Caret Line="6034" Column="31" TopLine="6026"/>
+      </Position9>
+      <Position10>
+        <Filename Value="../../Sources/CADSys4.pas"/>
+        <Caret Line="7318" Column="43" TopLine="7293"/>
+      </Position10>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

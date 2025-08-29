@@ -12,6 +12,7 @@ interface
 
  
 uses
+   StdCtrls,
    SysUtils
   ,Classes
   ,uPSComponent
@@ -47,7 +48,7 @@ uses
   ,applicationh
   ,cad2dscripinterface
   ;
- 
+
 
 (* === compile-time registration functions === *)
 (*----------------------------------------------------------------------------*)
@@ -74,7 +75,6 @@ begin
 
  CL.AddDelphiFunction('function Point2D(X: TRealType; Y: TRealType): TPoint2D');
  CL.AddDelphiFunction('function CAD_Rect2D(var Left, Bottom, Right, Top: TRealType): TRect2D');
-
 
  //LazCAD
 

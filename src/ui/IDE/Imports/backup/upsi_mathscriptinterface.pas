@@ -92,7 +92,7 @@ begin
   S.RegisterDelphiFunction(@ArcSin, 'ArcSin', cdRegister);
   S.RegisterDelphiFunction(@ArcCos, 'ArcCos', cdRegister);
   //S.RegisterDelphiFunction(@ArcTan, 'ArcTan', cdRegister);
-
+  S.RegisterDelphiFunction(@ArcTanHelper, 'ArcTan', cdRegister);
   S.RegisterDelphiFunction(@ArcTan2, 'ArcTan2', cdRegister);
   S.RegisterDelphiFunction(@IntPower, 'IntPower', cdRegister);
   S.RegisterDelphiFunction(@Ldexp, 'Ldexp', cdRegister);
@@ -101,7 +101,6 @@ begin
   S.RegisterDelphiFunction(@Log2, 'Log2', cdRegister);
   S.RegisterDelphiFunction(@LogN, 'LogN', cdRegister);
   S.RegisterDelphiFunction(@Power, 'Power', cdRegister);
-  S.RegisterDelphiFunction(@ArcTanHelper, 'ArcTan', cdRegister);
   S.RegisterDelphiFunction(@DegToRad, 'DegToRad', cdRegister);
   S.RegisterDelphiFunction(@RadToDeg, 'RadToDeg', cdRegister);
 

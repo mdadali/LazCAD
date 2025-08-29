@@ -16,7 +16,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -40,9 +40,6 @@
         </CompilerOptions>
       </Item>
       <Item Name="Debug_Linux32_gtk2">
-        <MacroValues Count="1">
-          <Macro2 Name="LCLWidgetType" Value="gtk2"/>
-        </MacroValues>
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -51,7 +48,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -88,7 +85,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk3\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -120,7 +117,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk3\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -149,7 +146,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -186,7 +183,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports;ui\HelpHtml"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -213,20 +210,19 @@
           </Other>
         </CompilerOptions>
       </Item>
-      <SessionEnabledMatrixOptions Count="4">
+      <SessionEnabledMatrixOptions Count="3">
         <Item1 Mode="Debug_Win32_gtk2" Option="579898267453"/>
-        <Item2 Mode="Debug_Linux32_gtk2" Option="579898267453"/>
-        <Item3 Mode="Debug_Linux64_gtk3" Option="945776926389"/>
-        <Item4 Mode="Debug_Linux32_gtk3" Option="945776926389"/>
+        <Item2 Mode="Debug_Linux64_gtk3" Option="945776926389"/>
+        <Item3 Mode="Debug_Linux32_gtk3" Option="945776926389"/>
       </SessionEnabledMatrixOptions>
     </BuildModes>
-    <ManyBuildModesSelection Value="Debug_Linux64_gtk2,Debug_Win64_win"/>
+    <ManyBuildModesSelection Value="Debug_Linux64_gtk2,Debug_Win64_win,Debug_Linux32_gtk2,Debug_Win32_win"/>
     <Units>
       <Unit>
         <Filename Value="LazCAD.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="3"/>
-        <CursorPos X="69" Y="13"/>
+        <TopLine Value="41"/>
+        <CursorPos Y="58"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -237,13 +233,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fMain"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="2468"/>
-        <CursorPos X="3" Y="2471"/>
+        <TopLine Value="1721"/>
+        <CursorPos X="5" Y="1724"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\drawing\fdrawing.pas"/>
@@ -252,12 +246,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="fDrawing"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1385"/>
-        <CursorPos X="68" Y="1404"/>
+        <CursorPos X="55" Y="1395"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\splash\fSplash.pas"/>
@@ -276,11 +268,12 @@
         <ComponentName Value="frmAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="75"/>
-        <CursorPos X="3" Y="97"/>
+        <CursorPos X="27" Y="89"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\library_blocks\flibraryblocks.pas"/>
@@ -381,8 +374,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fTTF2Vector"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="332"/>
-        <CursorPos X="42" Y="345"/>
+        <TopLine Value="439"/>
+        <CursorPos X="10" Y="449"/>
         <UsageCount Value="201"/>
       </Unit>
       <Unit>
@@ -399,18 +392,17 @@
         <ComponentName Value="IDE"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="714"/>
-        <CursorPos X="49" Y="729"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="374"/>
+        <CursorPos X="56" Y="382"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="common\cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
-        <CursorPos X="8" Y="18"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="116"/>
+        <CursorPos X="43" Y="37"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -418,8 +410,8 @@
         <Filename Value="ui\IDE\Imports\upsi_cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="9"/>
-        <TopLine Value="369"/>
-        <CursorPos Y="376"/>
+        <TopLine Value="22"/>
+        <CursorPos X="55" Y="23"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
       </Unit>
@@ -435,18 +427,17 @@
         <Filename Value="ui\IDE\Imports\upsi_mathscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSI_MathScriptinterface"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="70"/>
-        <CursorPos X="60" Y="83"/>
-        <UsageCount Value="166"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="63" Y="8"/>
+        <UsageCount Value="205"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\mainscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="12"/>
-        <CursorPos X="104" Y="19"/>
-        <UsageCount Value="162"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="14"/>
+        <CursorPos X="64" Y="5"/>
+        <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -456,45 +447,43 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="224"/>
         <CursorPos X="26" Y="236"/>
-        <UsageCount Value="162"/>
+        <UsageCount Value="201"/>
       </Unit>
       <Unit>
         <Filename Value="ui\HelpHtml\fhelphtml.pas"/>
-        <IsPartOfProject Value="True"/>
         <ComponentName Value="frmHelpHtml"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fHelpHtml"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="12"/>
-        <CursorPos Y="20"/>
-        <UsageCount Value="42"/>
+        <CursorPos X="41" Y="4"/>
+        <UsageCount Value="88"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\contours.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="61" Y="9"/>
-        <UsageCount Value="172"/>
+        <UsageCount Value="167"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fobjectposition.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="21"/>
-        <UsageCount Value="169"/>
+        <UsageCount Value="164"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentprimitive2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="256"/>
         <CursorPos X="66" Y="272"/>
-        <UsageCount Value="145"/>
+        <UsageCount Value="140"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentArc.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="23"/>
         <CursorPos X="68" Y="32"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentrect.pas"/>
@@ -502,21 +491,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="26"/>
         <CursorPos X="52" Y="39"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos X="60" Y="56"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentFrame.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="90"/>
         <CursorPos X="60" Y="102"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentbspline.pas"/>
@@ -524,7 +513,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="20" Y="33"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentpolygon.pas"/>
@@ -532,34 +521,34 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="28"/>
         <CursorPos X="36" Y="42"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentPLine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="5" Y="47"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentLine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="41" Y="38"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcirculararc.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
         <CursorPos X="33" Y="47"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="191"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcircle.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="29" Y="17"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="168"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentgraphicobj.pas"/>
@@ -567,13 +556,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="44"/>
         <CursorPos X="29" Y="74"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="136"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcontainer.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="11"/>
-        <UsageCount Value="132"/>
+        <UsageCount Value="127"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentsimpleprim2d.pas"/>
@@ -581,104 +570,89 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="7" Y="30"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="21"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcompdirectionalcurve2d.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="27" Y="13"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcompclosedcurve2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos Y="68"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcompclosedpolyline2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="7" Y="26"/>
-        <UsageCount Value="16"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentobject2d.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="20"/>
-        <CursorPos X="3" Y="50"/>
-        <UsageCount Value="3"/>
-      </Unit>
-      <Unit>
-        <Filename Value="classes\componentshapes\fcomponentgraphicobject.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="48"/>
-        <CursorPos X="36" Y="57"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcurve2d.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="42" Y="16"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentoutline2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="77" Y="16"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentsector2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="14"/>
         <CursorPos X="53" Y="28"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="buildin\import\cImportGCODE2.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="488"/>
         <CursorPos X="37" Y="492"/>
-        <UsageCount Value="82"/>
+        <UsageCount Value="77"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CADSys4.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4352"/>
         <CursorPos X="45" Y="4368"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="18"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CS4Shapes.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="361"/>
         <CursorPos X="14" Y="375"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="18"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CS4BaseTypes.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="29"/>
         <CursorPos X="47" Y="45"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="19"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CS4Tasks.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3474"/>
         <CursorPos X="59" Y="3485"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="18"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="7240"/>
-        <CursorPos X="45" Y="7264"/>
-        <UsageCount Value="100"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7647"/>
+        <CursorPos X="51" Y="7668"/>
+        <UsageCount Value="96"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -686,83 +660,82 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2849"/>
         <CursorPos X="33" Y="2857"/>
-        <UsageCount Value="98"/>
+        <UsageCount Value="93"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4DXFModule.pas"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="392"/>
         <CursorPos X="51" Y="409"/>
-        <UsageCount Value="11"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="29"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4BaseTypes.pas"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="35" Y="10"/>
         <UsageCount Value="99"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="12845"/>
-        <CursorPos X="33" Y="12859"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="13677"/>
+        <CursorPos X="26" Y="13685"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="common\CommonUtils.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="83"/>
-        <CursorPos X="56" Y="103"/>
-        <UsageCount Value="32"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="6"/>
+        <CursorPos X="15" Y="8"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcommoncomponent.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="38"/>
         <CursorPos X="46" Y="52"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\development\lazarus\components\CADSys42\Sources\CS4Shapes.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1459"/>
         <CursorPos X="72" Y="1487"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="62"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\development\lazarus\components\CADSys42\Sources\CS4Tasks.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2040"/>
         <CursorPos X="31" Y="2052"/>
-        <UsageCount Value="62"/>
+        <UsageCount Value="57"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\development\lazarus\components\CADSys42\Sources\CADSys4.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="12155"/>
         <CursorPos X="9" Y="12167"/>
-        <UsageCount Value="62"/>
+        <UsageCount Value="57"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\fpcsrc\rtl\objpas\classes\classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="425"/>
         <CursorPos X="3" Y="429"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSCompiler.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13556"/>
         <CursorPos X="42" Y="13566"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\graphics.pp"/>
@@ -770,48 +743,20 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="191"/>
         <CursorPos X="55" Y="206"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSR_stdctrls.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="54" Y="15"/>
-        <UsageCount Value="9"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSComponent.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="193"/>
-        <CursorPos X="14" Y="205"/>
-        <UsageCount Value="5"/>
-      </Unit>
-      <Unit>
-        <Filename Value="ui\IDE\Imports\IFSI_Dialogs.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="32" Y="8"/>
-        <UsageCount Value="5"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\ThirdParty\uPSI_Dialogs.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="629"/>
-        <CursorPos X="60" Y="654"/>
-        <UsageCount Value="5"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\dialogs.pp"/>
-        <UnitName Value="Dialogs"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="673"/>
-        <CursorPos X="44" Y="686"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSDebugger.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="93" Y="29"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="46"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\ide\lazarus.pp"/>
@@ -819,7 +764,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="41"/>
         <CursorPos X="34" Y="49"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\forms.pp"/>
@@ -827,7 +772,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="318"/>
         <CursorPos X="17" Y="331"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\controls.pp"/>
@@ -835,21 +780,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="184"/>
         <CursorPos X="40" Y="198"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\uFrmGotoLine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="46"/>
         <CursorPos X="8" Y="62"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\test\uPSI_cad2dscripinterface.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="619"/>
         <CursorPos Y="772"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="unit1.pas"/>
@@ -857,7 +802,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\config_lazarus\onlinepackagemanager\packages\HtmlViewer\source\framview.pas"/>
@@ -865,29 +810,28 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="31"/>
         <CursorPos X="51" Y="49"/>
-        <UsageCount Value="16"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\x64.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="293"/>
         <CursorPos Y="305"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSRuntime.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="39" Y="28"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\include\winapih.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="188"/>
         <CursorPos X="10" Y="213"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\lcltype.pp"/>
@@ -895,7 +839,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="62"/>
         <CursorPos X="35" Y="66"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\fpcsrc\packages\rtl-objpas\src\inc\variants.pp"/>
@@ -903,132 +847,190 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="52"/>
         <CursorPos X="67" Y="22"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\development\lazarus\components\CADSys4-3D_Last\CADSys42_mgw\Sources\CADSys4.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4998"/>
+        <CursorPos X="32" Y="5014"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\config_lazarus\onlinepackagemanager\packages\BGRAControls\bcleatheme.pas"/>
+        <UnitName Value="BCLeaTheme"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2457"/>
+        <CursorPos X="68" Y="2477"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\fpcsrc\rtl\objpas\sysutils\sysstr.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="870"/>
+        <CursorPos X="10" Y="883"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\fpcsrc\rtl\objpas\sysutils\sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="110"/>
+        <CursorPos X="43" Y="117"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\PascalScript\Source\uPSComponent.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="200"/>
+        <CursorPos X="14" Y="205"/>
+        <UsageCount Value="26"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\development\lazarus\components\pascalscript\Source\uPSComponent.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="57" Y="6"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="1012"/>
+        <CursorPos X="35" Y="977"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="components\PascalScript\Source\uPSDebugger.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="132"/>
+        <CursorPos X="40" Y="147"/>
+        <UsageCount Value="23"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\PascalScript\Source\uPSDebugger.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="131"/>
+        <CursorPos X="5" Y="155"/>
+        <UsageCount Value="26"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\PascalScript\Source\pascalscriptfcl.pas"/>
+        <UnitName Value="PascalScriptFCL"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\opengl\openglcontext.pas"/>
+        <UnitName Value="OpenGLContext"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="74"/>
+        <CursorPos X="54" Y="79"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_LazCAD\config_lazarus\onlinepackagemanager\packages\bgragames-master\bgtools.pas"/>
+        <UnitName Value="bgTools"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="253"/>
+        <CursorPos Y="272"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_LazCAD\ccr\aggpasmod\Source\AggRendererScanLine.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="71" Y="27"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\config_lazarus\onlinepackagemanager\packages\BGRAControls\bcnumerickeyboard.pas"/>
+        <UnitName Value="BCNumericKeyboard"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="155"/>
+        <CursorPos X="13" Y="167"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\lazarus\components\opengl\openglcontext.pas"/>
+        <UnitName Value="OpenGLContext"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="79"/>
+        <CursorPos X="4" Y="89"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\config_lazarus\onlinepackagemanager\packages\BGRAControls\bckeyboard.pas"/>
+        <UnitName Value="BCKeyboard"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="204"/>
+        <CursorPos X="13" Y="216"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="components\PascalScript\Source\uPSRuntime.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7079"/>
+        <CursorPos Y="7112"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\fpcsrc\rtl\inc\objpash.inc"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="186"/>
+        <CursorPos X="52" Y="191"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="components\PascalScript\Source\uPSUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\fpcsrc\rtl\inc\systemh.inc"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="325"/>
+        <CursorPos X="3" Y="335"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
       </Unit>
     </Units>
     <OtherDefines Count="1">
       <Define0 Value="TTF2VECTOR_EMBEDDED"/>
     </OtherDefines>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="7">
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="699" Column="22" TopLine="679"/>
+        <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
+        <Caret Line="979" TopLine="969"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="833" Column="37" TopLine="813"/>
+        <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
+        <Caret Line="980" TopLine="969"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="895" Column="27" TopLine="875"/>
+        <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
+        <Caret Line="983" TopLine="969"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="975" Column="36" TopLine="956"/>
+        <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
+        <Caret Line="985" TopLine="969"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="984" Column="19" TopLine="964"/>
+        <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
+        <Caret Line="987" TopLine="981"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1006" Column="7" TopLine="985"/>
+        <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
+        <Caret Line="257" Column="23" TopLine="248"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1097" Column="65" TopLine="1076"/>
+        <Filename Value="ui\About\fAbout.pas"/>
+        <Caret Line="89" Column="27" TopLine="75"/>
       </Position>
       <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1265" Column="46" TopLine="1254"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="4" Column="84"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="58" Column="23" TopLine="38"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="59" Column="23" TopLine="39"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="60" Column="23" TopLine="40"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="61" Column="23" TopLine="41"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="132" Column="85" TopLine="112"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="133" Column="85" TopLine="113"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="220" Column="23" TopLine="199"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="221" Column="23" TopLine="200"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="222" Column="23" TopLine="201"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="223" Column="23" TopLine="202"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="237" Column="87" TopLine="217"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="238" Column="87" TopLine="218"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\drawing\fdrawing.pas"/>
-        <Caret Line="611" Column="59" TopLine="598"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <Caret Line="7" Column="89"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <Caret Line="12859" Column="33" TopLine="12839"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <Caret Line="12865" Column="46" TopLine="12845"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="798" Column="96" TopLine="794"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="2362" Column="26" TopLine="2342"/>
-      </Position>
-      <Position>
-        <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
-        <Caret Line="6265" Column="30" TopLine="6245"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="1279" Column="72" TopLine="1268"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\main\fmain.pas"/>
-        <Caret Line="2485" Column="8" TopLine="2468"/>
+        <Filename Value="common\CommonUtils.pas"/>
+        <Caret Line="70" Column="14" TopLine="56"/>
       </Position>
     </JumpHistory>
     <RunParams>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/fpc/bin/x86_64-linux/fpc.sh" Date="1747655176"/>
+  <Params Value=" -Twin32 -Pi386 -MObjFPC -Scghi -O1 -g -gl -l -vewnibq -vh- -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/packager/units/i386-win32 -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/components/lazutils/lib/i386-win32 -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/components/freetype/lib/i386-win32 -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/lcl/units/i386-win32 -Fu/home/maurog/Programme/Lazarus_2.2.6.0_FPC_3.2.2/lazarus/lcl/units/i386-win32/win32 -Fu/home/maurog/daten/mustafa/entwicklung/linux/lazarus/LazCAD_git/LazCAD/src/components/PascalScript/Source/ -FU/home/maurog/daten/mustafa/entwicklung/linux/lazarus/LazCAD_git/LazCAD/src/components/PascalScript/Source/lib/i386-win32/ -dLCL -dLCLwin32 pascalscript.pas"/>
+</CONFIG>

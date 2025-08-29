@@ -31,9 +31,63 @@ var ObjectsIterator: TExclusiveGraphicObjIterator;
     CADViewport2D: TCADViewport2D;
     ProgressBar: TProgressBar;
     PropertyGrid: TTIPropertyGrid;
-  
 
+
+
+//Drawing
 procedure GetActiveDocument;
+
+//Drawing-Grid
+{function  CAD_Drw_GetShowGrid: boolean;
+procedure CAD_Drw_SetShowGrid(AValue: boolean);
+function  CAD_Drw_GetShowGridMainAxes: boolean;
+procedure CAD_Drw_SetShowGridMainAxes(AValue: boolean);
+function  CAD_Drw_GetGridDeltaX: TRealType;
+procedure CAD_Drw_SetGridDeltaX(AValue: TRealType);
+function  CAD_Drw_GetGridDeltaY: TRealType;
+procedure CAD_Drw_SetGridDeltaY(AValue: TRealType);
+
+function  CAD_Drw_GetGridColor: TColor;
+procedure CAD_Drw_SetGridColor(AValue: TColor);
+
+function  CAD_Drw_GetBGColor: TColor;
+procedure CAD_Drw_SetBGColor(AValue: TColor);
+
+//Drawing-Commands
+function  CAD_Drw_GetEnable_DragDrop: boolean;
+procedure CAD_Drw_SetEnable_DragDrop(AValue: boolean);
+function  CAD_Drw_GetPolarTracking: boolean;
+procedure CAD_Drw_SetPolarTracking(AValue: boolean);
+
+function  CAD_Drw_GetPolarTrackingValue: TRealType;
+procedure CAD_Drw_SetPolarTrackingValue(AValue: TRealType);
+
+function  CAD_Drw_GetShowControlPoints: boolean;
+procedure CAD_Drw_SetShowControlPoints(AValue: boolean);
+
+function  CAD_Drw_GetShowDirection: boolean;
+procedure CAD_Drw_SetShowDirection(AValue: boolean);
+
+function  CAD_Drw_GetShowRulerMarker: boolean;
+procedure CAD_Drw_SetShowRulerMarker(AValue: boolean);
+
+function  CAD_Drw_GetUseOrto: boolean;
+procedure CAD_Drw_SetUseOrto(AValue: boolean);
+
+function  CAD_Drw_GetUseSnap: boolean;
+procedure CAD_Drw_SetUseSnap(AValue: boolean);
+
+function  CAD_Drw_GetXSnap: TRealType;
+procedure CAD_Drw_SetXSnap(AValue: TRealType);
+
+function  CAD_Drw_GetYSnap: TRealType;
+procedure CAD_Drw_SetYSnap(AValue: TRealType);
+
+
+//Drawing-Colors
+
+
+}
 
 function CAD_Rect2D(var Left, Bottom, Right, Top: TRealType): TRect2D;
 
@@ -3734,9 +3788,13 @@ begin
     result := TmpObj2D.ClassName;
 end;
 
-{function  CAD_CombinedFigures(AIndex1, AIndex2: integer): boolean;
+function  CAD_CombinedFigures(AIndex1, AIndex2: integer): boolean;
 var x1, y1, x2, y2: TRealType; hRes: boolean;  Point1, Point2: TPoint2D;
 begin
+  result := false;
+  GetActiveDocument;
+  if CADCmp2D = nil then exit;
+
   Point1 := Point2D(CAD_GetFigureSP_X(AIndex1), CAD_GetFigureSP_Y(AIndex1));
   Point2 := Point2D(CAD_GetFigureEP_X(AIndex2), CAD_GetFigureEP_Y(AIndex2));
   hRes := ( (abs(Point1.x - Point2.x) <= MIN_FIGURE_DISTANCE) and
@@ -3745,7 +3803,7 @@ begin
 
   result := hRes;
 end;
-}
+
 
 procedure CAD_ProgressBarReset(AMin, AMax, AStep: integer);
 begin

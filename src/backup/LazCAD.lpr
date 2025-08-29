@@ -10,13 +10,13 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  runtimetypeinfocontrols, lazopenglcontext, printer4lazarus, pascalscript,
-  {$IFDEF UNIX}  pascalscriptfcl, {$ENDIF} crt, Forms, pkg_gifanim, indylaz,
-  FrameViewer09, abbrevia, fSplash, fAbout, fMain, fDrawing, fLibraryBlocks,
+  runtimetypeinfocontrols, printer4lazarus, pascalscript,
+  {$IFDEF UNIX}  pascalscriptfcl, {$ENDIF} crt, Forms, pkg_gifanim,
+  abbrevia, fSplash, fAbout, fMain, fDrawing, fLibraryBlocks,
   fLayers, applicationh, CADDocument, cad2dscripinterface, camh,
   FiguresAsComponents, cImportEssi, fSimulation, fTTF2Vector, ide_editor,
   upsi_cad2dscripinterface, uPSI_CommonUtils, fCADSys4ClipperInterface,
-  UndoRedo, uPSI_MathScriptinterface, mainscriptinterface, fHelpHtml;
+  UndoRedo, uPSI_MathScriptinterface, mainscriptinterface;
 
 {$R *.res}
 

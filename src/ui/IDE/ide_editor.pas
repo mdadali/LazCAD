@@ -2,8 +2,8 @@
 
 unit ide_editor;
 
-//{$MODE Delphi}
-{$mode ObjFPC}{$H+}
+{$MODE Delphi}
+//{$mode ObjFPC}{$H+}
 
 interface
 
@@ -232,6 +232,8 @@ type
   public
     procedure edMyPaint(Sender: TObject; ACanvas: TCanvas);
     function SaveCheck: Boolean;
+
+    procedure AssignOnClick(Sender: TButton; const ScriptProcName: string);
   end;
 
 var
@@ -290,6 +292,101 @@ resourcestring
   STR_NOTSAVED = 'File has not been saved, save now?';
 
 
+  function GetModuleBaseAddress: NativeUInt;
+  var
+    MapsFile: TextFile;
+    Line: string;
+    AddrStr: string;
+    Addr: UInt64;
+    DashPos: Integer;
+  begin
+    Result := 0;
+    AssignFile(MapsFile, '/proc/self/maps');
+    Reset(MapsFile);
+    try
+      while not Eof(MapsFile) do
+      begin
+        ReadLn(MapsFile, Line);
+        DashPos := Pos('-', Line);
+        if DashPos > 0 then
+        begin
+          AddrStr := Copy(Line, 1, DashPos - 1);
+          if TryStrToUInt64('$' + AddrStr, Addr) then
+          begin
+            Result := NativeUInt(Addr);
+            Exit;
+          end;
+        end;
+      end;
+    finally
+      CloseFile(MapsFile);
+    end;
+  end;
+
+
+  {procedure TIDE.AssignOnClick(Sender: TButton; const ScriptProcName: string);
+  var
+    Met: TMethod;
+    HostBase, ScriptBase: NativeUInt;
+    OffsetCode, OffsetData: NativeUInt;
+    Log: TStringList;
+  begin
+    Log := TStringList.Create;
+    try
+      Met := ce.GetProcMethod(ScriptProcName);
+
+      // Hier evtl. echte Werte einsetzen oder dynamisch bestimmen
+      HostBase := GetModuleBaseAddress;
+      ScriptBase := $00400000;  // Beispielwert – ggf. dynamisch
+
+      Log.Add('--- AssignOnClick Debug Log ---');
+      Log.Add('ScriptProcName: ' + ScriptProcName);
+      Log.Add('Original Code Ptr: ' + IntToHex(NativeUInt(Met.Code), 16));
+      Log.Add('Original Data Ptr: ' + IntToHex(NativeUInt(Met.Data), 16));
+      Log.Add('HostBase: ' + IntToHex(HostBase, 16));
+      Log.Add('ScriptBase: ' + IntToHex(ScriptBase, 16));
+
+      OffsetCode := NativeUInt(Met.Code) - ScriptBase;
+      OffsetData := NativeUInt(Met.Data) - ScriptBase;
+
+      //Met.Code := Pointer(HostBase + OffsetCode);
+      //Met.Data := Pointer(HostBase + OffsetData);
+
+      Log.Add('Offset Code: ' + IntToHex(OffsetCode, 16));
+      Log.Add('Offset Data: ' + IntToHex(OffsetData, 16));
+      Log.Add('Adjusted Code Ptr: ' + IntToHex(NativeUInt(Met.Code), 16));
+      Log.Add('Adjusted Data Ptr: ' + IntToHex(NativeUInt(Met.Data), 16));
+
+      // Event zuweisen
+      TButton(Sender).OnClick := TNotifyEvent(Met);
+
+      Log.Add('Assign complete');
+    except
+      on E: Exception do
+      begin
+        Log.Add('Exception: ' + E.ClassName + ': ' + E.Message);
+      end;
+    end;
+
+    // Log speichern
+    try
+      Log.SaveToFile('debug_log.txt');
+    except
+      on E: Exception do
+       // WriteLn('Fehler beim Schreiben der Logdatei: ', E.Message);
+    end;
+
+    Log.Free;
+  end; }
+
+procedure TIDE.AssignOnClick(Sender: TButton; const ScriptProcName: string);
+var
+  Met: TMethod;
+begin
+  Met := ce.GetProcMethod(ScriptProcName);
+  TButton(Sender).OnClick := TNotifyEvent(Met);
+end;
+
 procedure TIDE.edMyPaint(Sender: TObject; ACanvas: TCanvas);
 var
   Line, ImgIndex, Y: Integer;
@@ -343,7 +440,7 @@ end;
 
 procedure TIDE.FormCreate(Sender: TObject);
 begin
-  ed.OnPaint := @edMyPaint;
+  ed.OnPaint := edMyPaint;
 
   caption := 'LazCAD IDE';
 
@@ -712,6 +809,7 @@ procedure TIDE.ceCompile(Sender: TPSScript);
 begin
   Sender.AddMethod(Self, @TIDE.Writeln, 'procedure writeln(s: string)');
   Sender.AddMethod(Self, @TIDE.Readln, 'procedure readln(var s: string)');
+  Sender.AddMethod(Self, @TIDE.AssignOnClick, 'procedure AssignOnClick(Sender: TButton; const ScriptProcName: string)');
   Sender.AddRegisteredVariable('Self', 'TForm');
   Sender.AddRegisteredVariable('Application', 'TApplication');
 end;
@@ -719,13 +817,6 @@ end;
 procedure TIDE.ceCompImport(Sender: TObject; x: TPSPascalCompiler);
 begin
   SIRegister_MainScriptInterface(x);
-  with x.AddClassN(x.FindClass('TControl'), 'TButton') do
-  begin
-    RegisterMethod('procedure Click');
-    RegisterProperty('Caption', 'string', iptrw);
-    RegisterProperty('OnClick', 'TNotifyEvent', iptrw);
-    x.AddTypeS('TNotifyEvent', 'procedure(Sender: TObject)');
-  end;
 end;
 
 procedure TIDE.ceExecImport(Sender: TObject; se: TPSExec;
@@ -738,7 +829,6 @@ procedure TIDE.edGutterClick(Sender: TObject; X, Y, Line: integer;
   mark: TSynEditMark);
 begin
   ed.CaretXY := Point(1, Line);
-  //hier soll caret auf X gesetzt werden und dan wird dort breakpoint gesetzt oder gelöscht
   acDebugBreakPointExecute(nil);
 end;
 
