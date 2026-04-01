@@ -20,46 +20,12 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="125"/>
+      <BuildNr Value="134"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Debug_Linux64_gtk2" Default="True"/>
-      <Item Name="Debug_Win64_win">
-        <CompilerOptions>
-          <Version Value="11"/>
-          <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)-win"/>
-          </Target>
-          <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
-            <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
-          </SearchPaths>
-          <CodeGeneration>
-            <TargetCPU Value="x86_64"/>
-            <TargetOS Value="win64"/>
-          </CodeGeneration>
-          <Linking>
-            <Debugging>
-              <DebugInfoType Value="dsDwarf3"/>
-            </Debugging>
-            <Options>
-              <Win32>
-                <GraphicApplication Value="True"/>
-              </Win32>
-            </Options>
-          </Linking>
-          <Other>
-            <CustomOptions Value="-dTTF2VECTOR_EMBEDDED"/>
-            <OtherDefines Count="1">
-              <Define0 Value="TTF2VECTOR_EMBEDDED"/>
-            </OtherDefines>
-          </Other>
-        </CompilerOptions>
-      </Item>
       <Item Name="Debug_Linux32_gtk2">
         <CompilerOptions>
           <Version Value="11"/>
@@ -68,7 +34,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui/main;ui/drawing;ui/splash;ui/About;ui/library_blocks;common;ui/layers;ui/simulation;libs/clipper4.8.4/Delphi;buildin/import;CAM;libs/StellaUndoRedo;ui/TTF2Vector;classes/componentshapes;ui/IDE;ui/IDE/Imports"/>
+            <OtherUnitFiles Value="ui/main;ui/drawing;ui/splash;ui/About;ui/library_blocks;common;ui/layers;ui/simulation;libs/clipper4.8.4/Delphi;buildin/import;CAM;libs/StellaUndoRedo;ui/TTF2Vector;classes/componentshapes;ui/PSStudio/source/editor;ui/PSStudio/source/editor/Imports;ui/PSStudio/source/designer;ui/PSStudio/source/common;../../components/PascalScript/Source/ThirdParty"/>
             <UnitOutputDirectory Value="../lib/i386-linux/gtk2/debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -91,6 +57,43 @@
           </Other>
         </CompilerOptions>
       </Item>
+      <Item Name="Debug_Win64_win">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)-win"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf3"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <CustomOptions Value="-dTTF2VECTOR_EMBEDDED"/>
+            <OtherDefines Count="1">
+              <Define0 Value="TTF2VECTOR_EMBEDDED"/>
+            </OtherDefines>
+            <ExecuteAfter>
+              <Command Value="wine ..\$(TargetCPU)-$(TargetOS)\win\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)-win.exe"/>
+            </ExecuteAfter>
+          </Other>
+        </CompilerOptions>
+      </Item>
       <SharedMatrixOptions Count="4">
         <Item1 ID="820756939067" Type="IDEMacro" MacroName="LCLWidgetType" Value="win32"/>
         <Item2 ID="579898267453" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
@@ -110,10 +113,13 @@
         <PackageName Value="PascalScriptFCL"/>
       </Item>
       <Item>
-        <PackageName Value="Printer4Lazarus"/>
+        <PackageName Value="pascalscript"/>
       </Item>
       <Item>
-        <PackageName Value="pascalscript"/>
+        <PackageName Value="jvRuntimeDesign"/>
+      </Item>
+      <Item>
+        <PackageName Value="Printer4Lazarus"/>
       </Item>
       <Item>
         <PackageName Value="PenBrushStyles"/>
@@ -253,37 +259,53 @@
         <UnitName Value="FiguresAsComponents"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\IDE\ide_editor.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="IDE"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit>
-      <Unit>
         <Filename Value="common\cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\IDE\Imports\upsi_cad2dscripinterface.pas"/>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmConsoleIDE"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\PSStudio\source\editor\Imports\mainscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\IDE\Imports\uPSI_CommonUtils.pas"/>
+        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\IDE\Imports\upsi_mathscriptinterface.pas"/>
+        <Filename Value="ui\PSStudio\source\editor\Imports\uPSI_CommonUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_dialogsscriptinterface.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uPSI_DialogsScriptInterface"/>
+      </Unit>
+      <Unit>
+        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_mathscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSI_MathScriptinterface"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\IDE\Imports\mainscriptinterface.pas"/>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmPSStudio"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="ui\IDE\Imports\upsi_dialogsscriptinterface.pas"/>
+        <Filename Value="ui\PSStudio\source\common\ucodegenerator.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uPSI_DialogsScriptInterface"/>
+        <UnitName Value="uCodeGenerator"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\components\PascalScript\Source\ThirdParty\uPSI_IBX.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -295,7 +317,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\IDE;ui\IDE\Imports"/>
+      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
       <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
     </SearchPaths>
     <CodeGeneration>

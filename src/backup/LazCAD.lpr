@@ -10,13 +10,49 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  runtimetypeinfocontrols, printer4lazarus, pascalscript,
-  {$IFDEF UNIX}  pascalscriptfcl, {$ENDIF} crt, Forms, pkg_gifanim,
-  abbrevia, fSplash, fAbout, fMain, fDrawing, fLibraryBlocks,
-  fLayers, applicationh, CADDocument, cad2dscripinterface, camh,
-  FiguresAsComponents, cImportEssi, fSimulation, fTTF2Vector, ide_editor,
-  upsi_cad2dscripinterface, uPSI_CommonUtils, fCADSys4ClipperInterface,
-  UndoRedo, uPSI_MathScriptinterface, mainscriptinterface;
+  runtimetypeinfocontrols,
+  printer4lazarus,
+  crt,
+  Forms,
+
+  pkg_gifanim,
+  abbrevia,
+
+  jvRuntimeDesign,
+
+  //uPSDisassembly,
+  pascalscript,
+  //pascalscriptfcl,
+
+
+  applicationh,
+  fMain,
+  fDrawing,
+  CADDocument,
+  camh,
+  fLibraryBlocks,
+  fLayers,
+  fSplash,
+  fAbout,
+
+  FiguresAsComponents,
+  cImportEssi,
+  fSimulation,
+  fTTF2Vector,
+  fCADSys4ClipperInterface,
+
+  u_consoleide,
+  u_psstudio,
+  uCodeGenerator,
+
+  mainscriptinterface,
+  cad2dscripinterface,
+  upsi_cad2dscripinterface,
+  uPSI_CommonUtils,
+  uPSI_DialogsScriptInterface,
+  uPSI_MathScriptinterface,
+
+  UndoRedo;
 
 {$R *.res}
 
@@ -38,13 +74,17 @@ begin
   frmSplash.Update;
 
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TIDE, IDE);
+  Application.CreateForm(TfrmConsoleIDE, ConsoleIDE);
+  //Application.CreateForm(TfrmPSStudio, PSStudio);  //crash!!!!!!!!!! (jvDesigner-Component)
+  PSStudio := TfrmPSStudio.Create(nil);
+  PSStudio.Width  := 1000;
+  PSStudio.Height := 600;
 
   //frmSplash.ProgressBar1.StepIt;
   //Delay(500);
   //Application.ProcessMessages;
 
-  for i := 0 to  99999 do //3999 do
+  for i := 0 to  {$IFDEF LINUX}99999{$ELSE} 99 {$ENDIF} do
   begin
     frmSplash.ProgressBar1.StepIt;
     Application.ProcessMessages;
@@ -52,8 +92,12 @@ begin
 
   frmSplash.Hide;
   Application.Run;
-  IDE.Free;
-  frmSplash.Free;
+  ConsoleIDE.Free;
 
+  PSStudio.JvDesignPanel1.Active := false;
+  PSStudio.JvDesignPanel1.Invalidate;
+  PSStudio.Free;
+
+  frmSplash.Free;
 end.
 

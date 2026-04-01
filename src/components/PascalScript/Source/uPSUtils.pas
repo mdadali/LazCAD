@@ -29,6 +29,13 @@ type
 
   TPSVariableType = (ivtGlobal, ivtParam, ivtVariable);
 
+  //maurog
+  {$IFNDEF PS_NOINT64}
+    tbts64 = int64;
+    tbtu64 = uint64;
+  {$ENDIF}
+  //end-maurog
+
 const
 
   btReturnAddress   = 0;
@@ -65,6 +72,7 @@ const
 
   btVariant         = 16;
 
+
 {$IFNDEF PS_NOINT64}
   btS64             = 17;
 {$ENDIF}
@@ -92,6 +100,10 @@ const
   btNotificationVariant = 27;
 
   btUnicodeString = 28;
+
+  {$IFNDEF PS_NOINT64}
+    btU64             = 29;
+  {$ENDIF}
 
   btType = 130;
 
@@ -301,10 +313,6 @@ type
 
   tbtCurrency = Currency;
 
-{$IFNDEF PS_NOINT64}
-
-  tbts64 = int64;
-{$ENDIF}
 
   tbtchar = {$IFDEF DELPHI4UP}AnsiChar{$ELSE}CHAR{$ENDIF};
 {$IFNDEF PS_NOWIDESTRING}

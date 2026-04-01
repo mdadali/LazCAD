@@ -30,7 +30,7 @@ type
     
     procedure ClearDebug; virtual;
   public
-    function HasCode(Filename:string; LineNo:integer):boolean;  //added-Mustafa
+    function HasCode(Filename:string; LineNo:integer):boolean;  //maurog
 
     function GetCurrentProcNo: Cardinal;
     
@@ -135,7 +135,7 @@ type
 
 { TPSCustomDebugExec }
 
-//added-Mustafa
+//maurog
 //https://stackoverflow.com/questions/1049948/making-an-ide-using-pascal-script-and-synedit
 function TPSCustomDebugExec.HasCode(Filename:string; LineNo:integer):boolean;
 var i,j:integer; fi:PFunctionInfo; pt:TIfList; r:PPositionData;

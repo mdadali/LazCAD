@@ -1,10 +1,10 @@
 object frmMain: TfrmMain
-  Left = 519
+  Left = 882
   Height = 592
-  Top = 136
+  Top = 413
   Width = 1366
   Caption = 'LazCAD [Main]'
-  ClientHeight = 563
+  ClientHeight = 564
   ClientWidth = 1366
   Menu = MainMenu1
   OnClose = FormClose
@@ -14,8 +14,8 @@ object frmMain: TfrmMain
   WindowState = wsMaximized
   object PageControl1: TPageControl
     Left = 377
-    Height = 334
-    Top = 152
+    Height = 333
+    Top = 153
     Width = 957
     Align = alClient
     ScrollOpposite = True
@@ -27,12 +27,12 @@ object frmMain: TfrmMain
   end
   object pnlLeft: TPanel
     Left = 0
-    Height = 334
-    Top = 152
+    Height = 333
+    Top = 153
     Width = 340
     Align = alLeft
     Caption = 'pnlLeft'
-    ClientHeight = 334
+    ClientHeight = 333
     ClientWidth = 340
     TabOrder = 1
     Visible = False
@@ -46,7 +46,7 @@ object frmMain: TfrmMain
     end
     object PageControl2: TPageControl
       Left = 1
-      Height = 298
+      Height = 297
       Top = 35
       Width = 338
       ActivePage = tsInspector
@@ -55,11 +55,11 @@ object frmMain: TfrmMain
       TabOrder = 1
       object tsInspector: TTabSheet
         Caption = 'Inspector'
-        ClientHeight = 267
+        ClientHeight = 263
         ClientWidth = 328
         object TIPropertyGrid1: TTIPropertyGrid
           Left = 0
-          Height = 267
+          Height = 263
           Top = 0
           Width = 328
           Align = alClient
@@ -78,11 +78,11 @@ object frmMain: TfrmMain
       end
       object tsShell: TTabSheet
         Caption = 'Shell'
-        ClientHeight = 267
+        ClientHeight = 263
         ClientWidth = 328
         object ShellTreeView1: TShellTreeView
           Left = 0
-          Height = 267
+          Height = 263
           Top = 0
           Width = 328
           Align = alClient
@@ -108,7 +108,7 @@ object frmMain: TfrmMain
     Visible = False
     object Memo1: TMemo
       Left = 1
-      Height = 40
+      Height = 33
       Top = 1
       Width = 1364
       Align = alClient
@@ -120,8 +120,8 @@ object frmMain: TfrmMain
   end
   object Splitter1: TSplitter
     Left = 340
-    Height = 334
-    Top = 152
+    Height = 333
+    Top = 153
     Width = 5
   end
   object Splitter2: TSplitter
@@ -136,7 +136,7 @@ object frmMain: TfrmMain
   object pnlTop: TPanel
     Left = 0
     Height = 39
-    Top = 113
+    Top = 114
     Width = 1366
     Align = alTop
     BevelInner = bvRaised
@@ -9310,7 +9310,7 @@ object frmMain: TfrmMain
   end
   object SpkToolbar1: TSpkToolbar
     Left = 0
-    Height = 113
+    Height = 114
     Top = 0
     Width = 1366
     Style = spkMetroLight
@@ -9354,6 +9354,8 @@ object frmMain: TfrmMain
     Appearance.Element.IdleGradientType = bkSolid
     Appearance.Element.IdleInnerLightColor = 15461355
     Appearance.Element.IdleInnerDarkColor = 13487565
+    Appearance.Element.IdleKnobColor = clWhite
+    Appearance.Element.IdleTrackColor = 16248808
     Appearance.Element.IdleCaptionColor = 6908265
     Appearance.Element.HotTrackFrameColor = 16371364
     Appearance.Element.HotTrackGradientFromColor = 16248808
@@ -9361,6 +9363,7 @@ object frmMain: TfrmMain
     Appearance.Element.HotTrackGradientType = bkSolid
     Appearance.Element.HotTrackInnerLightColor = 16248808
     Appearance.Element.HotTrackInnerDarkColor = 16248808
+    Appearance.Element.HotTrackTrackColor = 16513268
     Appearance.Element.HotTrackCaptionColor = 4144959
     Appearance.Element.ActiveFrameColor = 14983778
     Appearance.Element.ActiveGradientFromColor = 16244937
@@ -9368,8 +9371,32 @@ object frmMain: TfrmMain
     Appearance.Element.ActiveGradientType = bkSolid
     Appearance.Element.ActiveInnerLightColor = 16244937
     Appearance.Element.ActiveInnerDarkColor = 16244937
+    Appearance.Element.ActiveKnobColor = 16371108
+    Appearance.Element.ActiveTrackColor = 16248808
     Appearance.Element.ActiveCaptionColor = 2894892
     Appearance.Element.Style = esRectangle
+    Appearance.Popup.CaptionFont.Color = 4144959
+    Appearance.Popup.CheckedFrameColor = 16371364
+    Appearance.Popup.CheckedGradientFromColor = 16248808
+    Appearance.Popup.CheckedGradientToColor = 16248808
+    Appearance.Popup.CheckedGradientType = bkSolid
+    Appearance.Popup.DisabledCaptionColor = clSilver
+    Appearance.Popup.DividerLineColor = 13816015
+    Appearance.Popup.GutterFrameColor = 12961221
+    Appearance.Popup.GutterGradientFromColor = 15724527
+    Appearance.Popup.GutterGradientToColor = 15724527
+    Appearance.Popup.GutterGradientType = bkSolid
+    Appearance.Popup.HotTrackCaptionColor = 4144959
+    Appearance.Popup.HotTrackFrameColor = 16371364
+    Appearance.Popup.HotTrackGradientFromColor = 16248808
+    Appearance.Popup.HotTrackGradientToColor = 16248808
+    Appearance.Popup.HotTrackGradientType = bkSolid
+    Appearance.Popup.IdleCaptionColor = 6908265
+    Appearance.Popup.IdleGradientFromColor = 15856113
+    Appearance.Popup.IdleGradientToColor = 15856113
+    Appearance.Popup.IdleGradientType = bkSolid
+    Appearance.Popup.SelectionShape = ssRectangle
+    Appearance.Popup.Style = psDefault
     TabIndex = 0
     Images = ImageListClassic
     LargeImages = HiResImages
@@ -9433,6 +9460,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -9440,6 +9469,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -9448,8 +9478,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'CAD'
       Panes = (
         'SpkPaneFile'
@@ -10087,6 +10141,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10094,6 +10150,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10102,8 +10159,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Edit'
       Panes = (
         'SpkPane1'
@@ -10167,6 +10248,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10174,6 +10257,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10182,8 +10266,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Draw'
       Panes = (      )
     end
@@ -10226,6 +10334,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10233,6 +10343,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10241,8 +10352,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Modify'
       Panes = (      )
     end
@@ -10285,6 +10420,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10292,6 +10429,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10300,8 +10438,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Blocks'
       Panes = (      )
     end
@@ -10344,6 +10506,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10351,6 +10515,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10359,8 +10524,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Format'
       Panes = (      )
     end
@@ -10403,6 +10592,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10410,6 +10601,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10418,8 +10610,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'View'
       Panes = (      )
     end
@@ -10462,6 +10678,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10469,6 +10687,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10477,8 +10696,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Help'
       Panes = (      )
     end
@@ -10521,6 +10764,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10528,6 +10773,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10536,8 +10782,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Tab'
       Panes = (      )
     end
@@ -10580,6 +10850,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10587,6 +10859,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10595,8 +10868,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Blocks'
       Panes = (      )
     end
@@ -10639,6 +10936,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10646,6 +10945,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10654,8 +10954,32 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Tab'
       Panes = (      )
     end
@@ -10698,6 +11022,8 @@ object frmMain: TfrmMain
       CustomAppearance.Element.IdleGradientType = bkConcave
       CustomAppearance.Element.IdleInnerLightColor = 15852501
       CustomAppearance.Element.IdleInnerDarkColor = 15520702
+      CustomAppearance.Element.IdleKnobColor = 11631958
+      CustomAppearance.Element.IdleTrackColor = 16182242
       CustomAppearance.Element.IdleCaptionColor = 11631958
       CustomAppearance.Element.HotTrackFrameColor = 10211293
       CustomAppearance.Element.HotTrackGradientFromColor = 14351615
@@ -10705,6 +11031,7 @@ object frmMain: TfrmMain
       CustomAppearance.Element.HotTrackGradientType = bkConcave
       CustomAppearance.Element.HotTrackInnerLightColor = 12972543
       CustomAppearance.Element.HotTrackInnerDarkColor = 8045272
+      CustomAppearance.Element.HotTrackTrackColor = 14351615
       CustomAppearance.Element.HotTrackCaptionColor = 8864367
       CustomAppearance.Element.HotTrackBrightnessChange = 40
       CustomAppearance.Element.ActiveFrameColor = 5535371
@@ -10713,15 +11040,39 @@ object frmMain: TfrmMain
       CustomAppearance.Element.ActiveGradientType = bkConcave
       CustomAppearance.Element.ActiveInnerLightColor = 961020
       CustomAppearance.Element.ActiveInnerDarkColor = 961020
+      CustomAppearance.Element.ActiveKnobColor = 4035324
+      CustomAppearance.Element.ActiveTrackColor = 12972543
       CustomAppearance.Element.ActiveCaptionColor = 8405614
+      CustomAppearance.Element.KnobAsGradient = True
       CustomAppearance.Element.Style = esRounded
+      CustomAppearance.Popup.CheckedFrameColor = 3577330
+      CustomAppearance.Popup.CheckedGradientFromColor = 9823231
+      CustomAppearance.Popup.CheckedGradientToColor = 9823231
+      CustomAppearance.Popup.CheckedGradientType = bkSolid
+      CustomAppearance.Popup.DisabledCaptionColor = clSilver
+      CustomAppearance.Popup.DividerLineColor = 14922381
+      CustomAppearance.Popup.GutterFrameColor = 12961221
+      CustomAppearance.Popup.GutterGradientFromColor = 15658729
+      CustomAppearance.Popup.GutterGradientToColor = 15658729
+      CustomAppearance.Popup.GutterGradientType = bkSolid
+      CustomAppearance.Popup.HotTrackCaptionColor = 8864367
+      CustomAppearance.Popup.HotTrackFrameColor = 10079963
+      CustomAppearance.Popup.HotTrackGradientFromColor = 14351615
+      CustomAppearance.Popup.HotTrackGradientToColor = 5101567
+      CustomAppearance.Popup.HotTrackGradientType = bkConcave
+      CustomAppearance.Popup.IdleCaptionColor = 11631958
+      CustomAppearance.Popup.IdleGradientFromColor = 16448250
+      CustomAppearance.Popup.IdleGradientToColor = 16448250
+      CustomAppearance.Popup.IdleGradientType = bkConcave
+      CustomAppearance.Popup.SelectionShape = ssRectangle
+      CustomAppearance.Popup.Style = psGutter
       Caption = 'Tab'
       Panes = (      )
     end
   end
   object StatusBarMain: TStatusBar
     Left = 0
-    Height = 21
+    Height = 22
     Top = 542
     Width = 1366
     Panels = <    
@@ -10738,11 +11089,11 @@ object frmMain: TfrmMain
   end
   object pnlLeftToolBars: TPanel
     Left = 345
-    Height = 334
-    Top = 152
+    Height = 333
+    Top = 153
     Width = 32
     Align = alLeft
-    ClientHeight = 334
+    ClientHeight = 333
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -13195,11 +13546,11 @@ object frmMain: TfrmMain
   end
   object pnlRightToolBars: TPanel
     Left = 1334
-    Height = 334
-    Top = 152
+    Height = 333
+    Top = 153
     Width = 32
     Align = alRight
-    ClientHeight = 334
+    ClientHeight = 333
     ClientWidth = 32
     ParentColor = False
     ParentShowHint = False
@@ -13208,7 +13559,7 @@ object frmMain: TfrmMain
     object pnlFormat: TPanel
       Left = 1
       Height = 383
-      Top = 232
+      Top = 240
       Width = 30
       Align = alTop
       ClientHeight = 383
@@ -14591,11 +14942,11 @@ object frmMain: TfrmMain
     end
     object pnlTools: TPanel
       Left = 1
-      Height = 159
+      Height = 183
       Top = 42
       Width = 30
       Align = alTop
-      ClientHeight = 159
+      ClientHeight = 183
       ClientWidth = 30
       ParentShowHint = False
       ShowHint = True
@@ -14603,7 +14954,7 @@ object frmMain: TfrmMain
       object BCButtonFocus40: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 120
+        Top = 148
         Width = 28
         Action = acToolsDistance
         Align = alTop
@@ -14708,7 +15059,7 @@ object frmMain: TfrmMain
       object BCButtonFocus41: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 92
+        Top = 120
         Width = 28
         Action = acToolsArea
         Align = alTop
@@ -14813,7 +15164,7 @@ object frmMain: TfrmMain
       object BCButtonFocus42: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 64
+        Top = 92
         Width = 28
         Action = acToolsRasterize
         Align = alTop
@@ -14918,7 +15269,7 @@ object frmMain: TfrmMain
       object BCButtonFocus43: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 36
+        Top = 64
         Width = 28
         Action = acToolsZip
         Align = alTop
@@ -15023,7 +15374,7 @@ object frmMain: TfrmMain
       object BCButtonFocus44: TBCButtonFocus
         Left = 1
         Height = 28
-        Top = 8
+        Top = 36
         Width = 28
         Action = acToolsScripter
         Align = alTop
@@ -15128,10 +15479,115 @@ object frmMain: TfrmMain
       object pnlDrawGrip1: TPanel
         Left = 1
         Height = 7
-        Top = 1
+        Top = 29
         Width = 28
         Align = alTop
         TabOrder = 5
+      end
+      object BCButtonFocus125: TBCButtonFocus
+        Left = 1
+        Height = 28
+        Top = 1
+        Width = 28
+        Action = acPSStudio
+        Align = alTop
+        StateClicked.Background.Gradient1.StartColor = 15844240
+        StateClicked.Background.Gradient1.EndColor = 15709297
+        StateClicked.Background.Gradient1.GradientType = gtLinear
+        StateClicked.Background.Gradient1.Point1XPercent = 0
+        StateClicked.Background.Gradient1.Point1YPercent = 0
+        StateClicked.Background.Gradient1.Point2XPercent = 0
+        StateClicked.Background.Gradient1.Point2YPercent = 100
+        StateClicked.Background.Gradient2.StartColor = 15773025
+        StateClicked.Background.Gradient2.EndColor = 15847059
+        StateClicked.Background.Gradient2.GradientType = gtLinear
+        StateClicked.Background.Gradient2.Point1XPercent = 0
+        StateClicked.Background.Gradient2.Point1YPercent = 0
+        StateClicked.Background.Gradient2.Point2XPercent = 0
+        StateClicked.Background.Gradient2.Point2YPercent = 100
+        StateClicked.Background.Gradient1EndPercent = 55
+        StateClicked.Background.Style = bbsGradient
+        StateClicked.Border.Color = 9394006
+        StateClicked.Border.LightColor = clGray
+        StateClicked.Border.LightOpacity = 100
+        StateClicked.Border.LightWidth = 1
+        StateClicked.Border.Style = bboSolid
+        StateClicked.FontEx.Color = clBlack
+        StateClicked.FontEx.FontQuality = fqSystemClearType
+        StateClicked.FontEx.Shadow = False
+        StateClicked.FontEx.ShadowRadius = 5
+        StateClicked.FontEx.ShadowOffsetX = 5
+        StateClicked.FontEx.ShadowOffsetY = 5
+        StateClicked.FontEx.Style = []
+        StateHover.Background.Gradient1.StartColor = 16573900
+        StateHover.Background.Gradient1.EndColor = 16372129
+        StateHover.Background.Gradient1.GradientType = gtLinear
+        StateHover.Background.Gradient1.Point1XPercent = 0
+        StateHover.Background.Gradient1.Point1YPercent = 0
+        StateHover.Background.Gradient1.Point2XPercent = 0
+        StateHover.Background.Gradient1.Point2YPercent = 100
+        StateHover.Background.Gradient2.StartColor = 16501391
+        StateHover.Background.Gradient2.EndColor = 16643535
+        StateHover.Background.Gradient2.GradientType = gtLinear
+        StateHover.Background.Gradient2.Point1XPercent = 0
+        StateHover.Background.Gradient2.Point1YPercent = 0
+        StateHover.Background.Gradient2.Point2XPercent = 0
+        StateHover.Background.Gradient2.Point2YPercent = 100
+        StateHover.Background.Gradient1EndPercent = 50
+        StateHover.Background.Style = bbsGradient
+        StateHover.Border.Color = 9394006
+        StateHover.Border.LightOpacity = 200
+        StateHover.Border.LightWidth = 1
+        StateHover.Border.Style = bboSolid
+        StateHover.FontEx.Color = clBlack
+        StateHover.FontEx.FontQuality = fqSystemClearType
+        StateHover.FontEx.Shadow = False
+        StateHover.FontEx.ShadowRadius = 5
+        StateHover.FontEx.ShadowOffsetX = 5
+        StateHover.FontEx.ShadowOffsetY = 5
+        StateHover.FontEx.Style = []
+        StateNormal.Background.Gradient1.StartColor = clWhite
+        StateNormal.Background.Gradient1.EndColor = 15987699
+        StateNormal.Background.Gradient1.GradientType = gtLinear
+        StateNormal.Background.Gradient1.Point1XPercent = 0
+        StateNormal.Background.Gradient1.Point1YPercent = 0
+        StateNormal.Background.Gradient1.Point2XPercent = 0
+        StateNormal.Background.Gradient1.Point2YPercent = 100
+        StateNormal.Background.Gradient2.StartColor = 15527148
+        StateNormal.Background.Gradient2.EndColor = 15722194
+        StateNormal.Background.Gradient2.GradientType = gtLinear
+        StateNormal.Background.Gradient2.Point1XPercent = 0
+        StateNormal.Background.Gradient2.Point1YPercent = 0
+        StateNormal.Background.Gradient2.Point2XPercent = 0
+        StateNormal.Background.Gradient2.Point2YPercent = 100
+        StateNormal.Background.Gradient1EndPercent = 50
+        StateNormal.Background.Style = bbsGradient
+        StateNormal.Border.Color = 10132122
+        StateNormal.Border.LightOpacity = 200
+        StateNormal.Border.LightWidth = 1
+        StateNormal.Border.Style = bboSolid
+        StateNormal.FontEx.Color = clBlack
+        StateNormal.FontEx.FontQuality = fqSystemClearType
+        StateNormal.FontEx.Shadow = False
+        StateNormal.FontEx.ShadowRadius = 5
+        StateNormal.FontEx.ShadowOffsetX = 5
+        StateNormal.FontEx.ShadowOffsetY = 5
+        StateNormal.FontEx.Style = []
+        Color = clNone
+        DropDownWidth = 16
+        DropDownArrowSize = 8
+        GlobalOpacity = 255
+        ParentColor = False
+        Rounding.RoundX = 3
+        Rounding.RoundY = 3
+        RoundingDropDown.RoundX = 1
+        RoundingDropDown.RoundY = 1
+        TextApplyGlobalOpacity = False
+        Images = ImageListClassic
+        ImageIndex = 103
+        ShowCaption = False
+        MemoryUsage = bmuHighF
+        TabOrder = 6
       end
     end
     object Panel2: TPanel
@@ -15145,8 +15601,8 @@ object frmMain: TfrmMain
     end
     object Panel3: TPanel
       Left = 1
-      Height = 31
-      Top = 201
+      Height = 15
+      Top = 225
       Width = 30
       Align = alTop
       TabOrder = 3
@@ -16374,9 +16830,9 @@ object frmMain: TfrmMain
     object acToolsScripter: TAction
       Category = 'Tools'
       AutoCheck = True
-      Caption = 'Python IDE...'
+      Caption = 'Simple Script IDE'
       Enabled = False
-      Hint = 'Open Script IDE'
+      Hint = 'Open Simple Script IDE'
       ImageIndex = 103
       OnExecute = acToolsScripterExecute
     end
@@ -17062,6 +17518,13 @@ object frmMain: TfrmMain
       GroupIndex = 1
       Hint = 'Clear Drawing'
       ImageIndex = 43
+    end
+    object acPSStudio: TAction
+      Category = 'Tools'
+      Caption = 'Pascal Script Studio'
+      Hint = 'Open PascalScript Studio'
+      ImageIndex = 103
+      OnExecute = acPSStudioExecute
     end
   end
   object ImageListClassic: TImageList

@@ -32,22 +32,23 @@ implementation
 
 
 uses
-   WINDOWS
-  ,CONTROLS
-  ,IBEXTERNALS
-  ,IB
-  ,IBDatabase
-  ,IBHEADER
-  ,STDVCL
-  ,IBSQL
-  ,DB
-  ,IBUTILS
-  ,IBBLOB
-  ,IBCustomDataSet
-  ,IBTable
-  ,IBQuery
-  ;
-
+  {$IFDEF MSWINDOWS}
+  Windows,
+  {$ENDIF}
+  Controls,
+  IBExternals,
+  IB,
+  IBDatabase,
+  IBHeader,
+  StdVCL,
+  IBSQL,
+  DB,
+  IBUtils,
+  IBBLOB,
+  IBCustomDataSet,
+  IBTable,
+  IBQuery;
+  
 (* === compile-time registration functions === *)
 (*----------------------------------------------------------------------------*)
 procedure SIRegister_TIBDATASET(CL: TPSPascalCompiler);

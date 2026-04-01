@@ -31,7 +31,10 @@ uses
   fSimulation,
   fDrawing,
   fttf2vector,
-  ide_editor,
+
+  u_consoleide,
+  u_psstudio,
+
   camh;
 
 type
@@ -272,6 +275,7 @@ type
     acDrawASymetricSymbol2D: TAction;
     acFileCopyToClipboard: TAction;
     acModifyRotateEx: TAction;
+    acPSStudio: TAction;
     acToolsTTF2Vector: TAction;
     acToolsShowSimulator: TAction;
     ActionList: TActionList;
@@ -331,6 +335,7 @@ type
     BCButtonFocus122: TBCButtonFocus;
     BCButtonFocus123: TBCButtonFocus;
     BCButtonFocus124: TBCButtonFocus;
+    BCButtonFocus125: TBCButtonFocus;
     BCButtonFocus128: TBCButtonFocus;
     BCButtonFocus129: TBCButtonFocus;
     BCButtonFocus13: TBCButtonFocus;
@@ -927,6 +932,7 @@ type
     procedure acSnapTopRightExecute(Sender: TObject);
     procedure acTestsTestLayersExecute(Sender: TObject);
     procedure acDrawSymetricSymbol2DExecute(Sender: TObject);
+    procedure acPSStudioExecute(Sender: TObject);
     procedure acToolsScripterExecute(Sender: TObject);
     procedure acToolsShowSimulatorExecute(Sender: TObject);
     procedure acToolsTTF2VectorExecute(Sender: TObject);
@@ -1719,9 +1725,14 @@ begin
   end;
 end;
 
+procedure TfrmMain.acPSStudioExecute(Sender: TObject);
+begin
+  u_psstudio.PSStudio.ShowModal;
+end;
+
 procedure TfrmMain.acToolsScripterExecute(Sender: TObject);
 begin
-  IDE.Visible := acToolsScripter.Checked;
+  u_consoleide.ConsoleIDE.ShowModal;
 end;
 
 procedure TfrmMain.acDrawASymetricSymbol2DExecute(Sender: TObject);

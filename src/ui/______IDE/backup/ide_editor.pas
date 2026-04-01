@@ -382,7 +382,6 @@ resourcestring
 procedure TIDE.AssignOnClick(Sender: TButton; const ScriptProcName: string);
 var
   Met: TMethod;
-  Offset: NativeUInt;
 begin
   Met := ce.GetProcMethod(ScriptProcName);
   TButton(Sender).OnClick := TNotifyEvent(Met);
