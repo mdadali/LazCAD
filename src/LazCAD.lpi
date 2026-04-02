@@ -20,7 +20,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="134"/>
+      <BuildNr Value="136"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -34,7 +34,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui/main;ui/drawing;ui/splash;ui/About;ui/library_blocks;common;ui/layers;ui/simulation;libs/clipper4.8.4/Delphi;buildin/import;CAM;libs/StellaUndoRedo;ui/TTF2Vector;classes/componentshapes;ui/PSStudio/source/editor;ui/PSStudio/source/editor/Imports;ui/PSStudio/source/designer;ui/PSStudio/source/common;../../components/PascalScript/Source/ThirdParty"/>
+            <OtherUnitFiles Value="ui/main;ui/drawing;ui/splash;ui/About;ui/library_blocks;common;ui/layers;ui/simulation;libs/clipper4.8.4/Delphi;buildin/import;CAM;libs/StellaUndoRedo;ui/TTF2Vector;classes/componentshapes;ui/PSStudio/source/editor;ui/PSStudio/source/editor/Imports;ui/PSStudio/source/designer;ui/PSStudio/source/common;components/PascalScript/Source/ThirdParty"/>
             <UnitOutputDirectory Value="../lib/i386-linux/gtk2/debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -66,7 +66,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -304,7 +304,7 @@
         <UnitName Value="uCodeGenerator"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\components\PascalScript\Source\ThirdParty\uPSI_IBX.pas"/>
+        <Filename Value="components\PascalScript\Source\ThirdParty\uPSI_Dialogs.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
@@ -313,12 +313,12 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\$(TargetCPU)-$(TargetOS)\gtk2\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)-gtk2"/>
+      <Filename Value="..\..\$(TargetCPU)-$(TargetOS)\gtk2\debug\LazCAD\LazCAD-$(TargetCPU)-$(TargetOS)-gtk2"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
-      <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
+      <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
+      <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
     </SearchPaths>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>

@@ -13,7 +13,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -50,7 +50,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk3\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -82,7 +82,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk3\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -111,7 +111,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\win\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -154,7 +154,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -186,7 +186,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;..\..\components\PascalScript\Source\ThirdParty"/>
+            <OtherUnitFiles Value="ui\main;ui\drawing;ui\splash;ui\About;ui\library_blocks;common;ui\layers;ui\simulation;libs\clipper4.8.4\Delphi;buildin\import;CAM;libs\StellaUndoRedo;ui\TTF2Vector;classes\componentshapes;ui\PSStudio\source\editor;ui\PSStudio\source\editor\Imports;ui\PSStudio\source\designer;ui\PSStudio\source\common;components\PascalScript\Source\ThirdParty"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)\gtk2\debug"/>
           </SearchPaths>
           <CodeGeneration>
@@ -271,12 +271,12 @@
         <ComponentName Value="frmAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
         <TopLine Value="74"/>
-        <CursorPos X="27" Y="89"/>
+        <CursorPos X="39" Y="83"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\library_blocks\flibraryblocks.pas"/>
@@ -404,20 +404,20 @@
         <ComponentName Value="frmConsoleIDE"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="618"/>
-        <CursorPos Y="625"/>
+        <TopLine Value="708"/>
+        <CursorPos X="48" Y="726"/>
         <UsageCount Value="40"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\mainscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
+        <EditorIndex Value="8"/>
+        <CursorPos X="52" Y="23"/>
         <UsageCount Value="40"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
@@ -479,8 +479,16 @@
         <Loaded Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="..\..\components\PascalScript\Source\ThirdParty\uPSI_IBX.pas"/>
+        <Filename Value="components\PascalScript\Source\ThirdParty\uPSI_Dialogs.pas"/>
         <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\components\PascalScript\Source\ThirdParty\uPSI_IBX.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos X="30" Y="51"/>
@@ -736,6 +744,7 @@
         <TopLine Value="7647"/>
         <CursorPos X="51" Y="7668"/>
         <UsageCount Value="94"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4Tasks.pas"/>
@@ -743,6 +752,7 @@
         <TopLine Value="2849"/>
         <CursorPos X="33" Y="2857"/>
         <UsageCount Value="91"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4DXFModule.pas"/>
@@ -750,12 +760,14 @@
         <TopLine Value="392"/>
         <CursorPos X="51" Y="409"/>
         <UsageCount Value="27"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4BaseTypes.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="35" Y="10"/>
         <UsageCount Value="97"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
@@ -764,6 +776,7 @@
         <CursorPos X="67" Y="13674"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="common\CommonUtils.pas"/>
@@ -1093,6 +1106,7 @@
         <TopLine Value="402"/>
         <CursorPos X="7" Y="420"/>
         <UsageCount Value="8"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\SpkToolBar\SpkToolbar\spkt_Checkboxes.pas"/>
@@ -1108,7 +1122,6 @@
         <TopLine Value="402"/>
         <CursorPos X="52" Y="422"/>
         <UsageCount Value="8"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\ATSynEdit\atsynedit\atsynedit_adapter_ime_gtk2.pas"/>
@@ -1241,7 +1254,7 @@
     <OtherDefines Count="1">
       <Define0 Value="TTF2VECTOR_EMBEDDED"/>
     </OtherDefines>
-    <JumpHistory HistoryIndex="25">
+    <JumpHistory HistoryIndex="27">
       <Position>
         <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
         <Caret Line="639" TopLine="621"/>
@@ -1347,8 +1360,12 @@
         <Caret Line="417" Column="8" TopLine="400"/>
       </Position>
       <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="192" TopLine="177"/>
+        <Filename Value="ui\About\fAbout.pas"/>
+        <Caret Line="83" Column="39" TopLine="74"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\Imports\mainscriptinterface.pas"/>
+        <Caret Line="23" Column="52"/>
       </Position>
     </JumpHistory>
     <RunParams>

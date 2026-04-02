@@ -723,7 +723,7 @@ end;
 procedure TfrmConsoleIDE.ceExecImport(Sender: TObject; se: TPSExec;
   x: TPSRuntimeClassImporter);
 begin
-  RIRegister_MainScriptInterface_Routines(se);
+  RIRegister_MainScriptInterface_Routines(se, x);
 end;
 
 procedure TfrmConsoleIDE.edGutterClick(Sender: TObject; X, Y, Line: integer;

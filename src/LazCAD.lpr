@@ -46,7 +46,7 @@ uses
   uCodeGenerator,
 
   mainscriptinterface,
-  cad2dscripinterface,
+  cad2dscripinterface, uPSI_Dialogs,
   upsi_cad2dscripinterface,
   uPSI_CommonUtils,
   uPSI_DialogsScriptInterface,
