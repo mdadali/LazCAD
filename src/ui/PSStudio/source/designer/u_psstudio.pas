@@ -54,8 +54,8 @@ type
     ImageListClassic: TImageList;
     JvDesignPanel1: TJvDesignPanel;
     Label1: TLabel;
-    PageControl2: TPageControl;
-    PageControl3: TPageControl;
+    pgcLeft: TPageControl;
+    pgcCenter: TPageControl;
     Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
@@ -153,15 +153,18 @@ type
     procedure acDebugSyntaxCheckExecute(Sender: TObject);
     procedure acFileNewExecute(Sender: TObject);
     procedure acFileOpenExecute(Sender: TObject);
+    procedure acFileSaveAsExecute(Sender: TObject);
     procedure acFileSaveExecute(Sender: TObject);
     procedure Active1Click(Sender: TObject);
     procedure csDesigning1Click(Sender: TObject);
     procedure edtFormNameChange(Sender: TObject);
     procedure edtFormNameExit(Sender: TObject);
     procedure edtFormNameKeyPress(Sender: TObject; var Key: char);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
     procedure JvDesignPanel1Change(Sender: TObject);
     procedure JvDesignPanel1DblClick(Sender: TObject);
     procedure JvDesignSurface1SelectionChange(Sender: TObject);
@@ -177,6 +180,7 @@ type
 
   private
     { private declarations }
+    FFileName: string;
     procedure SetObjectInspectorRoot(AComponent: TComponent);
   public
     { public declarations }
@@ -281,6 +285,14 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrmPSStudio.FormShow(Sender: TObject);
+begin
+  pgcLeft.ActivePage := tsOInspector;
+  pgcCenter.ActivePage := tsDesign;
+  OpenFileSilent(FStdFormTemplateFile);
+  LocalConsoleIDE.ed.Modified := false;
 end;
 
 procedure TfrmPSStudio.JvDesignSurface1SelectionChange(Sender: TObject);
@@ -395,9 +407,23 @@ begin
     Key := #0;
 end;
 
+procedure TfrmPSStudio.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  LocalConsoleIDE.acDebugResetExecute(nil); //terminate any running script
+  if LocalConsoleIDE.SaveCheck then //check if script changed and not yet saved
+  begin
+    CloseAction := caHide;
+    //frmMain.acToolsScripter.Checked := false;
+  end
+  else
+    CloseAction := caNone;
+end;
+
 procedure TfrmPSStudio.FormCreate(Sender: TObject);
 var RootCtrl: TComponent;
 begin;
+  FFileName := '';
+
   JvDesignPanel1.Surface.OnSelectionChange := @JvDesignSurface1SelectionChange;
 
   FStdFormTemplateFile := ExtractFilePath(Application.ExeName) +
@@ -418,11 +444,6 @@ begin;
   // create the PropertyGrid
   PropertyGrid:=TOIPropertyGrid.CreateWithParams(Self,ThePropertyEditorHook, AllTypeKinds,25);
 
-  //procedure TForm1.TIPropertyGrid1EditorFilter(Sender: TObject;
-  //aEditor: TPropertyEditor; var aShow: boolean);
-
-  //PropertyGrid.EditingDone := @PropertyGrid1EditingDone;
-
   // select the Form1 in the ObjectInspector
   TheObjectInspector.Show;         // For some reason this is not shown otherwise
   OpenDialog.InitialDir := ExtractFilePath(Application.ExeName);
@@ -440,7 +461,7 @@ begin;
   LocalConsoleIDE.Visible := true;
 
   PropertyGrid.OnModified := @PropertyGridOnModified;
-  OpenFileSilent(FStdFormTemplateFile);
+  //OpenFileSilent(FStdFormTemplateFile);
 
   PropertyGrid.OnEditorFilter := @TIPropertyGrid1EditorFilter;
 
@@ -502,65 +523,6 @@ begin
   if not EventExists(Lines, EventName) then
     GenerateEvent(AControl, TStringList(Lines));
 end;
-
-{procedure TfrmPSStudio.OnControlDoubleClick(Sender: TObject; AControl: TControl);
-var
-  EventName: string;
-  Lines: TStringList;
-begin
-  Lines := TStringList(PSSIDE.ed.Lines);
-
-  //ignorieren
-  if AControl.Name = 'JvDesignPanel1' then Exit;
-
-  //CLOSE
-  if AControl.Name = 'btnTitleClose' then
-  begin
-    EventName := 'FormClose';
-
-    GenerateFormClose(Lines);
-    AssignSpecialEvent(Lines,
-      FFormName + '.OnClose := @FormClose;');
-  end
-
-  //CREATE
-  else if (AControl.Name = 'pnlDesign') or
-          (AControl.Name = 'pnlFormTitle') then
-  begin
-    EventName := 'FormCreate';
-
-    GenerateFormCreate(Lines);
-    AssignSpecialEvent(Lines,
-      FFormName + '.OnCreate := @FormCreate;');
-  end
-
-  //STATE
-  else if (AControl.Name = 'btnTitleMaximize') or
-          (AControl.Name = 'btnTitleMinimize') then
-  begin
-    EventName := 'FormStateChange';
-
-    GenerateFormStateChange(Lines);
-    AssignSpecialEvent(Lines,
-      FFormName + '.OnStateChange := @FormStateChange;');
-  end
-
-  //STANDARD
-  else
-  begin
-    EventName := GetEventHandlerName(AControl);
-
-    if not EventExists(Lines, EventName) then
-    begin
-      GenerateEvent(AControl, Lines);
-      AssignEventToControl(AControl, Lines);
-    end;
-  end;
-
-  //springen
-  PageControl3.ActivePage := tseditor;
-  JumpToEventInEditor(PSSIDE.ed, EventName);
-end;}
 
 procedure TfrmPSStudio.OnControlDoubleClick(Sender: TObject; AControl: TControl);
 var
@@ -625,7 +587,7 @@ begin
     LocalConsoleIDE.ed.Lines.Assign(Lines);
 
     // springen zum Event
-    PageControl3.ActivePage := tseditor;
+    pgcCenter.ActivePage := tseditor;
     JumpToEventInEditor(LocalConsoleIDE.ed, EventName);
 
   finally
@@ -765,11 +727,14 @@ end;
 
 procedure TfrmPSStudio.acFileNewExecute(Sender: TObject);
 begin
+  if not LocalConsoleIDE.SaveCheck then
+    exit;
   JvDesignPanel1.Clear;
   LocalConsoleIDE.ed.Clear;
   edtFormName.Text := 'Form1';
   OpenFileSilent(FStdFormTemplateFile);
   GenerateCodeFromDesigner(JvDesignPanel1, TStringList(LocalConsoleIDE.ed.Lines), Trim(edtFormName.Text));
+  FFileName := '';
 end;
 
 procedure TfrmPSStudio.OpenFileSilent(AFileName: string);
@@ -780,6 +745,9 @@ var
   Line, FormName: string;
   RootCtrl: TComponent;
 begin
+  LocalConsoleIDE.FErrorLine := -1;
+  LocalConsoleIDE.ed.Repaint;
+
     BaseName := ChangeFileExt(AFilename, '');
 
     // Designer laden
@@ -833,28 +801,21 @@ begin
       end;
     end;
 
-    Caption := 'VF PSSIDE - ' + ExtractFileName(BaseName);
-
-    {RootCtrl := JvDesignPanel1.FindComponent('pnlDesign');
-    if Assigned(RootCtrl) and (RootCtrl is TWinControl) then
-    begin
-      with TWinControl(RootCtrl) do
-      begin
-        OnKeyDown := self.OnKeyDown; //  pnlDesignKeyDown;
-        TabStop := True;
-      end;
-    end;}
+    Caption := 'PSStudio - ' + ExtractFileName(BaseName);
 end;
 
 procedure TfrmPSStudio.acFileOpenExecute(Sender: TObject);
 begin
-  if OpenDialog.Execute then
-    OpenFileSilent(OpenDialog.FileName);
+  if LocalConsoleIDE.SaveCheck then
+    if OpenDialog.Execute then
+    begin
+      OpenFileSilent(OpenDialog.FileName);
+      FFileName := OpenDialog.FileName;
+    end;
 end;
 
-procedure TfrmPSStudio.acFileSaveExecute(Sender: TObject);
-var
-  BaseName, CfrmFile, RopsFile: string;
+procedure TfrmPSStudio.acFileSaveAsExecute(Sender: TObject);
+var BaseName, CfrmFile, RopsFile: string;
 begin
   if SaveDialog.Execute then
   begin
@@ -870,7 +831,36 @@ begin
     LocalConsoleIDE.ed.Lines.SaveToFile(RopsFile); // SynEdit Lines speichern
 
     Caption := 'PascalScript Studio' + ExtractFileName(BaseName);
+
+    FFileName := SaveDialog.FileName;
   end;
+end;
+
+procedure TfrmPSStudio.acFileSaveExecute(Sender: TObject);
+var
+  BaseName, CfrmFile, RopsFile: string;
+begin
+  // Prüfen, ob ein Dateiname bereits existiert
+  if FFileName = '' then
+  begin
+    // Kein Dateiname → Save As verwenden
+    acFileSaveAsExecute(Sender);
+    Exit;
+  end;
+
+  // Basisname ohne Extension
+  BaseName := ChangeFileExt(FFileName, '');
+
+  // Designer-Datei speichern
+  CfrmFile := BaseName + '.cfrm';
+  JvDesignPanel1.SaveToFile(CfrmFile);
+
+  // Pascal-Code-Datei (.ROPS) speichern
+  RopsFile := BaseName + '.ROPS';
+  LocalConsoleIDE.ed.Lines.SaveToFile(RopsFile);
+
+  // Caption aktualisieren
+  Caption := 'PSStudio - ' + ExtractFileName(BaseName);
 end;
 
 procedure TfrmPSStudio.Rules1Click(Sender: TObject);
@@ -900,6 +890,7 @@ begin
     SelectButton1.Down  := true;
     SelectButton2.Down  := true;
   end;
+  LocalConsoleIDE.ed.Modified := true;
 end;
 
 procedure TfrmPSStudio.JvDesignPanelPaint(Sender: TObject);

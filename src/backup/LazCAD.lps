@@ -224,8 +224,8 @@
       <Unit>
         <Filename Value="LazCAD.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="40"/>
-        <CursorPos X="3" Y="53"/>
+        <TopLine Value="65"/>
+        <CursorPos X="23" Y="74"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -390,7 +390,7 @@
       <Unit>
         <Filename Value="common\cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="97"/>
         <CursorPos Y="104"/>
         <UsageCount Value="200"/>
@@ -403,28 +403,28 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="732"/>
-        <CursorPos X="16" Y="740"/>
-        <UsageCount Value="67"/>
+        <TopLine Value="777"/>
+        <CursorPos X="31" Y="783"/>
+        <UsageCount Value="83"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\mainscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="10"/>
         <CursorPos X="14" Y="16"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="83"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="11"/>
         <TopLine Value="612"/>
         <CursorPos X="112" Y="629"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="83"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -433,7 +433,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="104"/>
         <CursorPos Y="120"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="83"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -444,14 +444,14 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="83"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\upsi_mathscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSI_MathScriptinterface"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="83"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
@@ -461,9 +461,9 @@
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="419"/>
-        <CursorPos X="66" Y="431"/>
-        <UsageCount Value="66"/>
+        <TopLine Value="290"/>
+        <CursorPos X="35" Y="293"/>
+        <UsageCount Value="82"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -471,9 +471,9 @@
         <Filename Value="ui\PSStudio\source\common\ucodegenerator.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uCodeGenerator"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <CursorPos X="81" Y="9"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="82"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -483,14 +483,14 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="47"/>
+        <UsageCount Value="63"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\ThirdParty\uPSI_IBX.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos X="30" Y="51"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="26"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\ide_editor.pas"/>
@@ -500,35 +500,35 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="374"/>
         <CursorPos X="56" Y="382"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="194"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\upsi_cad2dscripinterface.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
         <CursorPos X="55" Y="23"/>
-        <UsageCount Value="207"/>
+        <UsageCount Value="206"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\uPSI_CommonUtils.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="53" Y="13"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="197"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\upsi_mathscriptinterface.pas"/>
         <UnitName Value="uPSI_MathScriptinterface"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="63" Y="8"/>
-        <UsageCount Value="200"/>
+        <UsageCount Value="199"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\mainscriptinterface.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="14"/>
         <CursorPos X="64" Y="5"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="195"/>
       </Unit>
       <Unit>
         <Filename Value="ui\IDE\Imports\upsi_dialogsscriptinterface.pas"/>
@@ -536,7 +536,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="224"/>
         <CursorPos X="26" Y="236"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="195"/>
       </Unit>
       <Unit>
         <Filename Value="ui\HelpHtml\fhelphtml.pas"/>
@@ -546,33 +546,33 @@
         <UnitName Value="fHelpHtml"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="41" Y="4"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="82"/>
       </Unit>
       <Unit>
         <Filename Value="CAM\contours.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="61" Y="9"/>
-        <UsageCount Value="162"/>
+        <UsageCount Value="161"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fobjectposition.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="21"/>
-        <UsageCount Value="159"/>
+        <UsageCount Value="158"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentprimitive2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="256"/>
         <CursorPos X="66" Y="272"/>
-        <UsageCount Value="135"/>
+        <UsageCount Value="134"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentArc.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="23"/>
         <CursorPos X="68" Y="32"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentrect.pas"/>
@@ -580,21 +580,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="26"/>
         <CursorPos X="52" Y="39"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentEllipse.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos X="60" Y="56"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentFrame.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="90"/>
         <CursorPos X="60" Y="102"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentbspline.pas"/>
@@ -602,7 +602,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="20" Y="33"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentpolygon.pas"/>
@@ -610,34 +610,34 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="28"/>
         <CursorPos X="36" Y="42"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentPLine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="5" Y="47"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fComponentLine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="41" Y="38"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcirculararc.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
         <CursorPos X="33" Y="47"/>
-        <UsageCount Value="186"/>
+        <UsageCount Value="185"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcircle.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="29" Y="17"/>
-        <UsageCount Value="163"/>
+        <UsageCount Value="162"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentgraphicobj.pas"/>
@@ -645,13 +645,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="44"/>
         <CursorPos X="29" Y="74"/>
-        <UsageCount Value="131"/>
+        <UsageCount Value="130"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentcontainer.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="11"/>
-        <UsageCount Value="122"/>
+        <UsageCount Value="121"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcomponentsimpleprim2d.pas"/>
@@ -659,69 +659,69 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="7" Y="30"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="15"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcompdirectionalcurve2d.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="27" Y="13"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcompclosedcurve2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos Y="68"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="classes\componentshapes\fcompclosedpolyline2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="7" Y="26"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="buildin\import\cImportGCODE2.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="488"/>
         <CursorPos X="37" Y="492"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CADSys4.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4352"/>
         <CursorPos X="45" Y="4368"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CS4Shapes.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="361"/>
         <CursorPos X="14" Y="375"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CS4BaseTypes.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="29"/>
         <CursorPos X="47" Y="45"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="libs\CADSys42\Sources\CS4Tasks.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3474"/>
         <CursorPos X="59" Y="3485"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4Shapes.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7647"/>
         <CursorPos X="51" Y="7668"/>
-        <UsageCount Value="91"/>
+        <UsageCount Value="90"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -729,7 +729,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2849"/>
         <CursorPos X="33" Y="2857"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="87"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -737,19 +737,19 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="392"/>
         <CursorPos X="51" Y="409"/>
-        <UsageCount Value="24"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CS4BaseTypes.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="35" Y="10"/>
-        <UsageCount Value="94"/>
+        <UsageCount Value="93"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="components\CADSys42\Sources\CADSys4.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="13672"/>
         <CursorPos X="67" Y="13674"/>
         <UsageCount Value="100"/>
@@ -760,42 +760,42 @@
         <Filename Value="common\CommonUtils.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="50" Y="10"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="33"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\development\lazarus\components\CADSys42\Sources\CS4Shapes.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1459"/>
         <CursorPos X="72" Y="1487"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="56"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\development\lazarus\components\CADSys42\Sources\CS4Tasks.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2040"/>
         <CursorPos X="31" Y="2052"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="51"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\development\lazarus\components\CADSys42\Sources\CADSys4.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="12155"/>
         <CursorPos X="9" Y="12167"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="51"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSCompiler.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13556"/>
         <CursorPos X="42" Y="13566"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSDebugger.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="93" Y="29"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="40"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\ide\lazarus.pp"/>
@@ -803,7 +803,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="41"/>
         <CursorPos X="34" Y="49"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\forms.pp"/>
@@ -811,22 +811,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="318"/>
         <CursorPos X="17" Y="331"/>
-        <UsageCount Value="4"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\controls.pp"/>
-        <UnitName Value="Controls"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="184"/>
-        <CursorPos X="40" Y="198"/>
-        <UsageCount Value="1"/>
-      </Unit>
-      <Unit>
-        <Filename Value="ui\IDE\uFrmGotoLine.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="46"/>
-        <CursorPos X="8" Y="62"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="unit1.pas"/>
@@ -834,7 +819,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\config_lazarus\onlinepackagemanager\packages\HtmlViewer\source\framview.pas"/>
@@ -842,28 +827,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="31"/>
         <CursorPos X="51" Y="49"/>
-        <UsageCount Value="6"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\x64.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="293"/>
-        <CursorPos Y="305"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\components\PascalScript\Source\uPSRuntime.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="39" Y="28"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\include\winapih.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="188"/>
         <CursorPos X="10" Y="213"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\lazarus\lcl\lcltype.pp"/>
@@ -871,7 +849,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="62"/>
         <CursorPos X="35" Y="66"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\2.2.6\fpcsrc\packages\rtl-objpas\src\inc\variants.pp"/>
@@ -879,76 +857,35 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="52"/>
         <CursorPos X="67" Y="22"/>
-        <UsageCount Value="10"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\..\development\lazarus\components\CADSys4-3D_Last\CADSys42_mgw\Sources\CADSys4.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="4998"/>
-        <CursorPos X="32" Y="5014"/>
-        <UsageCount Value="1"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\config_lazarus\onlinepackagemanager\packages\BGRAControls\bcleatheme.pas"/>
-        <UnitName Value="BCLeaTheme"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="2457"/>
-        <CursorPos X="68" Y="2477"/>
-        <UsageCount Value="1"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\fpcsrc\rtl\objpas\sysutils\sysstr.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="870"/>
-        <CursorPos X="10" Y="883"/>
-        <UsageCount Value="1"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\fpcsrc\rtl\objpas\sysutils\sysstrh.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="110"/>
-        <CursorPos X="43" Y="117"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\PascalScript\Source\uPSComponent.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="200"/>
         <CursorPos X="14" Y="205"/>
-        <UsageCount Value="21"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\..\development\lazarus\components\pascalscript\Source\uPSComponent.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="57" Y="6"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="components\PascalScript\Source\uPSComponent.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1012"/>
         <CursorPos X="35" Y="977"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="components\PascalScript\Source\uPSDebugger.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="132"/>
         <CursorPos X="40" Y="147"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="17"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\PascalScript\Source\uPSDebugger.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="131"/>
         <CursorPos X="5" Y="155"/>
-        <UsageCount Value="21"/>
-      </Unit>
-      <Unit>
-        <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\PascalScript\Source\pascalscriptfcl.pas"/>
-        <UnitName Value="PascalScriptFCL"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\Lazarus\Laz4LazCAD\lazarus\components\opengl\openglcontext.pas"/>
@@ -956,7 +893,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="74"/>
         <CursorPos X="54" Y="79"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_LazCAD\config_lazarus\onlinepackagemanager\packages\bgragames-master\bgtools.pas"/>
@@ -964,13 +901,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="253"/>
         <CursorPos Y="272"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_LazCAD\ccr\aggpasmod\Source\AggRendererScanLine.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="71" Y="27"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\config_lazarus\onlinepackagemanager\packages\BGRAControls\bcnumerickeyboard.pas"/>
@@ -978,7 +915,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="155"/>
         <CursorPos X="13" Y="167"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\lazarus\components\opengl\openglcontext.pas"/>
@@ -986,7 +923,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="79"/>
         <CursorPos X="4" Y="89"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\config_lazarus\onlinepackagemanager\packages\BGRAControls\bckeyboard.pas"/>
@@ -994,53 +931,53 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="204"/>
         <CursorPos X="13" Y="216"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="components\PascalScript\Source\uPSRuntime.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7079"/>
         <CursorPos Y="7112"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\fpcsrc\rtl\inc\objpash.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="186"/>
         <CursorPos X="52" Y="191"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="components\PascalScript\Source\uPSUtils.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6.0_FPC_3.2.2\fpcsrc\rtl\inc\systemh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="325"/>
         <CursorPos X="3" Y="335"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="components\PascalScript\Source\x64.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="47"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\components\PascalScript\Source\uPSDebugger.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="137"/>
         <CursorPos X="62" Y="147"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\SpkToolBar\SpkGUITools\SpkGUITools.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2993"/>
         <CursorPos X="7" Y="3010"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\BGRAControls\bgradialogs.pas"/>
@@ -1048,7 +985,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="402"/>
         <CursorPos X="7" Y="420"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -1056,7 +993,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="202"/>
         <CursorPos X="7" Y="221"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\BGRAControls\bgradialogs.pas"/>
@@ -1064,113 +1001,113 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="402"/>
         <CursorPos X="52" Y="422"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\ATSynEdit\atsynedit\atsynedit_adapter_ime_gtk2.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="113"/>
         <CursorPos X="56" Y="133"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="196"/>
         <CursorPos Y="213"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\fpcsrc\rtl\objpas\classes\compon.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="295"/>
         <CursorPos X="8" Y="319"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\uPSDisassembly.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="48" Y="7"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\components\PascalScript\Source\uPSComponent.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="183"/>
         <CursorPos X="20" Y="199"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\components\PascalScript\Source\uPSDisassembly.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="10" Y="10"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\uPSRuntime.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1650"/>
         <CursorPos X="11" Y="1665"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\components\PascalScript\Source\uPSR_stdctrls.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\components\PascalScript\Source\PascalScript_Core_Reg.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="62" Y="9"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Downloads\Neuer Ordner\pascalscript-2ebc62362484632b7ac95b5962c4f23a32798d8c\Source\uPSUtils.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="93"/>
         <CursorPos Y="113"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Downloads\Neuer Ordner\pascalscript-2ebc62362484632b7ac95b5962c4f23a32798d8c\Source\uPSRuntime.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4623"/>
         <CursorPos X="7" Y="4640"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\PascalScript.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="22"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\uPSUtils.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="85"/>
         <CursorPos X="41" Y="90"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\x64.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="940"/>
         <CursorPos Y="940"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\IBX4Lazarus\runtime\nongui\IBCustomDataSet.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="12" Y="57"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\IBX4Lazarus\runtime\nongui\IBBlob.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos Y="46"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\components\ideintf\objectinspector.pp"/>
@@ -1178,7 +1115,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="782"/>
         <CursorPos X="19" Y="782"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\components\ideintf\componenttreeview.pas"/>
@@ -1186,19 +1123,19 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="28"/>
         <CursorPos X="3" Y="44"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\uPSR_stdctrls.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2974"/>
         <CursorPos Y="2980"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\components\PascalScript\Source\ThirdParty\uPSI_CommonUtils.pas"/>
@@ -1206,14 +1143,14 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="17"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\components\PascalScript\Source\uPSDebugger.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="26"/>
         <CursorPos X="64" Y="35"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -1221,7 +1158,23 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="502"/>
         <CursorPos X="21" Y="509"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="18"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\components\synedit\syneditmiscclasses.pp"/>
+        <UnitName Value="SynEditMiscClasses"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="327"/>
+        <CursorPos X="57" Y="341"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\fpcsrc\rtl\objpas\sysutils\finah.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2"/>
+        <CursorPos X="38" Y="2"/>
+        <UsageCount Value="11"/>
       </Unit>
     </Units>
     <OtherDefines Count="1">
@@ -1229,124 +1182,124 @@
     </OtherDefines>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="74" TopLine="66"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="76" TopLine="66"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="77" TopLine="66"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="81" TopLine="68"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="82" TopLine="69"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="83" TopLine="70"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="103" Column="13" TopLine="88"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="91" TopLine="88"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="92" TopLine="88"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="90" TopLine="88"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
-        <Caret Line="56" Column="31" TopLine="40"/>
-      </Position>
-      <Position>
-        <Filename Value="common\cad2dscripinterface.pas"/>
-        <Caret Line="104" TopLine="97"/>
-      </Position>
-      <Position>
-        <Filename Value="LazCAD.lpr"/>
-        <Caret Line="53" Column="3" TopLine="40"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\Imports\uPSI_CommonUtils.pas"/>
-        <Caret Line="120" TopLine="104"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="300" Column="18" TopLine="293"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="294" Column="3" TopLine="293"/>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="85" Column="22" TopLine="64"/>
       </Position>
       <Position>
         <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="431" Column="66" TopLine="419"/>
+        <Caret Line="155" Column="25" TopLine="134"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="198" Column="19" TopLine="177"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="274" Column="15" TopLine="252"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="441" Column="7" TopLine="420"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="442" Column="32" TopLine="421"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="456" Column="7" TopLine="435"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="784" Column="7" TopLine="762"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="788" Column="28" TopLine="766"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="857" Column="41" TopLine="839"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="862" Column="3" TopLine="839"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="861" Column="25" TopLine="857"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="874" Column="3" TopLine="857"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="863" Column="19" TopLine="853"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="865" Column="40" TopLine="852"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="945" Column="41" TopLine="934"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="455" TopLine="455"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="782" Column="23" TopLine="777"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="186" Column="12" TopLine="171"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="276" Column="46" TopLine="254"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="421" Column="42" TopLine="408"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="461" Column="5" TopLine="446"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="292" Column="41" TopLine="289"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="201" Column="17" TopLine="190"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="277" Column="25" TopLine="255"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="292" Column="17" TopLine="270"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="461" Column="19" TopLine="440"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="732" Column="17" TopLine="710"/>
       </Position>
       <Position>
         <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="300" Column="29" TopLine="293"/>
+        <Caret Line="214" Column="46" TopLine="208"/>
       </Position>
       <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="279" Column="11" TopLine="279"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="6" Column="85"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="4" Column="89"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="207" Column="29" TopLine="194"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="198" Column="14" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="207" Column="29" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="814" Column="23" TopLine="809"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="832" Column="21" TopLine="810"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="207" Column="29" TopLine="195"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="748" Column="40" TopLine="726"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="971" Column="14" TopLine="965"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
-        <Caret Line="209" Column="5" TopLine="195"/>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="736" Column="12" TopLine="736"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -1360,15 +1313,6 @@
     </HistoryLists>
   </ProjectSession>
   <Debugging>
-    <BreakPoints>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Line Value="689"/>
-      </Item>
-    </BreakPoints>
     <Watches>
       <Item>
         <Expression Value="fCurrentBlockLibrary"/>

@@ -174,6 +174,7 @@ type
     procedure ceCompImport(Sender: TObject; x: TPSPascalCompiler);
     procedure ceExecImport(Sender: TObject; se: TPSExec;
       x: TPSRuntimeClassImporter);
+    procedure edChange(Sender: TObject);
     procedure edGutterClick(Sender: TObject; X, Y, Line: integer;
       mark: TSynEditMark);
     procedure edSpecialLineColors(Sender: TObject; Line: Integer; var Special: Boolean; var FG, BG: TColor);
@@ -200,6 +201,8 @@ type
     procedure edDropFiles(Sender: TObject; X, Y: Integer;
       AFiles: TStrings);
   private
+    FErrorLine: Integer;
+
     FSearchFromCaret: boolean;
     FActiveLine: Longint;
     FResume: Boolean;
@@ -207,6 +210,7 @@ type
 
     procedure ReplaceCommentsKeepLayout(const SourceLines: TStrings; DestLines: TStringList);
 
+    procedure JumpToError(ALine, ACol: Integer);
     function Compile: Boolean;
     function Execute: Boolean;
 
@@ -343,6 +347,7 @@ end;
 
 procedure TfrmConsoleIDE.FormCreate(Sender: TObject);
 begin
+  FErrorLine := -1;
   ed.OnPaint := edMyPaint;
 end;
 
@@ -458,8 +463,7 @@ begin
             (LineText.StartsWith('{') and LineText.EndsWith('}'));
 end;
 
-
-procedure TfrmConsoleIDE.edSpecialLineColors(Sender: TObject; Line: Integer;
+{procedure TfrmConsoleIDE.edSpecialLineColors(Sender: TObject; Line: Integer;
   var Special: Boolean; var FG, BG: TColor);
 begin
   if ce.HasBreakPoint(ce.MainFileName, Line) then
@@ -481,6 +485,50 @@ begin
     FG := clWhite;
     bg := clBlue;
   end else Special := False;
+end;}
+
+procedure TfrmConsoleIDE.edSpecialLineColors(Sender: TObject; Line: Integer;
+  var Special: Boolean; var FG, BG: TColor);
+begin
+  //1. ERROR LINE (höchste Priorität)
+  if Line = FErrorLine then
+  begin
+    Special := True;
+    BG := $00C0C0FF; // etwas dunkleres Rot
+    FG := clBlack;
+    Exit;
+  end;
+
+  //2. BREAKPOINTS
+  if ce.HasBreakPoint(ce.MainFileName, Line) then
+  begin
+    Special := True;
+
+    if Line = FActiveLine then
+    begin
+      BG := clSilver;
+      FG := clRed;
+    end
+    else
+    begin
+      FG := clWhite;
+      BG := clRed;
+    end;
+
+    Exit;
+  end;
+
+  //3. ACTIVE LINE
+  if Line = FActiveLine then
+  begin
+    Special := True;
+    FG := clWhite;
+    BG := clBlue;
+    Exit;
+  end;
+
+  // DEFAULT
+  Special := False;
 end;
 
 procedure TfrmConsoleIDE.ceLineInfo(Sender: TObject; const FileName: String; APosition, Row,
@@ -666,6 +714,7 @@ begin
   begin
     if OpenDialog1.Execute then
     begin
+      FErrorLine := -1;
       ed.ClearAll;
       ed.Lines.LoadFromFile(OpenDialog1.FileName);
       ed.Modified := False;
@@ -728,6 +777,11 @@ begin
   RIRegister_MainScriptInterface_Routines(se, x);
 end;
 
+procedure TfrmConsoleIDE.edChange(Sender: TObject);
+begin
+  FErrorLine := -1;
+end;
+
 procedure TfrmConsoleIDE.edGutterClick(Sender: TObject; X, Y, Line: integer;
   mark: TSynEditMark);
 begin
@@ -745,82 +799,6 @@ begin
  end
  else
    CloseAction := caNone;
-end;
-
-procedure TfrmConsoleIDE.RemoveComments(const SourceLines: TStrings; DestLines: TStringList );
-var
-  i, j: Integer;
-  line, tempLine: string;
-  inBlockComment, inString: Boolean;
-begin
-  inBlockComment := False;
-  for i := 0 to SourceLines.Count - 1 do
-  begin
-    line := SourceLines[i];
-    tempLine := '';
-    inString := False;
-
-    j := 1;
-    while j <= Length(line) do
-    begin
-      // Zeichenfolge innerhalb von Anführungszeichen erkennen
-      if line[j] = '''' then
-      begin
-        tempLine := tempLine + line[j];
-        Inc(j);
-        while (j <= Length(line)) and (line[j] <> '''') do
-        begin
-          tempLine := tempLine + line[j];
-          Inc(j);
-        end;
-        if j <= Length(line) then
-          tempLine := tempLine + line[j];
-        Inc(j);
-        Continue;
-      end;
-
-      // Blockkommentar beenden
-      if inBlockComment then
-      begin
-        if (j < Length(line)) and (line[j] = '}') then
-        begin
-          inBlockComment := False;
-          Inc(j);
-        end
-        else if (j < Length(line) - 1) and (line[j] = '*') and (line[j + 1] = ')') then
-        begin
-          inBlockComment := False;
-          Inc(j, 2);
-        end
-        else
-          Inc(j);
-        Continue;
-      end;
-
-      // Einzeiliger Kommentar "//"
-      if (line[j] = '/') and (j < Length(line)) and (line[j + 1] = '/') then
-        Break // Beende die Zeilenverarbeitung für einzeilige Kommentare
-
-      // Blockkommentar starten
-      else if (line[j] = '{') then
-      begin
-        inBlockComment := True;
-        Inc(j);
-      end
-      else if (j < Length(line) - 1) and (line[j] = '(') and (line[j + 1] = '*') then
-      begin
-        inBlockComment := True;
-        Inc(j, 2);
-      end
-      else
-      begin
-        tempLine := tempLine + line[j];
-        Inc(j);
-      end;
-    end;
-
-    DestLines.Add(TrimRight(tempLine)); // Leere Zeilen werden beibehalten
-  end;
 end;
 
 procedure TfrmConsoleIDE.ReplaceCommentsKeepLayout(const SourceLines: TStrings; DestLines: TStringList);
@@ -961,18 +939,14 @@ begin
   end;
 end;
 
-function TfrmConsoleIDE.Compile: Boolean;
+{function TfrmConsoleIDE.Compile: Boolean;
 var
   tempLines: TStringList;
   i: Integer;
   TmpString: string;
 begin
   tempLines := TStringList.Create;
-  try //testcomment
-
-    //RemoveComments(ed.Lines, tempLines);
-    //ce.Script.Assign(tempLines);
-
+  try
     ReplaceCommentsKeepLayout(ed.Lines, tempLines);
     ce.Script.Assign(tempLines);
 
@@ -987,23 +961,57 @@ begin
   finally
     tempLines.Free;
   end;
+end;}
+
+function TfrmConsoleIDE.Compile: Boolean;
+var
+  tempLines: TStringList;
+  i: Integer;
+  Msg: TPSPascalCompilerMessage;
+begin
+  tempLines := TStringList.Create;
+  try
+    ReplaceCommentsKeepLayout(ed.Lines, tempLines);
+    ce.Script.Assign(tempLines);
+
+    Result := ce.Compile;
+    Messages.Clear;
+
+    for i := 0 to ce.CompilerMessageCount - 1 do
+    begin
+      Msg := ce.CompilerMessages[i];
+
+      Messages.Items.Add(Msg.MessageToString);
+
+      // 👉 ERSTER FEHLER → direkt hinspringen
+      if (not Result) and (i = 0) then
+      begin
+        JumpToError(Msg.Row, Msg.Col);
+      end;
+    end;
+
+    if Result then
+      Messages.Items.Add(STR_SUCCESSFULLY_COMPILED);
+
+  finally
+    tempLines.Free;
+  end;
 end;
 
-{function TfrmConsoleIDE.Compile: Boolean;
-var
-  i: Longint;
+procedure TfrmConsoleIDE.JumpToError(ALine, ACol: Integer);
 begin
-  ce.Script.Assign(ed.Lines);
-  Result := ce.Compile;
-  messages.Clear;
-  for i := 0 to ce.CompilerMessageCount -1 do
-  begin
-    Messages.Items.Add(ce.CompilerMessages[i].MessageToString);
-  end;
-  if Result then
-    Messages.Items.Add(STR_SUCCESSFULLY_COMPILED);
+  if ALine < 1 then ALine := 1;
+  if ACol < 1 then ACol := 1;
+
+  ed.CaretY := ALine;
+  ed.CaretX := ACol;
+
+  // 👉 Fehlerzeile setzen
+  FErrorLine := ALine;
+
+  ed.Invalidate; // neu zeichnen
+  ed.SetFocus;
 end;
-}
 
 procedure TfrmConsoleIDE.ceIdle(Sender: TObject);
 begin

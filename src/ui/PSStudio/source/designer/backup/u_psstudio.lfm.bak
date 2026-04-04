@@ -1,16 +1,18 @@
 object frmPSStudio: TfrmPSStudio
-  Left = 381
+  Left = 636
   Height = 570
-  Top = 141
+  Top = 133
   Width = 965
   Caption = 'PascalScript Studio'
   ClientHeight = 542
   ClientWidth = 965
   KeyPreview = True
   Menu = MainMenu1
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '2.2.6.0'
   object Panel1: TPanel
@@ -477,7 +479,7 @@ object frmPSStudio: TfrmPSStudio
     ClientHeight = 462
     ClientWidth = 645
     TabOrder = 1
-    object PageControl3: TPageControl
+    object pgcCenter: TPageControl
       Left = 1
       Height = 455
       Top = 1
@@ -536,7 +538,7 @@ object frmPSStudio: TfrmPSStudio
     ClientHeight = 462
     ClientWidth = 315
     TabOrder = 3
-    object PageControl2: TPageControl
+    object pgcLeft: TPageControl
       Left = 1
       Height = 410
       Top = 51
@@ -7646,6 +7648,7 @@ object frmPSStudio: TfrmPSStudio
       AutoCheck = True
       Caption = 'S&ave As...'
       ImageIndex = 11
+      OnExecute = acFileSaveAsExecute
     end
     object acFileExit: TAction
       Category = 'File'

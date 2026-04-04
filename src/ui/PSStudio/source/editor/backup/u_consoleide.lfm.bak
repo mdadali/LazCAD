@@ -1,7 +1,7 @@
 object frmConsoleIDE: TfrmConsoleIDE
-  Left = 765
+  Left = 687
   Height = 585
-  Top = 142
+  Top = 263
   Width = 996
   AllowDropFiles = True
   Caption = 'LazCAD ConsoleIDE'
@@ -508,6 +508,7 @@ object frmConsoleIDE: TfrmConsoleIDE
     MouseLinkColor.Foreground = clBlue
     LineHighlightColor.Background = clNone
     LineHighlightColor.Foreground = clNone
+    OnChange = edChange
     OnGutterClick = edGutterClick
     OnSpecialLineColors = edSpecialLineColors
     inline SynLeftGutterPartList1: TSynGutterPartList
