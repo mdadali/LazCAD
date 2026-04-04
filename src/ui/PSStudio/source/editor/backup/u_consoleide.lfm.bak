@@ -1,8 +1,9 @@
 object frmConsoleIDE: TfrmConsoleIDE
-  Left = 884
+  Left = 765
   Height = 585
-  Top = 143
+  Top = 142
   Width = 996
+  AllowDropFiles = True
   Caption = 'LazCAD ConsoleIDE'
   ClientHeight = 585
   ClientWidth = 996
@@ -773,8 +774,8 @@ object frmConsoleIDE: TfrmConsoleIDE
     Top = 352
   end
   object IFPS3DllPlugin1: TPSDllPlugin
-    Left = 456
-    Top = 40
+    Left = 464
+    Top = 64
   end
   object pashighlighter: TSynPasSyn
     Enabled = False
@@ -1269,8 +1270,8 @@ object frmConsoleIDE: TfrmConsoleIDE
   end
   object ActionList1: TActionList
     Images = ImageListClassic
-    Left = 648
-    Top = 400
+    Left = 250
+    Top = 296
     object acFileNew: TAction
       Category = 'File'
       AutoCheck = True
@@ -1365,6 +1366,7 @@ object frmConsoleIDE: TfrmConsoleIDE
       GroupIndex = 1
       Hint = 'Step Over'
       ImageIndex = 18
+      OnExecute = acDebugStepOverExecute
     end
     object acDebugStepInto: TAction
       Category = 'Debug'

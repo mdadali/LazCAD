@@ -415,8 +415,6 @@ begin;
   TheObjectInspector.PropertyEditorHook := ThePropertyEditorHook;
   TheObjectInspector.Align := alClient;
 
-  TheObjectInspector.ComponentTree.Height := 20;
-
   // create the PropertyGrid
   PropertyGrid:=TOIPropertyGrid.CreateWithParams(Self,ThePropertyEditorHook, AllTypeKinds,25);
 

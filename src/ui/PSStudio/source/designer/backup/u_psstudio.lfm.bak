@@ -1,7 +1,7 @@
 object frmPSStudio: TfrmPSStudio
-  Left = 480
+  Left = 381
   Height = 570
-  Top = 520
+  Top = 141
   Width = 965
   Caption = 'PascalScript Studio'
   ClientHeight = 542
@@ -541,9 +541,9 @@ object frmPSStudio: TfrmPSStudio
       Height = 410
       Top = 51
       Width = 313
-      ActivePage = tsCodeTree
+      ActivePage = tsOInspector
       Align = alClient
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       object tsOInspector: TTabSheet
         Caption = 'Objectinspector'
@@ -7194,14 +7194,17 @@ object frmPSStudio: TfrmPSStudio
       GroupIndex = 1
       object New1: TMenuItem
         Action = acFileNew
+        AutoCheck = True
         RadioItem = True
       end
       object Open1: TMenuItem
         Action = acFileOpen
+        AutoCheck = True
         RadioItem = True
       end
       object Save1: TMenuItem
         Action = acFileSave
+        AutoCheck = True
         RadioItem = True
       end
       object N3: TMenuItem

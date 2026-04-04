@@ -48,9 +48,9 @@ uses
   mainscriptinterface,
   cad2dscripinterface, uPSI_Dialogs,
   upsi_cad2dscripinterface,
-  uPSI_CommonUtils,
   uPSI_DialogsScriptInterface,
   uPSI_MathScriptinterface,
+  uPSI_CommonUtils,
 
   UndoRedo;
 

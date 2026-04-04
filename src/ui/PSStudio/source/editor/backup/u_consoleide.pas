@@ -204,7 +204,9 @@ type
     FActiveLine: Longint;
     FResume: Boolean;
     FActiveFile: string;
-    procedure RemoveComments(const SourceLines: TStrings; DestLines: TStringList );
+
+    procedure ReplaceCommentsKeepLayout(const SourceLines: TStrings; DestLines: TStringList);
+
     function Compile: Boolean;
     function Execute: Boolean;
 
@@ -723,7 +725,7 @@ end;
 procedure TfrmConsoleIDE.ceExecImport(Sender: TObject; se: TPSExec;
   x: TPSRuntimeClassImporter);
 begin
-  RIRegister_MainScriptInterface_Routines(se);
+  RIRegister_MainScriptInterface_Routines(se, x);
 end;
 
 procedure TfrmConsoleIDE.edGutterClick(Sender: TObject; X, Y, Line: integer;
@@ -821,6 +823,144 @@ begin
   end;
 end;
 
+procedure TfrmConsoleIDE.ReplaceCommentsKeepLayout(const SourceLines: TStrings; DestLines: TStringList);
+var
+  i, j: Integer;
+  line, tempLine: string;
+  inBlockComment: Boolean;
+  blockType: (btNone, btBrace, btParen);
+  inString: Boolean;
+begin
+  inBlockComment := False;
+  blockType := btNone;
+
+  for i := 0 to SourceLines.Count - 1 do
+  begin
+    line := SourceLines[i];
+    tempLine := '';
+    inString := False;
+
+    j := 1;
+    while j <= Length(line) do
+    begin
+      // =========================
+      // STRING HANDLING
+      // =========================
+      if not inBlockComment and (line[j] = '''') then
+      begin
+        tempLine := tempLine + line[j];
+        Inc(j);
+
+        while j <= Length(line) do
+        begin
+          tempLine := tempLine + line[j];
+
+          // escaped quote ''
+          if (line[j] = '''') then
+          begin
+            if (j < Length(line)) and (line[j + 1] = '''') then
+            begin
+              // escaped -> beide übernehmen
+              Inc(j);
+              tempLine := tempLine + line[j];
+            end
+            else
+            begin
+              Inc(j);
+              Break;
+            end;
+          end;
+
+          Inc(j);
+        end;
+
+        Continue;
+      end;
+
+      // =========================
+      // BLOCK COMMENT (ACTIVE)
+      // =========================
+      if inBlockComment then
+      begin
+        // Ende { ... }
+        if (blockType = btBrace) and (line[j] = '}') then
+        begin
+          tempLine := tempLine + ' ';
+          inBlockComment := False;
+          blockType := btNone;
+          Inc(j);
+        end
+        // Ende (* ... *)
+        else if (blockType = btParen) and
+                (j < Length(line)) and
+                (line[j] = '*') and (line[j + 1] = ')') then
+        begin
+          tempLine := tempLine + ' ';
+          tempLine := tempLine + ' ';
+          inBlockComment := False;
+          blockType := btNone;
+          Inc(j, 2);
+        end
+        else
+        begin
+          tempLine := tempLine + ' ';
+          Inc(j);
+        end;
+
+        Continue;
+      end;
+
+      // =========================
+      // LINE COMMENT //
+      // =========================
+      if (line[j] = '/') and (j < Length(line)) and (line[j + 1] = '/') then
+      begin
+        // Rest der Zeile mit Spaces füllen
+        while j <= Length(line) do
+        begin
+          tempLine := tempLine + ' ';
+          Inc(j);
+        end;
+        Break;
+      end;
+
+      // =========================
+      // BLOCK COMMENT START
+      // =========================
+      if line[j] = '{' then
+      begin
+        inBlockComment := True;
+        blockType := btBrace;
+        tempLine := tempLine + ' ';
+        Inc(j);
+        Continue;
+      end;
+
+      if (line[j] = '(') and (j < Length(line)) and (line[j + 1] = '*') then
+      begin
+        inBlockComment := True;
+        blockType := btParen;
+        tempLine := tempLine + ' ';
+        tempLine := tempLine + ' ';
+        Inc(j, 2);
+        Continue;
+      end;
+
+      // =========================
+      // NORMAL CHAR
+      // =========================
+      tempLine := tempLine + line[j];
+      Inc(j);
+    end;
+
+    // GANZ WICHTIG: gleiche Zeilenlänge sicherstellen
+    while Length(tempLine) < Length(line) do
+      tempLine := tempLine + ' ';
+
+    DestLines.Add(tempLine);
+  end;
+end;
+
 function TfrmConsoleIDE.Compile: Boolean;
 var
   tempLines: TStringList;
@@ -828,10 +968,14 @@ var
   TmpString: string;
 begin
   tempLines := TStringList.Create;
-  try
-    RemoveComments(ed.Lines, tempLines);
+  try //testcomment
 
+    //RemoveComments(ed.Lines, tempLines);
+    //ce.Script.Assign(tempLines);
+
+    ReplaceCommentsKeepLayout(ed.Lines, tempLines);
     ce.Script.Assign(tempLines);
+
     Result := ce.Compile;
     messages.Clear;
     for i := 0 to ce.CompilerMessageCount - 1 do
