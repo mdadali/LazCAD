@@ -13,7 +13,7 @@ uses
 
 
 
-ComCtrls, ActnList, Buttons, SynEdit, SynEditTypes, SynHighlighterPas,
+ComCtrls, ActnList, Buttons, AbUnzper, AbZipTyp, AbArcTyp, SynEdit, SynEditTypes, SynHighlighterPas,
 SynEditSearch, SynEditMiscClasses, SynEditHighlighter, SynGutterBase,
 SynGutterMarks, SynGutterLineNumber, SynGutterChanges, SynGutter,
 SynGutterCodeFolding, SynEditMarkupSpecialLine, SynEditRegexSearch,
@@ -62,6 +62,7 @@ type
     pnlCodeTree: TPanel;
     pashighlighter: TSynPasSyn;
     pnlInsp: TPanel;
+    PopupMenu1: TPopupMenu;
     PropertyGrid: TOIPropertyGrid;
     Active1: TMenuItem;
     RadioGroup1: TRadioGroup;
@@ -291,7 +292,8 @@ procedure TfrmPSStudio.FormShow(Sender: TObject);
 begin
   pgcLeft.ActivePage := tsOInspector;
   pgcCenter.ActivePage := tsDesign;
-  OpenFileSilent(FStdFormTemplateFile);
+  //OpenFileSilent(FStdFormTemplateFile);
+  //LocalConsoleIDE.ed.Modified := false;
 end;
 
 procedure TfrmPSStudio.JvDesignSurface1SelectionChange(Sender: TObject);
@@ -411,22 +413,64 @@ begin
   LocalConsoleIDE.acDebugResetExecute(nil); //terminate any running script
   if LocalConsoleIDE.SaveCheck then //check if script changed and not yet saved
   begin
-    CloseAction := caHide;
-    //frmMain.acToolsScripter.Checked := false;
+    {$IFDEF SCRIPTER_EMBEDDED}
+      CloseAction := caHide;
+    {$ELSE}
+      CloseAction := caFree;
+    {$ENDIF}
   end
   else
     CloseAction := caNone;
 end;
 
+procedure ExtractDataDirectory;
+var
+  DataStream: TResourceStream;
+  MemoryStream: TMemoryStream;
+  DataDir: string;
+  AbUnZipper: TAbUnZipper;
+begin
+  AbUnZipper := TAbUnZipper.Create(nil);
+  DataDir := ExtractFilePath(Application.ExeName) + Pathdelim + 'data';
+  if not DirectoryExists(DataDir) then
+  begin
+    DataStream := TResourceStream.Create(HInstance, 'DATA', RT_RCDATA);
+    MemoryStream := TMemoryStream.Create;
+    try
+      // Load the ZIP file from the resource into memory
+      MemoryStream.LoadFromStream(DataStream);
+      MemoryStream.Position := 0;
+
+      // Extract the contents of the ZIP file to the target directory.
+      AbUnZipper.Stream := MemoryStream;
+      AbUnZipper.ExtractOptions := [eoCreateDirs, eoRestorePath]; // Create directories
+      AbUnZipper.BaseDirectory := ExtractFilePath(Application.ExeName);
+      AbUnZipper.ExtractFiles('*.*');
+    finally
+      MemoryStream.Free;
+      DataStream.Free;
+      AbUnZipper.Free;
+    end;
+  end;
+end;
+
+function FirstRun: boolean;
+begin
+  result := not DirectoryExists(ExtractFilePath(Application.ExeName) + Pathdelim + 'data');
+end;
+
 procedure TfrmPSStudio.FormCreate(Sender: TObject);
 var RootCtrl: TComponent;
 begin;
+  if FirstRun then
+    ExtractDataDirectory;
+
   FFileName := '';
 
   JvDesignPanel1.Surface.OnSelectionChange := @JvDesignSurface1SelectionChange;
 
   FStdFormTemplateFile := ExtractFilePath(Application.ExeName) +
-       PathDelim + 'data' + PathDelim + 'PSStudio' + PathDelim + 'FormTemplates' + PathDelim + 'StdTemplate.cfrm';
+       'data' + PathDelim + 'PSStudio' + PathDelim + 'FormTemplates' + PathDelim + 'StdTemplate.cfrm';
 
   // create the PropertyEditorHook (the interface to the properties)
   ThePropertyEditorHook:=TPropertyEditorHook.Create(nil);
@@ -460,7 +504,7 @@ begin;
   LocalConsoleIDE.Visible := true;
 
   PropertyGrid.OnModified := @PropertyGridOnModified;
-  //OpenFileSilent(FStdFormTemplateFile);
+  OpenFileSilent(FStdFormTemplateFile);
 
   PropertyGrid.OnEditorFilter := @TIPropertyGrid1EditorFilter;
 
@@ -828,6 +872,7 @@ begin
     // Pascal-Code-Datei (.ROPS)
     RopsFile := BaseName + '.ROPS';
     LocalConsoleIDE.ed.Lines.SaveToFile(RopsFile); // SynEdit Lines speichern
+    LocalConsoleIDE.ed.Modified := false;
 
     Caption := 'PascalScript Studio' + ExtractFileName(BaseName);
 
@@ -857,6 +902,7 @@ begin
   // Pascal-Code-Datei (.ROPS) speichern
   RopsFile := BaseName + '.ROPS';
   LocalConsoleIDE.ed.Lines.SaveToFile(RopsFile);
+  LocalConsoleIDE.ed.Modified := false;
 
   // Caption aktualisieren
   Caption := 'PSStudio - ' + ExtractFileName(BaseName);

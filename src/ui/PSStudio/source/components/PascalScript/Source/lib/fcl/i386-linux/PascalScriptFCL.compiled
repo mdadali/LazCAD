@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="/home/maurog/Programme/Lazarus_2.2.6_new/fpc/bin/x86_64-linux/fpc.sh" Date="1774632966"/>
-  <Params Value=" -Pi386 -MObjFPC -Scghi -O1 -g -gl -l -vewnibq -vh- -Fu/home/maurog/daten/mustafa/entwicklung/linux/lazarus/components/PascalScript/Source/ -FU/home/maurog/daten/mustafa/entwicklung/linux/lazarus/components/PascalScript/Source/lib/fcl/i386-linux/ pascalscriptfcl.pas"/>
-</CONFIG>

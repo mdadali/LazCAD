@@ -1026,7 +1026,11 @@ end;
 
 procedure TfrmConsoleIDE.ceExecute(Sender: TPSScript);
 begin
-  ce.SetVarToInstance('SELF', Self);
+  if (Self.Parent is TTabSheet) then
+    ce.SetVarToInstance('SELF', TForm(Self.Parent.Parent.Parent.Parent))
+  else
+    ce.SetVarToInstance('SELF', Self);
+
   ce.SetVarToInstance('APPLICATION', Application);
   Caption := STR_FORM_TITLE_RUNNING;
 end;

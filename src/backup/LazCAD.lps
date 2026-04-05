@@ -224,8 +224,8 @@
       <Unit>
         <Filename Value="LazCAD.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="65"/>
-        <CursorPos X="23" Y="74"/>
+        <TopLine Value="35"/>
+        <CursorPos X="24" Y="52"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit>
@@ -236,7 +236,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fMain"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="1"/>
         <TopLine Value="1713"/>
         <CursorPos X="3" Y="1729"/>
         <UsageCount Value="200"/>
@@ -271,10 +271,11 @@
         <ComponentName Value="frmAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="74"/>
-        <CursorPos X="39" Y="83"/>
+        <CursorPos X="76" Y="78"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\library_blocks\flibraryblocks.pas"/>
@@ -390,11 +391,10 @@
       <Unit>
         <Filename Value="common\cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="97"/>
         <CursorPos Y="104"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
@@ -402,39 +402,37 @@
         <ComponentName Value="frmConsoleIDE"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="777"/>
-        <CursorPos X="31" Y="783"/>
-        <UsageCount Value="83"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="1027"/>
+        <CursorPos Y="1037"/>
+        <UsageCount Value="86"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\mainscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="10"/>
-        <CursorPos X="14" Y="16"/>
-        <UsageCount Value="83"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="23"/>
+        <CursorPos Y="49"/>
+        <UsageCount Value="86"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\upsi_cad2dscripinterface.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="612"/>
-        <CursorPos X="112" Y="629"/>
-        <UsageCount Value="83"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="354"/>
+        <CursorPos X="31" Y="368"/>
+        <UsageCount Value="86"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\uPSI_CommonUtils.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="104"/>
         <CursorPos Y="120"/>
-        <UsageCount Value="83"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="86"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\upsi_dialogsscriptinterface.pas"/>
@@ -444,14 +442,14 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="86"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\editor\Imports\upsi_mathscriptinterface.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uPSI_MathScriptinterface"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="86"/>
       </Unit>
       <Unit>
         <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
@@ -460,10 +458,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="290"/>
-        <CursorPos X="35" Y="293"/>
-        <UsageCount Value="82"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="494"/>
+        <CursorPos X="3" Y="507"/>
+        <UsageCount Value="85"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -471,19 +469,18 @@
         <Filename Value="ui\PSStudio\source\common\ucodegenerator.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uCodeGenerator"/>
-        <EditorIndex Value="7"/>
-        <CursorPos X="81" Y="9"/>
-        <UsageCount Value="82"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="27"/>
+        <CursorPos X="31" Y="40"/>
+        <UsageCount Value="85"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="components\PascalScript\Source\ThirdParty\uPSI_Dialogs.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="63"/>
+        <CursorPos X="22" Y="4"/>
+        <UsageCount Value="66"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\components\PascalScript\Source\ThirdParty\uPSI_IBX.pas"/>
@@ -1133,9 +1130,9 @@
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="2974"/>
-        <CursorPos Y="2980"/>
-        <UsageCount Value="6"/>
+        <TopLine Value="199"/>
+        <CursorPos Y="213"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\components\PascalScript\Source\ThirdParty\uPSI_CommonUtils.pas"/>
@@ -1147,11 +1144,10 @@
       </Unit>
       <Unit>
         <Filename Value="..\..\..\components\PascalScript\Source\uPSDebugger.pas"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="26"/>
         <CursorPos X="64" Y="35"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="32"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\config_lazarus\onlinepackagemanager\packages\Abbrevia\source\AbUtils.pas"/>
@@ -1163,11 +1159,10 @@
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\components\synedit\syneditmiscclasses.pp"/>
         <UnitName Value="SynEditMiscClasses"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="327"/>
         <CursorPos X="57" Y="341"/>
-        <UsageCount Value="12"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\fpcsrc\rtl\objpas\sysutils\finah.inc"/>
@@ -1176,83 +1171,29 @@
         <CursorPos X="38" Y="2"/>
         <UsageCount Value="11"/>
       </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\lazarus\components\lazutils\laztracer.pas"/>
+        <UnitName Value="LazTracer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="36"/>
+        <CursorPos Y="50"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\..\..\..\..\Programme\Lazarus_2.2.6_new\fpcsrc\rtl\objpas\sysutils\osutilsh.inc"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="45"/>
+        <CursorPos X="68" Y="51"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
     </Units>
-    <OtherDefines Count="1">
+    <OtherDefines Count="3">
       <Define0 Value="TTF2VECTOR_EMBEDDED"/>
+      <Define1 Value="SCRIPTER_EMBEDDED"/>
+      <Define2 Value="CADSys4"/>
     </OtherDefines>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="85" Column="22" TopLine="64"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="155" Column="25" TopLine="134"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="198" Column="19" TopLine="177"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="274" Column="15" TopLine="252"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="441" Column="7" TopLine="420"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="442" Column="32" TopLine="421"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="456" Column="7" TopLine="435"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="784" Column="7" TopLine="762"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="788" Column="28" TopLine="766"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="857" Column="41" TopLine="839"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="862" Column="3" TopLine="839"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="861" Column="25" TopLine="857"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="874" Column="3" TopLine="857"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="863" Column="19" TopLine="853"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="865" Column="40" TopLine="852"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="945" Column="41" TopLine="934"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="455" TopLine="455"/>
-      </Position>
-      <Position>
-        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
-        <Caret Line="782" Column="23" TopLine="777"/>
-      </Position>
       <Position>
         <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
         <Caret Line="186" Column="12" TopLine="171"/>
@@ -1300,6 +1241,78 @@
       <Position>
         <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
         <Caret Line="736" Column="12" TopLine="736"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="187" Column="21" TopLine="184"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="277" Column="46" TopLine="255"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="294" Column="38" TopLine="272"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="432" TopLine="407"/>
+      </Position>
+      <Position>
+        <Filename Value="LazCAD.lpr"/>
+        <Caret Line="52" Column="24" TopLine="35"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\Imports\mainscriptinterface.pas"/>
+        <Caret Line="17" Column="8"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\common\ucodegenerator.pas"/>
+        <Caret Line="41" Column="3" TopLine="27"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Column="48"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="783" Column="31" TopLine="777"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="795" Column="26" TopLine="770"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="770" Column="3" TopLine="768"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="776" Column="3" TopLine="768"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="762" Column="3" TopLine="760"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="770" Column="3" TopLine="760"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="775" Column="3" TopLine="760"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\editor\u_consoleide.pas"/>
+        <Caret Line="1038" TopLine="1027"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="411" TopLine="410"/>
+      </Position>
+      <Position>
+        <Filename Value="ui\PSStudio\source\designer\u_psstudio.pas"/>
+        <Caret Line="296" Column="5" TopLine="291"/>
       </Position>
     </JumpHistory>
     <RunParams>

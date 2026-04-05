@@ -1,7 +1,7 @@
 object frmAbout: TfrmAbout
   Left = 577
   Height = 514
-  Top = 234
+  Top = 260
   Width = 496
   BorderIcons = []
   BorderStyle = bsNone
@@ -28,7 +28,7 @@ object frmAbout: TfrmAbout
     object TabSheet1: TTabSheet
       Caption = 'LazCAD'
       ClientHeight = 433
-      ClientWidth = 486
+      ClientWidth = 492
       object GifAnim1: TGifAnim
         Left = -256
         Height = 40
@@ -41,8 +41,8 @@ object frmAbout: TfrmAbout
         Height = 344
         Top = 80
         Width = 440
-        ClientHeight = 342
-        ClientWidth = 438
+        ClientHeight = 340
+        ClientWidth = 436
         ParentBackground = False
         TabOrder = 0
         object lbVersion: TLabel
@@ -138,8 +138,8 @@ object frmAbout: TfrmAbout
           Left = 184
           Height = 17
           Top = 256
-          Width = 107
-          Caption = 'mdadali@yahoo.de'
+          Width = 129
+          Caption = 'mdadali@hackcad.com'
           Font.Color = clWindowText
           Font.Height = 12
           Font.Name = 'Tahoma'
@@ -259,12 +259,12 @@ object frmAbout: TfrmAbout
     object TabSheet4: TTabSheet
       Caption = 'License'
       ClientHeight = 433
-      ClientWidth = 486
+      ClientWidth = 492
       object Memo3: TMemo
         Left = 0
         Height = 433
         Top = 0
-        Width = 486
+        Width = 492
         Align = alClient
         Lines.Strings = (
           'MIT License'
@@ -296,12 +296,12 @@ object frmAbout: TfrmAbout
     object TabSheet2: TTabSheet
       Caption = 'Credits'
       ClientHeight = 433
-      ClientWidth = 486
+      ClientWidth = 492
       object Memo2: TMemo
         Left = 0
         Height = 433
         Top = 0
-        Width = 486
+        Width = 492
         Align = alClient
         Lines.Strings = (
           'Very Important Note:'
@@ -420,12 +420,12 @@ object frmAbout: TfrmAbout
     object TabSheet3: TTabSheet
       Caption = 'Components'
       ClientHeight = 433
-      ClientWidth = 486
+      ClientWidth = 492
       object Memo1: TMemo
         Left = 0
         Height = 433
         Top = 0
-        Width = 486
+        Width = 492
         Align = alClient
         Lines.Strings = (
           'Components:'

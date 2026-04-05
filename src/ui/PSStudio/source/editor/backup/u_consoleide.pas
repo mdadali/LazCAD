@@ -201,8 +201,6 @@ type
     procedure edDropFiles(Sender: TObject; X, Y: Integer;
       AFiles: TStrings);
   private
-    FErrorLine: Integer;
-
     FSearchFromCaret: boolean;
     FActiveLine: Longint;
     FResume: Boolean;
@@ -223,6 +221,7 @@ type
 
     property aFile: string read FActiveFile write SetActiveFile;
   public
+    FErrorLine: Integer;
     procedure edMyPaint(Sender: TObject; ACanvas: TCanvas);
     function SaveCheck: Boolean;
 
@@ -1027,7 +1026,11 @@ end;
 
 procedure TfrmConsoleIDE.ceExecute(Sender: TPSScript);
 begin
-  ce.SetVarToInstance('SELF', Self);
+  if (Self.Parent is TTabSheet) then
+    ce.SetVarToInstance('SELF', TForm(Self.Parent.Parent.Parent.Parent))
+  else
+    ce.SetVarToInstance('SELF', Self);
+
   ce.SetVarToInstance('APPLICATION', Application);
   Caption := STR_FORM_TITLE_RUNNING;
 end;

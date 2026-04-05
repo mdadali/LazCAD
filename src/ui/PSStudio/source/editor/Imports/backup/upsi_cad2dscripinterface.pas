@@ -50,11 +50,6 @@ uses
   ;
 
 
-procedure SetButtonOnClick(Button: TButton; handler: TNotifyEvent);
-begin
-  Button.OnClick := handler;  // Setzt das OnClick-Ereignis des Buttons auf den Handler
-end;
-
 (* === compile-time registration functions === *)
 (*----------------------------------------------------------------------------*)
 procedure SIRegister_CAD2DScripInterface(CL: TPSPascalCompiler);
@@ -81,7 +76,6 @@ begin
  CL.AddDelphiFunction('function Point2D(X: TRealType; Y: TRealType): TPoint2D');
  CL.AddDelphiFunction('function CAD_Rect2D(var Left, Bottom, Right, Top: TRealType): TRect2D');
 
- CL.AddDelphiFunction('procedure SetButtonOnClick(Button: TButton; handler: TNotifyEvent);');
  //LazCAD
 
   CL.AddDelphiFunction('Procedure GetActiveDocument');
@@ -383,8 +377,6 @@ begin
  S.RegisterDelphiFunction(@CAD_ImportDXF, 'CAD_ImportDXF', cdRegister);
  S.RegisterDelphiFunction(@CAD_ExportDXF, 'CAD_ExportDXF', cdRegister);
  S.RegisterDelphiFunction(@CAD_ImportESSI, 'CAD_ImportESSI', cdRegister);
-
- S.RegisterDelphiFunction(@SetButtonOnClick, 'SetButtonOnClick', cdRegister);
 
  S.RegisterDelphiFunction(@CAD_DrawLine2D, 'CAD_DrawLine2D', cdRegister);
  S.RegisterDelphiFunction(@CAD_DrawEllipticalArc2D, 'CAD_DrawEllipticalArc2D', cdRegister);

@@ -12,7 +12,9 @@ uses
  ,uPSCompiler,
 
   uPSI_MathScriptinterface,
-  upsi_cad2dscripinterface,
+  {$IFDEF CADSys4}
+    upsi_cad2dscripinterface,
+  {$ENDIF}
   //uPSI_DialogsScriptInterface, //old
   uPSI_Dialogs;
 
@@ -23,7 +25,10 @@ implementation
 
 procedure SIRegister_MainScriptInterface(CL: TPSPascalCompiler);
 begin
-  SIRegister_CAD2DScripInterface(CL);
+  {$IFDEF CADSys4}
+    SIRegister_CAD2DScripInterface(CL);
+  {$ENDIF}
+
   SIRegister_MathScriptInterface(CL);
   //SIRegister_DialogsScriptInterface(CL); //old
   SIRegister_Dialogs(CL);
@@ -31,7 +36,10 @@ end;
 
 procedure RIRegister_MainScriptInterface_Routines(S: TPSExec; x: TPSRuntimeClassImporter);
 begin
-  RIRegister_CAD2DScripInterface_Routines(S);
+  {$IFDEF CADSys4}
+    RIRegister_CAD2DScripInterface_Routines(S);
+  {$ENDIF}
+
   RIRegister_MathScriptInterface_Routines(S);
   //RIRegister_DialogsScriptInterface_Routines(S); //oöd
   RIRegister_Dialogs(x);

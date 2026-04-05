@@ -8,15 +8,16 @@ code implementing the class wrapper is taken from Carlo Kok''s conv unility
 }
 
 {$IFDEF MSWINDOWS}
-{$I ..\PascalScript.inc}
+{$I ..\..\components\PascalScript\Source\PascalScript.inc}
 {$ELSE}
-{$I ../PascalScript.inc}
+{$I ../../components/PascalScript/Source/PascalScript.inc}
 {$ENDIF}
 
 interface
 
 uses
-  SysUtils, Classes, uPSComponent, uPSCompiler, uPSRuntime;
+  SysUtils, Classes, Dialogs,
+  uPSComponent, uPSCompiler, uPSRuntime;
 
 type
 (*----------------------------------------------------------------------------*)
@@ -30,10 +31,21 @@ type
     procedure ExecImport2(CompExec: TPSScript; const ri: TPSRuntimeClassImporter); override;
   end;
 
+
+
+procedure SIRegister_Dialogs(CL: TPSPascalCompiler);
+procedure RIRegister_Dialogs(CL: TPSRuntimeClassImporter);
+procedure RIRegister_Dialogs_Routines(S: TPSExec);
+
 implementation
 
 uses
-   {$IFDEF Windows} Windows, CommDlg ,{$ENDIF} LCLType, LCLIntf, LMessages, Messages, Graphics ,Controls ,Forms ,StdCtrls ,Dialogs;
+   {$IFDEF Windows} Windows, CommDlg ,{$ENDIF} LCLType, LCLIntf, LMessages,
+   Messages, Graphics ,Controls ,Forms ,StdCtrls ,PrintersDlgs;
+
+
+type
+  TFDApplyEvent = procedure(Sender: TObject; Wnd: HWND) of object;
 
 (* === compile-time registration functions === *)
 (*----------------------------------------------------------------------------*)
@@ -42,6 +54,8 @@ begin
   //with RegClassS(CL,'TFindDialog', 'TReplaceDialog') do
   with CL.AddClassN(CL.FindClass('TFindDialog'),'TReplaceDialog') do
   begin
+    RegisterMethod('function Execute: Boolean');
+    RegisterProperty('ReplaceText', 'string', iptrw);
   end;
 end;
 
@@ -51,6 +65,8 @@ begin
   //with RegClassS(CL,'TCommonDialog', 'TFindDialog') do
   with CL.AddClassN(CL.FindClass('TCommonDialog'),'TFindDialog') do
   begin
+    RegisterMethod('function Execute: Boolean');
+
     RegisterMethod('procedure CloseDialog');
     RegisterProperty('Left', 'Integer', iptrw);
     RegisterProperty('Position', 'TPoint', iptrw);
@@ -67,6 +83,8 @@ begin
   //with RegClassS(CL,'TCommonDialog', 'TPrintDialog') do
   with CL.AddClassN(CL.FindClass('TCommonDialog'),'TPrintDialog') do
   begin
+    RegisterMethod('function Execute: Boolean');
+
     RegisterProperty('Collate', 'Boolean', iptrw);
     RegisterProperty('Copies', 'Integer', iptrw);
     RegisterProperty('FromPage', 'Integer', iptrw);
@@ -85,6 +103,7 @@ begin
   //with RegClassS(CL,'TCommonDialog', 'TPrinterSetupDialog') do
   with CL.AddClassN(CL.FindClass('TCommonDialog'),'TPrinterSetupDialog') do
   begin
+    RegisterMethod('function Execute: Boolean');
   end;
 end;
 
@@ -94,6 +113,8 @@ begin
   //with RegClassS(CL,'TCommonDialog', 'TFontDialog') do
   with CL.AddClassN(CL.FindClass('TCommonDialog'),'TFontDialog') do
   begin
+    RegisterMethod('function Execute: Boolean');
+
     RegisterProperty('Font', 'TFont', iptrw);
     RegisterProperty('Device', 'TFontDialogDevice', iptrw);
     RegisterProperty('MinFontSize', 'Integer', iptrw);
@@ -106,21 +127,23 @@ end;
 (*----------------------------------------------------------------------------*)
 procedure SIRegister_TColorDialog(CL: TPSPascalCompiler);
 begin
-  //with RegClassS(CL,'TCommonDialog', 'TColorDialog') do
   with CL.AddClassN(CL.FindClass('TCommonDialog'),'TColorDialog') do
   begin
-    RegisterProperty('Color', 'TColor', iptrw);
+    RegisterProperty('Color', 'Integer', iptrw);
     RegisterProperty('CustomColors', 'TStrings', iptrw);
     RegisterProperty('Options', 'TColorDialogOptions', iptrw);
+
+    RegisterMethod('function Execute: Boolean');
   end;
 end;
 
 (*----------------------------------------------------------------------------*)
 procedure SIRegister_TSaveDialog(CL: TPSPascalCompiler);
 begin
-  //with RegClassS(CL,'TOpenDialog', 'TSaveDialog') do
-  with CL.AddClassN(CL.FindClass('TOpenDialog'),'TSaveDialog') do
+  with CL.AddClassN(CL.FindClass('TCommonDialog'),'TSaveDialog') do
   begin
+    RegisterProperty('FileName', 'string', iptrw);
+    RegisterMethod('function Execute: Boolean');
   end;
 end;
 
@@ -130,11 +153,15 @@ begin
   //with RegClassS(CL,'TCommonDialog', 'TOpenDialog') do
   with CL.AddClassN(CL.FindClass('TCommonDialog'),'TOpenDialog') do
   begin
+
+    RegisterMethod('function Execute: Boolean');
+
     RegisterProperty('FileEditStyle', 'TFileEditStyle', iptrw);
     RegisterProperty('Files', 'TStrings', iptr);
     RegisterProperty('HistoryList', 'TStrings', iptrw);
     RegisterProperty('DefaultExt', 'string', iptrw);
-    RegisterProperty('FileName', 'TFileName', iptrw);
+    //RegisterProperty('FileName', 'string', iptrw);
+    RegisterProperty('FileName', 'string', iptrw);
     RegisterProperty('Filter', 'string', iptrw);
     RegisterProperty('FilterIndex', 'Integer', iptrw);
     RegisterProperty('InitialDir', 'string', iptrw);
@@ -144,7 +171,7 @@ begin
     RegisterProperty('OnFolderChange', 'TNotifyEvent', iptrw);
     RegisterProperty('OnSelectionChange', 'TNotifyEvent', iptrw);
     RegisterProperty('OnTypeChange', 'TNotifyEvent', iptrw);
-    RegisterProperty('OnIncludeItem', 'TIncludeItemEvent', iptrw);
+    //RegisterProperty('OnIncludeItem', 'TIncludeItemEvent', iptrw);
   end;
 end;
 
@@ -160,7 +187,7 @@ begin
     RegisterProperty('OnClose', 'TNotifyEvent', iptrw);
     RegisterProperty('OnShow', 'TNotifyEvent', iptrw);
   end;
-end;
+end;   
 
 (*----------------------------------------------------------------------------*)
 procedure SIRegister_Dialogs(CL: TPSPascalCompiler);
@@ -170,13 +197,9 @@ begin
   CL.AddTypeS('TOpenOption', '(ofReadOnly, ofOverwritePrompt, ofHideReadOnly, ofNoChangeDir, ofShowHelp, ofNoValidate, ofAllowMultiSelect, ofExtensionDifferent' +
     ', ofPathMustExist, ofFileMustExist, ofCreatePrompt, ofShareAware, ofNoReadOnlyReturn, ofNoTestFileCreate, ofNoNetworkButton, ofNoLongNames, ofOldStyleDialog, ofNoDereferenceLinks, ofEnableIncludeNotify, ofEnableSizing)');
 
-
-
-
-
   CL.AddTypeS('TOpenOptions', 'set of TOpenOption');
   CL.AddTypeS('TFileEditStyle', '(fsEdit, fsComboBox)');
-  CL.AddTypeS('TIncludeItemEvent', 'procedure (const OFN: TOFNotifyEx; var Include: Boolean)');
+  //CL.AddTypeS('TIncludeItemEvent', 'procedure (const OFN: TOFNotifyEx; var Include: Boolean)');
 
   SIRegister_TOpenDialog(CL);
   SIRegister_TSaveDialog(CL);
@@ -354,6 +377,8 @@ procedure RIRegister_TFindDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TFindDialog) do
   begin
+    RegisterMethod(@TFindDialog.Execute, 'Execute');
+
     RegisterMethod(@TFindDialog.CloseDialog, 'CloseDialog');
     RegisterPropertyHelper(@TFindDialogLeft_R,@TFindDialogLeft_W,'Left');
     RegisterPropertyHelper(@TFindDialogPosition_R,@TFindDialogPosition_W,'Position');
@@ -555,6 +580,8 @@ procedure RIRegister_TPrintDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TPrintDialog) do
   begin
+    RegisterMethod(@TFontDialog.Execute, 'Execute');
+
     RegisterPropertyHelper(@TPrintDialogCollate_R,@TPrintDialogCollate_W,'Collate');
     RegisterPropertyHelper(@TPrintDialogCopies_R,@TPrintDialogCopies_W,'Copies');
     RegisterPropertyHelper(@TPrintDialogFromPage_R,@TPrintDialogFromPage_W,'FromPage');
@@ -650,12 +677,13 @@ begin
 end;
 {$ELSE}
 (*----------------------------------------------------------------------------*)
-procedure TFontDialogOnApply_W(Self: TFontDialog; const T: TFDApplyEvent);
-begin Self.OnApply := T; end;
+{procedure TFontDialogOnApply_W(Self: TFontDialog; const T: TFDApplyEvent);
+begin Self.OnApplyClicked := T; end;
 
 (*----------------------------------------------------------------------------*)
 procedure TFontDialogOnApply_R(Self: TFontDialog; var T: TFDApplyEvent);
 begin T := Self.OnApply; end;
+}
 
 (*----------------------------------------------------------------------------*)
 procedure TFontDialogOptions_W(Self: TFontDialog; const T: TFontDialogOptions);
@@ -682,12 +710,13 @@ procedure TFontDialogMinFontSize_R(Self: TFontDialog; var T: Integer);
 begin T := Self.MinFontSize; end;
 
 (*----------------------------------------------------------------------------*)
-procedure TFontDialogDevice_W(Self: TFontDialog; const T: TFontDialogDevice);
+{procedure TFontDialogDevice_W(Self: TFontDialog; const T: TFontDialogDevice);
 begin Self.Device := T; end;
 
 (*----------------------------------------------------------------------------*)
 procedure TFontDialogDevice_R(Self: TFontDialog; var T: TFontDialogDevice);
 begin T := Self.Device; end;
+}
 
 (*----------------------------------------------------------------------------*)
 procedure TFontDialogFont_W(Self: TFontDialog; const T: TFont);
@@ -701,12 +730,13 @@ procedure RIRegister_TFontDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TFontDialog) do
   begin
+    RegisterMethod(@TFontDialog.Execute, 'Execute');
     RegisterPropertyHelper(@TFontDialogFont_R,@TFontDialogFont_W,'Font');
-    RegisterPropertyHelper(@TFontDialogDevice_R,@TFontDialogDevice_W,'Device');
+    //RegisterPropertyHelper(@TFontDialogDevice_R,@TFontDialogDevice_W,'Device');
     RegisterPropertyHelper(@TFontDialogMinFontSize_R,@TFontDialogMinFontSize_W,'MinFontSize');
     RegisterPropertyHelper(@TFontDialogMaxFontSize_R,@TFontDialogMaxFontSize_W,'MaxFontSize');
     RegisterPropertyHelper(@TFontDialogOptions_R,@TFontDialogOptions_W,'Options');
-    RegisterPropertyHelper(@TFontDialogOnApply_R,@TFontDialogOnApply_W,'OnApply');
+    //RegisterPropertyHelper(@TFontDialogOnApply_R,@TFontDialogOnApply_W,'OnApply');
   end;
 end;
 {$ENDIF class_helper_present}
@@ -760,12 +790,13 @@ end;
 
 {$ELSE}
 (*----------------------------------------------------------------------------*)
-procedure TColorDialogOptions_W(Self: TColorDialog; const T: TColorDialogOptions);
+{procedure TColorDialogOptions_W(Self: TColorDialog; const T: TColorDialogOptions);
 begin Self.Options := T; end;
 
 (*----------------------------------------------------------------------------*)
 procedure TColorDialogOptions_R(Self: TColorDialog; var T: TColorDialogOptions);
 begin T := Self.Options; end;
+}
 
 (*----------------------------------------------------------------------------*)
 procedure TColorDialogCustomColors_W(Self: TColorDialog; const T: TStrings);
@@ -787,9 +818,11 @@ procedure RIRegister_TColorDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TColorDialog) do
   begin
+    RegisterMethod(@TColorDialog.Execute, 'Execute');
+
     RegisterPropertyHelper(@TColorDialogColor_R,@TColorDialogColor_W,'Color');
     RegisterPropertyHelper(@TColorDialogCustomColors_R,@TColorDialogCustomColors_W,'CustomColors');
-    RegisterPropertyHelper(@TColorDialogOptions_R,@TColorDialogOptions_W,'Options');
+    //RegisterPropertyHelper(@TColorDialogOptions_R,@TColorDialogOptions_W,'Options');
   end;
 end;
 
@@ -821,8 +854,8 @@ type
     procedure FilterIndex_R( var T: Integer);
     procedure Filter_W( const T: string);
     procedure Filter_R( var T: string);
-    procedure FileName_W( const T: TFileName);
-    procedure FileName_R( var T: TFileName);
+    procedure FileName_W( const T: string);
+    procedure FileName_R( var T: string);
     procedure DefaultExt_W( const T: string);
     procedure DefaultExt_R( var T: string);
     procedure HistoryList_W( const T: TStrings);
@@ -912,11 +945,11 @@ procedure TOpenDialog_PSHelper.Filter_R( var T: string);
 begin T := Self.Filter; end;
 
 
-procedure TOpenDialog_PSHelper.FileName_W( const T: TFileName);
+procedure TOpenDialog_PSHelper.FileName_W( const T: string);
 begin Self.FileName := T; end;
 
 
-procedure TOpenDialog_PSHelper.FileName_R( var T: TFileName);
+procedure TOpenDialog_PSHelper.FileName_R( var T: string);
 begin T := Self.FileName; end;
 
 
@@ -970,12 +1003,13 @@ begin
 end;
 {$ELSE}
 (*----------------------------------------------------------------------------*)
-procedure TOpenDialogOnIncludeItem_W(Self: TOpenDialog; const T: TIncludeItemEvent);
+{procedure TOpenDialogOnIncludeItem_W(Self: TOpenDialog; const T: TIncludeItemEvent);
 begin Self.OnIncludeItem := T; end;
 
 (*----------------------------------------------------------------------------*)
 procedure TOpenDialogOnIncludeItem_R(Self: TOpenDialog; var T: TIncludeItemEvent);
 begin T := Self.OnIncludeItem; end;
+}
 
 (*----------------------------------------------------------------------------*)
 procedure TOpenDialogOnTypeChange_W(Self: TOpenDialog; const T: TNotifyEvent);
@@ -1050,11 +1084,11 @@ procedure TOpenDialogFilter_R(Self: TOpenDialog; var T: string);
 begin T := Self.Filter; end;
 
 (*----------------------------------------------------------------------------*)
-procedure TOpenDialogFileName_W(Self: TOpenDialog; const T: TFileName);
+procedure TOpenDialogFileName_W(Self: TOpenDialog; const T: string);
 begin Self.FileName := T; end;
 
 (*----------------------------------------------------------------------------*)
-procedure TOpenDialogFileName_R(Self: TOpenDialog; var T: TFileName);
+procedure TOpenDialogFileName_R(Self: TOpenDialog; var T: string);
 begin T := Self.FileName; end;
 
 (*----------------------------------------------------------------------------*)
@@ -1078,18 +1112,19 @@ procedure TOpenDialogFiles_R(Self: TOpenDialog; var T: TStrings);
 begin T := Self.Files; end;
 
 (*----------------------------------------------------------------------------*)
-procedure TOpenDialogFileEditStyle_W(Self: TOpenDialog; const T: TFileEditStyle);
+{procedure TOpenDialogFileEditStyle_W(Self: TOpenDialog; const T: TFileEditStyle);
 begin Self.FileEditStyle := T; end;
 
 (*----------------------------------------------------------------------------*)
 procedure TOpenDialogFileEditStyle_R(Self: TOpenDialog; var T: TFileEditStyle);
 begin T := Self.FileEditStyle; end;
+}
 
 procedure RIRegister_TOpenDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TOpenDialog) do
   begin
-    RegisterPropertyHelper(@TOpenDialogFileEditStyle_R,@TOpenDialogFileEditStyle_W,'FileEditStyle');
+    //RegisterPropertyHelper(@TOpenDialogFileEditStyle_R,@TOpenDialogFileEditStyle_W,'FileEditStyle');
     RegisterPropertyHelper(@TOpenDialogFiles_R,nil,'Files');
     RegisterPropertyHelper(@TOpenDialogHistoryList_R,@TOpenDialogHistoryList_W,'HistoryList');
     RegisterPropertyHelper(@TOpenDialogDefaultExt_R,@TOpenDialogDefaultExt_W,'DefaultExt');
@@ -1103,7 +1138,9 @@ begin
     RegisterPropertyHelper(@TOpenDialogOnFolderChange_R,@TOpenDialogOnFolderChange_W,'OnFolderChange');
     RegisterPropertyHelper(@TOpenDialogOnSelectionChange_R,@TOpenDialogOnSelectionChange_W,'OnSelectionChange');
     RegisterPropertyHelper(@TOpenDialogOnTypeChange_R,@TOpenDialogOnTypeChange_W,'OnTypeChange');
-    RegisterPropertyHelper(@TOpenDialogOnIncludeItem_R,@TOpenDialogOnIncludeItem_W,'OnIncludeItem');
+    //RegisterPropertyHelper(@TOpenDialogOnIncludeItem_R,@TOpenDialogOnIncludeItem_W,'OnIncludeItem');
+
+    RegisterMethod(@TOpenDialog.Execute, 'Execute');
   end;
 end;
 {$ENDIF class_helper_present}
@@ -1198,12 +1235,13 @@ procedure TCommonDialogHelpContext_R(Self: TCommonDialog; var T: THelpContext);
 begin T := Self.HelpContext; end;
 
 (*----------------------------------------------------------------------------*)
-procedure TCommonDialogCtl3D_W(Self: TCommonDialog; const T: Boolean);
+{procedure TCommonDialogCtl3D_W(Self: TCommonDialog; const T: Boolean);
 begin Self.Ctl3D := T; end;
 
 (*----------------------------------------------------------------------------*)
 procedure TCommonDialogCtl3D_R(Self: TCommonDialog; var T: Boolean);
 begin T := Self.Ctl3D; end;
+}
 
 (*----------------------------------------------------------------------------*)
 procedure TCommonDialogHandle_R(Self: TCommonDialog; var T: HWnd);
@@ -1215,7 +1253,7 @@ begin
   with CL.Add(TCommonDialog) do
   begin
     RegisterPropertyHelper(@TCommonDialogHandle_R,nil,'Handle');
-    RegisterPropertyHelper(@TCommonDialogCtl3D_R,@TCommonDialogCtl3D_W,'CTL3D');
+    //RegisterPropertyHelper(@TCommonDialogCtl3D_R,@TCommonDialogCtl3D_W,'CTL3D');
     RegisterPropertyHelper(@TCommonDialogHelpContext_R,@TCommonDialogHelpContext_W,'HelpContext');
     RegisterPropertyHelper(@TCommonDialogOnClose_R,@TCommonDialogOnClose_W,'OnClose');
     RegisterPropertyHelper(@TCommonDialogOnShow_R,@TCommonDialogOnShow_W,'OnShow');
@@ -1249,6 +1287,8 @@ procedure RIRegister_TReplaceDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TReplaceDialog) do
   begin
+    RegisterMethod(@TReplaceDialog.Create, 'Create');
+    RegisterMethod(@TReplaceDialog.Execute, 'Execute');
   end;
 end;
 
@@ -1257,6 +1297,8 @@ procedure RIRegister_TPrinterSetupDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TPrinterSetupDialog) do
   begin
+    RegisterMethod(@TPrinterSetupDialog.Create, 'Create');
+    RegisterMethod(@TPrinterSetupDialog.Execute, 'Execute');
   end;
 end;
 
@@ -1265,10 +1307,11 @@ procedure RIRegister_TSaveDialog(CL: TPSRuntimeClassImporter);
 begin
   with CL.Add(TSaveDialog) do
   begin
+    RegisterMethod(@TSaveDialog.Create, 'Create');
+    RegisterMethod(@TSaveDialog.Execute, 'Execute');
   end;
 end;
 
-(*----------------------------------------------------------------------------*)
 procedure RIRegister_Dialogs(CL: TPSRuntimeClassImporter);
 begin
   RIRegister_TCommonDialog(CL);
@@ -1282,8 +1325,7 @@ begin
   RIRegister_TReplaceDialog(CL);
 end;
 
- 
- 
+
 { TPSImport_Dialogs }
 (*----------------------------------------------------------------------------*)
 procedure TPSImport_Dialogs.CompOnUses(CompExec: TPSScript);

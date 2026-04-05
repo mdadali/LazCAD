@@ -13,12 +13,12 @@ object JvDesignPanel1: TJvDesignPanel
   DrawRules = False
   object pnlDesign: TPanel
     Tag = 999
-    Left = 63
-    Height = 446
-    Top = 65
-    Width = 850
-    ClientHeight = 446
-    ClientWidth = 850
+    Left = 95
+    Height = 386
+    Top = 85
+    Width = 790
+    ClientHeight = 386
+    ClientWidth = 790
     Color = clWindow
     ParentColor = False
     TabOrder = 0
@@ -27,11 +27,11 @@ object JvDesignPanel1: TJvDesignPanel
       Left = 1
       Height = 30
       Top = 1
-      Width = 848
+      Width = 788
       Align = alTop
       Caption = 'Form1'
       ClientHeight = 30
-      ClientWidth = 848
+      ClientWidth = 788
       Color = clActiveCaption
       Constraints.MaxHeight = 30
       Constraints.MinHeight = 30
@@ -40,7 +40,7 @@ object JvDesignPanel1: TJvDesignPanel
       TabOrder = 0
       object btnTitleClose: TButton
         Tag = 999
-        Left = 819
+        Left = 759
         Height = 28
         Top = 1
         Width = 28
@@ -54,7 +54,7 @@ object JvDesignPanel1: TJvDesignPanel
       end
       object btnTitleMinimize: TButton
         Tag = 999
-        Left = 791
+        Left = 731
         Height = 28
         Top = 1
         Width = 28
@@ -68,7 +68,7 @@ object JvDesignPanel1: TJvDesignPanel
       end
       object btnTitleMaximize: TButton
         Tag = 999
-        Left = 763
+        Left = 703
         Height = 28
         Top = 1
         Width = 28
@@ -80,6 +80,14 @@ object JvDesignPanel1: TJvDesignPanel
         Constraints.MinWidth = 28
         TabOrder = 2
       end
+    end
+    object Panel6: TPanel
+      Left = 19
+      Height = 146
+      Top = 45
+      Width = 150
+      Caption = 'Font'
+      TabOrder = 1
     end
   end
 end

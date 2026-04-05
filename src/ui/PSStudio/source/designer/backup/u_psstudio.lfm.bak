@@ -1,7 +1,7 @@
 object frmPSStudio: TfrmPSStudio
-  Left = 636
+  Left = 397
   Height = 570
-  Top = 133
+  Top = 178
   Width = 965
   Caption = 'PascalScript Studio'
   ClientHeight = 542
@@ -15,6 +15,7 @@ object frmPSStudio: TfrmPSStudio
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '2.2.6.0'
+  WindowState = wsMaximized
   object Panel1: TPanel
     Left = 0
     Height = 80
@@ -7757,5 +7758,9 @@ object frmPSStudio: TfrmPSStudio
       ImageIndex = 21
       OnExecute = acDebugBreakPointExecute
     end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 360
+    Top = 168
   end
 end

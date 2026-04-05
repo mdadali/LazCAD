@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Controls, StdCtrls, ExtCtrls, Types, Graphics,
   SynEdit, JvDesignSurface, JvDesignUtils;
 
-procedure AssignSpecialEvent(AStringList: TStringList; const Line: string);
+procedure AssignSpecialEvent(AStringList: TStringList; const Line, FormName: string);
 procedure GenerateSpecialEvent(AStringList: TStringList; const EventName, Signature: string);
 procedure GenerateFormCreate(AStringList: TStringList);
 procedure GenerateFormClose(AStringList: TStringList);
@@ -86,23 +86,6 @@ begin
     '(Sender: TObject)');
 end;
 
-{procedure AssignSpecialEvent(AStringList: TStringList; const Line: string);
-var
-  i: Integer;
-begin
-  // schon vorhanden?
-  for i := 0 to AStringList.Count - 1 do
-    if Pos(Line, AStringList[i]) > 0 then Exit;
-
-  // Marker suchen
-  for i := 0 to AStringList.Count - 1 do
-    if Trim(AStringList[i]) = '//<EVENT_BINDINGS-END>' then
-    begin
-      AStringList.Insert(i, '  ' + Line);
-      Exit;
-    end;
-end;}
-
 procedure AssignSpecialEvent(AStringList: TStringList; const Line, FormName: string);
 var
   i: Integer;
@@ -125,23 +108,6 @@ begin
         AStringList.Insert(i+1, '  ' + FormName + '.OnCreate(' + FormName + ');');
       end;
 
-      Exit;
-    end;
-end;
-
-//???????????????????????????????ß
-procedure InsertEventBinding(ALines: TStringList; const Line: string);
-var i: Integer;
-begin
-  // schon vorhanden?
-  for i := 0 to ALines.Count - 1 do
-    if Pos(Line, ALines[i]) > 0 then Exit;
-
-  // Block finden
-  for i := 0 to ALines.Count - 1 do
-    if Trim(ALines[i]) = '//<EVENT_BINDINGS-END>' then
-    begin
-      ALines.Insert(i, '  ' + Line);
       Exit;
     end;
 end;
@@ -495,7 +461,7 @@ end;
 
 procedure GenerateCodeFromDesigner(AJvDesignPanel: TJvDesignPanel; AStringList: TStringList; AFormName: string);
 var
-  UserCode, MainCode, UserGlobalVars, EventBindings: TStringList;
+  HeaderComments, UserGlobals, UserCode, MainCode, EventBindings: TStringList;
   CtrlList: TList;
   RootPanel, TitlePanel: TPanel;
   i: Integer;
@@ -556,13 +522,27 @@ begin
   try
     CollectControls(RootPanel, CtrlList);
 
+    HeaderComments := ExtractBlock(AStringList, '//<HEADER_COMMENTS-BEGIN>', '//<HEADER_COMMENTS-END>');
+    UserGlobals := ExtractBlock(AStringList, '//<USER-GLOBALS-BEGIN>', '//<USER-GLOBALS-END>');
     UserCode := ExtractBlock(AStringList, '//<USERCODE-BEGIN>', '//<USERCODE-END>');
     MainCode := ExtractBlock(AStringList, '//<MAIN-BEGIN>', '//<MAIN-END>');
-    UserGlobalVars := ExtractBlock(AStringList, '//<USER-GLOBAL-VARS-BEGIN>', '//<USER-GLOBAL-VARS-END>');
     EventBindings  := ExtractBlock(AStringList, '//<EVENT_BINDINGS-BEGIN>', '//<EVENT_BINDINGS-END>');
 
     try
       AStringList.Clear;
+
+      Add('//<HEADER_COMMENTS-BEGIN>');
+      AStringList.AddStrings(HeaderComments);
+      Add('//<HEADER_COMMENTS-END>');
+      Add('');
+
+      // -------------------------
+      // USER GLOBAL
+      // -------------------------
+      Add('//<USER-GLOBALS-BEGIN>');
+      AStringList.AddStrings(UserGlobals);
+      Add('//<USER-GLOBALS-END>');
+      Add('');
 
       // -------------------------
       // VARS
@@ -573,14 +553,6 @@ begin
       for i := 0 to CtrlList.Count - 1 do
         Add('  ' + TControl(CtrlList[i]).Name + ': ' + TControl(CtrlList[i]).ClassName + ';');
       Add('//<DESIGNER-VARS-END>');
-      Add('');
-
-      // -------------------------
-      // USER GLOBAL
-      // -------------------------
-      Add('//<USER-GLOBAL-VARS-BEGIN>');
-      AStringList.AddStrings(UserGlobalVars);
-      Add('//<USER-GLOBAL-VARS-END>');
       Add('');
 
       // -------------------------
@@ -650,9 +622,10 @@ begin
       Add('//<MAIN-END>');
 
     finally
+      HeaderComments.Free;
+      UserGlobals.Free;
       UserCode.Free;
       MainCode.Free;
-      UserGlobalVars.Free;
       EventBindings.Free;
     end;
 

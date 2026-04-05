@@ -7,8 +7,8 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, runtimetypeinfocontrols, printer4lazarus, pascalscript,
-  pascalscriptfcl, designer, ide_editor, jvRuntimeDesign;
+  Forms, abbrevia, runtimetypeinfocontrols, printer4lazarus, pascalscript,
+  pascalscriptfcl, jvRuntimeDesign, u_psstudio, u_consoleide, uPSI_Dialogs;
 
 {$R *.res}
 
@@ -21,8 +21,9 @@ end;
 
 begin
   Application.Initialize;
-  // Application.OnIdle := @ApplicationOnIdle;  // Setze das OnIdle-Ereignis
-  Application.CreateForm(TMainForm, MainForm);
+  //PSStudio := TfrmPSStudio.Create(nil);
+  //PSStudio.Visible := true;
+  Application.CreateForm(TfrmPSStudio, PSStudio);
   Application.Run;
 end.
 

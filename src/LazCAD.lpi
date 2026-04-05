@@ -20,7 +20,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="137"/>
+      <BuildNr Value="139"/>
       <Attributes pvaDebug="True" pvaPreRelease="True" pvaPatched="True" pvaPrivateBuild="True" pvaSpecialBuild="True"/>
       <StringTable ProductName="LazCAD"/>
     </VersionInfo>
@@ -336,9 +336,13 @@
       <LinkSmart Value="True"/>
     </Linking>
     <Other>
-      <CustomOptions Value="-dTTF2VECTOR_EMBEDDED"/>
-      <OtherDefines Count="1">
+      <CustomOptions Value="-dTTF2VECTOR_EMBEDDED
+-dSCRIPTER_EMBEDDED
+-dCADSys4"/>
+      <OtherDefines Count="3">
         <Define0 Value="TTF2VECTOR_EMBEDDED"/>
+        <Define1 Value="SCRIPTER_EMBEDDED"/>
+        <Define2 Value="CADSys4"/>
       </OtherDefines>
     </Other>
   </CompilerOptions>
